@@ -60,7 +60,9 @@ Source Han Serif SC、LXGW Neo XiHei、Source Serif 4 均本地托管，许可�
 
 ## GitHub Pages
 
-工作流 `.github/workflows/pages.yml` 在 `main` 更新时构建和发布。
+源码与网站统一保存在公开仓库 `zivyangll/linkxcap`。工作流 `.github/workflows/pages.yml` 在 `main` 更新时构建和发布。
+
+在线预览：<https://zivyangll.github.io/linkxcap/>。
 
 - `SITE_URL=https://zivyangll.github.io`
 - `SITE_BASE=/linkxcap`
