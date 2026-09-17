@@ -1,5 +1,5 @@
 ---
-import { type Lang, pick } from '../lib/site';
+import { type Lang, pick, url } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
 ---
 
@@ -51,4 +51,50 @@ const { lang } = Astro.props as { lang: Lang };
     )}{' '}
     ↗
   </a>
+  <h2 id="fonts">{pick(lang, '字体许可', 'Font licenses')}</h2>
+  <p>
+    {pick(
+      lang,
+      '本网站使用本地托管的字体子集，字形来自 Source Han Serif SC、Source Serif 4 和 LXGW Neo XiHei。派生字体分别命名为 LinkX Serif、LinkX Web Italic 和 LinkX Sans。',
+      'This website serves local subsets derived from Source Han Serif SC, Source Serif 4 and LXGW Neo XiHei, renamed LinkX Serif, LinkX Web Italic and LinkX Sans.',
+    )}
+  </p>
+  <p>
+    <a href={url('licenses/Source-Han-Serif.txt')}>
+      Source Han Serif · SIL OFL 1.1
+    </a>
+    <br />
+    <a href={url('licenses/Source-Serif-4.txt')}>
+      Source Serif 4 · SIL OFL 1.1
+    </a>
+    <br />
+    <a href={url('licenses/LXGW-Neo-XiHei.txt')}>
+      LXGW Neo XiHei · IPA Font License 1.0
+    </a>
+  </p>
+  <h3>{pick(lang, '恢复原始 IPA 字体', 'Restoring the original IPA font')}</h3>
+  <p>
+    {pick(
+      lang,
+      '如果希望使用原始字体，请从下方官网获取并安装 IPAexGothic（IPAexゴシック），然后重新加载本页。网站会优先使用本地已安装的 IPAexGothic 替代 LinkX Sans；原始字体的部分汉字字形与中文设计不同。',
+      'To use the original font, download and install IPAexGothic from the official source below, then reload this page. The website prioritizes the locally installed IPAexGothic over LinkX Sans. Some glyphs in the original Japanese font differ from the Chinese design.',
+    )}
+  </p>
+  <p>
+    <a
+      href="https://moji.or.jp/ipafont/ipafontdownload/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      IPAexGothic · {pick(lang, '原始字体下载', 'Download the original font')} ↗
+    </a>
+    <br />
+    <a href={url('licenses/FONT-NOTICE.md')}>
+      {pick(
+        lang,
+        '字体来源与替换说明',
+        'Font sources and replacement instructions',
+      )}
+    </a>
+  </p>
 </article>

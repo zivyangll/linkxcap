@@ -526,7 +526,7 @@
     font: calc(15.6 * var(--u)) var(--sans);
   }
   .orbit-label em {
-    font-family: 'Source Serif Italic', var(--serif);
+    font-family: 'LinkX Web Italic', var(--serif);
     font-weight: 400;
   }
   .orbit-label .diamond {
