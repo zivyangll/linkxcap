@@ -73,9 +73,8 @@ for family, filename, variable in [('LinkX Serif', 'SourceHanSerifSC-VF.otf', Tr
             f.flavor = 'woff2'
             name = f"{'serif' if variable else 'sans'}-{weight}-{index}.woff2"
             f.save(out / name)
-            local_source = 'local("IPAexGothic"),' if not variable else ''
             ranges = ','.join(f'U+{c:X}' for c in codepoints)
-            css.append(f'@font-face{{font-family:"{family}";font-style:normal;font-weight:{weight};font-display:swap;src:{local_source}url("__BASE__fonts/{name}") format("woff2");unicode-range:{ranges};}}')
+            css.append(f'@font-face{{font-family:"{family}";font-style:normal;font-weight:{weight};font-display:swap;src:url("__BASE__fonts/{name}") format("woff2");unicode-range:{ranges};}}')
             report.append({'file': name, 'bytes': (out / name).stat().st_size, 'glyphs': len(codepoints)})
 italic = TTFont(out / 'source-serif-italic.woff2')
 if 'fvar' in italic:

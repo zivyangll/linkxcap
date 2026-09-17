@@ -14,8 +14,8 @@ removed for transfer size. Subset generation is in `scripts/subset-fonts.py`.
 
 Download the original **IPAexGothic / IPAexゴシック** from
 https://moji.or.jp/ipafont/ipafontdownload/ and install it on your device.
-Reload the website. Its LinkX Sans font-face rules use `local("IPAexGothic")`
-before the derived WOFF2 fonts, so the installed original is preferred.
+Reload the website. Its sans-serif font stack lists `IPAexGothic` before `LinkX Sans`, so the
+installed original is preferred over the derived WOFF2 fonts.
 The original uses Japanese glyph forms for some characters.
 
 For a maintained local copy of the website, put the downloaded `ipaexg.ttf` in
