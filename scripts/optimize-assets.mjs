@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import sharp from 'sharp';
+import { createHash } from 'node:crypto';
 
 const manifest = JSON.parse(
   await fs.readFile('src/data/figma-assets.json', 'utf8'),
@@ -8,11 +9,12 @@ const sizes = {};
 for (const assets of Object.values(manifest)) {
   for (const [key, value] of Object.entries(assets)) {
     if (!value.endsWith('.png')) continue;
-    const output = value.replace('.png', '.webp');
-    const info = await sharp(`public${value}`)
-      .resize({ width: 1400, withoutEnlargement: true })
-      .webp({ quality: 88, alphaQuality: 100 })
-      .toFile(`public${output}`);
+    const { data, info } = await sharp(`public${value}`)
+      .webp({ lossless: true, effort: 6 })
+      .toBuffer({ resolveWithObject: true });
+    const hash = createHash('sha256').update(data).digest('hex').slice(0, 16);
+    const output = `/assets/figma/${hash}.webp`;
+    await fs.writeFile(`public${output}`, data);
     sizes[output] = {
       width: info.width,
       height: info.height,

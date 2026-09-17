@@ -1,4 +1,4 @@
-@layer reset, base, components, pages, responsive;
+@layer reset, base, components, pages, fidelity, responsive;
 @layer reset {
   *,
   *::before,
@@ -49,7 +49,7 @@
 }
 @layer base {
   :root {
-    --paper: #fdfbf5;
+    --paper: #fcfbf5;
     --paper-alt: #f8f6f2;
     --ink: #1d1d1d;
     --purple: #573c79;
@@ -2877,6 +2877,10 @@
     .company-content h1 {
       font-size: 52px;
     }
+    body[data-lang="en"] .company-content h1 {
+      font-size: clamp(32px, 12.2vw, 48px);
+      overflow-wrap: normal;
+    }
     .company-sector {
       font-size: 13px;
       letter-spacing: 0.15em;
@@ -3285,8 +3289,8 @@
     .ambient-orbit {
       transform: none;
     }
-    .next-orbit {
-      transform: rotate(180deg);
+    .next-orbit-raster {
+      transform: none;
     }
   }
 }

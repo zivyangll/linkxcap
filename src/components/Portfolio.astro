@@ -7,7 +7,11 @@ const { lang } = Astro.props as { lang: Lang };
 ---
 
 <div class="portfolio-page" data-node-id="2002:526">
-  <PageTitle zh="投资组合" en="Portfolio" lang={lang} />
+  <PageTitle
+    zh="投资组合"
+    en={lang === 'zh' ? 'Portfoilo' : 'Portfolio'}
+    lang={lang}
+  />
   <div class="portfolio-grid">
     {companies.map((company, i) => (
       <a

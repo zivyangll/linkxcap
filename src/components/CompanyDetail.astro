@@ -29,11 +29,29 @@ const navOrder = [
 const navCompanies = [...new Set(navOrder)].map((slug) =>
   companies.find((c) => c.slug === slug)!,
 );
+const navX = [1280, 1350, 1402, 1434, 1448, 1439, 1404, 1355, 1285];
+const navY = [133, 219, 316, 422, 533, 642, 749, 844, 931];
+const designNames: Record<string, string> = {
+  'zhipu-ai': 'Z.AI',
+  mosi: 'MOSI',
+  realai: 'RELAI',
+  'approaching-ai': 'APPROACHING.AI',
+  'agic-micro': 'AGIC.MICRO',
+  modelbest: 'MODELBEST',
+  'shengshu-technology': 'GENSPI',
+  infrawaves: 'INFRAWAVES',
+  biogeometry: 'BIOGEOMETRY',
+};
 ---
 
 <section class="company-detail" data-node-id="2002:1282">
   <div class="company-heading">
-    <PageTitle as="h2" zh="投资组合" en="Portfolio" lang={lang} />
+    <PageTitle
+      as="h2"
+      zh="投资组合"
+      en={lang === 'zh' ? 'Portfoilo' : 'Portfolio'}
+      lang={lang}
+    />
     <a class="text-link" href={pageUrl(lang, 'portfolio')}>
       {ui[lang].all}
     </a>
@@ -76,15 +94,30 @@ const navCompanies = [...new Set(navOrder)].map((slug) =>
     }
     data-company-nav
   >
-    {navCompanies.map((c) => (
-      <a
-        href={pageUrl(lang, `portfolio/${c.slug}`)}
-        aria-current={c.slug === company.slug ? 'page' : undefined}
-      >
-        {c.nameEn.toUpperCase()}
-        <span> / {c.name}</span>
-      </a>
-    ))}
+    <div
+      class="company-nav-track"
+      style={`height:calc(${navCompanies.length * 107 + 250} * var(--u))`}
+    >
+      {navCompanies.map((c, position) => (
+        <a
+          href={pageUrl(lang, `portfolio/${c.slug}`)}
+          aria-current={c.slug === company.slug ? 'page' : undefined}
+          style={`--nav-x:${c.slug === company.slug && position === 2 ? 1430 : c.slug === company.slug && position === 4 ? 1481 : (navX[position] ?? 1285)};--nav-y:${c.slug === company.slug && position === 2 ? 310 : c.slug === company.slug && position === 4 ? 525 : (navY[position] ?? 931 + (position - 8) * 107)};--nav-opacity:${position < 4 ? 1 : position < 8 ? 0.6 : 0.3}`}
+        >
+          {c.slug === company.slug && (
+            <img
+              class="company-nav-marker"
+              src={asset('audit', '1329')}
+              alt=""
+              width="53"
+              height="53"
+            />
+          )}
+          {designNames[c.slug] || c.nameEn.toUpperCase()}
+          <span> / {c.name}</span>
+        </a>
+      ))}
+    </div>
   </nav>
   <div class="company-step">
     <a

@@ -40,7 +40,7 @@ for family, filename, variable in [('LinkX Serif', 'SourceHanSerifSC-VF.otf', Tr
     source_subset.subset(font)
     # Use the exact Regular face for the common text; a separate Medium face
     # carries the page headings and cards. Preserve source outlines.
-    weights = [400, 500] if variable else [400]
+    weights = [400, 500, 600, 700, 900] if variable else [400]
     for weight in weights:
         face = instantiateVariableFont(font, {'wght': weight}, inplace=False) if variable else font
         face_bytes = BytesIO()
@@ -69,7 +69,7 @@ for family, filename, variable in [('LinkX Serif', 'SourceHanSerifSC-VF.otf', Tr
             sub = subset.Subsetter(options=options)
             sub.populate(unicodes=codepoints)
             sub.subset(f)
-            rename_subset(f, family, 'Medium' if weight == 500 else 'Regular')
+            rename_subset(f, family, {400:'Regular',500:'Medium',600:'SemiBold',700:'Bold',900:'Heavy'}[weight])
             f.flavor = 'woff2'
             name = f"{'serif' if variable else 'sans'}-{weight}-{index}.woff2"
             f.save(out / name)

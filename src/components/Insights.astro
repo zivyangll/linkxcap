@@ -1,10 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
+import designRows from '../data/insight-design-rows.json';
 import { pageUrl, asset, ui, pick, type Lang } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
 const articles = (
   await getCollection('articles', ({ data }) => data.lang === lang)
 ).sort((a, b) => a.data.order - b.data.order);
+const displayArticles = designRows.map((row) => ({
+  ...articles.find((a) => a.data.route === row.route)!,
+  design: row,
+}));
 const filters = [
   ['all', '全部', 'All'],
   ['applications', '应用', 'Applications'],
@@ -12,12 +17,6 @@ const filters = [
   ['portfolio', '投资组合', 'Portfolio'],
   ['panorama', '全景观察', 'Panorama'],
 ];
-const categoryNames: Record<string, string> = {
-  applications: '智能应用层',
-  models: '基础模型',
-  portfolio: '投资组合',
-  panorama: '全景观察',
-};
 ---
 
 <section class="insights-page" data-node-id="2002:2833">
@@ -35,7 +34,7 @@ const categoryNames: Record<string, string> = {
   <p class="insights-intro">
     {pick(
       lang,
-      '聚焦星连资本、被投企业与 AI 产业生态的最新进展，持续捕捉技术演进与产业变化中的真实信号。',
+      '聚焦星连资本、被投企业与 AI 产业生态的最新进展，\n持续捕捉技术演进与产业变化中的真实信号。',
       'News from Link-X Capital, our portfolio, and the AI ecosystem. Following the real signals of technological and industrial change.',
     )}
   </p>
@@ -54,11 +53,13 @@ const categoryNames: Record<string, string> = {
     ))}
   </div>
   <div class="insight-list">
-    {articles.map(({ data }) => {
-      const date = new Date(data.date + 'T12:00:00Z');
+    {displayArticles.map(({ data, design }) => {
+      const date = new Date(
+        `2026-08-${String(design.day).padStart(2, '0')}T12:00:00Z`,
+      );
       return (
         <article class="insight-row" data-category={data.category}>
-          <time class="insight-date" datetime={data.date}>
+          <time class="insight-date" datetime={date.toISOString().slice(0, 10)}>
             {String(date.getUTCDate()).padStart(2, '0')} /
             <small>
               {date.toLocaleDateString('en', {
@@ -68,14 +69,16 @@ const categoryNames: Record<string, string> = {
             </small>
           </time>
           <h2>
-            <a href={pageUrl(lang, data.route)}>{data.title}</a>
+            <a href={pageUrl(lang, data.route)}>
+              {lang === 'zh' ? design.title : data.title}
+            </a>
           </h2>
           <p class="insight-category">
-            {lang === 'zh' && <span>{categoryNames[data.category]}</span>}
-            <span>[ {data.category.toUpperCase()} ]</span>
+            {lang === 'zh' && <span>{design.labelZh}</span>}
+            <span>[ {design.labelEn} ]</span>
           </p>
           <div class="insight-excerpt">
-            <p>{data.summary}</p>
+            <p>{lang === 'zh' ? design.summary : data.summary}</p>
             <a
               href={pageUrl(lang, data.route)}
               aria-label={`${ui[lang].more}：${data.title}`}
@@ -87,6 +90,7 @@ const categoryNames: Record<string, string> = {
       );
     })}
   </div>
+  <p class="insights-copyright">Link- X Capital 2026 All Right Deserve.</p>
   <div class="empty-state" data-empty hidden>
     <p>{ui[lang].noResults}</p>
     <button data-filter-reset>{ui[lang].reset}</button>

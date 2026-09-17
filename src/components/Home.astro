@@ -4,12 +4,14 @@ import {
   pageUrl,
   pick,
   intro,
+  introLinesZh,
   sectors,
   join,
   ui,
   type Lang,
 } from '../lib/site';
 import Arrow from './Arrow.astro';
+import FocusConstellation from './FocusConstellation.astro';
 interface Props {
   lang: Lang;
 }
@@ -54,7 +56,7 @@ const { lang } = Astro.props;
   >
     <div class="opening-track" aria-hidden="true">
       <i class="diamond"></i>
-      <span></span>
+      <img src={asset('3297', 'imgVector30')} width="2" height="590" alt="" />
     </div>
     <span class="chapter">Chapter 01</span>
     <h1 id="opening-title" class="opening-title" data-reveal>
@@ -111,7 +113,8 @@ const { lang } = Astro.props;
     />
     <div class="hero-track" aria-hidden="true">
       <i class="diamond"></i>
-      <span></span>
+      <i class="diamond hero-track-end"></i>
+      <img src={asset('3348', 'imgVector30')} width="2" height="1080" alt="" />
     </div>
     <h2 id="hero-title" class="hero-title" data-reveal>
       Partnering with founders
@@ -138,6 +141,23 @@ const { lang } = Astro.props;
     data-minimal-header
     aria-labelledby="about-title"
   >
+    <div class="about-decor" aria-hidden="true">
+      {[
+        ['3474', 0, 1842, 179],
+        ['3481', 627, 23, 469],
+        ['3482', 628.365, 677, 469],
+        ['3483', 0, 648, 469],
+      ].map(([id, x, w, h]) => (
+        <img
+          src={asset('audit', String(id))}
+          style={`left:calc(${x}*var(--u));width:calc(${w}*var(--u));height:calc(${h}*var(--u));`}
+          width={Number(w)}
+          height={Number(h)}
+          alt=""
+          loading="lazy"
+        />
+      ))}
+    </div>
     <img
       class="about-orbit"
       src={asset('3438', 'imgEllipse1')}
@@ -147,6 +167,7 @@ const { lang } = Astro.props;
       loading="lazy"
     />
     <div class="about-rays" aria-hidden="true">
+      <i class="about-ring"></i>
       <span></span>
       <span></span>
       <span></span>
@@ -171,7 +192,9 @@ const { lang } = Astro.props;
       )}
     </h2>
     <p class="about-copy" data-reveal>
-      {intro[lang]}
+      {lang === 'zh'
+        ? introLinesZh.map((line) => <span class="intro-line">{line}</span>)
+        : intro.en}
     </p>
   </section>
   <section
@@ -181,7 +204,21 @@ const { lang } = Astro.props;
     aria-labelledby="research-title"
   >
     <div class="research-axis" aria-hidden="true">
+      <img
+        class="research-axis-line"
+        src={asset('audit', '3541')}
+        width="1616"
+        height="41"
+        alt=""
+      />
       <i class="diamond"></i>
+      <img
+        class="research-marker"
+        src={asset('audit', '3542')}
+        width="95"
+        height="96"
+        alt=""
+      />
     </div>
     <h2 id="research-title" data-reveal>
       Global Research,
@@ -189,7 +226,9 @@ const { lang } = Astro.props;
       <span>Proven Success.</span>
     </h2>
     <p class="research-intro" data-reveal>
-      {intro[lang]}
+      {lang === 'zh'
+        ? introLinesZh.map((line) => <span class="intro-line">{line}</span>)
+        : intro.en}
     </p>
     <div class="research-stats" data-reveal>
       {[
@@ -238,84 +277,15 @@ const { lang } = Astro.props;
             {lang === 'zh' && <span>/ {s.zh}</span>}
             <span lang="en">{s.en}</span>
           </h3>
-          <p>{s.desc[lang]}</p>
+          <p>
+            {lang === 'zh' && ['applications', 'physical'].includes(s.id)
+              ? sectors[0].desc.zh
+              : s.desc[lang]}
+          </p>
         </article>
       ))}
     </div>
-    <div
-      class="constellation"
-      aria-label={pick(lang, '投资领域', 'Investment focus')}
-    >
-      <div class="star-links" aria-hidden="true">
-        <img
-          src={asset('3549', 'imgVector156')}
-          width="61"
-          height="81"
-          alt=""
-        />
-        <img
-          src={asset('3549', 'imgVector157')}
-          width="233"
-          height="169"
-          alt=""
-        />
-        <img
-          src={asset('3549', 'imgVector158')}
-          width="47"
-          height="240"
-          alt=""
-        />
-      </div>
-      {sectors.map((s, i) => (
-        <button
-          class:list={['sector-star', `star-${s.id}`, { 'is-active': i === 0 }]}
-          data-sector={s.id}
-          aria-controls={`sector-${s.id}`}
-          aria-pressed={i === 0}
-        >
-          <span class="star-glyph" aria-hidden="true">
-            <img
-              src={asset('3549', 'imgGroup458')}
-              width="10"
-              height="52"
-              alt=""
-            />
-            <img
-              src={asset('3549', 'imgGroup459')}
-              width="10"
-              height="52"
-              alt=""
-            />
-            <i class="diamond"></i>
-          </span>
-          <span class="star-label">
-            <span>{s.en}</span>
-            {lang === 'zh' && <span>{s.zh}</span>}
-          </span>
-        </button>
-      ))}
-      <a
-        class="satellite satellite-a"
-        href={pageUrl(lang, 'portfolio/zhipu-ai')}
-      >
-        <i></i>
-        {pick(lang, '（ 2026，智谱.AI ）', '( 2026, Z.AI )')}
-      </a>
-      <a
-        class="satellite satellite-b"
-        href={pageUrl(lang, 'portfolio/shengshu-technology')}
-      >
-        <i></i>
-        {pick(lang, '（ 2026，生数科技 ）', '( 2026, GensPi )')}
-      </a>
-      <a
-        class="satellite satellite-c"
-        href={pageUrl(lang, 'portfolio/modelbest')}
-      >
-        <i></i>
-        {pick(lang, '（ 2026，面壁智能 ）', '( 2026, ModelBest )')}
-      </a>
-    </div>
+    <FocusConstellation lang={lang} />
     <button
       class="motion-toggle"
       data-motion-toggle
@@ -331,7 +301,27 @@ const { lang } = Astro.props;
     data-node-id="2002:1692"
     aria-labelledby="next-title"
   >
-    <div class="signal-guides" aria-hidden="true"></div>
+    <div class="signal-guides" aria-hidden="true">
+      {[247, 389.6, 1531.4, 1681].map((x, i) => (
+        <img
+          class="signal-guide-v"
+          src={asset(
+            '1692',
+            i === 0 || i === 3 ? 'imgVector32' : 'imgVector45',
+          )}
+          style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+          alt=""
+        />
+      ))}
+      {[437.32, 467.66, 525.83, 549.85, 585.25, 678.82].map((y) => (
+        <img
+          class="signal-guide-h"
+          src={asset('1692', y === 467.66 ? 'imgVector44' : 'imgVector34')}
+          style={`top:calc(${y} * var(--u));`}
+          alt=""
+        />
+      ))}
+    </div>
     <h2 id="next-title" data-reveal>
       The Next Signal
     </h2>
@@ -348,17 +338,13 @@ const { lang } = Astro.props;
       <p class="next-en">Alongside the visionaries</p>
     )}
     <img
-      class="next-orbit ambient-orbit"
-      src={asset('1692', 'imgEllipse1')}
-      width="2406"
-      height="2406"
+      class="next-orbit next-orbit-raster"
+      src={asset('audit', '1751')}
+      width="1920"
+      height="430"
       alt=""
       loading="lazy"
     />
-    <a class="next-contact" href={pageUrl(lang, 'contact')}>
-      {pick(lang, '与我们相遇', 'Build with us')}
-      <Arrow />
-    </a>
   </section>
   <section class="join-section" aria-labelledby="join-title">
     <h2 id="join-title">Join Us{lang === 'zh' && <span>加入我们</span>}</h2>

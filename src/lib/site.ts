@@ -267,3 +267,16 @@ export const socials = [
     href: 'https://www.douyin.com/user/MS4wLjABAAAAHYtbwIVUi113kSYUweZGc-tFiJGG1WPk8Jgldgk9Fhw',
   },
 ];
+
+// Line breaks and short introduction are authored in Figma final (2002:3484 / 4801).
+export const introLinesZh = [
+  '星连资本（LinkX Capital）创建于 2021 年，是中国最早聚焦通用智能产业生态、',
+  '目前最活跃的 AI 风险投资基金之一。',
+  '我们围绕通用智能时代的关键技术栈与应用场景，投资基座模型、AI 基础设施、',
+  '多智能体、具身智能、AI 原生应用及智能硬件等方向。',
+  '我们与清华大学共建华清普智AI孵化器（T-ONE Innovation Lab），',
+  '打造活跃的全球青年科学家与企业家社区，推动科研、产业、政策与资本的多要素循环，',
+  '加速源头创新走向真实商业场景。',
+];
+export const teamIntro =
+  'Founded in 2021, LinkX Capital is one of China’s earliest and most active AI-focused venture capital funds dedicated to the ecosystem of General-Purpose Intelligence.Centered on the key technology stacks and application scenarios of the General-Purpose Intelligence era, we invest in areas such as foundation models, AI infrastructure, multi-agent systems, embodied AI, AI-native applications, and intelligent hardware.';

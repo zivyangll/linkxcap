@@ -130,13 +130,15 @@ if (navigatorList) {
       links.forEach((a) => a.style.removeProperty('--arc-x'));
       return;
     }
-    const middle =
-      navigatorList.getBoundingClientRect().top +
-      navigatorList.clientHeight * 0.42;
+    const unit = innerWidth / 1920;
+    const bend = (y: number) => -Math.pow((y - 535) / 430, 2) * 170;
     links.forEach((link) => {
-      const r = link.getBoundingClientRect();
-      const d = (r.top + r.height / 2 - middle) / navigatorList.clientHeight;
-      link.style.setProperty('--arc-x', `${-Math.min(140, d * d * 650)}px`);
+      const originalY = Number(link.style.getPropertyValue('--nav-y'));
+      const y = originalY - navigatorList.scrollTop / unit;
+      link.style.setProperty(
+        '--arc-x',
+        `${(bend(y) - bend(originalY)) * unit}px`,
+      );
     });
   };
   const schedule = () => {
@@ -148,11 +150,8 @@ if (navigatorList) {
   if (active) {
     if (matchMedia('(max-width:767px)').matches)
       navigatorList.scrollLeft = active.offsetLeft - 24;
-    else
-      navigatorList.scrollTop =
-        active.offsetTop -
-        navigatorList.clientHeight * 0.27 +
-        active.clientHeight / 2;
+    else if (links.indexOf(active as HTMLAnchorElement) >= 9)
+      navigatorList.scrollTop = active.offsetTop - (innerWidth / 1920) * 310;
   }
   schedule();
   window.addEventListener('pagehide', () => cancelAnimationFrame(frame), {
@@ -209,10 +208,12 @@ const select = (id: string) => {
         { duration: 300, easing: 'ease-out' },
       );
   });
+  document.querySelector<HTMLElement>('.focus')?.setAttribute('data-focus', id);
+  document.querySelector<HTMLElement>('.focus')?.classList.add('has-selection');
   document
-    .querySelectorAll<HTMLElement>('.satellite,.star-links')
-    .forEach((el) => {
-      el.style.opacity = id === 'foundation' ? '1' : '.12';
+    .querySelectorAll<HTMLElement>('[data-constellation]')
+    .forEach((scene) => {
+      scene.hidden = scene.dataset.constellation !== id;
     });
 };
 stars.forEach((star) =>

@@ -1,13 +1,20 @@
 ---
+import geometry from '../data/logo-geometry.json';
 import { asset, type Company } from '../lib/site';
 interface Props {
   company: Company;
   detail?: boolean;
 }
 const { company, detail = false } = Astro.props;
+const box = geometry[company.logo as keyof typeof geometry];
 ---
 
 <span
+  style={
+    detail
+      ? undefined
+      : `--logo-x:${box.x};--logo-y:${box.y};--logo-w:${box.width};--logo-h:${box.height}`
+  }
   class:list={[
     'company-logo',
     `logo-${company.slug}`,

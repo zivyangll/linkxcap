@@ -1,0 +1,303 @@
+[
+  {
+    "id": "526",
+    "route": "portfolio",
+    "full": true,
+    "reference": [
+      1920,
+      1741
+    ],
+    "actual": [
+      1920,
+      1945
+    ],
+    "differentPixelPercent": 99.33344044558697,
+    "over16PixelPercent": 13.3790970437018,
+    "meanAbsoluteChannelDifference": 12.348677252927734
+  },
+  {
+    "id": "1282",
+    "route": "portfolio/zhipu-ai",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 98.80078125,
+    "over16PixelPercent": 2.5598476080246915,
+    "meanAbsoluteChannelDifference": 3.057576195987654
+  },
+  {
+    "id": "1359",
+    "route": "portfolio/mosi",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 98.79624807098766,
+    "over16PixelPercent": 4.1070119598765435,
+    "meanAbsoluteChannelDifference": 4.686910525977367
+  },
+  {
+    "id": "4567",
+    "route": "team",
+    "reference": [
+      1920,
+      1081
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 14.50706329016343,
+    "over16PixelPercent": 5.306670135676842,
+    "meanAbsoluteChannelDifference": 4.83390604121698
+  },
+  {
+    "id": "4631",
+    "route": "team",
+    "hover": ".team-card:nth-child(2)",
+    "reference": [
+      1920,
+      1081
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 14.286829324699351,
+    "over16PixelPercent": 5.347912812210915,
+    "meanAbsoluteChannelDifference": 4.977884096515572
+  },
+  {
+    "id": "4729",
+    "route": "team",
+    "full": true,
+    "reference": [
+      1920,
+      1854
+    ],
+    "actual": [
+      1920,
+      1909
+    ],
+    "differentPixelPercent": 13.302667190501136,
+    "over16PixelPercent": 7.502946568884232,
+    "meanAbsoluteChannelDifference": 6.797710770618707
+  },
+  {
+    "id": "2833",
+    "route": "insights",
+    "full": true,
+    "reference": [
+      1920,
+      2390
+    ],
+    "actual": [
+      1920,
+      2034
+    ],
+    "differentPixelPercent": 23.337735355648537,
+    "over16PixelPercent": 18.860072350069736,
+    "meanAbsoluteChannelDifference": 17.193114830311483
+  },
+  {
+    "id": "3112",
+    "route": "insights",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 13.368971836419751,
+    "over16PixelPercent": 5.1499807098765435,
+    "meanAbsoluteChannelDifference": 6.736874196244856
+  },
+  {
+    "id": "3297",
+    "route": "index",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 99.4780574845679,
+    "over16PixelPercent": 1.5405574845679013,
+    "meanAbsoluteChannelDifference": 1.8938456468621399
+  },
+  {
+    "id": "3348",
+    "route": "index",
+    "section": ".hero",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 98.70924961419753,
+    "over16PixelPercent": 1.4380787037037037,
+    "meanAbsoluteChannelDifference": 1.8584286586934156
+  },
+  {
+    "id": "3191",
+    "route": "index",
+    "section": ".hero",
+    "menu": true,
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 99.99975887345678,
+    "over16PixelPercent": 63.32383294753087,
+    "meanAbsoluteChannelDifference": 26.678559510030865
+  },
+  {
+    "id": "3438",
+    "route": "index",
+    "section": ".about",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 99.33825231481481,
+    "over16PixelPercent": 3.5236304012345676,
+    "meanAbsoluteChannelDifference": 3.427330407664609
+  },
+  {
+    "id": "3487",
+    "route": "index",
+    "section": ".research",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 99.55941358024691,
+    "over16PixelPercent": 3.9172935956790127,
+    "meanAbsoluteChannelDifference": 5.218392168209877
+  },
+  {
+    "id": "3549",
+    "route": "index",
+    "section": ".focus",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 2.724247685185185,
+    "over16PixelPercent": 2.2024498456790123,
+    "meanAbsoluteChannelDifference": 1.5247360468106996
+  },
+  {
+    "id": "3659",
+    "route": "index",
+    "section": ".focus",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 2.9286747685185186,
+    "over16PixelPercent": 2.423321759259259,
+    "meanAbsoluteChannelDifference": 1.750940715020576
+  },
+  {
+    "id": "3769",
+    "route": "index",
+    "section": ".focus",
+    "sector": "applications",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 3.775414737654321,
+    "over16PixelPercent": 3.235387731481482,
+    "meanAbsoluteChannelDifference": 2.2247511574074075
+  },
+  {
+    "id": "3883",
+    "route": "index",
+    "section": ".focus",
+    "sector": "physical",
+    "reference": [
+      1920,
+      1080
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 3.532552083333333,
+    "over16PixelPercent": 3.009596836419753,
+    "meanAbsoluteChannelDifference": 2.022202610596708
+  },
+  {
+    "id": "1692",
+    "route": "index",
+    "section": ".next-signal",
+    "reference": [
+      1920,
+      1081
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 12.815439022510022,
+    "over16PixelPercent": 2.530691103916127,
+    "meanAbsoluteChannelDifference": 2.242645216620413
+  },
+  {
+    "id": "2021",
+    "route": "contact",
+    "reference": [
+      1920,
+      1081
+    ],
+    "actual": [
+      1920,
+      1080
+    ],
+    "differentPixelPercent": 10.449863166820846,
+    "over16PixelPercent": 1.3771970397779834,
+    "meanAbsoluteChannelDifference": 1.6674025465104327
+  }
+]

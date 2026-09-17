@@ -79,6 +79,7 @@ const title = company
   title={title}
   description={article?.data.summary}
   minimal={kind === 'company'}
+  footer={!['portfolio', 'company', 'team', 'insights'].includes(kind)}
   bodyClass={
     ['team', 'person', 'insights', 'article', 'contact'].includes(kind)
       ? 'alt-paper'

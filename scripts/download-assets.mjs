@@ -6,7 +6,11 @@ import crypto from 'node:crypto';
 const root = 'docs/research/design-context';
 await fs.mkdir('public/assets/figma', { recursive: true });
 await fs.mkdir('src/data', { recursive: true });
-const manifest = {};
+const previous = JSON.parse(
+  await fs.readFile('src/data/figma-assets.json', 'utf8').catch(() => '{}'),
+);
+// Isolated original-node exports are maintained outside the design-context download list.
+const manifest = previous.audit ? { audit: previous.audit } : {};
 const jobs = [];
 for (const file of await fs.readdir(root)) {
   if (!file.endsWith('.txt')) continue;
@@ -27,6 +31,8 @@ async function worker() {
     if (!response.ok)
       throw new Error(`${job.id}/${job.key}: ${response.status}`);
     const bytes = Buffer.from(await response.arrayBuffer());
+    if (!bytes.length)
+      throw new Error(`${job.id}/${job.key}: empty asset response`);
     const ext = new URL(job.url).pathname.split('.').at(-1);
     const hash = crypto
       .createHash('sha256')

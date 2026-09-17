@@ -70,11 +70,11 @@ test('mobile menu supports Escape and focus return', async ({ page }) => {
 test('filters, language state and original article link', async ({ page }) => {
   await page.goto('zh/insights.html');
   await page.locator('[data-filter=models]').click();
-  await expect(page.locator('.insight-row:visible')).toHaveCount(1);
+  await expect(page.locator('.insight-row:visible')).toHaveCount(4);
   await page.locator('.language-switch [data-language=en]').click();
   await expect(page).toHaveURL(/en\/insights.html\?category=models/);
-  await expect(page.locator('.insight-row:visible')).toHaveCount(1);
-  await page.locator('.insight-row:visible h2 a').click();
+  await expect(page.locator('.insight-row:visible')).toHaveCount(4);
+  await page.locator('.insight-row:visible h2 a').first().click();
   await expect(page.locator('.article-actions a')).toHaveAttribute(
     'href',
     'https://www.linkxcap.com/zh/insights-zhang-bo.html',
@@ -173,4 +173,32 @@ test('focus content works if the optional animation chunk cannot load', async ({
   await page.locator('[data-sector=frontiers]').click();
   await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
   await expect(page.locator('[data-motion-toggle]')).toHaveCount(0);
+});
+
+test('selected constellation links open the matching portfolio detail', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  await page.goto('zh/index.html');
+  await page.locator('[data-sector=physical]').click();
+  const company = page.locator(
+    '.constellation-company[href$="/portfolio/amio-robotics.html"]',
+  );
+  await expect(company).toBeVisible();
+  await company.click();
+  await expect(page.locator('main h1')).toContainText('阿米奥');
+});
+
+test('a long English company name fits without a stranded letter on mobile', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 360, height: 800 });
+  await page.goto('en/portfolio/biogeometry.html');
+  await page.evaluate(() => document.fonts.ready);
+  const lines = await page.locator('.company-content h1').evaluate((el) => {
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    return range.getClientRects().length;
+  });
+  expect(lines).toBe(1);
 });

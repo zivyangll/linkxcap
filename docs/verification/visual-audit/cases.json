@@ -1,0 +1,95 @@
+[
+  {
+    "id": "526",
+    "route": "portfolio",
+    "full": true
+  },
+  {
+    "id": "1282",
+    "route": "portfolio/zhipu-ai"
+  },
+  {
+    "id": "1359",
+    "route": "portfolio/mosi"
+  },
+  {
+    "id": "4567",
+    "route": "team"
+  },
+  {
+    "id": "4631",
+    "route": "team",
+    "hover": ".team-card:nth-child(2)"
+  },
+  {
+    "id": "4729",
+    "route": "team",
+    "full": true
+  },
+  {
+    "id": "2833",
+    "route": "insights",
+    "full": true
+  },
+  {
+    "id": "3112",
+    "route": "insights"
+  },
+  {
+    "id": "3297",
+    "route": "index"
+  },
+  {
+    "id": "3348",
+    "route": "index",
+    "section": ".hero"
+  },
+  {
+    "id": "3191",
+    "route": "index",
+    "section": ".hero",
+    "menu": true
+  },
+  {
+    "id": "3438",
+    "route": "index",
+    "section": ".about"
+  },
+  {
+    "id": "3487",
+    "route": "index",
+    "section": ".research"
+  },
+  {
+    "id": "3549",
+    "route": "index",
+    "section": ".focus"
+  },
+  {
+    "id": "3659",
+    "route": "index",
+    "section": ".focus",
+    "sector": "foundation"
+  },
+  {
+    "id": "3769",
+    "route": "index",
+    "section": ".focus",
+    "sector": "applications"
+  },
+  {
+    "id": "3883",
+    "route": "index",
+    "section": ".focus",
+    "sector": "physical"
+  },
+  {
+    "id": "1692",
+    "route": "index",
+    "section": ".next-signal"
+  },
+  {
+    "id": "2021",
+    "route": "contact"
+  }
+]

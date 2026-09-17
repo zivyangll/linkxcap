@@ -1,15 +1,38 @@
 ---
-import { join, pick, socials, type Lang } from '../lib/site';
+import { join, pick, socials, asset, type Lang } from '../lib/site';
 import Arrow from './Arrow.astro';
 const { lang } = Astro.props as { lang: Lang };
 ---
 
 <section class="contact-hero" data-node-id="2002:2021">
-  <div class="contact-guides" aria-hidden="true"></div>
+  <div class="contact-guides" aria-hidden="true">
+    {[
+      [247, 'imgVector33', 1096, 533],
+      [1681, 'imgVector32', 1096, 533],
+      [390, 'imgVector45', 1224, 468.94],
+      [1531, 'imgVector46', 1224, 468.94],
+    ].map(([x, key, h, y]) => (
+      <img
+        src={asset('2021', String(key))}
+        style={`left:calc(${x}*var(--u));top:calc(${y}*var(--u));height:calc(${Number(h) * 1.0074}*var(--u));width:calc(${Number(h) === 1096 ? 10 : 11.168}*var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
   <div class="contact-invitation">
     <h1>Join Us{lang === 'zh' && <span>加入我们</span>}</h1>
     <div class="contact-copy">
-      <p>{join[lang]}</p>
+      <p>
+        {lang === 'zh' ? (
+          <>
+            如果你正在寻找、定义，或亲手建造一个
+            <br />
+            尚未被市场命名的未来，我们希望更早与你相遇。
+          </>
+        ) : (
+          join.en
+        )}
+      </p>
       {lang === 'zh' && <p lang="en">{join.en}</p>}
     </div>
     <a class="line-link" href="#contact-details">

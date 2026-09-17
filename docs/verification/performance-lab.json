@@ -10,90 +10,90 @@
     {
       "route": "zh/index.html",
       "run": 1,
-      "lcpMs": 700,
+      "lcpMs": 684,
       "cls": 0,
-      "initialBytes": 292791,
-      "fontBytes": 163156,
+      "initialBytes": 378429,
+      "fontBytes": 162216,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 64
+    },
+    {
+      "route": "zh/index.html",
+      "run": 2,
+      "lcpMs": 596,
+      "cls": 0,
+      "initialBytes": 378429,
+      "fontBytes": 162216,
       "longTasks": [],
       "scriptedInteractionMaxMs": 56
     },
     {
       "route": "zh/index.html",
-      "run": 2,
-      "lcpMs": 580,
+      "run": 3,
+      "lcpMs": 596,
       "cls": 0,
-      "initialBytes": 292791,
-      "fontBytes": 163156,
+      "initialBytes": 378429,
+      "fontBytes": 162216,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    },
+    {
+      "route": "en/index.html",
+      "run": 1,
+      "lcpMs": 556,
+      "cls": 0,
+      "initialBytes": 278575,
+      "fontBytes": 63192,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    },
+    {
+      "route": "en/index.html",
+      "run": 2,
+      "lcpMs": 568,
+      "cls": 0,
+      "initialBytes": 278575,
+      "fontBytes": 63192,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    },
+    {
+      "route": "en/index.html",
+      "run": 3,
+      "lcpMs": 572,
+      "cls": 0,
+      "initialBytes": 278575,
+      "fontBytes": 63192,
       "longTasks": [],
       "scriptedInteractionMaxMs": 40
     },
     {
-      "route": "zh/index.html",
-      "run": 3,
-      "lcpMs": 564,
-      "cls": 0,
-      "initialBytes": 292791,
-      "fontBytes": 163156,
-      "longTasks": [],
-      "scriptedInteractionMaxMs": 40
-    },
-    {
-      "route": "en/index.html",
-      "run": 1,
-      "lcpMs": 528,
-      "cls": 0,
-      "initialBytes": 216885,
-      "fontBytes": 88052,
-      "longTasks": [],
-      "scriptedInteractionMaxMs": 48
-    },
-    {
-      "route": "en/index.html",
-      "run": 2,
-      "lcpMs": 532,
-      "cls": 0,
-      "initialBytes": 216885,
-      "fontBytes": 88052,
-      "longTasks": [],
-      "scriptedInteractionMaxMs": 48
-    },
-    {
-      "route": "en/index.html",
-      "run": 3,
-      "lcpMs": 540,
-      "cls": 0,
-      "initialBytes": 216885,
-      "fontBytes": 88052,
-      "longTasks": [],
-      "scriptedInteractionMaxMs": 48
-    },
-    {
       "route": "zh/portfolio.html",
       "run": 1,
-      "lcpMs": 1568,
+      "lcpMs": 1460,
       "cls": 0,
-      "initialBytes": 323074,
-      "fontBytes": 146156,
+      "initialBytes": 375733,
+      "fontBytes": 149828,
       "longTasks": [],
-      "scriptedInteractionMaxMs": 56
+      "scriptedInteractionMaxMs": 48
     },
     {
       "route": "zh/portfolio.html",
       "run": 2,
-      "lcpMs": 1404,
+      "lcpMs": 1484,
       "cls": 0,
-      "initialBytes": 323074,
-      "fontBytes": 146156,
+      "initialBytes": 375733,
+      "fontBytes": 149828,
       "longTasks": [],
       "scriptedInteractionMaxMs": 48
     },
     {
       "route": "zh/portfolio.html",
       "run": 3,
-      "lcpMs": 1576,
+      "lcpMs": 1468,
       "cls": 0,
-      "initialBytes": 323074,
-      "fontBytes": 146156,
+      "initialBytes": 375733,
+      "fontBytes": 149828,
       "longTasks": [],
       "scriptedInteractionMaxMs": 48
     }

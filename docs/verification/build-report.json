@@ -1,8 +1,8 @@
 {
   "pages": 70,
   "totalHtml": 72,
-  "cssGzip": 10324,
-  "jsGzip": 47579,
+  "cssGzip": 14565,
+  "jsGzip": 47621,
   "chunks": [
     {
       "file": "_astro/Home.astro_astro_type_script_index_0_lang.CniI2wK1.js",
@@ -10,14 +10,14 @@
       "gzip": 844
     },
     {
-      "file": "_astro/SiteLayout.1yq1tKas.css",
-      "bytes": 44163,
-      "gzip": 10324
+      "file": "_astro/SiteLayout.DR8oCeFU.css",
+      "bytes": 67673,
+      "gzip": 14565
     },
     {
-      "file": "_astro/SiteLayout.astro_astro_type_script_index_0_lang.D0CTIXzH.js",
-      "bytes": 4494,
-      "gzip": 1753
+      "file": "_astro/SiteLayout.astro_astro_type_script_index_0_lang.B5fk0Ssn.js",
+      "bytes": 4602,
+      "gzip": 1795
     },
     {
       "file": "_astro/home.raVmPDDH.js",
