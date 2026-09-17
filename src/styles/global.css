@@ -3217,6 +3217,14 @@
       display: block;
     }
   }
+  @media (max-width: 767px) {
+    body[data-lang='zh'] .opening-copy br {
+      display: none;
+    }
+    .opening-copy {
+      text-wrap: pretty;
+    }
+  }
   @media (max-width: 380px) {
     .brand {
       width: 140px;

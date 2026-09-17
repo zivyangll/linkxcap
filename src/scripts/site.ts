@@ -186,3 +186,35 @@ if (document.querySelector('[data-home]')) {
     once: true,
   });
 }
+
+// Content selection stays available if the optional animation chunk fails.
+const stars = document.querySelectorAll<HTMLButtonElement>('[data-sector]');
+const panels = document.querySelectorAll<HTMLElement>('[data-sector-panel]');
+const select = (id: string) => {
+  stars.forEach((star) => {
+    const active = star.dataset.sector === id;
+    star.classList.toggle('is-active', active);
+    star.setAttribute('aria-pressed', String(active));
+  });
+  panels.forEach((panel) => {
+    const active = panel.dataset.sectorPanel === id;
+    panel.style.display = active ? 'block' : 'none';
+    panel.classList.toggle('is-active', active);
+    if (active && !matchMedia('(prefers-reduced-motion:reduce)').matches)
+      panel.animate(
+        [
+          { opacity: 0.4, transform: 'translateY(8px)' },
+          { opacity: 1, transform: 'translateY(0)' },
+        ],
+        { duration: 300, easing: 'ease-out' },
+      );
+  });
+  document
+    .querySelectorAll<HTMLElement>('.satellite,.star-links')
+    .forEach((el) => {
+      el.style.opacity = id === 'foundation' ? '1' : '.12';
+    });
+};
+stars.forEach((star) =>
+  star.addEventListener('click', () => select(star.dataset.sector!)),
+);

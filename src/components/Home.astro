@@ -371,7 +371,11 @@ const { lang } = Astro.props;
 </div>
 <script>
   const start = () =>
-    import('../scripts/home').then((module) => module.initHome());
+    import('../scripts/home')
+      .then((module) => module.initHome())
+      .catch(() => {
+        document.querySelector<HTMLElement>('[data-motion-toggle]')?.remove();
+      });
   if (document.readyState === 'complete') start();
   else window.addEventListener('load', start, { once: true });
 </script>

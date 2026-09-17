@@ -159,3 +159,18 @@ test('ambient canvas stops when paused and outside the viewport', async ({
   await page.waitForTimeout(250);
   expect(await page.evaluate(() => (window as any).__draws)).toBe(offscreen);
 });
+
+test('focus content works if the optional animation chunk cannot load', async ({
+  page,
+}) => {
+  await page.route('**/_astro/home.*.js', (route) => route.abort());
+  await page.goto('zh/index.html');
+  await page.locator('[data-sector=physical]').click();
+  await expect(page.locator('[data-sector-panel=physical]')).toBeVisible();
+  await expect(
+    page.locator('[data-sector-panel=foundation]'),
+  ).not.toBeVisible();
+  await page.locator('[data-sector=frontiers]').click();
+  await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
+  await expect(page.locator('[data-motion-toggle]')).toHaveCount(0);
+});

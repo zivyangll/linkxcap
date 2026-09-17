@@ -1,28 +1,28 @@
 {
   "pages": 70,
   "totalHtml": 72,
-  "cssGzip": 10304,
-  "jsGzip": 47505,
+  "cssGzip": 10324,
+  "jsGzip": 47579,
   "chunks": [
     {
-      "file": "_astro/Home.astro_astro_type_script_index_0_lang.IdrYjXco.js",
-      "bytes": 1506,
-      "gzip": 813
+      "file": "_astro/Home.astro_astro_type_script_index_0_lang.CniI2wK1.js",
+      "bytes": 1576,
+      "gzip": 844
     },
     {
-      "file": "_astro/SiteLayout.astro_astro_type_script_index_0_lang.iAb-Jtpl.js",
-      "bytes": 3795,
-      "gzip": 1519
+      "file": "_astro/SiteLayout.1yq1tKas.css",
+      "bytes": 44163,
+      "gzip": 10324
     },
     {
-      "file": "_astro/SiteLayout.wx10RThC.css",
-      "bytes": 44083,
-      "gzip": 10304
+      "file": "_astro/SiteLayout.astro_astro_type_script_index_0_lang.D0CTIXzH.js",
+      "bytes": 4494,
+      "gzip": 1753
     },
     {
-      "file": "_astro/home.CbiPLfUH.js",
-      "bytes": 116242,
-      "gzip": 45173
+      "file": "_astro/home.raVmPDDH.js",
+      "bytes": 115579,
+      "gzip": 44982
     }
   ]
 }

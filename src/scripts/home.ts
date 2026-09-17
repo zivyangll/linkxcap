@@ -45,34 +45,6 @@ export function initHome() {
       },
     );
   });
-  const stars = document.querySelectorAll<HTMLButtonElement>('[data-sector]');
-  const panels = document.querySelectorAll<HTMLElement>('[data-sector-panel]');
-  const select = (id: string) => {
-    stars.forEach((star) => {
-      const active = star.dataset.sector === id;
-      star.classList.toggle('is-active', active);
-      star.setAttribute('aria-pressed', String(active));
-    });
-    panels.forEach((panel) => {
-      const active = panel.dataset.sectorPanel === id;
-      panel.style.display = active ? 'block' : 'none';
-      panel.classList.toggle('is-active', active);
-      if (active && !matchMedia('(prefers-reduced-motion:reduce)').matches)
-        gsap.fromTo(
-          panel,
-          { opacity: 0.4, y: 8 },
-          { opacity: 1, y: 0, duration: 0.3, clearProps: 'transform,opacity' },
-        );
-    });
-    document
-      .querySelectorAll<HTMLElement>('.satellite,.star-links')
-      .forEach((el) => {
-        el.style.opacity = id === 'foundation' ? '1' : '.12';
-      });
-  };
-  stars.forEach((star) =>
-    star.addEventListener('click', () => select(star.dataset.sector!)),
-  );
   const canvas = document.querySelector<HTMLCanvasElement>('[data-particles]');
   const field = canvas ? createParticleField(canvas) : undefined;
   const toggle = document.querySelector<HTMLButtonElement>(
