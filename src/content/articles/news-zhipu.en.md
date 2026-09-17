@@ -1,0 +1,35 @@
+---
+translationKey: "news-zhipu"
+lang: "en"
+route: "news-zhipu"
+title: "Z.AI in Hong Kong: a milestone on the journey"
+summary: "Following portfolio milestones and the continuing evolution of the foundation-model ecosystem."
+date: "2026-01-08"
+category: "portfolio"
+source: "https://www.linkxcap.com/zh/news-zhipu.html"
+sourceName: "Existing website (Chinese)"
+mock: true
+order: 4
+---
+
+## A starting point
+
+Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.
+
+The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+
+## From technology to application
+
+New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+
+> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
+
+Three questions can guide a closer reading:
+
+- **The problem**: which concrete difficulty does the product address?
+- **The experience**: how does the technology improve an existing workflow?
+- **The feedback**: what evidence helps the team assess its progress?
+
+## Following the story
+
+This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.

@@ -1,0 +1,25 @@
+---
+import { asset, type Company } from '../lib/site';
+interface Props {
+  company: Company;
+  detail?: boolean;
+}
+const { company, detail = false } = Astro.props;
+---
+
+<span
+  class:list={[
+    'company-logo',
+    `logo-${company.slug}`,
+    { 'company-logo--detail': detail },
+  ]}
+>
+  <img
+    src={asset('526', company.logo)}
+    alt={`${company.nameEn} ${company.name}`}
+    width="240"
+    height="180"
+    loading={detail ? 'eager' : 'lazy'}
+    decoding="async"
+  />
+</span>

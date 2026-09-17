@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import { pageUrl, asset, ui, pick, type Lang } from '../lib/site';
+const { lang } = Astro.props as { lang: Lang };
+const articles = (
+  await getCollection('articles', ({ data }) => data.lang === lang)
+).sort((a, b) => a.data.order - b.data.order);
+const filters = [
+  ['all', '全部', 'All'],
+  ['applications', '应用', 'Applications'],
+  ['models', '模型', 'Models'],
+  ['portfolio', '投资组合', 'Portfolio'],
+  ['panorama', '全景观察', 'Panorama'],
+];
+const categoryNames: Record<string, string> = {
+  applications: '智能应用层',
+  models: '基础模型',
+  portfolio: '投资组合',
+  panorama: '全景观察',
+};
+---
+
+<section class="insights-page" data-node-id="2002:2833">
+  <img
+    class="insights-orbit"
+    src={asset('2833', 'imgEllipse9')}
+    width="1954"
+    height="1954"
+    alt=""
+    loading="lazy"
+  />
+  <h1 class="insights-title">
+    News &amp; Content{lang === 'zh' && <span>最新动态</span>}
+  </h1>
+  <p class="insights-intro">
+    {pick(
+      lang,
+      '聚焦星连资本、被投企业与 AI 产业生态的最新进展，持续捕捉技术演进与产业变化中的真实信号。',
+      'News from Link-X Capital, our portfolio, and the AI ecosystem. Following the real signals of technological and industrial change.',
+    )}
+  </p>
+  <div
+    class="insight-filters"
+    role="group"
+    aria-label={pick(lang, '筛选文章', 'Filter stories')}
+  >
+    {filters.map(([id, zh, en], i) => (
+      <>
+        {i > 0 && <span aria-hidden="true">/</span>}
+        <button data-filter={id} aria-pressed={id === 'all'}>
+          {pick(lang, zh, en)}
+        </button>
+      </>
+    ))}
+  </div>
+  <div class="insight-list">
+    {articles.map(({ data }) => {
+      const date = new Date(data.date + 'T12:00:00Z');
+      return (
+        <article class="insight-row" data-category={data.category}>
+          <time class="insight-date" datetime={data.date}>
+            {String(date.getUTCDate()).padStart(2, '0')} /
+            <small>
+              {date.toLocaleDateString('en', {
+                month: 'short',
+                timeZone: 'UTC',
+              })}
+            </small>
+          </time>
+          <h2>
+            <a href={pageUrl(lang, data.route)}>{data.title}</a>
+          </h2>
+          <p class="insight-category">
+            {lang === 'zh' && <span>{categoryNames[data.category]}</span>}
+            <span>[ {data.category.toUpperCase()} ]</span>
+          </p>
+          <div class="insight-excerpt">
+            <p>{data.summary}</p>
+            <a
+              href={pageUrl(lang, data.route)}
+              aria-label={`${ui[lang].more}：${data.title}`}
+            >
+              {ui[lang].more}
+            </a>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+  <div class="empty-state" data-empty hidden>
+    <p>{ui[lang].noResults}</p>
+    <button data-filter-reset>{ui[lang].reset}</button>
+  </div>
+</section>

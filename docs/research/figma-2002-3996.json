@@ -1,0 +1,211 @@
+{
+  "id": "2002:3996",
+  "name": "Frame 521",
+  "notes": [
+    {
+      "id": "2002:4804",
+      "text": "Team 页",
+      "visible": true
+    },
+    {
+      "id": "2002:4805",
+      "text": "*Hover 展示信息",
+      "visible": true
+    }
+  ],
+  "screens": [
+    {
+      "id": "2002:4567",
+      "name": "Frame 571",
+      "width": 1920,
+      "height": 1081,
+      "texts": [
+        "Philosophy",
+        "Team",
+        "Insight",
+        "Contact",
+        "Portfolio",
+        "EN",
+        "中",
+        "团队",
+        "Our Team",
+        "张鸣晨",
+        "主管合伙人",
+        "王璞",
+        "合伙人",
+        "李文珏",
+        "Founded in 2021, LinkX Capital is one of China’s earliest and most active AI-focused venture capital funds dedicated to the ecosystem of General-Purpose Intelligence.Centered on the key technology stacks and application scenarios of the General-Purpose Intelligence era, we invest in areas such as foundation models, AI infrastructure, multi-agent systems, embodied AI, AI-native applications, and intelligent hardware."
+      ],
+      "images": [
+        {
+          "id": "2002:4609",
+          "name": "image 216",
+          "width": 361,
+          "height": 641
+        },
+        {
+          "id": "2002:4610",
+          "name": "image 215",
+          "width": 437,
+          "height": 582
+        },
+        {
+          "id": "2002:4611",
+          "name": "image 212",
+          "width": 396,
+          "height": 595
+        },
+        {
+          "id": "2002:4612",
+          "name": "image 217",
+          "width": 428,
+          "height": 628
+        },
+        {
+          "id": "2002:4629",
+          "name": "image 211",
+          "width": 407,
+          "height": 543
+        },
+        {
+          "id": "2002:4630",
+          "name": "image 213",
+          "width": 361,
+          "height": 552
+        }
+      ]
+    },
+    {
+      "id": "2002:4631",
+      "name": "Frame 572",
+      "width": 1920,
+      "height": 1081,
+      "texts": [
+        "Philosophy",
+        "Team",
+        "Insight",
+        "Contact",
+        "Portfolio",
+        "EN",
+        "中",
+        "团队",
+        "Our Team",
+        "张鸣晨",
+        "主管合伙人",
+        "李文珏",
+        "合伙人",
+        "Founded in 2021, LinkX Capital is one of China’s earliest and most active AI-focused venture capital funds dedicated to the ecosystem of General-Purpose Intelligence.Centered on the key technology stacks and application scenarios of the General-Purpose Intelligence era, we invest in areas such as foundation models, AI infrastructure, multi-agent systems, embodied AI, AI-native applications, and intelligent hardware.",
+        "王璞",
+        "Pu Wang",
+        "主管合伙人 / Managing Partner",
+        "国家信息中心人工智能专家委员，15 年以上前沿科技早期投资与互联网产业经验，曾任红点中国合伙人。",
+        "代表投资 · Featured Investments",
+        "智谱AI",
+        "基础模型",
+        "硅基流动",
+        "AI基础设施",
+        "趋境科技",
+        "空间智能",
+        "模思智能",
+        "紫荆智康",
+        "医疗智能体",
+        "百奥几何",
+        "科学智能"
+      ],
+      "images": [
+        {
+          "id": "2002:4673",
+          "name": "image 211",
+          "width": 407,
+          "height": 543
+        },
+        {
+          "id": "2002:4674",
+          "name": "image 216",
+          "width": 361,
+          "height": 641
+        },
+        {
+          "id": "2002:4675",
+          "name": "image 215",
+          "width": 437,
+          "height": 582
+        },
+        {
+          "id": "2002:4676",
+          "name": "image 212",
+          "width": 396,
+          "height": 595
+        },
+        {
+          "id": "2002:4677",
+          "name": "image 217",
+          "width": 428,
+          "height": 628
+        }
+      ]
+    },
+    {
+      "id": "2002:4729",
+      "name": "Frame 559",
+      "width": 1920,
+      "height": 1854,
+      "texts": [
+        "团队",
+        "Our Team",
+        "Philosophy",
+        "Team",
+        "Insight",
+        "Contact",
+        "Portfolio",
+        "EN",
+        "中",
+        "张鸣晨",
+        "主管合伙人",
+        "王晨",
+        "合伙人",
+        "王璞",
+        "李文珏",
+        "Founded in 2021, LinkX Capital is one of China’s earliest and most active AI-focused venture capital funds dedicated to the ecosystem of General-Purpose Intelligence.Centered on the key technology stacks and application scenarios of the General-Purpose Intelligence era, we invest in areas such as foundation models, AI infrastructure, multi-agent systems, embodied AI, AI-native applications, and intelligent hardware."
+      ],
+      "images": [
+        {
+          "id": "2002:4730",
+          "name": "image 211",
+          "width": 407,
+          "height": 543
+        },
+        {
+          "id": "2002:4731",
+          "name": "image 213",
+          "width": 361,
+          "height": 552
+        },
+        {
+          "id": "2002:4732",
+          "name": "image 216",
+          "width": 361,
+          "height": 641
+        },
+        {
+          "id": "2002:4733",
+          "name": "image 215",
+          "width": 437,
+          "height": 582
+        },
+        {
+          "id": "2002:4734",
+          "name": "image 212",
+          "width": 396,
+          "height": 595
+        },
+        {
+          "id": "2002:4735",
+          "name": "image 217",
+          "width": 428,
+          "height": 628
+        }
+      ]
+    }
+  ]
+}

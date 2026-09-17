@@ -1,0 +1,31 @@
+{
+  "name": "linkx-capital",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "build": "astro check && astro build && node scripts/verify-build.mjs",
+    "preview": "astro preview --host 127.0.0.1",
+    "test": "playwright test",
+    "assets:download": "node scripts/download-assets.mjs",
+    "assets:optimize": "node scripts/optimize-assets.mjs",
+    "format": "prettier --write src/components src/layouts src/pages src/scripts src/lib src/styles tests",
+    "test:performance": "node scripts/performance-check.mjs"
+  },
+  "dependencies": {
+    "astro": "7.3.3",
+    "gsap": "3.15.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@playwright/test": "^1.55.0",
+    "prettier": "^3.9.7",
+    "prettier-plugin-astro": "^1.0.1",
+    "sharp": "^0.34.3",
+    "typescript": "^5.9.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

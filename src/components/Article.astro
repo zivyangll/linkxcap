@@ -1,0 +1,52 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import { pageUrl, pick, ui, type Lang } from '../lib/site';
+const { lang, article } = Astro.props as {
+  lang: Lang;
+  article: CollectionEntry<'articles'>;
+};
+const { Content, headings } = await render(article);
+const { data } = article;
+---
+
+<article class="article-page">
+  <a class="text-link" href={pageUrl(lang, 'insights')}>
+    ← {pick(lang, '返回洞察', 'Back to Insight')}
+  </a>
+  <header class="article-header">
+    <p class="eyebrow">INSIGHT / {data.category.toUpperCase()}</p>
+    <h1>{data.title}</h1>
+    <p class="article-summary">{data.summary}</p>
+    <p class="article-meta">
+      <time datetime={data.date}>{data.date}</time> · Link-X Capital
+    </p>
+  </header>
+  <div class="article-layout">
+    <nav class="article-toc" aria-label={ui[lang].chapters}>
+      <h2>{ui[lang].chapters}</h2>
+      {headings
+        .filter((h) => h.depth === 2)
+        .map((h) => (
+          <a href={`#${h.slug}`}>{h.text}</a>
+        ))}
+    </nav>
+    <div class="prose">
+      {data.mock && (
+        <p class="mock-banner">
+          {pick(
+            lang,
+            '本文为版式演示稿，正文、翻译及日期待确认。请通过文末原文链接阅读现官网内容。',
+            'This article is a layout demonstration. Text, translation and date are pending approval. Use the original source link below to read the existing website.',
+          )}
+        </p>
+      )}
+      <Content />
+      <div class="article-actions">
+        <a href={data.source} target="_blank" rel="noopener noreferrer">
+          {ui[lang].original} · {data.sourceName} ↗
+        </a>
+        <button data-copy="">{ui[lang].copy}</button>
+      </div>
+    </div>
+  </div>
+</article>

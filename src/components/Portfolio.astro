@@ -1,0 +1,37 @@
+---
+import { companies, sectors, pageUrl, type Lang } from '../lib/site';
+import PageTitle from './PageTitle.astro';
+import CompanyLogo from './CompanyLogo.astro';
+import Arrow from './Arrow.astro';
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<div class="portfolio-page" data-node-id="2002:526">
+  <PageTitle zh="投资组合" en="Portfolio" lang={lang} />
+  <div class="portfolio-grid">
+    {companies.map((company, i) => (
+      <a
+        href={pageUrl(lang, `portfolio/${company.slug}`)}
+        class:list={['portfolio-card', { 'is-featured': i === 1 }]}
+        aria-label={lang === 'zh' ? company.name : company.nameEn}
+        data-company-card
+      >
+        <CompanyLogo company={company} />
+        <span class="card-corners" aria-hidden="true"></span>
+        <span class="card-arrow" aria-hidden="true">
+          <Arrow />
+        </span>
+        <div class="company-caption">
+          <span></span>
+          <h2>{lang === 'zh' ? company.name : company.nameEn}</h2>
+          <p>
+            {lang === 'zh'
+              ? sectors.find((s) => s.id === company.sector)?.zh
+              : company.descEn}
+          </p>
+        </div>
+        <span class="card-number">/{String(i + 1).padStart(2, '0')}</span>
+      </a>
+    ))}
+  </div>
+</div>

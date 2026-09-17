@@ -1,0 +1,80 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { url, pageUrl, preview, type Lang } from '../lib/site';
+import fonts from '../data/fonts.json';
+import '../styles/global.css';
+interface Props {
+  lang: Lang;
+  page?: string;
+  title: string;
+  description?: string;
+  minimal?: boolean;
+  bodyClass?: string;
+  footer?: boolean;
+}
+const {
+  lang,
+  page = 'index',
+  title,
+  description = lang === 'zh'
+    ? '星连资本，与AGI时代的定义者同行。聚焦通用智能生态的创新与价值创造。'
+    : 'Link-X Capital. Partnering with founders defining the AGI era.',
+  minimal = false,
+  bodyClass = '',
+  footer = true,
+} = Astro.props;
+const absolute = (path: string) => new URL(path, Astro.site).href;
+const canonical = absolute(pageUrl(lang, page));
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#fdfbf5" />
+    <title>{title} · Link-X Capital</title>
+    <meta name="description" content={description} />
+    {preview && <meta name="robots" content="noindex,follow" />}
+    <link rel="canonical" href={canonical} />
+    <link
+      rel="alternate"
+      hreflang="zh-CN"
+      href={absolute(pageUrl('zh', page))}
+    />
+    <link rel="alternate" hreflang="en" href={absolute(pageUrl('en', page))} />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={absolute(pageUrl('zh', page))}
+    />
+    <meta property="og:title" content={`${title} · Link-X Capital`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absolute(url('assets/og.jpg'))} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
+    <link
+      rel="preload"
+      href={url('fonts/serif-400-0.woff2')}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <style is:inline set:html={fonts.css.replaceAll('__BASE__', url())}></style>
+  </head>
+  <body class={bodyClass} data-lang={lang}>
+    <Header lang={lang} current={page} minimal={minimal} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    {footer && <Footer lang={lang} />}
+    <p class="sr-only" role="status" aria-live="polite" data-status></p>
+    <script src="../scripts/site.ts"></script>
+  </body>
+</html>

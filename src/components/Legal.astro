@@ -1,0 +1,54 @@
+---
+import { type Lang, pick } from '../lib/site';
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<article class="legal-page prose">
+  <p class="eyebrow">LEGAL NOTICE</p>
+  <h1>{pick(lang, '法律声明', 'Legal notice')}</h1>
+  <p class="mock-banner">
+    {pick(
+      lang,
+      '设计预览：本页为占位说明，正式法律条款待公司审核。',
+      'Design preview: this page contains placeholder information. Final legal terms are pending company review.',
+    )}
+  </p>
+  <h2>{pick(lang, '关于本次预览', 'About this preview')}</h2>
+  <p>
+    {pick(
+      lang,
+      '本网站为星连资本官网改版的设计与交互预览。部分介绍、数字、日期及文章正文使用演示内容，尚未完成业务审核，不应作为公司正式信息或投资依据。',
+      'This website is a design and interaction preview for the Link-X Capital website redesign. Some descriptions, metrics, dates and article text are demonstration content pending approval and should not be treated as official company information or investment guidance.',
+    )}
+  </p>
+  <h2>{pick(lang, '内容与知识产权', 'Content and intellectual property')}</h2>
+  <p>
+    {pick(
+      lang,
+      '品牌标识、人物插画及视觉素材用于本次设计还原；正式发布前，将根据素材交接表确认使用范围。',
+      'Brand marks, portraits and design assets are used for this design preview. Their publication scope will be reviewed before the final release.',
+    )}
+  </p>
+  <h2>{pick(lang, '隐私与联系', 'Privacy and contact')}</h2>
+  <p>
+    {pick(
+      lang,
+      '本预览未接入表单收集或第三方分析服务。如需联系，请发送邮件至',
+      'This preview does not include submission forms or third-party analytics. To get in touch, email',
+    )}{' '}
+    <a href="mailto:service@linkxcap.com">service@linkxcap.com</a>。
+  </p>
+  <a
+    class="text-link"
+    href={`https://www.linkxcap.com/${lang}/legal.html`}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    {pick(
+      lang,
+      '查看现官网法律声明',
+      'View the existing website’s legal notice',
+    )}{' '}
+    ↗
+  </a>
+</article>

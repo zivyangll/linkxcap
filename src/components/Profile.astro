@@ -1,0 +1,35 @@
+---
+import { asset, pageUrl, team, ui, type Lang } from '../lib/site';
+const { lang, person } = Astro.props as {
+  lang: Lang;
+  person: (typeof team)[number];
+};
+---
+
+<article class="profile-page">
+  <a class="text-link" href={pageUrl(lang, 'team')}>
+    ← {ui[lang].back}
+  </a>
+  <div class="profile-layout">
+    <img
+      class="profile-portrait"
+      src={asset('4729', person.image)}
+      width="440"
+      height="640"
+      alt={lang === 'zh' ? person.name : person.en}
+    />
+    <div>
+      <p class="eyebrow">OUR TEAM</p>
+      <h1>{lang === 'zh' ? person.name : person.en}</h1>
+      {lang === 'zh' && <p class="profile-en">{person.en}</p>}
+      <p>{person.role[lang]}</p>
+      <div class="profile-copy">
+        <p>{person.bio[lang]}</p>
+      </div>
+      <p class="data-note">{ui[lang].mock}</p>
+      <a class="text-link" href={pageUrl(lang, 'contact')}>
+        {lang === 'zh' ? '联系我们' : 'Contact us'} ↗
+      </a>
+    </div>
+  </div>
+</article>

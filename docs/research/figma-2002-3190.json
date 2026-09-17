@@ -1,0 +1,258 @@
+{
+  "id": "2002:3190",
+  "name": "Frame 518",
+  "notes": [
+    {
+      "id": "2002:3994",
+      "text": "demo test",
+      "visible": false
+    }
+  ],
+  "screens": [
+    {
+      "id": "2002:3191",
+      "name": "Frame 511",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "Partnering with founders\nDefining the AGI era",
+        "与AGI时代的\n定义者同行",
+        "OPEN SIGNAL",
+        "远星初亮",
+        "Menu",
+        "2026 北京星连肇基私募基金管理有限责任公司",
+        "Philosophy",
+        "关于星连",
+        "Portfolio",
+        "投资组合",
+        "Team",
+        "团队",
+        "Insight",
+        "洞察",
+        "联系我们",
+        "Build with us",
+        "如果你正在寻找、定义，或亲手建造一个尚未被市场命名的未来，我们希望更早与你相遇。",
+        "If you are seeking, defining, or personally building a future that the market has not yet named, we hope to meet you sooner.",
+        "Contact us"
+      ],
+      "images": [
+        {
+          "id": "2002:3283",
+          "name": "image 57",
+          "width": 17,
+          "height": 17
+        },
+        {
+          "id": "2002:3286",
+          "name": "image 55",
+          "width": 19,
+          "height": 9
+        },
+        {
+          "id": "2002:3289",
+          "name": "image 54",
+          "width": 17,
+          "height": 14
+        },
+        {
+          "id": "2002:3292",
+          "name": "image 56",
+          "width": 16,
+          "height": 16
+        },
+        {
+          "id": "2002:3296",
+          "name": "image 58",
+          "width": 16,
+          "height": 18
+        }
+      ]
+    },
+    {
+      "id": "2002:3297",
+      "name": "Frame 509",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "每一次时代变革初现之时，",
+        "Chapter 01",
+        "总有少数非凡的头脑先于共识看见未来，",
+        "如远星初亮。",
+        "LINK- X 将这些通用智能时代的定义者链接成星群，",
+        "让远见辉映，照亮前路。",
+        "Open Signal\n远星初亮",
+        "Philosophy",
+        "Team",
+        "Insight",
+        "Contact",
+        "Portfolio",
+        "EN",
+        "中"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3348",
+      "name": "Frame 510",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "Partnering with founders\nDefining the AGI era",
+        "与AGI时代的\n定义者同行",
+        "OPEN SIGNAL",
+        "远星初亮"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3393",
+      "name": "Frame 514",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "链接创新源头,",
+        "加速价值创造。",
+        "ABOUT US",
+        "关于我们"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3438",
+      "name": "Frame 515",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "链接创新源头,",
+        "加速价值创造。",
+        "ABOUT US",
+        "关于我们",
+        "星连资本（LinkX Capital）创建于 2021 年，是中国最早聚焦通用智能产业生态、\n目前最活跃的 AI 风险投资基金之一。\n我们围绕通用智能时代的关键技术栈与应用场景，投资基座模型、AI 基础设施、\n多智能体、具身智能、AI 原生应用及智能硬件等方向。\n我们与清华大学共建华清普智AI孵化器（T-ONE Innovation Lab），\n打造活跃的全球青年科学家与企业家社区，推动科研、产业、政策与资本的多要素循环，\n加速源头创新走向真实商业场景。"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3487",
+      "name": "Frame 516",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "星连资本（LinkX Capital）创建于 2021 年，是中国最早聚焦通用智能产业生态、\n目前最活跃的 AI 风险投资基金之一。\n我们围绕通用智能时代的关键技术栈与应用场景，投资基座模型、AI 基础设施、\n多智能体、具身智能、AI 原生应用及智能硬件等方向。\n我们与清华大学共建华清普智AI孵化器（T-ONE Innovation Lab），\n打造活跃的全球青年科学家与企业家社区，推动科研、产业、政策与资本的多要素循环，\n加速源头创新走向真实商业场景。",
+        "160+",
+        "Portfolio Companies",
+        "25+",
+        "$100B+",
+        "68+",
+        "Fund Partners",
+        "Global Research,",
+        "Proven Success."
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3549",
+      "name": "Frame 493",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "智能基础层",
+        "Intelligence Foundations",
+        "（ 2026，智谱.AI ）",
+        "( 2026，生树科技  )",
+        "（ 2026，面壁智能 ）",
+        "模型、数据与训练范式，决定智能能力演进的速度与上限。我们关注持续推动模型能力跃迁的底层创新。",
+        "/ 智能基础层",
+        "AI Infrastructure",
+        "Agents & AI-Native applications ",
+        "Long-term Frontiers",
+        "Physical Intelligence",
+        "AI基础设施",
+        "智能体与AI原生应用",
+        "长期前沿",
+        "物理智能",
+        "Focus\nAreas",
+        "我们寻找的星域"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3659",
+      "name": "Frame 517",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "智能基础层",
+        "Intelligence Foundations",
+        "（ 2026，智谱.AI ）",
+        "( 2026，生树科技  )",
+        "（ 2026，面壁智能 ）",
+        "模型、数据与训练范式，决定智能能力演进的速度与上限。我们关注持续推动模型能力跃迁的底层创新。",
+        "/ 智能基础层",
+        "AI Infrastructure",
+        "Agents & AI-Native applications ",
+        "Long-term Frontiers",
+        "Physical Intelligence",
+        "AI基础设施",
+        "智能体与AI原生应用",
+        "长期前沿",
+        "物理智能",
+        "Focus\nAreas",
+        "我们寻找的星域"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3769",
+      "name": "Frame 494",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "智能体与AI原生应用",
+        "Agents & AI-Native applications ",
+        "（ 2026，瑞莱智慧 ）",
+        "( 2026，紫荆智康  )",
+        "( 2026，百奥几何  )",
+        "( 2026，珀乐互动  )",
+        "模型、数据与训练范式，决定智能能力演进的速度与上限。我们关注持续推动模型能力跃迁的底层创新。",
+        "/ 智能体与AI原生应用",
+        "AI Infrastructure",
+        "Long-term Frontiers",
+        "Physical Intelligence",
+        "Intelligence Foundations",
+        "AI基础设施",
+        "长期前沿",
+        "物理智能",
+        "智能基础层",
+        "Focus\nAreas",
+        "我们寻找的星域"
+      ],
+      "images": []
+    },
+    {
+      "id": "2002:3883",
+      "name": "Frame 495",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "Focus\nAreas",
+        "我们寻找的星域",
+        "物理智能",
+        "Physical Intelligence",
+        "（ 2026，动易科技 ）",
+        "( 2026，阿米奥机器人  )",
+        "( 2026，吾云创新  )",
+        "模型、数据与训练范式，决定智能能力演进的速度与上限。我们关注持续推动模型能力跃迁的底层创新。",
+        "/ 物理智能",
+        "AI Infrastructure",
+        "Long-term Frontiers",
+        "Intelligence Foundations",
+        "AI基础设施",
+        "长期前沿",
+        "智能基础层",
+        "Agents & AI-Native applications ",
+        "智能体与AI原生应用"
+      ],
+      "images": []
+    }
+  ]
+}

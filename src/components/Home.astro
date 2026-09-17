@@ -1,0 +1,377 @@
+---
+import {
+  asset,
+  pageUrl,
+  pick,
+  intro,
+  sectors,
+  join,
+  ui,
+  type Lang,
+} from '../lib/site';
+import Arrow from './Arrow.astro';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<noscript>
+  <style>
+    .focus {
+      height: auto;
+      min-height: 1100px;
+      padding-bottom: 70px;
+    }
+    .focus-panels {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 85%;
+      margin: 650px auto 0;
+    }
+    .focus-panel {
+      display: block !important;
+      margin-bottom: 40px;
+    }
+    .motion-toggle {
+      display: none;
+    }
+    @media (max-width: 767px) {
+      .focus-panels {
+        margin: 440px 0 0;
+        width: 100%;
+        inset: auto;
+      }
+    }
+  </style>
+</noscript>
+<div class="home-story" data-home>
+  <section
+    class="story-scene opening"
+    data-node-id="2002:3297"
+    aria-labelledby="opening-title"
+  >
+    <div class="opening-track" aria-hidden="true">
+      <i class="diamond"></i>
+      <span></span>
+    </div>
+    <span class="chapter">Chapter 01</span>
+    <h1 id="opening-title" class="opening-title" data-reveal>
+      Open Signal
+      {lang === 'zh' && (
+        <>
+          <br />
+          远星初亮
+        </>
+      )}
+    </h1>
+    <div class="opening-copy" data-reveal>
+      {lang === 'zh' ? (
+        <p>
+          每一次时代变革初现之时，
+          <br />
+          总有少数非凡的头脑先于共识看见未来，
+          <br />
+          如远星初亮。
+          <br />
+          LINK- X 将这些通用智能时代的定义者链接成星群，
+          <br />
+          让远见辉映，照亮前路。
+        </p>
+      ) : (
+        <p>
+          At the beginning of every era,
+          <br />a few extraordinary minds see the future
+          <br />
+          before it becomes consensus.
+          <br />
+          Like the first light of a distant star.
+          <br />
+          Link-X connects these visionaries into a constellation,
+          <br />
+          illuminating the path ahead.
+        </p>
+      )}
+    </div>
+  </section>
+  <section
+    class="story-scene hero"
+    data-node-id="2002:3348"
+    data-minimal-header
+    aria-labelledby="hero-title"
+  >
+    <img
+      class="hero-orbit ambient-orbit"
+      src={asset('3348', 'imgEllipse1')}
+      width="2386"
+      height="2386"
+      alt=""
+      loading="lazy"
+    />
+    <div class="hero-track" aria-hidden="true">
+      <i class="diamond"></i>
+      <span></span>
+    </div>
+    <h2 id="hero-title" class="hero-title" data-reveal>
+      Partnering with founders
+      <br />
+      Defining the AGI era
+    </h2>
+    {lang === 'zh' && (
+      <p class="hero-zh" data-reveal>
+        与AGI时代的
+        <br />
+        定义者同行
+      </p>
+    )}
+    <a class="orbit-label" href="#about">
+      <i class="diamond" aria-hidden="true"></i>
+      <em>open signal</em>
+      <span>{pick(lang, '远星初亮', 'The first light')}</span>
+    </a>
+  </section>
+  <section
+    class="story-scene about"
+    id="about"
+    data-node-id="2002:3438"
+    data-minimal-header
+    aria-labelledby="about-title"
+  >
+    <img
+      class="about-orbit"
+      src={asset('3438', 'imgEllipse1')}
+      alt=""
+      width="2406"
+      height="2406"
+      loading="lazy"
+    />
+    <div class="about-rays" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+      <i class="diamond"></i>
+    </div>
+    <div class="about-label">
+      ABOUT US
+      <br />
+      {pick(lang, '关于我们', 'Link-X Capital')}
+    </div>
+    <h2 id="about-title" class="about-title" data-reveal>
+      {lang === 'zh' ? (
+        <>
+          <span>链接创新源头,</span>
+          <span>加速价值创造。</span>
+        </>
+      ) : (
+        <>
+          <span>Connecting innovation.</span>
+          <span>Accelerating value.</span>
+        </>
+      )}
+    </h2>
+    <p class="about-copy" data-reveal>
+      {intro[lang]}
+    </p>
+  </section>
+  <section
+    class="story-scene research"
+    data-node-id="2002:3487"
+    data-minimal-header
+    aria-labelledby="research-title"
+  >
+    <div class="research-axis" aria-hidden="true">
+      <i class="diamond"></i>
+    </div>
+    <h2 id="research-title" data-reveal>
+      Global Research,
+      <br />
+      <span>Proven Success.</span>
+    </h2>
+    <p class="research-intro" data-reveal>
+      {intro[lang]}
+    </p>
+    <div class="research-stats" data-reveal>
+      {[
+        ['160+', 'Portfolio Companies'],
+        ['68+', 'Fund Partners'],
+        ['25+', 'Portfolio Companies'],
+        ['$100B+', 'Portfolio Companies'],
+      ].map(([value, label]) => (
+        <div>
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </div>
+      ))}
+      <p class="data-note">
+        {pick(
+          lang,
+          'MOCK · 设计占位数据，指标与口径待确认',
+          'MOCK · Design placeholders. Metrics pending approval.',
+        )}
+      </p>
+    </div>
+  </section>
+  <section
+    class="story-scene focus"
+    id="focus"
+    data-node-id="2002:3549"
+    data-minimal-header
+    data-dark-header
+    aria-labelledby="focus-title"
+  >
+    <canvas class="particle-canvas" aria-hidden="true" data-particles></canvas>
+    <h2 id="focus-title" class="focus-title">
+      Focus
+      <br />
+      Areas{lang === 'zh' && <span>我们寻找的星域</span>}
+    </h2>
+    <div class="focus-panels">
+      {sectors.map((s, i) => (
+        <article
+          id={`sector-${s.id}`}
+          class:list={['focus-panel', { 'is-active': i === 0 }]}
+          data-sector-panel={s.id}
+          aria-labelledby={`sector-label-${s.id}`}
+        >
+          <h3 id={`sector-label-${s.id}`}>
+            {lang === 'zh' && <span>/ {s.zh}</span>}
+            <span lang="en">{s.en}</span>
+          </h3>
+          <p>{s.desc[lang]}</p>
+        </article>
+      ))}
+    </div>
+    <div
+      class="constellation"
+      aria-label={pick(lang, '投资领域', 'Investment focus')}
+    >
+      <div class="star-links" aria-hidden="true">
+        <img
+          src={asset('3549', 'imgVector156')}
+          width="61"
+          height="81"
+          alt=""
+        />
+        <img
+          src={asset('3549', 'imgVector157')}
+          width="233"
+          height="169"
+          alt=""
+        />
+        <img
+          src={asset('3549', 'imgVector158')}
+          width="47"
+          height="240"
+          alt=""
+        />
+      </div>
+      {sectors.map((s, i) => (
+        <button
+          class:list={['sector-star', `star-${s.id}`, { 'is-active': i === 0 }]}
+          data-sector={s.id}
+          aria-controls={`sector-${s.id}`}
+          aria-pressed={i === 0}
+        >
+          <span class="star-glyph" aria-hidden="true">
+            <img
+              src={asset('3549', 'imgGroup458')}
+              width="10"
+              height="52"
+              alt=""
+            />
+            <img
+              src={asset('3549', 'imgGroup459')}
+              width="10"
+              height="52"
+              alt=""
+            />
+            <i class="diamond"></i>
+          </span>
+          <span class="star-label">
+            <span>{s.en}</span>
+            {lang === 'zh' && <span>{s.zh}</span>}
+          </span>
+        </button>
+      ))}
+      <a
+        class="satellite satellite-a"
+        href={pageUrl(lang, 'portfolio/zhipu-ai')}
+      >
+        <i></i>
+        {pick(lang, '（ 2026，智谱.AI ）', '( 2026, Z.AI )')}
+      </a>
+      <a
+        class="satellite satellite-b"
+        href={pageUrl(lang, 'portfolio/shengshu-technology')}
+      >
+        <i></i>
+        {pick(lang, '（ 2026，生数科技 ）', '( 2026, GensPi )')}
+      </a>
+      <a
+        class="satellite satellite-c"
+        href={pageUrl(lang, 'portfolio/modelbest')}
+      >
+        <i></i>
+        {pick(lang, '（ 2026，面壁智能 ）', '( 2026, ModelBest )')}
+      </a>
+    </div>
+    <button
+      class="motion-toggle"
+      data-motion-toggle
+      data-pause={ui[lang].pause}
+      data-resume={ui[lang].resume}
+      aria-pressed="false"
+    >
+      {ui[lang].pause}
+    </button>
+  </section>
+  <section
+    class="story-scene next-signal"
+    data-node-id="2002:1692"
+    aria-labelledby="next-title"
+  >
+    <div class="signal-guides" aria-hidden="true"></div>
+    <h2 id="next-title" data-reveal>
+      The Next Signal
+    </h2>
+    {lang === 'zh' ? (
+      <img
+        class="next-outline"
+        src={asset('1692', 'img')}
+        width="584"
+        height="95"
+        alt="与定义者同行"
+        loading="lazy"
+      />
+    ) : (
+      <p class="next-en">Alongside the visionaries</p>
+    )}
+    <img
+      class="next-orbit ambient-orbit"
+      src={asset('1692', 'imgEllipse1')}
+      width="2406"
+      height="2406"
+      alt=""
+      loading="lazy"
+    />
+    <a class="next-contact" href={pageUrl(lang, 'contact')}>
+      {pick(lang, '与我们相遇', 'Build with us')}
+      <Arrow />
+    </a>
+  </section>
+  <section class="join-section" aria-labelledby="join-title">
+    <h2 id="join-title">Join Us{lang === 'zh' && <span>加入我们</span>}</h2>
+    <p>{join[lang]}</p>
+    <a class="line-link" href={pageUrl(lang, 'contact')}>
+      Contact us
+      <Arrow />
+    </a>
+  </section>
+</div>
+<script>
+  const start = () =>
+    import('../scripts/home').then((module) => module.initHome());
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
+</script>

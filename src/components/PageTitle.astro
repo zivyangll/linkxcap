@@ -1,0 +1,20 @@
+---
+interface Props {
+  zh: string;
+  en: string;
+  lang: 'zh' | 'en';
+  as?: 'h1' | 'h2';
+}
+const { zh, en, lang, as: Tag = 'h1' } = Astro.props;
+---
+
+<Tag class="page-title">
+  {lang === 'zh' ? (
+    <>
+      <span>{zh}</span>
+      <span lang="en">{en}</span>
+    </>
+  ) : (
+    <span>{en}</span>
+  )}
+</Tag>

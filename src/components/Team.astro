@@ -1,0 +1,51 @@
+---
+import { team, intro, asset, pageUrl, ui, type Lang } from '../lib/site';
+import PageTitle from './PageTitle.astro';
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<section class="team-page" data-node-id="2002:4729">
+  <div class="team-heading">
+    <PageTitle zh="团队" en="Our Team" lang={lang} />
+    <p>{intro.en}</p>
+  </div>
+  <div class="team-grid">
+    {team.map((person) => (
+      <article class={`team-card person-${person.id}`}>
+        <div class="portrait">
+          <img
+            src={asset('4729', person.image)}
+            width="440"
+            height="640"
+            alt={lang === 'zh' ? person.name : person.en}
+            loading="lazy"
+          />
+        </div>
+        <div class="team-name">
+          <h2>
+            <a href={pageUrl(lang, `team-${person.id}`)}>
+              {lang === 'zh' ? person.name : person.en}
+            </a>
+          </h2>
+          <p>{person.role[lang]}</p>
+        </div>
+        <button
+          class="profile-toggle"
+          aria-controls={`profile-${person.id}`}
+          aria-expanded="false"
+        >
+          {ui[lang].expand}
+          <span aria-hidden="true">＋</span>
+        </button>
+        <div class="team-bio" id={`profile-${person.id}`}>
+          <h3>{lang === 'zh' ? person.name : person.en}</h3>
+          {lang === 'zh' && <p class="person-en">{person.en}</p>}
+          <p class="person-role">{person.role[lang]}</p>
+          <p>{person.bio[lang]}</p>
+          <p class="data-note">{ui[lang].mock}</p>
+          <a href={pageUrl(lang, `team-${person.id}`)}>{ui[lang].profile} ↗</a>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

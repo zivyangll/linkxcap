@@ -1,0 +1,109 @@
+---
+import {
+  companies,
+  sectors,
+  asset,
+  pageUrl,
+  ui,
+  type Company,
+  type Lang,
+} from '../lib/site';
+import PageTitle from './PageTitle.astro';
+import CompanyLogo from './CompanyLogo.astro';
+import Arrow from './Arrow.astro';
+const { lang, company } = Astro.props as { lang: Lang; company: Company };
+const index = companies.findIndex((c) => c.slug === company.slug);
+const sector = sectors.find((s) => s.id === company.sector)!;
+const navOrder = [
+  'agic-micro',
+  'approaching-ai',
+  'zhipu-ai',
+  'realai',
+  'mosi',
+  'modelbest',
+  'shengshu-technology',
+  'infrawaves',
+  'biogeometry',
+  ...companies.map((c) => c.slug),
+];
+const navCompanies = [...new Set(navOrder)].map((slug) =>
+  companies.find((c) => c.slug === slug)!,
+);
+---
+
+<section class="company-detail" data-node-id="2002:1282">
+  <div class="company-heading">
+    <PageTitle as="h2" zh="投资组合" en="Portfolio" lang={lang} />
+    <a class="text-link" href={pageUrl(lang, 'portfolio')}>
+      {ui[lang].all}
+    </a>
+  </div>
+  <img
+    class="company-orbit"
+    src={asset('1282', 'imgEllipse9')}
+    width="1187"
+    height="1187"
+    alt=""
+  />
+  <article class="company-content">
+    <CompanyLogo company={company} detail />
+    <h1>{lang === 'zh' ? company.name : company.nameEn}</h1>
+    <p class="company-sector">{lang === 'zh' ? sector.zh : sector.en}</p>
+    <div class="company-description">
+      <p>{lang === 'zh' ? company.detail : company.detailEn}</p>
+      {lang === 'zh' && (
+        <p class="secondary-description" lang="en">
+          {company.detailEn}
+        </p>
+      )}
+    </div>
+    {company.website && (
+      <a
+        class="website-link"
+        href={company.website}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {ui[lang].website}
+        <Arrow />
+      </a>
+    )}
+  </article>
+  <nav
+    class="company-navigator"
+    aria-label={
+      lang === 'zh' ? '浏览其他投资企业' : 'Explore portfolio companies'
+    }
+    data-company-nav
+  >
+    {navCompanies.map((c) => (
+      <a
+        href={pageUrl(lang, `portfolio/${c.slug}`)}
+        aria-current={c.slug === company.slug ? 'page' : undefined}
+      >
+        {c.nameEn.toUpperCase()}
+        <span> / {c.name}</span>
+      </a>
+    ))}
+  </nav>
+  <div class="company-step">
+    <a
+      href={pageUrl(
+        lang,
+        `portfolio/${companies[(index + companies.length - 1) % companies.length].slug}`,
+      )}
+      aria-label={ui[lang].previous}
+    >
+      ← {ui[lang].previous}
+    </a>
+    <a
+      href={pageUrl(
+        lang,
+        `portfolio/${companies[(index + 1) % companies.length].slug}`,
+      )}
+      aria-label={ui[lang].next}
+    >
+      {ui[lang].next} →
+    </a>
+  </div>
+</section>

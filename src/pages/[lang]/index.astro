@@ -1,0 +1,17 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Home from '../../components/Home.astro';
+import { languages, type Lang } from '../../lib/site';
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { lang } }));
+}
+const lang = Astro.params.lang as Lang;
+const title =
+  lang === 'zh'
+    ? '与AGI时代的定义者同行'
+    : 'Partnering with founders defining the AGI era';
+---
+
+<SiteLayout lang={lang} page="index" title={title}>
+  <Home lang={lang} />
+</SiteLayout>

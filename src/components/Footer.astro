@@ -1,0 +1,39 @@
+---
+import { pageUrl, ui, preview, socials, type Lang } from '../lib/site';
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+---
+
+<footer class="site-footer">
+  <div class="footer-main">
+    <p>Link-X Capital 2026. All rights reserved.</p>
+    <div class="footer-links">
+      <a href="mailto:service@linkxcap.com">service@linkxcap.com</a>
+      <a href={pageUrl(lang, 'legal')}>{ui[lang].legal}</a>
+    </div>
+  </div>
+  <div class="footer-meta">
+    <span>
+      {lang === 'zh'
+        ? '北京星连肇基私募基金管理有限责任公司'
+        : 'Link-X Capital'}
+    </span>
+    <a
+      href="https://beian.miit.gov.cn/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      京ICP备2022019276号-1
+    </a>
+    <div class="social-links">
+      {socials.map((s) => (
+        <a href={s.href} target="_blank" rel="noopener noreferrer">
+          {lang === 'en' ? s.en || s.name : s.name}
+        </a>
+      ))}
+    </div>
+  </div>
+  {preview && <p class="preview-note">{ui[lang].mock}</p>}
+</footer>

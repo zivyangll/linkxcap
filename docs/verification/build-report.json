@@ -1,0 +1,28 @@
+{
+  "pages": 70,
+  "totalHtml": 72,
+  "cssGzip": 10290,
+  "jsGzip": 47505,
+  "chunks": [
+    {
+      "file": "_astro/Home.astro_astro_type_script_index_0_lang.IdrYjXco.js",
+      "bytes": 1506,
+      "gzip": 813
+    },
+    {
+      "file": "_astro/SiteLayout.astro_astro_type_script_index_0_lang.iAb-Jtpl.js",
+      "bytes": 3795,
+      "gzip": 1519
+    },
+    {
+      "file": "_astro/SiteLayout.x4oc0fZT.css",
+      "bytes": 44071,
+      "gzip": 10290
+    },
+    {
+      "file": "_astro/home.CbiPLfUH.js",
+      "bytes": 116242,
+      "gzip": 45173
+    }
+  ]
+}

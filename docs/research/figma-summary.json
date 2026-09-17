@@ -1,0 +1,108 @@
+{
+  "pages": [
+    {
+      "id": "2002:2",
+      "name": "final"
+    },
+    {
+      "id": "100:2",
+      "name": "Page 2"
+    },
+    {
+      "id": "0:1",
+      "name": "Page 1"
+    }
+  ],
+  "nodeCount": 2107,
+  "screenCount": 28,
+  "fonts": [
+    "{\"family\":\"Source Han Serif SC\",\"style\":\"Regular\"}",
+    "{\"family\":\"Source Han Serif SC\",\"style\":\"Medium\"}",
+    "{\"family\":\"Source Han Serif SC\",\"style\":\"Bold\"}",
+    "{\"family\":\"Source Han Serif SC\",\"style\":\"Heavy\"}",
+    "{\"family\":\"Source Han Serif SC\",\"style\":\"SemiBold\"}",
+    null,
+    "{\"family\":\"Source Serif 4\",\"style\":\"Italic\",\"variationSettings\":{\"wght\":400}}",
+    "{\"family\":\"LXGW Neo XiHei\",\"style\":\"Regular\"}"
+  ],
+  "colors": [
+    [
+      "#1d1d1d",
+      468
+    ],
+    [
+      "#000000",
+      448
+    ],
+    [
+      "#ffffff",
+      147
+    ],
+    [
+      "#573c79",
+      54
+    ],
+    [
+      "#b2a2ff",
+      38
+    ],
+    [
+      "#eceef1",
+      28
+    ],
+    [
+      "#111111",
+      22
+    ],
+    [
+      "#f7f4ea",
+      19
+    ],
+    [
+      "#f8f6f2",
+      17
+    ],
+    [
+      "#d3d3d3",
+      16
+    ],
+    [
+      "#7a5fff",
+      16
+    ],
+    [
+      "#d8d6cf",
+      16
+    ],
+    [
+      "#fdfbf5",
+      10
+    ],
+    [
+      "#d9d9d9",
+      10
+    ],
+    [
+      "#161616",
+      5
+    ],
+    [
+      "#090909",
+      5
+    ]
+  ],
+  "flowStartingPoints": [],
+  "reactions": [],
+  "overflow": [],
+  "animations": [],
+  "animationStyles": [],
+  "videoFills": [],
+  "narrowFrames": [
+    {
+      "id": "2002:3236",
+      "name": "Frame 383",
+      "width": 763,
+      "height": 1080
+    }
+  ]
+}

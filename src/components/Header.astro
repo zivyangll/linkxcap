@@ -1,0 +1,128 @@
+---
+import Brand from './Brand.astro';
+import Arrow from './Arrow.astro';
+import { navigation, pageUrl, ui, join, socials, type Lang } from '../lib/site';
+interface Props {
+  lang: Lang;
+  current: string;
+  minimal?: boolean;
+}
+const { lang, current, minimal = false } = Astro.props;
+const active = current.startsWith('portfolio')
+  ? 'portfolio'
+  : current.startsWith('team')
+    ? 'team'
+    : current === 'index' || current === 'contact' || current === 'legal'
+      ? current
+      : 'insights';
+---
+
+<a class="skip-link" href="#main">
+  {ui[lang].skip}
+</a>
+<header class:list={['site-header', { 'is-minimal': minimal }]} data-header>
+  <a class="home-link" href={pageUrl(lang)} aria-label="Link-X Capital">
+    <Brand />
+  </a>
+  <div class="language-switch" aria-label={lang === 'zh' ? '语言' : 'Language'}>
+    <a
+      href={pageUrl('en', current)}
+      data-language="en"
+      aria-current={lang === 'en' ? 'page' : undefined}
+    >
+      EN
+    </a>
+    <a
+      href={pageUrl('zh', current)}
+      data-language="zh"
+      aria-current={lang === 'zh' ? 'page' : undefined}
+    >
+      中
+    </a>
+  </div>
+  <nav
+    class="desktop-nav"
+    aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}
+  >
+    {navigation.map((item) => (
+      <a
+        href={pageUrl(lang, item.page)}
+        aria-current={active === item.page ? 'page' : undefined}
+        aria-label={lang === 'zh' ? `${item.en} · ${item.zh}` : item.en}
+      >
+        {item.en}
+      </a>
+    ))}
+  </nav>
+  <button
+    class="menu-toggle"
+    aria-label={ui[lang].menu}
+    aria-controls="site-menu"
+    aria-expanded="false"
+    data-menu-open
+  >
+    <span></span>
+    <span></span>
+  </button>
+</header>
+<dialog id="site-menu" class="site-menu" aria-label={ui[lang].menu}>
+  <div class="menu-top">
+    <span>Menu</span>
+    <button data-menu-close aria-label={ui[lang].close} class="menu-close">
+      ×
+    </button>
+  </div>
+  <nav aria-label={lang === 'zh' ? '菜单导航' : 'Menu navigation'}>
+    {navigation.slice(0, 4).map((item) => (
+      <a
+        href={pageUrl(lang, item.page)}
+        aria-current={active === item.page ? 'page' : undefined}
+      >
+        <span>{item.en}</span>
+        {lang === 'zh' && <small>{item.zh}</small>}
+        <Arrow />
+      </a>
+    ))}
+  </nav>
+  <div class="menu-contact">
+    <h2>
+      {lang === 'zh' && (
+        <>
+          联系我们
+          <br />
+        </>
+      )}
+      Build with us
+    </h2>
+    <p>{join[lang]}</p>
+    <a class="line-link" href={pageUrl(lang, 'contact')}>
+      Contact us
+      <Arrow />
+    </a>
+  </div>
+  <div class="menu-language">
+    <a href={pageUrl('zh', current)} data-language="zh">
+      中文
+    </a>
+    <a href={pageUrl('en', current)} data-language="en">
+      English
+    </a>
+  </div>
+  <div class="menu-bottom">
+    <div class="social-links">
+      {socials.map((s) => (
+        <a href={s.href} target="_blank" rel="noopener noreferrer">
+          {lang === 'en' ? s.en || s.name : s.name}
+        </a>
+      ))}
+    </div>
+    <small>© 2026 Link-X Capital</small>
+  </div>
+</dialog>
+<noscript>
+  <nav class="noscript-nav">
+    {navigation.map((item) => (
+      <a href={pageUrl(lang, item.page)}>{lang === 'zh' ? item.zh : item.en}</a>
+    ))}
+  </nav>
+</noscript>

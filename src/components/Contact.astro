@@ -1,0 +1,66 @@
+---
+import { join, pick, socials, type Lang } from '../lib/site';
+import Arrow from './Arrow.astro';
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<section class="contact-hero" data-node-id="2002:2021">
+  <div class="contact-guides" aria-hidden="true"></div>
+  <div class="contact-invitation">
+    <h1>Join Us{lang === 'zh' && <span>加入我们</span>}</h1>
+    <div class="contact-copy">
+      <p>{join[lang]}</p>
+      {lang === 'zh' && <p lang="en">{join.en}</p>}
+    </div>
+    <a class="line-link" href="#contact-details">
+      Contact us
+      <Arrow />
+    </a>
+  </div>
+</section>
+<section id="contact-details" class="contact-details">
+  <div>
+    <p class="eyebrow">BUILD WITH US</p>
+    <h2>{pick(lang, '连接下一个信号', 'Connect with the next signal')}</h2>
+    <a class="contact-email" href="mailto:service@linkxcap.com">
+      service@linkxcap.com
+      <Arrow />
+    </a>
+    <button class="text-link" data-copy="service@linkxcap.com">
+      {pick(lang, '复制邮箱', 'Copy email')}
+    </button>
+  </div>
+  <div class="contact-socials">
+    <h3>{pick(lang, '找到我们', 'Find us')}</h3>
+    {socials.map((s) => (
+      <a href={s.href} target="_blank" rel="noopener noreferrer">
+        {lang === 'en' ? s.en || s.name : s.name}
+        <Arrow />
+      </a>
+    ))}
+    <details>
+      <summary>
+        {pick(lang, '微信 · 星连资本', 'WeChat · Link-X Capital')}
+      </summary>
+      <p>
+        {pick(
+          lang,
+          '公众号二维码待提供，请先通过邮箱与我们联系。',
+          'The official QR code will be added after confirmation. Please contact us by email.',
+        )}
+      </p>
+    </details>
+    <details>
+      <summary>
+        {pick(lang, '微信 · 华清普智孵化器', 'WeChat · T-ONE Innovation Lab')}
+      </summary>
+      <p>
+        {pick(
+          lang,
+          '公众号二维码待提供，请先通过邮箱与我们联系。',
+          'The official QR code will be added after confirmation. Please contact us by email.',
+        )}
+      </p>
+    </details>
+  </div>
+</section>

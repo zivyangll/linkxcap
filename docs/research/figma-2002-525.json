@@ -1,0 +1,215 @@
+{
+  "id": "2002:525",
+  "name": "Frame 517",
+  "notes": [
+    {
+      "id": "2002:1438",
+      "text": "右侧可滚动",
+      "visible": true
+    }
+  ],
+  "screens": [
+    {
+      "id": "2002:526",
+      "name": "Frame 534",
+      "width": 1920,
+      "height": 1741,
+      "texts": [
+        "投资组合",
+        "Portfoilo",
+        "/01",
+        "Philosophy",
+        "Team",
+        "Insight",
+        "Contact",
+        "Portfolio",
+        "EN",
+        "中",
+        "生数科技",
+        "智能基础层"
+      ],
+      "images": [
+        {
+          "id": "2002:529",
+          "name": "image 71",
+          "width": 141,
+          "height": 124
+        },
+        {
+          "id": "2002:533",
+          "name": "image 72",
+          "width": 112,
+          "height": 112
+        },
+        {
+          "id": "2002:536",
+          "name": "image 73",
+          "width": 124,
+          "height": 144
+        },
+        {
+          "id": "2002:539",
+          "name": "image 74",
+          "width": 140,
+          "height": 153
+        },
+        {
+          "id": "2002:542",
+          "name": "image 75",
+          "width": 157,
+          "height": 136
+        },
+        {
+          "id": "2002:548",
+          "name": "image 126",
+          "width": 227,
+          "height": 77
+        },
+        {
+          "id": "2002:551",
+          "name": "image 127",
+          "width": 165,
+          "height": 162
+        },
+        {
+          "id": "2002:554",
+          "name": "image 129",
+          "width": 223,
+          "height": 162
+        },
+        {
+          "id": "2002:557",
+          "name": "image 130",
+          "width": 185,
+          "height": 176
+        },
+        {
+          "id": "2002:560",
+          "name": "image 131",
+          "width": 158,
+          "height": 217
+        },
+        {
+          "id": "2002:563",
+          "name": "image 79",
+          "width": 210,
+          "height": 209
+        },
+        {
+          "id": "2002:566",
+          "name": "image 141",
+          "width": 168,
+          "height": 161
+        },
+        {
+          "id": "2002:569",
+          "name": "image 142",
+          "width": 215,
+          "height": 222
+        },
+        {
+          "id": "2002:572",
+          "name": "image 143",
+          "width": 132,
+          "height": 132
+        },
+        {
+          "id": "2002:575",
+          "name": "image 144",
+          "width": 147,
+          "height": 149
+        },
+        {
+          "id": "2002:578",
+          "name": "image 145",
+          "width": 187,
+          "height": 206
+        },
+        {
+          "id": "2002:581",
+          "name": "image 146",
+          "width": 186,
+          "height": 153
+        },
+        {
+          "id": "2002:584",
+          "name": "image 147",
+          "width": 120,
+          "height": 120
+        },
+        {
+          "id": "2002:587",
+          "name": "image 148",
+          "width": 150,
+          "height": 76
+        }
+      ]
+    },
+    {
+      "id": "2002:1282",
+      "name": "Frame 538",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "Z.AI  / 智谱AI",
+        "MOSI  / 模思智能",
+        "RELAI  / 瑞莱智慧",
+        "APPROACHING.AI  / 趋境科技",
+        "AGIC.MICRO / 谦合益邦",
+        "INFRAWAVES / 基流科技",
+        "GENSPI / 生数科技",
+        "MODELBEST  / 面壁智能",
+        "BIOGEOMETRY / 百奥几何",
+        "智谱AI",
+        "智能基础层",
+        "中国领先的人工智能企业，专注 AGI 技术研发与产业化应用。公司已推出 GLM 系列自研大模型，并围绕大模型底座构建了覆盖 MaaS/API 服务、企业级私有化部署和智能体应用开发的产品体系。2026 年 1 月，智谱正式登陆港交所主板。",
+        "Z.ai listed on the HKEX Main Board in January 2026 (stock code 02513.HK); the company builds GLM models, MaaS model services and agent applications across reasoning, coding, agents and multimodal capabilities.",
+        "访问官网",
+        "投资组合",
+        "Portfoilo",
+        "查看全部"
+      ],
+      "images": [
+        {
+          "id": "2002:1342",
+          "name": "image 80",
+          "width": 64,
+          "height": 55
+        }
+      ]
+    },
+    {
+      "id": "2002:1359",
+      "name": "Frame 542",
+      "width": 1920,
+      "height": 1080,
+      "texts": [
+        "MOSI  / 模思智能",
+        "Z.AI / 智谱AI",
+        "RELAI  / 瑞莱智慧",
+        "APPROACHING.AI  / 趋境科技",
+        "AGIC.MICRO / 谦合益邦",
+        "INFRAWAVES / 基流科技",
+        "GENSPI / 生数科技",
+        "MODELBEST  / 面壁智能",
+        "BIOGEOMETRY / 百奥几何",
+        "模思智能",
+        "智能基础层",
+        "中国领先的人工智能企业，专注 AGI 技术研发与产业化应用。公司已推出 GLM 系列自研大模型，并围绕大模型底座构建了覆盖 MaaS/API 服务、企业级私有化部署和智能体应用开发的产品体系。2026 年 1 月，智谱正式登陆港交所主板。",
+        "Z.ai listed on the HKEX Main Board in January 2026 (stock code 02513.HK); the company builds GLM models, MaaS model services and agent applications across reasoning, coding, agents and multimodal capabilities.",
+        "访问官网",
+        "投资组合",
+        "Portfoilo",
+        "查看全部"
+      ],
+      "images": [
+        {
+          "id": "2002:1419",
+          "name": "image 80",
+          "width": 69,
+          "height": 61
+        }
+      ]
+    }
+  ]
+}

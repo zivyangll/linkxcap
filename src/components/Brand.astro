@@ -1,0 +1,34 @@
+---
+import { asset } from '../lib/site';
+interface Props {
+  light?: boolean;
+}
+const { light = false } = Astro.props;
+---
+
+<span
+  class:list={['brand', { 'brand--light': light }]}
+  aria-label="Link-X Capital"
+>
+  <img
+    class="brand-link"
+    src={asset('3297', 'imgGroup287')}
+    width="63"
+    height="21"
+    alt=""
+  />
+  <img
+    class="brand-mark"
+    src={asset('3297', 'img1')}
+    width="28"
+    height="19"
+    alt=""
+  />
+  <img
+    class="brand-capital"
+    src={asset('3297', 'imgGroup289')}
+    width="117"
+    height="18"
+    alt=""
+  />
+</span>

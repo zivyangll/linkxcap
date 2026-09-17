@@ -1,0 +1,96 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import Portfolio from '../../components/Portfolio.astro';
+import CompanyDetail from '../../components/CompanyDetail.astro';
+import Team from '../../components/Team.astro';
+import Profile from '../../components/Profile.astro';
+import Insights from '../../components/Insights.astro';
+import Article from '../../components/Article.astro';
+import Contact from '../../components/Contact.astro';
+import Legal from '../../components/Legal.astro';
+import {
+  languages,
+  companies,
+  team,
+  type Lang,
+  type Company,
+} from '../../lib/site';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return languages.flatMap((lang) => [
+    ...['portfolio', 'team', 'insights', 'contact', 'legal'].map((page) => ({
+      params: { lang, page },
+      props: { kind: page },
+    })),
+    ...companies.map((company) => ({
+      params: { lang, page: `portfolio/${company.slug}` },
+      props: { kind: 'company', company },
+    })),
+    ...team.map((person) => ({
+      params: { lang, page: `team-${person.id}` },
+      props: { kind: 'person', person },
+    })),
+    ...articles
+      .filter((a) => a.data.lang === lang)
+      .map((article) => ({
+        params: { lang, page: article.data.route },
+        props: { kind: 'article', article },
+      })),
+  ]);
+}
+const lang = Astro.params.lang as Lang;
+const page = Astro.params.page!;
+interface Props {
+  kind: string;
+  company?: Company;
+  person?: (typeof team)[number];
+  article?: CollectionEntry<'articles'>;
+}
+const { kind, company, person, article } = Astro.props;
+const names: Record<string, [string, string]> = {
+  index: [
+    '与AGI时代的定义者同行',
+    'Partnering with founders defining the AGI era',
+  ],
+  portfolio: ['投资组合', 'Portfolio'],
+  team: ['团队', 'Our Team'],
+  insights: ['最新动态', 'News & Content'],
+  contact: ['联系我们', 'Contact'],
+  legal: ['法律声明', 'Legal notice'],
+};
+const title = company
+  ? lang === 'zh'
+    ? company.name
+    : company.nameEn
+  : person
+    ? lang === 'zh'
+      ? person.name
+      : person.en
+    : article
+      ? article.data.title
+      : names[kind]?.[lang === 'zh' ? 0 : 1] || 'Link-X Capital';
+---
+
+<SiteLayout
+  lang={lang}
+  page={page}
+  title={title}
+  description={article?.data.summary}
+  minimal={kind === 'company'}
+  bodyClass={
+    ['team', 'person', 'insights', 'article', 'contact'].includes(kind)
+      ? 'alt-paper'
+      : ''
+  }
+>
+  {kind === 'portfolio' && <Portfolio lang={lang} />}
+  {company && <CompanyDetail lang={lang} company={company} />}
+  {kind === 'team' && <Team lang={lang} />}
+  {person && <Profile lang={lang} person={person} />}
+  {kind === 'insights' && <Insights lang={lang} />}
+  {article && <Article lang={lang} article={article} />}
+  {kind === 'contact' && <Contact lang={lang} />}
+  {kind === 'legal' && <Legal lang={lang} />}
+</SiteLayout>
