@@ -8,8 +8,18 @@
   pointer-events: none;
   z-index: 1;
 }
-.has-scroll-trail .opening-track,
-.has-scroll-trail .hero-track {
+.home-story.has-shared-orbit .philosophy-trail {
+  display: block;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0;
+}
+.home-story.has-shared-orbit .hero .scroll-trail {
+  display: none;
+}
+.has-scroll-trail .opening-track {
   visibility: hidden;
 }
 .home-story .story-scene {
@@ -17,6 +27,29 @@
 }
 .focus .topology-canvas {
   z-index: 0;
+}
+.focus .topology-drag-surface {
+  position: absolute;
+  inset: 0 0 0 45%;
+  z-index: 0;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.focus[data-dragging='true'] .topology-drag-surface {
+  cursor: grabbing;
+}
+.focus[data-renderer='webgl'] .constellation-line {
+  opacity: 0;
+}
+.focus[data-renderer='webgl'] .constellation {
+  pointer-events: none;
+}
+.focus[data-renderer='webgl']
+  .constellation
+  :is(a, button, .constellation-dot) {
+  pointer-events: auto;
+  transition: opacity 0.2s ease;
 }
 .focus
   :is(
@@ -61,6 +94,14 @@
 }
 [data-renderer='static'] .topology-canvas {
   display: none;
+}
+[data-renderer='static'] .topology-drag-surface {
+  display: none;
+}
+@media (max-width: 767px) {
+  .focus .topology-drag-surface {
+    display: none;
+  }
 }
 .network-page {
   background: #1d1d1d;
@@ -205,6 +246,23 @@
   bottom: 40px;
   right: 4%;
 }
+@media (min-width: 1024px) {
+  .company-rail-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--paper);
+    pointer-events: none;
+  }
+  .company-rail-shell > * {
+    z-index: 1;
+  }
+  .company-rail-shell .company-scroll-hint,
+  .company-rail-shell .rail-controls {
+    display: none;
+  }
+}
 .company-browser .company-navigator {
   position: absolute;
   inset: 34px 0 50px;
@@ -226,9 +284,9 @@
   inset: auto;
   display: flex;
   align-items: center;
-  height: 92px;
-  padding: 16px 12px 16px 18%;
-  min-height: 92px;
+  height: calc(106 * var(--u));
+  padding: calc(16 * var(--u)) 12px calc(16 * var(--u)) 41%;
+  min-height: calc(92 * var(--u));
   opacity: var(--rail-opacity, 1);
   transform: translateX(var(--rail-x, 0px));
   font-size: clamp(11px, 0.85vw, 16px);
@@ -246,7 +304,7 @@
 }
 .rail-marker {
   position: absolute;
-  left: 8%;
+  left: 32%;
   width: 30px;
   height: 30px;
   display: grid;
@@ -988,9 +1046,32 @@
     min-height: 0;
   }
 }
-.constellation-company { transition:color .2s,text-shadow .2s; }
-.constellation-company::after { content:''; position:absolute; inset:-12px -18px; }
-.constellation-company:is(:hover,:focus-visible) { color:#fff; text-shadow:0 0 12px #b2a2ff; }
-.constellation-company + .constellation-dot { transition:scale .2s,box-shadow .2s; }
-.constellation-company:is(:hover,:focus-visible) + .constellation-dot { scale:2.5; box-shadow:0 0 14px #b2a2ff; }
-@media (prefers-reduced-motion:reduce) { .constellation-company,.constellation-company + .constellation-dot { transition:none; } }
+.constellation-company {
+  transition:
+    color 0.2s,
+    text-shadow 0.2s;
+}
+.constellation-company::after {
+  content: '';
+  position: absolute;
+  inset: -12px -18px;
+}
+.constellation-company:is(:hover, :focus-visible) {
+  color: #fff;
+  text-shadow: 0 0 12px #b2a2ff;
+}
+.constellation-company + .constellation-dot {
+  transition:
+    scale 0.2s,
+    box-shadow 0.2s;
+}
+.constellation-company:is(:hover, :focus-visible) + .constellation-dot {
+  scale: 2.5;
+  box-shadow: 0 0 14px #b2a2ff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .constellation-company,
+  .constellation-company + .constellation-dot {
+    transition: none;
+  }
+}

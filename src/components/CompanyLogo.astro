@@ -1,6 +1,6 @@
 ---
 import geometry from '../data/logo-geometry.json';
-import { asset, type Company } from '../lib/site';
+import { portfolioLogo, type Company } from '../lib/site';
 interface Props {
   company: Company;
   detail?: boolean;
@@ -22,7 +22,7 @@ const box = geometry[company.logo as keyof typeof geometry];
   ]}
 >
   <img
-    src={asset('526', company.logo)}
+    src={portfolioLogo(company.slug)}
     alt={`${company.nameEn} ${company.name}`}
     width="240"
     height="180"

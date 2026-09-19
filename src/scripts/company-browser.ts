@@ -128,7 +128,7 @@ if (root) {
       );
       link.style.setProperty(
         '--rail-x',
-        `${-Math.pow(ratio, 2) * Math.min(70, rail.clientWidth * 0.12)}px`,
+        `${-Math.pow(ratio, 2) * Math.min(160, rail.clientWidth * 0.24)}px`,
       );
       link.style.setProperty(
         '--rail-opacity',

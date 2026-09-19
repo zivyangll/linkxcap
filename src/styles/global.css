@@ -433,6 +433,12 @@
   }
 }
 @layer pages {
+  .philosophy-orbit {
+    display: none;
+  }
+  .philosophy-trail {
+    display: none;
+  }
   .story-scene {
     position: relative;
     height: calc(1080 * var(--u));
@@ -486,12 +492,26 @@
   .hero-track {
     position: absolute;
     inset: 0 auto 0 24.375%;
-    border-left: 1px dashed #573c7970;
+    width: calc(2 * var(--u));
   }
-  .hero-track .diamond {
+  .hero-track-line {
     position: absolute;
-    top: 8.5%;
+    inset: 0 auto 0 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+  }
+  .hero-track .hero-track-start {
+    position: absolute;
+    top: 8.426%;
     left: calc(-6 * var(--u));
+  }
+  .hero-track .hero-track-end {
+    position: absolute;
+    top: 78.889%;
+    left: calc(-6 * var(--u));
+    background: #c9c9c9;
+    opacity: 0.55;
   }
   .hero-orbit {
     position: absolute;
@@ -550,6 +570,16 @@
     width: 1px;
     background: #1d1d1d40;
   }
+  .about-rays .about-drop-line {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 1px;
+    height: calc(255 * var(--u));
+    background: linear-gradient(#1d1d1d40, #1d1d1d18);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
   .about-rays span {
     position: absolute;
     height: calc(845 * var(--u));
@@ -558,10 +588,10 @@
     bottom: 0;
     transform-origin: bottom;
   }
-  .about-rays span:nth-child(1) {
+  .about-rays span:nth-of-type(1) {
     transform: rotate(50.58deg);
   }
-  .about-rays span:nth-child(2) {
+  .about-rays span:nth-of-type(2) {
     transform: rotate(-50.58deg);
   }
   .about-rays .diamond {
@@ -1022,6 +1052,10 @@
     height: 100%;
     object-fit: fill;
   }
+  .portfolio-card .company-logo img {
+    filter: grayscale(1);
+    transition: filter 0.25s ease;
+  }
   .logo-zhipu-ai {
     opacity: 0.5;
     width: 47%;
@@ -1205,32 +1239,21 @@
     width: 50.7%;
     height: 36.6%;
   }
-  .portfolio-card:is(:hover, :focus-visible, .is-featured) {
+  .portfolio-card:is(:hover, :focus-visible) {
     border-color: transparent;
   }
-  .portfolio-card:is(:hover, :focus-visible, .is-featured) .company-logo {
+  .portfolio-card:is(:hover, :focus-visible) .company-logo {
     transform: translateY(-20%);
     opacity: 1;
   }
-  .portfolio-card:is(:hover, :focus-visible, .is-featured)
+  .portfolio-card:is(:hover, :focus-visible) .company-logo img {
+    filter: none;
+  }
+  .portfolio-card:is(:hover, :focus-visible)
     :is(.company-caption, .card-corners, .card-arrow) {
     opacity: 1;
   }
-  .portfolio-grid:has(.portfolio-card:hover) .is-featured:not(:hover) {
-    border-color: #b7b7b7;
-  }
-  .portfolio-grid:has(.portfolio-card:hover)
-    .is-featured:not(:hover)
-    .company-logo {
-    transform: none;
-    opacity: 0.66;
-  }
-  .portfolio-grid:has(.portfolio-card:hover)
-    .is-featured:not(:hover)
-    :is(.company-caption, .card-corners, .card-arrow) {
-    opacity: 0;
-  }
-  .portfolio-card:is(:hover, :focus-visible, .is-featured) .card-number {
+  .portfolio-card:is(:hover, :focus-visible) .card-number {
     opacity: 0;
   }
   .company-detail {
@@ -2835,15 +2858,8 @@
     .card-arrow {
       display: none;
     }
-    .portfolio-card.is-featured .company-logo,
     .portfolio-card:is(:hover, :focus-visible) .company-logo {
       transform: none;
-    }
-    .portfolio-card.is-featured .card-number {
-      opacity: 0.3;
-    }
-    .portfolio-card.is-featured {
-      border-color: #1d1d1d25;
     }
     .card-corners {
       display: none;
@@ -2877,7 +2893,7 @@
     .company-content h1 {
       font-size: 52px;
     }
-    body[data-lang="en"] .company-content h1 {
+    body[data-lang='en'] .company-content h1 {
       font-size: clamp(32px, 12.2vw, 48px);
       overflow-wrap: normal;
     }

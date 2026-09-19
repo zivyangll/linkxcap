@@ -8,6 +8,8 @@ export const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 export const url = (path = '') => base + path.replace(/^\//, '');
 export const pageUrl = (lang: Lang, page = 'index') =>
   url(`${lang}/${page}.html`);
+export const portfolioLogo = (slug: string) =>
+  url(`assets/portfolio-logos/${slug}.webp`);
 export const pick = (lang: Lang, zh: string, en: string) =>
   lang === 'zh' ? zh : en;
 export const asset = (node: string, key: string) => {

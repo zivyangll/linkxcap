@@ -47,6 +47,19 @@ const { lang } = Astro.props;
   </style>
 </noscript>
 <div class="home-story" data-home>
+  <img
+    class="philosophy-orbit"
+    src={asset('3438', 'imgEllipse1')}
+    alt=""
+    width="2406"
+    height="2406"
+    aria-hidden="true"
+  />
+  <canvas
+    class="scroll-trail philosophy-trail"
+    data-scroll-trail="hero"
+    aria-hidden="true"
+  ></canvas>
   <section
     class="story-scene opening"
     data-node-id="2002:3297"
@@ -116,13 +129,19 @@ const { lang } = Astro.props;
     />
     <canvas
       class="scroll-trail"
-      data-scroll-trail="hero"
+      data-scroll-trail="hero-mobile"
       aria-hidden="true"
     ></canvas>
     <div class="hero-track" aria-hidden="true">
-      <i class="diamond"></i>
+      <i class="diamond hero-track-start"></i>
       <i class="diamond hero-track-end"></i>
-      <img src={asset('3348', 'imgVector30')} width="2" height="1080" alt="" />
+      <img
+        class="hero-track-line"
+        src={asset('3348', 'imgVector30')}
+        width="2"
+        height="1080"
+        alt=""
+      />
     </div>
     <h2 id="hero-title" class="hero-title" data-reveal>
       Partnering with founders
@@ -175,6 +194,7 @@ const { lang } = Astro.props;
       loading="lazy"
     />
     <div class="about-rays" aria-hidden="true">
+      <i class="about-drop-line"></i>
       <i class="about-ring"></i>
       <span></span>
       <span></span>
@@ -270,6 +290,11 @@ const { lang } = Astro.props;
     aria-labelledby="focus-title"
   >
     <canvas class="topology-canvas" aria-hidden="true"></canvas>
+    <div
+      class="topology-drag-surface"
+      data-topology-drag
+      aria-hidden="true"
+    ></div>
     <h2 id="focus-title" class="focus-title">
       Focus
       <br />

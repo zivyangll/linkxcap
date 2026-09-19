@@ -162,12 +162,16 @@ const place = (x: unknown, y: unknown) =>
         <>
           <a
             class="constellation-company"
+            data-topology-anchor={`company-${slug}`}
+            data-topology-role="label"
             style={place(x, y)}
             href={pageUrl(lang, `portfolio/${slug}`)}
             set:text={pick(lang, String(zh), String(en))}
-          ></a>
+          />
           <i
             class="constellation-dot"
+            data-topology-anchor={`company-${slug}`}
+            data-topology-role="node"
             style={place(dx, dy)}
             aria-hidden="true"
           ></i>
@@ -181,6 +185,8 @@ const place = (x: unknown, y: unknown) =>
       <button
         class:list={['sector-star', `star-${s.id}`, { 'is-active': i === 0 }]}
         data-sector={s.id}
+        data-topology-anchor={`sector-${s.id}`}
+        data-topology-role="node"
         aria-controls={`sector-${s.id}`}
         aria-pressed={i === 0}
         style={`--sx:${x};--sy:${y};--lx:${lx};--ly:${ly};--ax:${ax};--ay:${ay};--alx:${alx};--aly:${aly}`}
@@ -211,6 +217,8 @@ const place = (x: unknown, y: unknown) =>
   })}
   <i
     class="constellation-dot quiet-dot"
+    data-topology-anchor="quiet"
+    data-topology-role="node"
     style={place(1181, 340)}
     aria-hidden="true"
   ></i>
