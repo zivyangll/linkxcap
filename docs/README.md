@@ -5,7 +5,7 @@
 ## 已确认的范围
 
 - 首次部署使用 **GitHub Pages**，交付纯静态 HTML、CSS、JavaScript 和资源文件。
-- **Fellow 不单独上线**，将其叙事与 Join Us 内容合并到首页和联系我们。
+- **Fellow 不单独上线**，2026-09-19 会议后将完整叙事和 Join Us 放入联系我们；首页保留五章并链接到该页。
 - **Insight 使用站内中英文文章详情**，同时保留外部原文链接。
 - 以 Figma 的 `final` 页面为视觉依据；桌面稿之外，需要补充移动端布局及交互设计。
 
@@ -20,7 +20,7 @@
 
 ## 推荐结论
 
-**Astro 静态生成 + TypeScript + CSS/SVG + 按需加载的 GSAP/ScrollTrigger + Canvas 2D 粒子**。全部正文在生成的 HTML 中；不将 Three.js、视频或前端框架运行时设为全站必需依赖。后续只有经原型验证需要真实三维空间时，才增加单场景 WebGL。
+**Astro 静态生成 + TypeScript + CSS/SVG + GSAP/ScrollTrigger + 按可见区域加载的 Three.js**。会议明确要求真实三维交互，因此首页末屏和 Portfolio 使用可选 WebGL；正文、导航和链接不依赖三维模块。
 
 ## 使用说明
 
@@ -35,3 +35,9 @@
 - [全页视觉核对报告](06-全页视觉核对报告.md)：28个画板的差异与待确认项。
 - [交互视觉对照页](verification/visual-audit/index.html)：并排、叠加、差异图及70个URL截图。
 - 当前仍有未实现状态和非零像素差异，不能视为100%视觉验收通过。
+
+## 最新会议修改（2026-09-19）
+
+- [会议评审修改与验收](07-会议评审修改与验收.md)：本轮实现、性能数据、视频与团队姓名等待确认表。
+- [本轮截图预览](verification/meeting-revision/index.html)：正常动效状态和中英文手机页面。
+- 06 报告继续作为上一个静态版本的历史基线。

@@ -1,9 +1,143 @@
 ---
-import { join, pick, socials, asset, type Lang } from '../lib/site';
+import { join, pick, socials, asset, url, type Lang } from '../lib/site';
 import Arrow from './Arrow.astro';
+import media from '../data/fellow-media.json';
+const mediaUrl = (src: string) =>
+  /^(https?:)?\/\//.test(src) ? src : url(src);
 const { lang } = Astro.props as { lang: Lang };
 ---
 
+<section
+  class="story-scene next-signal fellow-intro"
+  data-node-id="2002:1692"
+  aria-labelledby="next-title"
+>
+  <div class="signal-guides" aria-hidden="true">
+    {[247, 389.6, 1531.4, 1681].map((x, i) => (
+      <img
+        class="signal-guide-v"
+        src={asset('1692', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+        alt=""
+      />
+    ))}
+    {[437.32, 467.66, 525.83, 549.85, 585.25, 678.82].map((y) => (
+      <img
+        class="signal-guide-h"
+        src={asset('1692', y === 467.66 ? 'imgVector44' : 'imgVector34')}
+        style={`top:calc(${y} * var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
+  <h1 id="next-title">The Next Signal</h1>
+  {lang === 'zh' ? (
+    <img
+      class="next-outline"
+      src={asset('1692', 'img')}
+      width="584"
+      height="95"
+      alt="与定义者同行"
+      loading="lazy"
+    />
+  ) : (
+    <p class="next-en">Alongside the visionaries</p>
+  )}
+  <div class="fellow-context" data-node-id="2002:1753">
+    <p>{join[lang]}</p>
+    {lang === 'zh' && <p lang="en">{join.en}</p>}
+  </div>
+  <i class="fellow-orbit-point diamond" aria-hidden="true"></i>
+  <p class="fellow-definition">
+    {pick(
+      lang,
+      '与定义同行，与定义者同行',
+      'Alongside ideas. Alongside their visionaries.',
+    )}
+  </p>
+  <img
+    class="next-orbit next-orbit-raster"
+    src={asset('audit', '1751')}
+    width="1920"
+    height="430"
+    alt=""
+    loading="lazy"
+  />
+</section>
+
+<section
+  class="fellow-media-section"
+  data-fellow-media
+  data-node-id="2002:1811"
+>
+  <div class="fellow-media-title">
+    <h2>The Next Signal</h2>
+    <p>{pick(lang, '与定义者同行', 'Alongside the visionaries')}</p>
+  </div>
+  <div class="fellow-video-shell" data-video-shell>
+    {media.src ? (
+      <video
+        data-fellow-video
+        muted
+        playsinline
+        loop
+        preload="none"
+        poster={media.poster ? mediaUrl(media.poster) : undefined}
+        controls
+      >
+        <source src={mediaUrl(media.src)} type="video/mp4" />
+        {media.captionsZh && (
+          <track
+            kind="captions"
+            srclang="zh"
+            label="中文"
+            src={mediaUrl(media.captionsZh)}
+            default={lang === 'zh'}
+          />
+        )}
+        {media.captionsEn && (
+          <track
+            kind="captions"
+            srclang="en"
+            label="English"
+            src={mediaUrl(media.captionsEn)}
+            default={lang === 'en'}
+          />
+        )}
+      </video>
+    ) : (
+      <div
+        class="fellow-video-placeholder"
+        role="img"
+        aria-label={pick(
+          lang,
+          '品牌视频占位，正式视频待提供',
+          'Brand film placeholder — final video pending',
+        )}
+      >
+        <span class="fellow-play" aria-hidden="true">
+          <img
+            src={asset('1811', 'imgEllipse16')}
+            width="117"
+            height="117"
+            alt=""
+          />
+          <img
+            src={asset('1811', 'imgRectangle636')}
+            width="41"
+            height="46"
+            alt=""
+          />
+        </span>
+        <p>{pick(lang, '品牌视频 · 待提供', 'Brand film · Coming soon')}</p>
+      </div>
+    )}
+    <button class="fellow-video-play" data-video-play hidden>
+      {pick(lang, '播放视频', 'Play film')}
+    </button>
+  </div>
+  <p class="fellow-media-caption">{join[lang]}</p>
+</section>
 <section class="contact-hero" data-node-id="2002:2021">
   <div class="contact-guides" aria-hidden="true">
     {[
@@ -20,7 +154,7 @@ const { lang } = Astro.props as { lang: Lang };
     ))}
   </div>
   <div class="contact-invitation">
-    <h1>Join Us{lang === 'zh' && <span>加入我们</span>}</h1>
+    <h2>Join Us{lang === 'zh' && <span>加入我们</span>}</h2>
     <div class="contact-copy">
       <p>
         {lang === 'zh' ? (
@@ -87,3 +221,7 @@ const { lang } = Astro.props as { lang: Lang };
     </details>
   </div>
 </section>
+
+<script>
+  import('../scripts/fellow').then((module) => module.initFellow());
+</script>

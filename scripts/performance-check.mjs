@@ -86,7 +86,7 @@ for (const route of ['zh/index.html', 'en/index.html', 'zh/portfolio.html'])
       initialBytes:
         initial.html + initial.resources.reduce((n, x) => n + x.bytes, 0),
       fontBytes: initial.resources
-        .filter((x) => x.name.endsWith('.woff2'))
+        .filter((x) => new URL(x.name).pathname.endsWith('.woff2'))
         .reduce((n, x) => n + x.bytes, 0),
       longTasks: initial.longTasks.map(Math.round),
       scriptedInteractionMaxMs: interaction,

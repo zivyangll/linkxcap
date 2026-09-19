@@ -1,41 +1,78 @@
 ---
-import { companies, sectors, pageUrl, type Lang } from '../lib/site';
-import PageTitle from './PageTitle.astro';
+import { companies, pageUrl, pick, ui, type Lang } from '../lib/site';
 import CompanyLogo from './CompanyLogo.astro';
-import Arrow from './Arrow.astro';
 const { lang } = Astro.props as { lang: Lang };
+const positions = [
+  [50, 21],
+  [69, 12],
+  [29, 13],
+  [14, 38],
+  [45, 49],
+  [86, 63],
+  [22, 70],
+  [13, 12],
+  [32, 39],
+  [86, 17],
+  [10, 88],
+  [42, 80],
+  [67, 69],
+  [68, 39],
+  [8, 62],
+  [82, 91],
+  [58, 91],
+  [90, 40],
+  [28, 94],
+].map(([x, y]) => ({ x, y }));
 ---
 
-<div class="portfolio-page" data-node-id="2002:526">
-  <PageTitle
-    zh="投资组合"
-    en={lang === 'zh' ? 'Portfoilo' : 'Portfolio'}
-    lang={lang}
-  />
-  <div class="portfolio-grid">
-    {companies.map((company, i) => (
-      <a
-        href={pageUrl(lang, `portfolio/${company.slug}`)}
-        class:list={['portfolio-card', { 'is-featured': i === 1 }]}
-        aria-label={lang === 'zh' ? company.name : company.nameEn}
-        data-company-card
-      >
-        <CompanyLogo company={company} />
-        <span class="card-corners" aria-hidden="true"></span>
-        <span class="card-arrow" aria-hidden="true">
-          <Arrow />
-        </span>
-        <div class="company-caption">
-          <span></span>
-          <h2>{lang === 'zh' ? company.name : company.nameEn}</h2>
-          <p>
-            {lang === 'zh'
-              ? sectors.find((s) => s.id === company.sector)?.zh
-              : company.descEn}
-          </p>
-        </div>
-        <span class="card-number">/{String(i + 1).padStart(2, '0')}</span>
-      </a>
-    ))}
+<section class="portfolio-network" data-topology data-topology-kind="portfolio">
+  <div class="network-heading">
+    <p class="eyebrow">LINK-X CONSTELLATION</p>
+    <h1>
+      {pick(lang, '投资组合', 'Portfolio')}
+      <span>{pick(lang, 'Portfolio', 'Defining what comes next')}</span>
+    </h1>
+    <p>
+      {pick(
+        lang,
+        '悬停点亮星群，点击探索定义者。',
+        'Illuminate a node. Discover the people defining what comes next.',
+      )}
+    </p>
   </div>
-</div>
+  <div class="network-stage">
+    <canvas class="topology-canvas" aria-hidden="true"></canvas>
+    <div class="network-nodes">
+      {companies.map((company, i) => (
+        <a
+          href={pageUrl(lang, `portfolio/${company.slug}`)}
+          class="network-node"
+          data-node3d
+          data-company-card
+          data-slug={company.slug}
+          style={`--nx:${positions[i].x}%;--ny:${positions[i].y}%`}
+          aria-label={pick(lang, company.name, company.nameEn)}
+        >
+          <span class="network-logo">
+            <CompanyLogo company={company} />
+          </span>
+          <span>{pick(lang, company.name, company.nameEn)}</span>
+          <small>{String(i + 1).padStart(2, '0')}</small>
+        </a>
+      ))}
+    </div>
+  </div>
+  <div class="network-bottom">
+    <a href={pageUrl(lang, 'contact')}>
+      {pick(lang, '与我们连接', 'Connect with us')} ↗
+    </a>
+    <button
+      data-motion-toggle
+      data-pause={ui[lang].pause}
+      data-resume={ui[lang].resume}
+      aria-pressed="false"
+    >
+      {ui[lang].pause}
+    </button>
+  </div>
+</section>

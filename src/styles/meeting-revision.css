@@ -1,0 +1,996 @@
+/* Meeting revision: approved interactions override the earlier static audit.
+   Figma still supplies type, colour and assets. No global reset overrides. */
+.scroll-trail {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.has-scroll-trail .opening-track,
+.has-scroll-trail .hero-track {
+  visibility: hidden;
+}
+.home-story .story-scene {
+  isolation: isolate;
+}
+.focus .topology-canvas {
+  z-index: 0;
+}
+.focus
+  :is(
+    .focus-title,
+    .focus-panels,
+    .constellation,
+    .motion-toggle,
+    .focus-links
+  ) {
+  z-index: 1;
+}
+.topology-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.sector-star .star-glyph {
+  transition:
+    filter 0.25s,
+    scale 0.25s;
+}
+.sector-star:is(:hover, :focus-visible) .star-glyph {
+  filter: brightness(1.8) drop-shadow(0 0 12px #b2a2ff90);
+  scale: 1.23;
+}
+.sector-star:is(:hover, :focus-visible) .star-label {
+  color: #e7dfff;
+}
+.focus-links {
+  position: absolute;
+  bottom: 28px;
+  left: 5.52%;
+  display: flex;
+  gap: 32px;
+  font-size: 14px;
+  color: #d8d6cf;
+}
+.focus-links a:hover {
+  color: #b2a2ff;
+}
+[data-renderer='static'] .topology-canvas {
+  display: none;
+}
+.network-page {
+  background: #1d1d1d;
+  color: #f8f6f2;
+}
+.network-page .site-header {
+  color: #f8f6f2;
+  background: rgb(29 29 29 / 0.8);
+}
+.network-page .brand-link,
+.network-page .brand-capital {
+  filter: invert(1);
+}
+.network-page .menu-toggle span {
+  background: #f8f6f2;
+}
+.network-page .site-menu {
+  color: #1d1d1d;
+}
+.portfolio-network {
+  min-height: 100svh;
+  padding: clamp(110px, 9vw, 175px) 4vw 32px;
+  position: relative;
+  overflow: clip;
+}
+.network-heading {
+  margin: 0 5vw;
+  position: relative;
+  z-index: 1;
+}
+.network-heading h1 {
+  font-size: clamp(42px, 4.3vw, 82px);
+  line-height: 1.13;
+  font-weight: 400;
+}
+.network-heading h1 span {
+  display: block;
+  font-size: 0.75em;
+  margin-top: 8px;
+}
+.network-heading > p:last-child {
+  color: #a19aa8;
+  margin-top: 24px;
+  font-size: 14px;
+}
+.network-stage {
+  position: relative;
+  height: clamp(560px, 45vw, 820px);
+  margin-top: 12px;
+}
+.network-nodes {
+  position: absolute;
+  inset: 0;
+}
+.network-node {
+  position: absolute;
+  left: var(--nx);
+  top: var(--ny);
+  transform: translate(-50%, -50%);
+  width: 150px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+  color: #bdb6c5;
+  text-align: center;
+  font: 14px/1.4 var(--sans);
+}
+.network-node > small {
+  position: absolute;
+  right: -7px;
+  top: 0;
+  font: 10px var(--sans);
+  opacity: 0.35;
+}
+.network-logo .company-logo {
+  mix-blend-mode: screen;
+  opacity: 1;
+}
+.network-node:is(:hover, :focus-visible, .is-selected) .company-logo {
+  mix-blend-mode: multiply;
+}
+.network-logo {
+  display: grid;
+  place-items: center;
+  width: 140px;
+  height: 66px;
+  transition:
+    background 0.25s,
+    box-shadow 0.25s,
+    scale 0.25s;
+  border: 1px solid transparent;
+}
+.network-logo img {
+  filter: grayscale(1) invert(1);
+  opacity: 0.7;
+  transition:
+    filter 0.2s,
+    opacity 0.2s;
+}
+.network-node:is(:hover, :focus-visible, .is-selected) {
+  color: #d8c4ff;
+}
+.network-node:is(:hover, :focus-visible, .is-selected) .network-logo {
+  background: #f8f6f2;
+  border-color: #b2a2ff;
+  box-shadow: 0 0 30px #b2a2ff30;
+  scale: 1.08;
+}
+.network-node:is(:hover, :focus-visible, .is-selected) img {
+  filter: none;
+  opacity: 1;
+}
+.network-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 5vw 0;
+  border-top: 1px solid #ffffff12;
+  font-size: 14px;
+  color: #aaa2b7;
+}
+.network-bottom button {
+  color: inherit;
+}
+/* Measured scroll rows replace the old absolute navigation coordinates. */
+.company-browser {
+  min-height: 100svh;
+  height: max(100svh, 56.25vw);
+}
+.company-browser .company-content {
+  width: calc(490 * var(--u));
+}
+.company-browser .company-content .company-logo {
+  margin-bottom: calc(26 * var(--u));
+}
+
+.company-rail-shell {
+  position: absolute;
+  left: 61%;
+  top: 110px;
+  bottom: 40px;
+  right: 4%;
+}
+.company-browser .company-navigator {
+  position: absolute;
+  inset: 34px 0 50px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  padding: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #b9adc8 transparent;
+  scroll-snap-type: y proximity;
+  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+}
+.company-browser .company-nav-track {
+  height: auto;
+  padding-block: calc((max(100svh, 56.25vw) - 224px) / 2 - 46px);
+}
+.company-browser .company-navigator a {
+  position: relative;
+  inset: auto;
+  display: flex;
+  align-items: center;
+  height: 92px;
+  padding: 16px 12px 16px 18%;
+  min-height: 92px;
+  opacity: var(--rail-opacity, 1);
+  transform: translateX(var(--rail-x, 0px));
+  font-size: clamp(11px, 0.85vw, 16px);
+  line-height: 1.5;
+  font-weight: 400;
+  scroll-snap-align: center;
+}
+.company-browser .company-navigator a[aria-current] {
+  color: #573c79;
+  font-size: clamp(14px, 1.15vw, 22px);
+  opacity: 1;
+}
+.company-browser .company-navigator a::before {
+  display: none;
+}
+.rail-marker {
+  position: absolute;
+  left: 8%;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+}
+.rail-marker::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: currentColor;
+  rotate: 45deg;
+}
+.rail-marker img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+[aria-current] .rail-marker img {
+  opacity: 1;
+  filter: sepia(1) saturate(2) hue-rotate(218deg);
+}
+.company-scroll-hint {
+  color: #8b838e;
+  font: 11px var(--sans);
+  text-align: center;
+  letter-spacing: 0.08em;
+}
+.rail-controls {
+  position: absolute;
+  bottom: 0;
+  left: 16%;
+  display: flex;
+  gap: 12px;
+}
+.rail-controls button {
+  width: 44px;
+  height: 36px;
+  border: 1px solid #573c7930;
+  color: #573c79;
+}
+/* Three members, with one shared description region on the right. */
+.team-review {
+  max-width: 1920px;
+  margin: auto;
+  padding: clamp(120px, 10vw, 192px) 9.3vw 100px;
+  min-height: 100svh;
+}
+.team-review-heading {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8vw;
+  align-items: start;
+}
+.team-review-heading .page-title {
+  position: static;
+}
+.team-review-heading > p {
+  max-width: 670px;
+  padding-top: 10px;
+  color: #655f65;
+  font-size: clamp(13px, 1.04vw, 20px);
+  line-height: 1.55;
+}
+.team-explorer {
+  margin-top: clamp(55px, 6vw, 115px);
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 5vw;
+}
+.team-portraits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.team-member {
+  min-width: 0;
+}
+.team-review .profile-toggle {
+  opacity: 1;
+  display: block;
+  position: static;
+  width: 100%;
+  padding: 0;
+  text-align: left;
+  border: 0;
+}
+.member-portrait img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 440/640;
+  height: auto;
+  object-fit: cover;
+  filter: grayscale(1);
+  transition:
+    filter 0.35s,
+    opacity 0.35s;
+}
+.member-portrait:is(:hover, :focus-visible, [aria-expanded='true']) img {
+  filter: grayscale(0);
+}
+.member-portrait[aria-expanded='true'] {
+  outline: 1px solid #573c7940;
+  outline-offset: 8px;
+}
+.member-caption {
+  display: block;
+  margin-top: 20px;
+}
+.member-caption strong {
+  display: block;
+  font-weight: 500;
+  font-size: clamp(20px, 1.8vw, 34px);
+}
+.member-caption > span {
+  display: block;
+  font: 13px var(--sans);
+  margin-top: 8px;
+  color: #827984;
+}
+.team-review .team-bio {
+  position: static;
+  inset: auto;
+  display: block;
+  height: auto;
+  padding: 10px 0;
+  background: none;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  pointer-events: auto;
+}
+.team-review .team-bio::before {
+  display: none;
+}
+.team-review .team-bio[hidden] {
+  display: none;
+}
+.member-bio h2 {
+  font-size: clamp(36px, 3vw, 60px);
+  font-weight: 400;
+  margin: 24px 0 8px;
+}
+.member-en {
+  color: #827984;
+  font-size: 20px;
+}
+.member-role {
+  margin: 24px 0;
+}
+.member-copy {
+  font-size: clamp(15px, 1.1vw, 20px);
+  line-height: 1.8;
+}
+.member-bio .line-link {
+  margin-top: 40px;
+  font-size: 15px;
+}
+.member-bio .data-note {
+  margin-top: 24px;
+  color: #8b838e;
+}
+/* Fellow B: original guide assets and arc; video expands from node 1811. */
+.fellow-intro {
+  background: #f8f6f2;
+}
+.fellow-intro h1 {
+  --signal-fill: 100%;
+  position: absolute;
+  left: 50%;
+  top: calc(414 * var(--u));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: calc(108.717 * var(--u));
+  font-weight: 500;
+  letter-spacing: -0.05em;
+  line-height: 1.2;
+  color: #090909;
+}
+@supports (-webkit-background-clip: text) {
+  .fellow-intro h1 {
+    -webkit-text-stroke: 1px #1d1d1d;
+    color: transparent;
+    background: linear-gradient(
+      to right,
+      #1d1d1d var(--signal-fill),
+      transparent var(--signal-fill)
+    );
+    background-clip: text;
+  }
+}
+.fellow-definition {
+  position: absolute;
+  left: 50%;
+  top: calc(810 * var(--u));
+  transform: translateX(-50%);
+  color: #786d7f;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.fellow-orbit-point {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: calc(681 * var(--u));
+  width: 9px;
+  height: 9px;
+  background: #573c79;
+  box-shadow: 0 0 15px #573c7950;
+}
+.fellow-media-section {
+  position: relative;
+  height: calc(1081 * var(--u));
+  min-height: 650px;
+  overflow: clip;
+  background: #f8f6f2;
+  isolation: isolate;
+}
+.fellow-media-section::before {
+  content: '';
+  position: absolute;
+  inset: 0 12.86%;
+  border-inline: 1px dashed #d7d4d0;
+  pointer-events: none;
+  z-index: -1;
+}
+.fellow-media-title {
+  text-align: center;
+  position: absolute;
+  top: calc(193 * var(--u));
+  left: 0;
+  width: 100%;
+}
+.fellow-media-title h2 {
+  font-size: calc(63.557 * var(--u));
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: -0.05em;
+}
+.fellow-media-title p {
+  font-size: calc(56.133 * var(--u));
+  line-height: 1.2;
+  margin-top: calc(20 * var(--u));
+}
+.fellow-video-shell {
+  position: absolute;
+  left: 50%;
+  top: calc(414 * var(--u));
+  transform: translateX(-50%);
+  width: 57.34375%;
+  height: calc(547 * var(--u));
+  background: #e4e2de;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.fellow-video-shell video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fellow-video-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.fellow-video-placeholder > p {
+  position: absolute;
+  bottom: 24px;
+  color: #8a8383;
+  font: 12px var(--sans);
+  letter-spacing: 0.1em;
+}
+.fellow-play {
+  position: relative;
+  width: clamp(64px, 6.09375vw, 117px);
+  aspect-ratio: 1;
+}
+.fellow-play img:first-child {
+  width: 100%;
+  height: 100%;
+}
+.fellow-play img:last-child {
+  position: absolute;
+  left: 38.4%;
+  top: 30.77%;
+  width: 35%;
+  height: 39.3%;
+}
+.fellow-video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 16px 28px;
+  background: #fcfbf5;
+  color: #573c79;
+}
+.fellow-media-caption {
+  position: absolute;
+  left: 15%;
+  bottom: 12px;
+  width: 70%;
+  text-align: center;
+  font-size: 14px;
+  color: #827984;
+}
+.contact-invitation h2 {
+  font-size: calc(40 * var(--u));
+  line-height: 1.2;
+  font-weight: 500;
+}
+.contact-invitation h2 span {
+  display: block;
+  font-size: calc(52.25 * var(--u));
+  margin-top: 4px;
+}
+@media (max-width: 1023px) {
+  .network-node {
+    width: 115px;
+    font-size: 12px;
+  }
+  .network-logo {
+    width: 105px;
+    height: 56px;
+  }
+
+  .company-browser {
+    height: auto;
+    min-height: 100svh;
+    padding: 130px 6vw 50px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 36px;
+  }
+  .company-browser .company-heading {
+    position: static;
+    grid-column: 1/-1;
+  }
+  .company-browser .company-content {
+    position: static;
+    width: auto;
+  }
+  .company-browser .company-content .company-logo {
+    width: 180px;
+    height: 64px;
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+  .company-browser .company-content h1 {
+    font-size: 40px;
+  }
+  .company-browser .company-sector {
+    font-size: 14px;
+    letter-spacing: 0.2em;
+    margin: 14px 0 30px;
+  }
+  .company-browser .company-description p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .company-browser .website-link {
+    margin-top: 30px;
+    font-size: 18px;
+  }
+  .company-rail-shell {
+    position: relative;
+    inset: auto;
+    height: 580px;
+  }
+  .company-browser .company-navigator {
+    inset: 34px 0 50px;
+  }
+  .company-browser .company-nav-track {
+    padding-block: 202px;
+  }
+  .company-browser .company-navigator a {
+    font-size: 11px;
+  }
+  .company-browser .company-navigator a[aria-current] {
+    font-size: 14px;
+  }
+  .team-review {
+    padding: 120px 6vw 80px;
+  }
+  .team-review-heading {
+    gap: 6vw;
+  }
+  .team-explorer {
+    gap: 32px;
+    grid-template-columns: 1.2fr 1fr;
+  }
+  .team-portraits {
+    gap: 12px;
+  }
+  .member-caption strong {
+    font-size: 20px;
+  }
+  .fellow-intro {
+    height: 75vw;
+    min-height: 620px;
+  }
+  .fellow-intro h1 {
+    top: 240px;
+    font-size: 8vw;
+  }
+  .fellow-intro .next-outline {
+    top: 330px;
+    width: 48vw;
+    height: auto;
+  }
+  .fellow-intro .next-orbit {
+    top: 420px;
+  }
+  .fellow-definition {
+    top: 535px;
+  }
+  .fellow-media-title {
+    top: 100px;
+  }
+  .fellow-media-title h2 {
+    font-size: 42px;
+  }
+  .fellow-media-title p {
+    font-size: 32px;
+    margin-top: 16px;
+  }
+  .fellow-video-shell {
+    top: 260px;
+    height: 330px;
+    width: 75%;
+  }
+  .fellow-media-section {
+    height: 690px;
+  }
+  .contact-invitation h2 {
+    font-size: 36px;
+  }
+  .contact-invitation h2 span {
+    font-size: 44px;
+  }
+}
+@media (max-width: 767px) {
+  .home-story .focus {
+    padding-bottom: 90px;
+  }
+  .focus-links {
+    bottom: 24px;
+    left: 24px;
+    font-size: 12px;
+    gap: 20px;
+  }
+  .focus .motion-toggle {
+    bottom: 65px;
+  }
+  .portfolio-network {
+    padding: 115px 24px 32px;
+  }
+  .network-heading {
+    margin: 0;
+  }
+  .network-heading h1 {
+    font-size: 42px;
+  }
+  .network-stage {
+    height: auto;
+    margin-top: 48px;
+  }
+  .network-nodes {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 32px;
+  }
+  .network-node {
+    position: relative;
+    inset: auto;
+    transform: none;
+    width: 100%;
+    font-size: 13px;
+    padding: 16px 0;
+  }
+  .network-logo {
+    width: 120px;
+    height: 64px;
+  }
+
+  .network-bottom {
+    margin-top: 40px;
+    padding: 20px 0 0;
+    font-size: 12px;
+  }
+  .company-browser {
+    display: block;
+    padding: 108px 24px 36px;
+  }
+  .company-browser .company-heading {
+    margin-bottom: 36px;
+  }
+  .company-browser .company-content {
+    width: 100%;
+    min-height: 420px;
+  }
+  .company-browser .company-content h1 {
+    font-size: clamp(30px, 10.5vw, 44px);
+    overflow-wrap: anywhere;
+  }
+  .company-browser .company-description p {
+    font-size: 14px;
+  }
+  .company-browser .company-orbit {
+    opacity: 0.15;
+  }
+  .company-rail-shell {
+    height: 340px;
+    margin-top: 30px;
+  }
+  .company-browser .company-nav-track {
+    padding-block: 82px;
+  }
+  .company-browser .company-navigator a {
+    height: 92px;
+    font-size: 12px;
+  }
+  .company-browser .company-navigator a[aria-current] {
+    font-size: 16px;
+  }
+  .team-review-heading {
+    display: block;
+  }
+  .team-review-heading > p {
+    margin-top: 30px;
+    line-height: 1.65;
+    font-size: 13px;
+  }
+  .team-explorer {
+    display: block;
+    margin-top: 42px;
+  }
+  .team-portraits {
+    gap: 16px;
+  }
+  .member-caption strong {
+    font-size: 18px;
+  }
+  .member-caption > span {
+    font-size: 11px;
+  }
+  .member-portrait[aria-expanded='true'] {
+    outline-offset: 5px;
+  }
+  .team-biographies {
+    margin-top: 36px;
+    min-height: 330px;
+  }
+  .member-copy {
+    font-size: 16px;
+  }
+  .member-bio h2 {
+    font-size: 36px;
+  }
+  .fellow-intro {
+    min-height: 660px;
+    height: 85svh;
+  }
+  .fellow-intro h1 {
+    top: 220px;
+    font-size: clamp(38px, 10vw, 60px);
+  }
+  .fellow-intro .next-outline {
+    top: 302px;
+    width: 72%;
+    height: auto;
+  }
+  .fellow-intro .next-orbit {
+    top: 390px;
+    width: 200%;
+    max-width: none;
+    left: -50%;
+    height: auto;
+  }
+  .fellow-definition {
+    top: 485px;
+    font-size: 12px;
+  }
+  .fellow-intro .signal-guides {
+    opacity: 0.45;
+  }
+  .fellow-media-section {
+    min-height: 650px;
+    height: 80svh;
+  }
+  .fellow-media-title {
+    top: 90px;
+  }
+  .fellow-media-title h2 {
+    font-size: 36px;
+  }
+  .fellow-media-title p {
+    font-size: 28px;
+  }
+  .fellow-video-shell {
+    top: 250px;
+    width: 82%;
+    height: auto;
+    aspect-ratio: 16/10;
+  }
+  .fellow-media-caption {
+    left: 8%;
+    width: 84%;
+    bottom: 60px;
+    line-height: 1.7;
+    font-size: 13px;
+  }
+  .fellow-video-placeholder > p {
+    font-size: 10px;
+    bottom: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-trail,
+  .topology-canvas {
+    display: none;
+  }
+  .sector-star .star-glyph,
+  .network-logo,
+  .network-logo img,
+  .member-portrait img {
+    transition: none;
+  }
+  .fellow-intro h1 {
+    --signal-fill: 100% !important;
+  }
+  .fellow-orbit-point {
+    left: 50%;
+  }
+}
+
+.focus .motion-toggle {
+  left: auto;
+  right: 5.52%;
+}
+.company-browser .company-navigator a > span {
+  display: block;
+}
+.company-browser .company-navigator a .rail-marker {
+  display: grid;
+}
+@media (max-width: 767px) {
+  .company-browser .company-content .company-logo {
+    width: 78px;
+    height: 78px;
+  }
+}
+.company-browser .company-navigator {
+  display: block;
+  width: auto;
+  margin: 0;
+  scroll-padding: 0;
+  scroll-snap-type: none;
+  overflow-anchor: none;
+}
+.company-browser .company-nav-track {
+  display: block;
+  width: 100%;
+}
+.company-browser .company-navigator a {
+  margin: 0;
+  filter: none;
+  white-space: normal;
+  border: 0;
+}
+.company-browser .company-navigator a span span {
+  display: inline;
+}
+.company-browser .company-navigator a[aria-current] {
+  font-weight: 600;
+}
+.network-node {
+  mix-blend-mode: screen;
+}
+.network-node:is(:hover, :focus-visible, .is-selected) {
+  mix-blend-mode: normal;
+}
+@media (max-width: 767px) {
+  .company-browser .company-content {
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .company-browser .company-heading {
+    padding: 0;
+  }
+}
+.fellow-context {
+  position: absolute;
+  top: calc(605 * var(--u));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(733 * var(--u));
+  text-align: center;
+  font-size: calc(14 * var(--u));
+  line-height: 1.5;
+  z-index: 1;
+}
+.fellow-context p + p {
+  margin-top: 14px;
+}
+@media (max-width: 1023px) {
+  .fellow-context {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fellow-context {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .company-browser {
+    display: flex;
+    flex-direction: column;
+  }
+  .company-browser .company-heading {
+    order: 0;
+  }
+  .company-rail-shell {
+    order: 1;
+    height: 250px;
+    width: 100%;
+    margin: 0 0 32px;
+    flex: none;
+  }
+  .company-browser .company-content {
+    order: 2;
+    min-height: 0;
+  }
+}
+.constellation-company { transition:color .2s,text-shadow .2s; }
+.constellation-company::after { content:''; position:absolute; inset:-12px -18px; }
+.constellation-company:is(:hover,:focus-visible) { color:#fff; text-shadow:0 0 12px #b2a2ff; }
+.constellation-company + .constellation-dot { transition:scale .2s,box-shadow .2s; }
+.constellation-company:is(:hover,:focus-visible) + .constellation-dot { scale:2.5; box-shadow:0 0 14px #b2a2ff; }
+@media (prefers-reduced-motion:reduce) { .constellation-company,.constellation-company + .constellation-dot { transition:none; } }

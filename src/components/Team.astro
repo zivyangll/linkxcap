@@ -1,115 +1,73 @@
 ---
 import {
-  companies,
   team,
   teamIntro,
   asset,
   pageUrl,
+  pick,
   ui,
   type Lang,
 } from '../lib/site';
 import PageTitle from './PageTitle.astro';
 const { lang } = Astro.props as { lang: Lang };
-const slots = [team[0], team[1], team[2], team[1], team[3], team[0]];
+const members = team.slice(0, 3);
 ---
 
-<section class="team-page" data-node-id="2002:4729">
-  <div class="team-heading">
+<section class="team-review" data-team-review data-node-id="2002:4567">
+  <div class="team-review-heading">
     <PageTitle zh="团队" en="Our Team" lang={lang} />
     <p>{teamIntro}</p>
   </div>
-  <div class="team-grid">
-    {slots.map((person, slot) => (
-      <article class={`team-card person-${person.id}`} data-slot={slot + 1}>
-        <div class="portrait">
-          <img
-            src={asset('4729', person.image)}
-            width="440"
-            height="640"
-            alt={lang === 'zh' ? person.name : person.en}
-            loading="lazy"
-          />
-        </div>
-        <div class="team-name">
-          <h2>
+  <div class="team-explorer">
+    <div class="team-portraits">
+      {members.map((person) => (
+        <div class="team-member">
+          <button
+            class="profile-toggle member-portrait"
+            data-person={person.id}
+            aria-controls={`profile-${person.id}`}
+            aria-expanded="false"
+            aria-label={`${pick(lang, person.name, person.en)} · ${ui[lang].expand}`}
+          >
+            <img
+              src={asset('4729', person.image)}
+              width="440"
+              height="640"
+              alt={pick(lang, person.name, person.en)}
+            />
+            <span class="member-caption">
+              <strong>{pick(lang, person.name, person.en)}</strong>
+              <span>{person.role[lang]}</span>
+            </span>
+          </button>
+          <noscript>
             <a href={pageUrl(lang, `team-${person.id}`)}>
-              {lang === 'zh' ? person.name : person.en}
+              {ui[lang].profile} ↗
             </a>
-          </h2>
-          <p>{person.role[lang]}</p>
+          </noscript>
         </div>
-        <button
-          class="profile-toggle"
-          aria-controls={`profile-${person.id}-${slot}`}
-          aria-expanded="false"
+      ))}
+    </div>
+    <div class="team-biographies" aria-live="polite">
+      {members.map((person) => (
+        <article
+          class="member-bio team-bio"
+          id={`profile-${person.id}`}
+          data-person-bio={person.id}
+          hidden
         >
-          {ui[lang].expand}
-          <span aria-hidden="true">＋</span>
-        </button>
-        <div class="team-bio" id={`profile-${person.id}-${slot}`}>
-          {person.id === 'elliot' ? (
-            <div class="design-bio">
-              <h3>{lang === 'zh' ? person.name : 'Pu Wang'}</h3>
-              {lang === 'zh' && <p class="person-en">Pu Wang</p>}
-              <p class="person-role">
-                {lang === 'zh'
-                  ? '主管合伙人 / Managing Partner'
-                  : 'Managing Partner'}
-              </p>
-              <p class="design-bio-copy">
-                {lang === 'zh'
-                  ? '国家信息中心人工智能专家委员，15 年以上前沿科技早期投资与互联网产业经验，曾任红点中国合伙人。'
-                  : person.bio.en}
-              </p>
-              <p class="featured-heading">
-                {lang === 'zh'
-                  ? '代表投资 · Featured Investments'
-                  : 'Featured Investments'}
-              </p>
-              <div class="featured-investments">
-                {[
-                  ['智谱AI', '基础模型', 'zhipu-ai'],
-                  ['硅基流动', 'AI基础设施', 'siliconflow'],
-                  ['趋境科技', '空间智能', 'approaching-ai'],
-                  ['模思智能', '空间智能', 'mosi'],
-                  ['紫荆智康', '医疗智能体', 'tairex'],
-                  ['百奥几何', '科学智能', 'biogeometry'],
-                ].map(([name, sector, slug]) => (
-                  <a href={pageUrl(lang, `portfolio/${slug}`)}>
-                    <strong>
-                      {lang === 'zh'
-                        ? name
-                        : companies.find((c) => c.slug === slug)?.nameEn}
-                    </strong>
-                    <span>
-                      {lang === 'zh'
-                        ? sector
-                        : companies.find((c) => c.slug === slug)?.descEn}
-                    </span>
-                  </a>
-                ))}
-              </div>
-              <a
-                class="profile-detail-link"
-                href={pageUrl(lang, `team-${person.id}`)}
-              >
-                {ui[lang].profile} ↗
-              </a>
-            </div>
-          ) : (
-            <>
-              <h3>{lang === 'zh' ? person.name : person.en}</h3>
-              {lang === 'zh' && <p class="person-en">{person.en}</p>}
-              <p class="person-role">{person.role[lang]}</p>
-              <p>{person.bio[lang]}</p>
-              <p class="data-note">{ui[lang].mock}</p>
-              <a href={pageUrl(lang, `team-${person.id}`)}>
-                {ui[lang].profile} ↗
-              </a>
-            </>
-          )}
-        </div>
-      </article>
-    ))}
+          <p class="eyebrow">LINK-X CAPITAL / {person.role.en}</p>
+          <h2>{pick(lang, person.name, person.en)}</h2>
+          {lang === 'zh' && <p class="member-en">{person.en}</p>}
+          <p class="member-role">{person.role[lang]}</p>
+          <p class="member-copy">{person.bio[lang]}</p>
+          <p class="data-note">{ui[lang].mock}</p>
+          <a class="line-link" href={pageUrl(lang, `team-${person.id}`)}>
+            {ui[lang].profile} ↗
+          </a>
+        </article>
+      ))}
+    </div>
   </div>
 </section>
+<script src="../scripts/team.ts"></script>

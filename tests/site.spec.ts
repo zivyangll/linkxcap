@@ -103,7 +103,7 @@ test('focus controls and reduced motion', async ({ page }) => {
   await expect(
     page.locator('[data-sector-panel=foundation]'),
   ).not.toBeVisible();
-  await expect(page.locator('canvas')).not.toBeVisible();
+  await expect(page.locator('.topology-canvas')).not.toBeVisible();
 });
 test('core content and navigation remain available without JavaScript', async ({
   browser,
@@ -132,38 +132,56 @@ test('ambient canvas stops when paused and outside the viewport', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
-  await page.addInitScript(() => {
-    const original = CanvasRenderingContext2D.prototype.clearRect;
-    (window as any).__draws = 0;
-    CanvasRenderingContext2D.prototype.clearRect = function (...args) {
-      (window as any).__draws++;
-      return original.apply(this, args);
-    };
-  });
   await page.goto('zh/index.html');
   await page.locator('.focus').scrollIntoViewIfNeeded();
   await page.waitForTimeout(500);
-  const running = await page.evaluate(() => (window as any).__draws);
-  await page.waitForTimeout(250);
-  expect(await page.evaluate(() => (window as any).__draws)).toBeGreaterThan(
-    running,
+  await expect(page.locator('[data-topology]')).toHaveAttribute(
+    'data-renderer',
+    /webgl|static/,
   );
-  await page.locator('[data-motion-toggle]').click();
-  const paused = await page.evaluate(() => (window as any).__draws);
+  if (
+    (await page.locator('[data-topology]').getAttribute('data-renderer')) ===
+    'static'
+  )
+    return;
+  const running = Number(
+    await page.locator('[data-topology]').getAttribute('data-render-frames'),
+  );
   await page.waitForTimeout(250);
-  expect(await page.evaluate(() => (window as any).__draws)).toBe(paused);
+  expect(
+    Number(
+      await page.locator('[data-topology]').getAttribute('data-render-frames'),
+    ),
+  ).toBeGreaterThan(running);
+  await page.locator('[data-motion-toggle]').click();
+  const paused = Number(
+    await page.locator('[data-topology]').getAttribute('data-render-frames'),
+  );
+  await page.waitForTimeout(250);
+  expect(
+    Number(
+      await page.locator('[data-topology]').getAttribute('data-render-frames'),
+    ),
+  ).toBe(paused);
   await page.locator('[data-motion-toggle]').click();
   await page.locator('.opening-title').scrollIntoViewIfNeeded();
   await page.waitForTimeout(500);
-  const offscreen = await page.evaluate(() => (window as any).__draws);
+  const offscreen = Number(
+    await page.locator('[data-topology]').getAttribute('data-render-frames'),
+  );
   await page.waitForTimeout(250);
-  expect(await page.evaluate(() => (window as any).__draws)).toBe(offscreen);
+  expect(
+    Number(
+      await page.locator('[data-topology]').getAttribute('data-render-frames'),
+    ),
+  ).toBe(offscreen);
 });
 
 test('focus content works if the optional animation chunk cannot load', async ({
   page,
 }) => {
-  await page.route('**/_astro/home.*.js', (route) => route.abort());
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.route('**/_astro/topology.*.js', (route) => route.abort());
   await page.goto('zh/index.html');
   await page.locator('[data-sector=physical]').click();
   await expect(page.locator('[data-sector-panel=physical]')).toBeVisible();
@@ -172,7 +190,7 @@ test('focus content works if the optional animation chunk cannot load', async ({
   ).not.toBeVisible();
   await page.locator('[data-sector=frontiers]').click();
   await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
-  await expect(page.locator('[data-motion-toggle]')).toHaveCount(0);
+  await expect(page.locator('[data-motion-toggle]')).not.toBeVisible();
 });
 
 test('selected constellation links open the matching portfolio detail', async ({

@@ -1,10 +1,12 @@
 ---
+import { createHash } from 'node:crypto';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { url, pageUrl, preview, type Lang } from '../lib/site';
 import fonts from '../data/fonts.json';
 import '../styles/global.css';
 import '../styles/figma-desktop.css';
+import '../styles/meeting-revision.css';
 interface Props {
   lang: Lang;
   page?: string;
@@ -25,6 +27,14 @@ const {
   bodyClass = '',
   footer = true,
 } = Astro.props;
+// A changed subset map must not reuse fonts cached under the previous map.
+const fontVersion = createHash('sha256')
+  .update(JSON.stringify(fonts))
+  .digest('hex')
+  .slice(0, 12);
+const fontCss = fonts.css
+  .replaceAll('__BASE__', url())
+  .replaceAll('.woff2")', `.woff2?v=${fontVersion}")`);
 const absolute = (path: string) => new URL(path, Astro.site).href;
 const canonical = absolute(pageUrl(lang, page));
 ---
@@ -62,12 +72,12 @@ const canonical = absolute(pageUrl(lang, page));
     <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
     <link
       rel="preload"
-      href={url('fonts/serif-400-0.woff2')}
+      href={`${url('fonts/serif-400-0.woff2')}?v=${fontVersion}`}
       as="font"
       type="font/woff2"
       crossorigin
     />
-    <style is:inline set:html={fonts.css.replaceAll('__BASE__', url())}></style>
+    <style is:inline set:html={fontCss}></style>
   </head>
   <body class={bodyClass} data-lang={lang}>
     <Header lang={lang} current={page} minimal={minimal} />
@@ -77,5 +87,6 @@ const canonical = absolute(pageUrl(lang, page));
     {footer && <Footer lang={lang} />}
     <p class="sr-only" role="status" aria-live="polite" data-status></p>
     <script src="../scripts/site.ts"></script>
+    <script src="../scripts/topology-loader.ts"></script>
   </body>
 </html>

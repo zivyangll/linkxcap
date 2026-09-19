@@ -40,18 +40,6 @@ function updateLanguageLinks() {
 updateLanguageLinks();
 window.addEventListener('hashchange', updateLanguageLinks);
 
-document
-  .querySelectorAll<HTMLButtonElement>('.profile-toggle')
-  .forEach((button) =>
-    button.addEventListener('click', () => {
-      const card = button.closest('.team-card');
-      const open = button.getAttribute('aria-expanded') !== 'true';
-      button.setAttribute('aria-expanded', String(open));
-      card?.classList.toggle('is-open', open);
-      if (!open) button.blur();
-    }),
-  );
-
 const filterButtons =
   document.querySelectorAll<HTMLButtonElement>('[data-filter]');
 const stories = document.querySelectorAll<HTMLElement>('[data-category]');
@@ -117,47 +105,6 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) =>
     }
   }),
 );
-
-const navigatorList = document.querySelector<HTMLElement>('[data-company-nav]');
-if (navigatorList) {
-  const links = Array.from(
-    navigatorList.querySelectorAll<HTMLAnchorElement>('a'),
-  );
-  let frame = 0;
-  const update = () => {
-    frame = 0;
-    if (matchMedia('(max-width:767px)').matches) {
-      links.forEach((a) => a.style.removeProperty('--arc-x'));
-      return;
-    }
-    const unit = innerWidth / 1920;
-    const bend = (y: number) => -Math.pow((y - 535) / 430, 2) * 170;
-    links.forEach((link) => {
-      const originalY = Number(link.style.getPropertyValue('--nav-y'));
-      const y = originalY - navigatorList.scrollTop / unit;
-      link.style.setProperty(
-        '--arc-x',
-        `${(bend(y) - bend(originalY)) * unit}px`,
-      );
-    });
-  };
-  const schedule = () => {
-    if (!frame) frame = requestAnimationFrame(update);
-  };
-  navigatorList.addEventListener('scroll', schedule, { passive: true });
-  window.addEventListener('resize', schedule, { passive: true });
-  const active = navigatorList.querySelector<HTMLElement>('[aria-current]');
-  if (active) {
-    if (matchMedia('(max-width:767px)').matches)
-      navigatorList.scrollLeft = active.offsetLeft - 24;
-    else if (links.indexOf(active as HTMLAnchorElement) >= 9)
-      navigatorList.scrollTop = active.offsetTop - (innerWidth / 1920) * 310;
-  }
-  schedule();
-  window.addEventListener('pagehide', () => cancelAnimationFrame(frame), {
-    once: true,
-  });
-}
 
 const header = document.querySelector<HTMLElement>('[data-header]');
 if (document.querySelector('[data-home]')) {

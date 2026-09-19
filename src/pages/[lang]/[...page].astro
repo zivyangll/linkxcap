@@ -83,7 +83,9 @@ const title = company
   bodyClass={
     ['team', 'person', 'insights', 'article', 'contact'].includes(kind)
       ? 'alt-paper'
-      : ''
+      : kind === 'portfolio'
+        ? 'network-page'
+        : ''
   }
 >
   {kind === 'portfolio' && <Portfolio lang={lang} />}

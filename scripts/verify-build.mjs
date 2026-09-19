@@ -71,7 +71,13 @@ const js = report
   .filter((f) => f.file.endsWith('.js'))
   .reduce((n, x) => n + x.gzip, 0);
 assert(css <= 35 * 1024, `CSS exceeds 35 KiB gzip: ${css}`);
-assert(js <= 120 * 1024, `All JS exceeds 120 KiB gzip: ${js}`);
+// Three.js is an optional, viewport-loaded enhancement with its own budget.
+// Core navigation/content must remain within the original 120 KiB ceiling.
+const topologyJs = report.filter(f => /\/topology\..*\.js$/.test(f.file)).reduce((n, f) => n + f.gzip, 0);
+const coreJs = js - topologyJs;
+assert(coreJs <= 120 * 1024, `Core JS exceeds 120 KiB gzip: ${coreJs}`);
+assert(topologyJs <= 145 * 1024, `Optional 3D JS exceeds 145 KiB gzip: ${topologyJs}`);
+assert(js <= 200 * 1024, `Combined JS exceeds 200 KiB gzip: ${js}`);
 await fs.mkdir('.cache', { recursive: true });
 await fs.writeFile(
   '.cache/build-report.json',
@@ -81,6 +87,8 @@ await fs.writeFile(
       totalHtml: htmlFiles.length,
       cssGzip: css,
       jsGzip: js,
+      coreJsGzip: coreJs,
+      optionalTopologyJsGzip: topologyJs,
       chunks: report,
     },
     null,

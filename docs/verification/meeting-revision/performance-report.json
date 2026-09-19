@@ -1,0 +1,103 @@
+{
+  "conditions": {
+    "viewport": "390×844",
+    "network": "1.6 Mbps down / 750 Kbps up / 150 ms RTT",
+    "cpu": "4× Chromium CPU slowdown",
+    "cache": "fresh browser context, cache disabled",
+    "origin": "http://127.0.0.1:4321/linkxcap/"
+  },
+  "results": [
+    {
+      "route": "zh/index.html",
+      "run": 1,
+      "lcpMs": 600,
+      "cls": 0,
+      "initialBytes": 445418,
+      "fontBytes": 227728,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 56
+    },
+    {
+      "route": "zh/index.html",
+      "run": 2,
+      "lcpMs": 592,
+      "cls": 0,
+      "initialBytes": 445418,
+      "fontBytes": 227728,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 64
+    },
+    {
+      "route": "zh/index.html",
+      "run": 3,
+      "lcpMs": 600,
+      "cls": 0,
+      "initialBytes": 445418,
+      "fontBytes": 227728,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    },
+    {
+      "route": "en/index.html",
+      "run": 1,
+      "lcpMs": 560,
+      "cls": 0,
+      "initialBytes": 266608,
+      "fontBytes": 49836,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    },
+    {
+      "route": "en/index.html",
+      "run": 2,
+      "lcpMs": 560,
+      "cls": 0,
+      "initialBytes": 266608,
+      "fontBytes": 49836,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    },
+    {
+      "route": "en/index.html",
+      "run": 3,
+      "lcpMs": 560,
+      "cls": 0,
+      "initialBytes": 266608,
+      "fontBytes": 49836,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 40
+    },
+    {
+      "route": "zh/portfolio.html",
+      "run": 1,
+      "lcpMs": 564,
+      "cls": 0,
+      "initialBytes": 611888,
+      "fontBytes": 244456,
+      "longTasks": [
+        144
+      ],
+      "scriptedInteractionMaxMs": 56
+    },
+    {
+      "route": "zh/portfolio.html",
+      "run": 2,
+      "lcpMs": 568,
+      "cls": 0,
+      "initialBytes": 611888,
+      "fontBytes": 244456,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 56
+    },
+    {
+      "route": "zh/portfolio.html",
+      "run": 3,
+      "lcpMs": 580,
+      "cls": 0,
+      "initialBytes": 611888,
+      "fontBytes": 244456,
+      "longTasks": [],
+      "scriptedInteractionMaxMs": 48
+    }
+  ]
+}
