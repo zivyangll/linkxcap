@@ -1,5 +1,12 @@
 ---
-import { pageUrl, ui, preview, socials, type Lang } from '../lib/site';
+import {
+  pageUrl,
+  ui,
+  preview,
+  socials,
+  siteContent,
+  type Lang,
+} from '../lib/site';
 interface Props {
   lang: Lang;
 }
@@ -8,24 +15,20 @@ const { lang } = Astro.props;
 
 <footer class="site-footer">
   <div class="footer-main">
-    <p>Link-X Capital 2026. All rights reserved.</p>
+    <p>{siteContent.copyright}</p>
     <div class="footer-links">
-      <a href="mailto:service@linkxcap.com">service@linkxcap.com</a>
+      <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
       <a href={pageUrl(lang, 'legal')}>{ui[lang].legal}</a>
     </div>
   </div>
   <div class="footer-meta">
-    <span>
-      {lang === 'zh'
-        ? '北京星连肇基私募基金管理有限责任公司'
-        : 'Link-X Capital'}
-    </span>
+    <span>{siteContent.companyLegalName[lang]}</span>
     <a
       href="https://beian.miit.gov.cn/"
       target="_blank"
       rel="noopener noreferrer"
     >
-      京ICP备2022019276号-1
+      {siteContent.recordNumber}
     </a>
     <div class="social-links">
       {socials.map((s) => (

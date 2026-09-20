@@ -1,5 +1,13 @@
 ---
-import { asset, sectors, pageUrl, pick, type Lang } from '../lib/site';
+import {
+  asset,
+  sectors,
+  companies,
+  homeContent,
+  pageUrl,
+  pick,
+  type Lang,
+} from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
 const positions: Record<string, number[]> = {
   foundation: [1297, 610, 1346, 586, 1297, 610, 1359, 581],
@@ -18,33 +26,9 @@ const scenes = [
       ['imgVector158', 1321.511, 633, 47.978, 240, 'none'],
     ],
     satellites: [
-      [
-        'zhipu-ai',
-        '（ 2026，智谱.AI ）',
-        '( 2026, Z.AI )',
-        890,
-        804,
-        1027,
-        810,
-      ],
-      [
-        'shengshu-technology',
-        '( 2026，生树科技  )',
-        '( 2026, GensPi )',
-        1402,
-        723,
-        1392,
-        719,
-      ],
-      [
-        'modelbest',
-        '（ 2026，面壁智能 ）',
-        '( 2026, ModelBest )',
-        1387,
-        891,
-        1369,
-        880,
-      ],
+      ['zhipu-ai', 890, 804, 1027, 810],
+      ['shengshu-technology', 1402, 723, 1392, 719],
+      ['modelbest', 1387, 891, 1369, 880],
     ],
   },
   {
@@ -57,42 +41,10 @@ const scenes = [
       ['imgVector159', 1272, 281.517, 179, 46.966, 'scaleY(-1)'],
     ],
     satellites: [
-      [
-        'realai',
-        '（ 2026，瑞莱智慧 ）',
-        '( 2026, RealAI )',
-        1239,
-        446,
-        1390,
-        454,
-      ],
-      [
-        'tairex',
-        '( 2026，紫荆智康  )',
-        '( 2026, Tairex )',
-        1582,
-        423.48,
-        1572,
-        419.48,
-      ],
-      [
-        'biogeometry',
-        '( 2026，百奥几何  )',
-        '( 2026, BioGeometry )',
-        1601,
-        139,
-        1584,
-        153,
-      ],
-      [
-        'polo-interactive',
-        '( 2026，珀乐互动  )',
-        '( 2026, Polo Interactive )',
-        1126,
-        321,
-        1262,
-        330,
-      ],
+      ['realai', 1239, 446, 1390, 454],
+      ['tairex', 1582, 423.48, 1572, 419.48],
+      ['biogeometry', 1601, 139, 1584, 153],
+      ['polo-interactive', 1126, 321, 1262, 330],
     ],
   },
   {
@@ -104,33 +56,9 @@ const scenes = [
       ['imgVector157', 900.538, 563.323, 68.925, 164.394, 'scaleY(-1)'],
     ],
     satellites: [
-      [
-        'phybot',
-        '（ 2026，动易科技 ）',
-        '( 2026, Phybot )',
-        742,
-        728.52,
-        891,
-        736.52,
-      ],
-      [
-        'amio-robotics',
-        '( 2026，阿米奥机器人  )',
-        '( 2026, Amio Robotics )',
-        1094,
-        827,
-        1079,
-        824.52,
-      ],
-      [
-        'zettlab',
-        '( 2026，吾云创新  )',
-        '( 2026, Zettlab )',
-        945,
-        336,
-        922,
-        347.52,
-      ],
+      ['phybot', 742, 728.52, 891, 736.52],
+      ['amio-robotics', 1094, 827, 1079, 824.52],
+      ['zettlab', 945, 336, 922, 347.52],
     ],
   },
 ];
@@ -138,10 +66,7 @@ const place = (x: unknown, y: unknown) =>
   `left:calc(${x} * var(--u));top:calc(${y} * var(--u));`;
 ---
 
-<div
-  class="constellation"
-  aria-label={pick(lang, '投资领域', 'Investment focus')}
->
+<div class="constellation" aria-label={homeContent.focus.ariaLabel[lang]}>
   {scenes.map((scene) => (
     <div
       class="constellation-scene"
@@ -158,25 +83,29 @@ const place = (x: unknown, y: unknown) =>
           height={Number(h)}
         />
       ))}
-      {scene.satellites.map(([slug, zh, en, x, y, dx, dy]) => (
-        <>
-          <a
-            class="constellation-company"
-            data-topology-anchor={`company-${slug}`}
-            data-topology-role="label"
-            style={place(x, y)}
-            href={pageUrl(lang, `portfolio/${slug}`)}
-            set:text={pick(lang, String(zh), String(en))}
-          />
-          <i
-            class="constellation-dot"
-            data-topology-anchor={`company-${slug}`}
-            data-topology-role="node"
-            style={place(dx, dy)}
-            aria-hidden="true"
-          ></i>
-        </>
-      ))}
+      {scene.satellites.map(([slug, x, y, dx, dy]) => {
+        const company = companies.find((item) => item.slug === slug)!;
+        const label = `(${homeContent.focus.investmentYear}, ${pick(lang, company.name, company.nameEn)})`;
+        return (
+          <>
+            <a
+              class="constellation-company"
+              data-topology-anchor={`company-${slug}`}
+              data-topology-role="label"
+              style={place(x, y)}
+              href={pageUrl(lang, `portfolio/${slug}`)}
+              set:text={label}
+            />
+            <i
+              class="constellation-dot"
+              data-topology-anchor={`company-${slug}`}
+              data-topology-role="node"
+              style={place(dx, dy)}
+              aria-hidden="true"
+            ></i>
+          </>
+        );
+      })}
     </div>
   ))}
   {sectors.map((s, i) => {

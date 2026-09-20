@@ -1,5 +1,13 @@
 ---
-import { join, pick, socials, asset, url, type Lang } from '../lib/site';
+import {
+  contactContent,
+  navigationContent,
+  siteContent,
+  socials,
+  asset,
+  url,
+  type Lang,
+} from '../lib/site';
 import Arrow from './Arrow.astro';
 import media from '../data/fellow-media.json';
 const mediaUrl = (src: string) =>
@@ -9,14 +17,14 @@ const { lang } = Astro.props as { lang: Lang };
 
 <section
   class="story-scene next-signal fellow-intro"
-  data-node-id="2002:1692"
+  data-node-id="2002:1617"
   aria-labelledby="next-title"
 >
-  <div class="signal-guides" aria-hidden="true">
+  <div class="signal-guides signal-guides--opening" aria-hidden="true">
     {[247, 389.6, 1531.4, 1681].map((x, i) => (
       <img
         class="signal-guide-v"
-        src={asset('1692', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        src={asset('1617', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
         style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
         alt=""
       />
@@ -24,37 +32,60 @@ const { lang } = Astro.props as { lang: Lang };
     {[437.32, 467.66, 525.83, 549.85, 585.25, 678.82].map((y) => (
       <img
         class="signal-guide-h"
-        src={asset('1692', y === 467.66 ? 'imgVector44' : 'imgVector34')}
+        src={asset('1617', y === 467.66 ? 'imgVector44' : 'imgVector34')}
         style={`top:calc(${y} * var(--u));`}
         alt=""
       />
     ))}
   </div>
-  <h1 id="next-title">The Next Signal</h1>
+  <div class="signal-guides signal-guides--context" aria-hidden="true">
+    {[247, 389.6, 1531.4, 1681].map((x, i) => (
+      <img
+        class="signal-guide-v"
+        src={asset('1753', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
+  <img
+    class="next-title-outline"
+    src={asset('1617', 'imgTheNextSignal')}
+    width="761"
+    height="116"
+    alt=""
+    aria-hidden="true"
+  />
+  <h1 id="next-title" class="next-title-fill">
+    {contactContent.signalTitle}
+  </h1>
   {lang === 'zh' ? (
-    <img
-      class="next-outline"
-      src={asset('1692', 'img')}
-      width="584"
-      height="95"
-      alt="与定义者同行"
-      loading="lazy"
-    />
+    <>
+      <img
+        class="next-zh next-zh-outline"
+        src={asset('1617', 'img')}
+        width="584"
+        height="95"
+        alt={contactContent.signalSubtitle.zh}
+      />
+      <img
+        class="next-zh next-zh-fill"
+        src={asset('1692', 'img')}
+        width="584"
+        height="95"
+        alt=""
+        aria-hidden="true"
+      />
+    </>
   ) : (
-    <p class="next-en">Alongside the visionaries</p>
+    <p class="next-en">{contactContent.signalSubtitle.en}</p>
   )}
   <div class="fellow-context" data-node-id="2002:1753">
-    <p>{join[lang]}</p>
-    {lang === 'zh' && <p lang="en">{join.en}</p>}
+    <p>{contactContent.joinCopy[lang]}</p>
+    {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
+    <i class="fellow-context-marker" aria-hidden="true"></i>
   </div>
-  <i class="fellow-orbit-point diamond" aria-hidden="true"></i>
-  <p class="fellow-definition">
-    {pick(
-      lang,
-      '与定义同行，与定义者同行',
-      'Alongside ideas. Alongside their visionaries.',
-    )}
-  </p>
+  <p class="fellow-definition">{contactContent.definition[lang]}</p>
   <img
     class="next-orbit next-orbit-raster"
     src={asset('audit', '1751')}
@@ -70,9 +101,27 @@ const { lang } = Astro.props as { lang: Lang };
   data-fellow-media
   data-node-id="2002:1811"
 >
+  <div class="fellow-media-guides" aria-hidden="true">
+    {[247, 389.6, 1531.4, 1681].map((x, i) => (
+      <img
+        src={asset('1811', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        class="fellow-media-guide"
+        style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
+  <img
+    class="fellow-media-orbit"
+    src={asset('1811', 'imgEllipse1')}
+    width="2406"
+    height="2406"
+    alt=""
+    aria-hidden="true"
+  />
   <div class="fellow-media-title">
-    <h2>The Next Signal</h2>
-    <p>{pick(lang, '与定义者同行', 'Alongside the visionaries')}</p>
+    <h2>{contactContent.signalTitle}</h2>
+    <p>{contactContent.signalSubtitle[lang]}</p>
   </div>
   <div class="fellow-video-shell" data-video-shell>
     {media.src ? (
@@ -90,7 +139,7 @@ const { lang } = Astro.props as { lang: Lang };
           <track
             kind="captions"
             srclang="zh"
-            label="中文"
+            label={navigationContent.languageNames.zh}
             src={mediaUrl(media.captionsZh)}
             default={lang === 'zh'}
           />
@@ -99,7 +148,7 @@ const { lang } = Astro.props as { lang: Lang };
           <track
             kind="captions"
             srclang="en"
-            label="English"
+            label={navigationContent.languageNames.en}
             src={mediaUrl(media.captionsEn)}
             default={lang === 'en'}
           />
@@ -109,11 +158,7 @@ const { lang } = Astro.props as { lang: Lang };
       <div
         class="fellow-video-placeholder"
         role="img"
-        aria-label={pick(
-          lang,
-          '品牌视频占位，正式视频待提供',
-          'Brand film placeholder — final video pending',
-        )}
+        aria-label={contactContent.videoPlaceholderAria[lang]}
       >
         <span class="fellow-play" aria-hidden="true">
           <img
@@ -129,14 +174,14 @@ const { lang } = Astro.props as { lang: Lang };
             alt=""
           />
         </span>
-        <p>{pick(lang, '品牌视频 · 待提供', 'Brand film · Coming soon')}</p>
+        <p>{contactContent.videoPlaceholder[lang]}</p>
       </div>
     )}
     <button class="fellow-video-play" data-video-play hidden>
-      {pick(lang, '播放视频', 'Play film')}
+      {contactContent.playVideo[lang]}
     </button>
   </div>
-  <p class="fellow-media-caption">{join[lang]}</p>
+  <p class="fellow-media-caption">{contactContent.joinCopy[lang]}</p>
 </section>
 <section class="contact-hero" data-node-id="2002:2021">
   <div class="contact-guides" aria-hidden="true">
@@ -154,71 +199,53 @@ const { lang } = Astro.props as { lang: Lang };
     ))}
   </div>
   <div class="contact-invitation">
-    <h2>Join Us{lang === 'zh' && <span>加入我们</span>}</h2>
+    <h2>
+      {contactContent.joinEyebrow}
+      {lang === 'zh' && <span>{contactContent.joinTitle.zh}</span>}
+    </h2>
     <div class="contact-copy">
       <p>
-        {lang === 'zh' ? (
+        {contactContent.joinDisplay[lang].map((line, index) => (
           <>
-            如果你正在寻找、定义，或亲手建造一个
-            <br />
-            尚未被市场命名的未来，我们希望更早与你相遇。
+            {index > 0 && <br />}
+            {line}
           </>
-        ) : (
-          join.en
-        )}
+        ))}
       </p>
-      {lang === 'zh' && <p lang="en">{join.en}</p>}
+      {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
     </div>
     <a class="line-link" href="#contact-details">
-      Contact us
+      {contactContent.contactLink}
       <Arrow />
     </a>
   </div>
 </section>
 <section id="contact-details" class="contact-details">
   <div>
-    <p class="eyebrow">BUILD WITH US</p>
-    <h2>{pick(lang, '连接下一个信号', 'Connect with the next signal')}</h2>
-    <a class="contact-email" href="mailto:service@linkxcap.com">
-      service@linkxcap.com
+    <p class="eyebrow">{contactContent.detailsEyebrow}</p>
+    <h2>{contactContent.detailsTitle[lang]}</h2>
+    <a class="contact-email" href={`mailto:${siteContent.email}`}>
+      {siteContent.email}
       <Arrow />
     </a>
-    <button class="text-link" data-copy="service@linkxcap.com">
-      {pick(lang, '复制邮箱', 'Copy email')}
+    <button class="text-link" data-copy={siteContent.email}>
+      {contactContent.copyEmail[lang]}
     </button>
   </div>
   <div class="contact-socials">
-    <h3>{pick(lang, '找到我们', 'Find us')}</h3>
+    <h3>{contactContent.findUs[lang]}</h3>
     {socials.map((s) => (
       <a href={s.href} target="_blank" rel="noopener noreferrer">
         {lang === 'en' ? s.en || s.name : s.name}
         <Arrow />
       </a>
     ))}
-    <details>
-      <summary>
-        {pick(lang, '微信 · 星连资本', 'WeChat · Link-X Capital')}
-      </summary>
-      <p>
-        {pick(
-          lang,
-          '公众号二维码待提供，请先通过邮箱与我们联系。',
-          'The official QR code will be added after confirmation. Please contact us by email.',
-        )}
-      </p>
-    </details>
-    <details>
-      <summary>
-        {pick(lang, '微信 · 华清普智孵化器', 'WeChat · T-ONE Innovation Lab')}
-      </summary>
-      <p>
-        {pick(
-          lang,
-          '公众号二维码待提供，请先通过邮箱与我们联系。',
-          'The official QR code will be added after confirmation. Please contact us by email.',
-        )}
-      </p>
-    </details>
+    {contactContent.wechat.map((item) => (
+      <details>
+        <summary>{item.title[lang]}</summary>
+        <p>{item.pending[lang]}</p>
+      </details>
+    ))}
   </div>
 </section>
 

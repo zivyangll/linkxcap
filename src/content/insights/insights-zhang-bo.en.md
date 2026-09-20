@@ -1,20 +1,6 @@
----
-translationKey: "news-agm-2025"
-lang: "en"
-route: "news-agm-2025"
-title: "From model breakthroughs to industry: the AI landscape and outlook"
-summary: "Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem."
-date: "2025-11-21"
-category: "panorama"
-source: "https://www.linkxcap.com/zh/news-agm-2025.html"
-sourceName: "Existing website (Chinese)"
-mock: true
-order: 5
----
-
 ## A starting point
 
-Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.
+Returning to foundational questions about intelligence and the connection between research and industry.
 
 The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
 

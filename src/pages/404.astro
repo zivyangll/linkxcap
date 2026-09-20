@@ -1,18 +1,18 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import { pageUrl } from '../lib/site';
+import { pageUrl, siteContent } from '../lib/site';
 ---
 
-<SiteLayout lang="zh" title="页面未找到" page="index">
+<SiteLayout lang="zh" title={siteContent.notFound.title} page="index">
   <section class="not-found">
-    <p>LOST SIGNAL</p>
+    <p>{siteContent.notFound.eyebrow}</p>
     <h1>404</h1>
     <p>
-      这个信号暂时没有抵达。
+      {siteContent.notFound.zh}
       <br />
-      This page could not be found.
+      {siteContent.notFound.en}
     </p>
-    <a href={pageUrl('zh')}>返回首页 · Back home</a>
-    <a href={pageUrl('en')}>English</a>
+    <a href={pageUrl('zh')}>{siteContent.notFound.back}</a>
+    <a href={pageUrl('en')}>{siteContent.notFound.english}</a>
   </section>
 </SiteLayout>

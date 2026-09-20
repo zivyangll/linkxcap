@@ -1,20 +1,6 @@
----
-translationKey: "insights-zhang-bo"
-lang: "zh"
-route: "insights-zhang-bo"
-title: "AGI Next全明星峰会落幕｜张钹院士的压轴发言，为我们留下了什么？"
-summary: "回到智能发展的基础问题，关注研究突破与产业实践之间的联系。"
-date: "2026-01-12"
-category: "models"
-source: "https://www.linkxcap.com/zh/insights-zhang-bo.html"
-sourceName: "现官网（中文）"
-mock: true
-order: 2
----
-
 ## 观察起点
 
-回到智能发展的基础问题，关注研究突破与产业实践之间的联系。
+从内容生产到交互体验，讨论 AI 为泛娱乐带来的新可能。
 
 以下内容用于演示文章详情页的阅读节奏、目录、段落和引用样式。它不代表星连资本或文中公司的正式观点，完整稿件与英文译文将在审核后替换。
 

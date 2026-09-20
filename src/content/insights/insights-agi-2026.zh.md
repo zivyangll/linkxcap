@@ -1,17 +1,3 @@
----
-translationKey: "insights-agi-2026"
-lang: "zh"
-route: "insights-agi-2026"
-title: "2026年，在等到AGI之前，我们先做什么？"
-summary: "面对快速变化的技术，持续寻找值得长期投入的真实问题。"
-date: "2026-01-04"
-category: "panorama"
-source: "https://www.linkxcap.com/zh/insights-agi-2026.html"
-sourceName: "现官网（中文）"
-mock: true
-order: 3
----
-
 ## 观察起点
 
 面对快速变化的技术，持续寻找值得长期投入的真实问题。

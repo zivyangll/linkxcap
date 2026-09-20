@@ -3,9 +3,11 @@ import Brand from './Brand.astro';
 import Arrow from './Arrow.astro';
 import {
   navigation,
+  navigationContent,
+  siteContent,
   pageUrl,
   ui,
-  join,
+  contactContent,
   socials,
   asset,
   type Lang,
@@ -23,35 +25,47 @@ const active = current.startsWith('portfolio')
     : current === 'index' || current === 'contact' || current === 'legal'
       ? current
       : 'insights';
+const menuSocials = [
+  { ...socials[0], key: '57' },
+  { ...socials[2], key: '55' },
+  {
+    name: navigationContent.wechatLabel.zh,
+    en: navigationContent.wechatLabel.en,
+    key: '54',
+    href: pageUrl(lang, 'contact') + '#contact-details',
+  },
+  { ...socials[3], key: '56' },
+  { ...socials[1], key: '58' },
+];
 ---
 
 <a class="skip-link" href="#main">
   {ui[lang].skip}
 </a>
 <header class:list={['site-header', { 'is-minimal': minimal }]} data-header>
-  <a class="home-link" href={pageUrl(lang)} aria-label="Link-X Capital">
+  <a class="home-link" href={pageUrl(lang)} aria-label={siteContent.brand}>
     <Brand />
   </a>
-  <div class="language-switch" aria-label={lang === 'zh' ? '语言' : 'Language'}>
+  <div
+    class="language-switch"
+    aria-label={navigationContent.languageLabel[lang]}
+  >
     <a
       href={pageUrl('en', current)}
       data-language="en"
       aria-current={lang === 'en' ? 'page' : undefined}
     >
-      EN
+      {navigationContent.languageShort.en}
     </a>
     <a
       href={pageUrl('zh', current)}
       data-language="zh"
       aria-current={lang === 'zh' ? 'page' : undefined}
     >
-      中
+      {navigationContent.languageShort.zh}
     </a>
   </div>
-  <nav
-    class="desktop-nav"
-    aria-label={lang === 'zh' ? '主导航' : 'Main navigation'}
-  >
+  <nav class="desktop-nav" aria-label={navigationContent.mainNavLabel[lang]}>
     {navigation.map((item) => (
       <a
         href={pageUrl(lang, item.page)}
@@ -75,12 +89,12 @@ const active = current.startsWith('portfolio')
 </header>
 <dialog id="site-menu" class="site-menu" aria-label={ui[lang].menu}>
   <div class="menu-top">
-    <span>Menu</span>
+    <span>{navigationContent.menuTitle}</span>
     <button data-menu-close aria-label={ui[lang].close} class="menu-close">
       <img src={asset('3191', 'imgGroup382')} width="22" height="22" alt="" />
     </button>
   </div>
-  <nav aria-label={lang === 'zh' ? '菜单导航' : 'Menu navigation'}>
+  <nav aria-label={navigationContent.menuNavLabel[lang]}>
     {navigation.slice(0, 4).map((item) => (
       <a
         href={pageUrl(lang, item.page)}
@@ -95,56 +109,39 @@ const active = current.startsWith('portfolio')
   </nav>
   <div class="menu-contact">
     <h2>
-      {lang === 'zh' && (
-        <>
-          联系我们
-          <br />
-        </>
-      )}
-      Build with us
+      {navigationContent.menuContactTitle[lang]
+        .split('\n')
+        .map((line, index) => (
+          <>
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))}
     </h2>
     <div class="menu-invitation">
-      <p>{join[lang]}</p>
-      {lang === 'zh' && <p lang="en">{join.en}</p>}
+      <p>{contactContent.joinCopy[lang]}</p>
+      {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
     </div>
     <a class="line-link" href={pageUrl(lang, 'contact')}>
-      Contact us
+      {navigationContent.menuContactLink}
       <Arrow />
     </a>
   </div>
   <div class="menu-language">
     <a href={pageUrl('zh', current)} data-language="zh">
-      中文
+      {navigationContent.languageNames.zh}
     </a>
     <a href={pageUrl('en', current)} data-language="en">
-      English
+      {navigationContent.languageNames.en}
     </a>
   </div>
   <div class="menu-bottom">
     <div class="social-links">
-      {[
-        { name: 'X', key: '57', href: socials[0].href },
-        {
-          name: lang === 'zh' ? '小红书' : 'Xiaohongshu',
-          key: '55',
-          href: socials[2].href,
-        },
-        {
-          name: lang === 'zh' ? '微信' : 'WeChat',
-          key: '54',
-          href: pageUrl(lang, 'contact') + '#contact-details',
-        },
-        {
-          name: lang === 'zh' ? '抖音' : 'Douyin',
-          key: '56',
-          href: socials[3].href,
-        },
-        { name: 'LinkedIn', key: '58', href: socials[1].href },
-      ].map((s) => (
+      {menuSocials.map((s) => (
         <a
           class={`menu-social social-${s.key}`}
           href={s.href}
-          aria-label={s.name}
+          aria-label={lang === 'en' ? s.en : s.name}
           target={s.key === '54' ? undefined : '_blank'}
           rel={s.key === '54' ? undefined : 'noopener noreferrer'}
         >
@@ -166,7 +163,7 @@ const active = current.startsWith('portfolio')
         </a>
       ))}
     </div>
-    <small>2026 北京星连肇基私募基金管理有限责任公司</small>
+    <small>{navigationContent.menuFooter}</small>
   </div>
 </dialog>
 <noscript>

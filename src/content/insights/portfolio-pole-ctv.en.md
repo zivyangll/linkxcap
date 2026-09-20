@@ -1,20 +1,6 @@
----
-translationKey: "insights-agi-2026"
-lang: "en"
-route: "insights-agi-2026"
-title: "What should we build before AGI arrives?"
-summary: "Amid rapid technological change, finding real problems worth pursuing over the long term."
-date: "2026-01-04"
-category: "panorama"
-source: "https://www.linkxcap.com/zh/insights-agi-2026.html"
-sourceName: "Existing website (Chinese)"
-mock: true
-order: 3
----
-
 ## A starting point
 
-Amid rapid technological change, finding real problems worth pursuing over the long term.
+From content creation to interactive experiences, exploring new possibilities for AI in entertainment.
 
 The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
 

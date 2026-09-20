@@ -1,20 +1,6 @@
----
-translationKey: "portfolio-yuanmu"
-lang: "zh"
-route: "portfolio-yuanmu"
-title: "圆木智能：AI智能体如何重塑机加工生产管理？"
-summary: "走进制造现场，观察智能体与真实生产流程相遇的机会。"
-date: "2026-05-26"
-category: "applications"
-source: "https://www.linkxcap.com/zh/portfolio-yuanmu.html"
-sourceName: "现官网（中文）"
-mock: true
-order: 0
----
-
 ## 观察起点
 
-走进制造现场，观察智能体与真实生产流程相遇的机会。
+回到智能发展的基础问题，关注研究突破与产业实践之间的联系。
 
 以下内容用于演示文章详情页的阅读节奏、目录、段落和引用样式。它不代表星连资本或文中公司的正式观点，完整稿件与英文译文将在审核后替换。
 

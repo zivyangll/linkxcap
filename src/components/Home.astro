@@ -2,9 +2,7 @@
 import {
   asset,
   pageUrl,
-  pick,
-  intro,
-  introLinesZh,
+  homeContent,
   sectors,
   ui,
   type Lang,
@@ -74,43 +72,24 @@ const { lang } = Astro.props;
       <i class="diamond"></i>
       <img src={asset('3297', 'imgVector30')} width="2" height="590" alt="" />
     </div>
-    <span class="chapter">Chapter 01</span>
+    <span class="chapter">{homeContent.opening.chapter}</span>
     <h1 id="opening-title" class="opening-title" data-reveal>
-      Open Signal
-      {lang === 'zh' && (
+      {homeContent.opening.title[lang].map((line, index) => (
         <>
-          <br />
-          远星初亮
+          {index > 0 && <br />}
+          {line}
         </>
-      )}
+      ))}
     </h1>
     <div class="opening-copy" data-reveal>
-      {lang === 'zh' ? (
-        <p>
-          每一次时代变革初现之时，
-          <br />
-          总有少数非凡的头脑先于共识看见未来，
-          <br />
-          如远星初亮。
-          <br />
-          LINK- X 将这些通用智能时代的定义者链接成星群，
-          <br />
-          让远见辉映，照亮前路。
-        </p>
-      ) : (
-        <p>
-          At the beginning of every era,
-          <br />a few extraordinary minds see the future
-          <br />
-          before it becomes consensus.
-          <br />
-          Like the first light of a distant star.
-          <br />
-          Link-X connects these visionaries into a constellation,
-          <br />
-          illuminating the path ahead.
-        </p>
-      )}
+      <p>
+        {homeContent.opening.body[lang].map((line) => (
+          <>
+            {line}
+            <br />
+          </>
+        ))}
+      </p>
     </div>
   </section>
   <section
@@ -144,21 +123,27 @@ const { lang } = Astro.props;
       />
     </div>
     <h2 id="hero-title" class="hero-title" data-reveal>
-      Partnering with founders
-      <br />
-      Defining the AGI era
+      {homeContent.hero.title.map((line, index) => (
+        <>
+          {index > 0 && <br />}
+          {line}
+        </>
+      ))}
     </h2>
     {lang === 'zh' && (
       <p class="hero-zh" data-reveal>
-        与AGI时代的
-        <br />
-        定义者同行
+        {homeContent.hero.zhTitle.map((line, index) => (
+          <>
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))}
       </p>
     )}
     <a class="orbit-label" href="#about">
       <i class="diamond" aria-hidden="true"></i>
-      <em>open signal</em>
-      <span>{pick(lang, '远星初亮', 'The first light')}</span>
+      <em>{homeContent.hero.orbitEyebrow}</em>
+      <span>{homeContent.hero.orbitLabel[lang]}</span>
     </a>
   </section>
   <section
@@ -202,27 +187,19 @@ const { lang } = Astro.props;
       <i class="diamond"></i>
     </div>
     <div class="about-label">
-      ABOUT US
+      {homeContent.about.eyebrow}
       <br />
-      {pick(lang, '关于我们', 'Link-X Capital')}
+      {homeContent.about.label[lang]}
     </div>
     <h2 id="about-title" class="about-title" data-reveal>
-      {lang === 'zh' ? (
-        <>
-          <span>链接创新源头,</span>
-          <span>加速价值创造。</span>
-        </>
-      ) : (
-        <>
-          <span>Connecting innovation.</span>
-          <span>Accelerating value.</span>
-        </>
-      )}
+      {homeContent.about.title[lang].map((line) => (
+        <span>{line}</span>
+      ))}
     </h2>
     <p class="about-copy" data-reveal>
-      {lang === 'zh'
-        ? introLinesZh.map((line) => <span class="intro-line">{line}</span>)
-        : intro.en}
+      {homeContent.about.description[lang].map((line) => (
+        <span class="intro-line">{line}</span>
+      ))}
     </p>
   </section>
   <section
@@ -249,34 +226,23 @@ const { lang } = Astro.props;
       />
     </div>
     <h2 id="research-title" data-reveal>
-      Global Research,
+      {homeContent.research.title[0]}
       <br />
-      <span>Proven Success.</span>
+      <span>{homeContent.research.title[1]}</span>
     </h2>
     <p class="research-intro" data-reveal>
-      {lang === 'zh'
-        ? introLinesZh.map((line) => <span class="intro-line">{line}</span>)
-        : intro.en}
+      {homeContent.about.description[lang].map((line) => (
+        <span class="intro-line">{line}</span>
+      ))}
     </p>
     <div class="research-stats" data-reveal>
-      {[
-        ['160+', 'Portfolio Companies'],
-        ['68+', 'Fund Partners'],
-        ['25+', 'Portfolio Companies'],
-        ['$100B+', 'Portfolio Companies'],
-      ].map(([value, label]) => (
+      {homeContent.research.stats.map(({ value, label }) => (
         <div>
           <strong>{value}</strong>
           <span>{label}</span>
         </div>
       ))}
-      <p class="data-note">
-        {pick(
-          lang,
-          'MOCK · 设计占位数据，指标与口径待确认',
-          'MOCK · Design placeholders. Metrics pending approval.',
-        )}
-      </p>
+      <p class="data-note">{homeContent.research.dataNote[lang]}</p>
     </div>
   </section>
   <section
@@ -296,9 +262,10 @@ const { lang } = Astro.props;
       aria-hidden="true"
     ></div>
     <h2 id="focus-title" class="focus-title">
-      Focus
+      {homeContent.focus.title[0]}
       <br />
-      Areas{lang === 'zh' && <span>我们寻找的星域</span>}
+      {homeContent.focus.title[1]}
+      {lang === 'zh' && <span>{homeContent.focus.zhTitle}</span>}
     </h2>
     <div class="focus-panels">
       {sectors.map((s, i) => (
@@ -319,9 +286,9 @@ const { lang } = Astro.props;
     <FocusConstellation lang={lang} />
     <nav class="focus-links">
       <a href={pageUrl(lang, 'contact')}>
-        {pick(lang, '联系我们', 'Contact us')} ↗
+        {homeContent.focus.contactLink[lang]} ↗
       </a>
-      <a href="#about">{pick(lang, '关于我们', 'About us')} ↗</a>
+      <a href="#about">{homeContent.focus.aboutLink[lang]} ↗</a>
     </nav>
     <button
       class="motion-toggle"

@@ -1,100 +1,57 @@
 ---
-import { type Lang, pick, url } from '../lib/site';
+import { type Lang, legalContent, siteContent, url } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
 ---
 
 <article class="legal-page prose">
-  <p class="eyebrow">LEGAL NOTICE</p>
-  <h1>{pick(lang, '法律声明', 'Legal notice')}</h1>
-  <p class="mock-banner">
-    {pick(
-      lang,
-      '设计预览：本页为占位说明，正式法律条款待公司审核。',
-      'Design preview: this page contains placeholder information. Final legal terms are pending company review.',
-    )}
-  </p>
-  <h2>{pick(lang, '关于本次预览', 'About this preview')}</h2>
-  <p>
-    {pick(
-      lang,
-      '本网站为星连资本官网改版的设计与交互预览。部分介绍、数字、日期及文章正文使用演示内容，尚未完成业务审核，不应作为公司正式信息或投资依据。',
-      'This website is a design and interaction preview for the Link-X Capital website redesign. Some descriptions, metrics, dates and article text are demonstration content pending approval and should not be treated as official company information or investment guidance.',
-    )}
-  </p>
-  <h2>{pick(lang, '内容与知识产权', 'Content and intellectual property')}</h2>
-  <p>
-    {pick(
-      lang,
-      '品牌标识、人物插画及视觉素材用于本次设计还原；正式发布前，将根据素材交接表确认使用范围。',
-      'Brand marks, portraits and design assets are used for this design preview. Their publication scope will be reviewed before the final release.',
-    )}
-  </p>
-  <h2>{pick(lang, '隐私与联系', 'Privacy and contact')}</h2>
-  <p>
-    {pick(
-      lang,
-      '本预览未接入表单收集或第三方分析服务。如需联系，请发送邮件至',
-      'This preview does not include submission forms or third-party analytics. To get in touch, email',
-    )}{' '}
-    <a href="mailto:service@linkxcap.com">service@linkxcap.com</a>。
-  </p>
+  <p class="eyebrow">{legalContent.eyebrow}</p>
+  <h1>{legalContent.title[lang]}</h1>
+  <p class="mock-banner">{legalContent.banner[lang]}</p>
+  {legalContent.sections.map((section, index) => (
+    <>
+      <h2>{section.heading[lang]}</h2>
+      <p>
+        {section.body[lang]}
+        {index === legalContent.sections.length - 1 && (
+          <>
+            {' '}
+            <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>。
+          </>
+        )}
+      </p>
+    </>
+  ))}
   <a
     class="text-link"
-    href={`https://www.linkxcap.com/${lang}/legal.html`}
+    href={legalContent.existingSiteUrl.replace('{lang}', lang)}
     target="_blank"
     rel="noopener noreferrer"
   >
-    {pick(
-      lang,
-      '查看现官网法律声明',
-      'View the existing website’s legal notice',
-    )}{' '}
-    ↗
+    {legalContent.existingSiteLink[lang]} ↗
   </a>
-  <h2 id="fonts">{pick(lang, '字体许可', 'Font licenses')}</h2>
+  <h2 id="fonts">{legalContent.fontsHeading[lang]}</h2>
+  <p>{legalContent.fontsBody[lang]}</p>
   <p>
-    {pick(
-      lang,
-      '本网站使用本地托管的字体子集，字形来自 Source Han Serif SC、Source Serif 4 和 LXGW Neo XiHei。派生字体分别命名为 LinkX Serif、LinkX Web Italic 和 LinkX Sans。',
-      'This website serves local subsets derived from Source Han Serif SC, Source Serif 4 and LXGW Neo XiHei, renamed LinkX Serif, LinkX Web Italic and LinkX Sans.',
-    )}
+    {legalContent.fontLicenses.map((license) => (
+      <>
+        <a href={url(license.path)}>{license.label}</a>
+        <br />
+      </>
+    ))}
   </p>
-  <p>
-    <a href={url('licenses/Source-Han-Serif.txt')}>
-      Source Han Serif · SIL OFL 1.1
-    </a>
-    <br />
-    <a href={url('licenses/Source-Serif-4.txt')}>
-      Source Serif 4 · SIL OFL 1.1
-    </a>
-    <br />
-    <a href={url('licenses/LXGW-Neo-XiHei.txt')}>
-      LXGW Neo XiHei · IPA Font License 1.0
-    </a>
-  </p>
-  <h3>{pick(lang, '恢复原始 IPA 字体', 'Restoring the original IPA font')}</h3>
-  <p>
-    {pick(
-      lang,
-      '如果希望使用原始字体，请从下方官网获取并安装 IPAexGothic（IPAexゴシック），然后重新加载本页。网站会优先使用本地已安装的 IPAexGothic 替代 LinkX Sans；原始字体的部分汉字字形与中文设计不同。',
-      'To use the original font, download and install IPAexGothic from the official source below, then reload this page. The website prioritizes the locally installed IPAexGothic over LinkX Sans. Some glyphs in the original Japanese font differ from the Chinese design.',
-    )}
-  </p>
+  <h3>{legalContent.restoreHeading[lang]}</h3>
+  <p>{legalContent.restoreBody[lang]}</p>
   <p>
     <a
-      href="https://moji.or.jp/ipafont/ipafontdownload/"
+      href={legalContent.fontDownloadUrl}
       target="_blank"
       rel="noopener noreferrer"
     >
-      IPAexGothic · {pick(lang, '原始字体下载', 'Download the original font')} ↗
+      {legalContent.fontDownloadName} · {legalContent.fontDownload[lang]} ↗
     </a>
     <br />
-    <a href={url('licenses/FONT-NOTICE.md')}>
-      {pick(
-        lang,
-        '字体来源与替换说明',
-        'Font sources and replacement instructions',
-      )}
+    <a href={url(legalContent.fontNoticePath)}>
+      {legalContent.fontNotice[lang]}
     </a>
   </p>
 </article>

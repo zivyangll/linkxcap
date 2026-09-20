@@ -1,8 +1,12 @@
 import type { APIRoute } from 'astro';
-import { getCollection } from 'astro:content';
-import { languages, companies, team, pageUrl } from '../lib/site';
+import {
+  languages,
+  companies,
+  team,
+  insightArticles,
+  pageUrl,
+} from '../lib/site';
 export const GET: APIRoute = async ({ site }) => {
-  const articles = await getCollection('articles');
   const paths = [
     'index',
     'portfolio',
@@ -12,7 +16,7 @@ export const GET: APIRoute = async ({ site }) => {
     'legal',
     ...companies.map((c) => `portfolio/${c.slug}`),
     ...team.map((p) => `team-${p.id}`),
-    ...articles.filter((a) => a.data.lang === 'zh').map((a) => a.data.route),
+    ...insightArticles.filter((a) => a.lang === 'zh').map((a) => a.route),
   ];
   const absolute = (lang: 'zh' | 'en', page: string) =>
     new URL(pageUrl(lang, page), site).href;

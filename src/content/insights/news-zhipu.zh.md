@@ -1,20 +1,6 @@
----
-translationKey: "news-agm-2025"
-lang: "zh"
-route: "news-agm-2025"
-title: "从模型突破到产业落地：2025 AI全景观察与2026展望"
-summary: "连接技术、产业与创业视角，梳理通用智能生态的变化。"
-date: "2025-11-21"
-category: "panorama"
-source: "https://www.linkxcap.com/zh/news-agm-2025.html"
-sourceName: "现官网（中文）"
-mock: true
-order: 5
----
-
 ## 观察起点
 
-连接技术、产业与创业视角，梳理通用智能生态的变化。
+记录投资组合企业的发展节点，观察基础模型生态的持续演进。
 
 以下内容用于演示文章详情页的阅读节奏、目录、段落和引用样式。它不代表星连资本或文中公司的正式观点，完整稿件与英文译文将在审核后替换。
 

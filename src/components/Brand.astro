@@ -1,5 +1,5 @@
 ---
-import { asset } from '../lib/site';
+import { asset, siteContent } from '../lib/site';
 interface Props {
   light?: boolean;
 }
@@ -8,7 +8,7 @@ const { light = false } = Astro.props;
 
 <span
   class:list={['brand', { 'brand--light': light }]}
-  aria-label="Link-X Capital"
+  aria-label={siteContent.brand}
 >
   <img
     class="brand-link"

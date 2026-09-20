@@ -1,5 +1,5 @@
 ---
-import { pageUrl } from '../lib/site';
+import { pageUrl, siteContent } from '../lib/site';
 ---
 
 <!doctype html>
@@ -8,11 +8,11 @@ import { pageUrl } from '../lib/site';
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="noindex,follow" />
-    <title>Link-X Capital · 星连资本</title>
+    <title>{siteContent.redirectPage.title}</title>
     <meta http-equiv="refresh" content={`0;url=${pageUrl('zh')}`} />
   </head>
   <body>
-    <a href={pageUrl('zh')}>星连资本 · 中文</a>
-    <a href={pageUrl('en')}>Link-X Capital · English</a>
+    <a href={pageUrl('zh')}>{siteContent.redirectPage.zhLink}</a>
+    <a href={pageUrl('en')}>{siteContent.redirectPage.enLink}</a>
   </body>
 </html>

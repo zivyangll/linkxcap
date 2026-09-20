@@ -262,13 +262,48 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/contact.html');
-  const dot = page.locator('.fellow-orbit-point');
-  const left = await dot.evaluate((e) => e.getBoundingClientRect().left);
+  await expect(page.locator('.next-title-outline')).toBeVisible();
+  await expect(page.locator('.next-zh-outline')).toBeVisible();
+  await expect(page.locator('.next-zh-fill')).toHaveCSS('opacity', '0');
+  await expect(
+    page.locator('.signal-guides--opening .signal-guide-v'),
+  ).toHaveCount(4);
+  await expect(
+    page.locator('.signal-guides--opening .signal-guide-h'),
+  ).toHaveCount(6);
+  await expect(
+    page.locator('.signal-guides--context .signal-guide-v'),
+  ).toHaveCount(4);
+  await page.evaluate(() => scrollTo(0, innerHeight * 0.45));
   await expect
-    .poll(() => dot.evaluate((e) => e.getBoundingClientRect().left))
-    .not.toBe(left);
-  const before = (await page.locator('[data-video-shell]').boundingBox())!
-    .width;
+    .poll(() =>
+      page
+        .locator('.signal-guides--opening')
+        .evaluate((element) => Number(getComputedStyle(element).opacity)),
+    )
+    .toBeGreaterThan(0.95);
+  await expect(page.locator('.fellow-media-guide')).toHaveCount(4);
+  await expect(page.locator('.fellow-media-orbit')).toHaveCount(1);
+  await expect(page.locator('.fellow-orbit-point')).toHaveCount(0);
+  const context = page.locator('.fellow-context');
+  const marker = context.locator('.fellow-context-marker');
+  await expect(marker).toHaveCount(1);
+  const contextBox = (await context.boundingBox())!;
+  const markerBox = (await marker.boundingBox())!;
+  const lastLineBox = (await context.locator('p').last().boundingBox())!;
+  expect(markerBox.y).toBeGreaterThan(lastLineBox.y + lastLineBox.height);
+  expect(
+    Math.abs(
+      markerBox.x + markerBox.width / 2 - (contextBox.x + contextBox.width / 2),
+    ),
+  ).toBeLessThan(1);
+  const initialVideo = (await page
+    .locator('[data-video-shell]')
+    .boundingBox())!;
+  const before = initialVideo.width;
+  expect(Math.abs(initialVideo.x + initialVideo.width / 2 - 720)).toBeLessThan(
+    1,
+  );
   const start = await page
     .locator('[data-fellow-media]')
     .evaluate((e) => e.getBoundingClientRect().top + scrollY);
@@ -279,6 +314,12 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
         (await page.locator('[data-video-shell]').boundingBox())!.width,
     )
     .toBeGreaterThan(before + 200);
+  const expandedVideo = (await page
+    .locator('[data-video-shell]')
+    .boundingBox())!;
+  expect(
+    Math.abs(expandedVideo.x + expandedVideo.width / 2 - 720),
+  ).toBeLessThan(1);
   await expect(page.locator('.fellow-video-placeholder')).toContainText(
     '待提供',
   );

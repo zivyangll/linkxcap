@@ -1,20 +1,6 @@
----
-translationKey: "news-zhipu"
-lang: "en"
-route: "news-zhipu"
-title: "Z.AI in Hong Kong: a milestone on the journey"
-summary: "Following portfolio milestones and the continuing evolution of the foundation-model ecosystem."
-date: "2026-01-08"
-category: "portfolio"
-source: "https://www.linkxcap.com/zh/news-zhipu.html"
-sourceName: "Existing website (Chinese)"
-mock: true
-order: 4
----
-
 ## A starting point
 
-Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.
+Exploring the opportunities where AI agents meet real manufacturing workflows.
 
 The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
 

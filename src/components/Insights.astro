@@ -1,22 +1,22 @@
 ---
-import { getCollection } from 'astro:content';
-import designRows from '../data/insight-design-rows.json';
-import { pageUrl, asset, ui, pick, type Lang } from '../lib/site';
+import {
+  pageUrl,
+  asset,
+  ui,
+  insightArticles,
+  insightsContent,
+  content,
+  type Lang,
+} from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
-const articles = (
-  await getCollection('articles', ({ data }) => data.lang === lang)
-).sort((a, b) => a.data.order - b.data.order);
-const displayArticles = designRows.map((row) => ({
-  ...articles.find((a) => a.data.route === row.route)!,
-  design: row,
+const articles = insightArticles
+  .filter((article) => article.lang === lang)
+  .sort((a, b) => a.order - b.order);
+const displayArticles = content.insights.listRows.map((row) => ({
+  article: articles.find((article) => article.id === row.article)!,
+  row,
 }));
-const filters = [
-  ['all', '全部', 'All'],
-  ['applications', '应用', 'Applications'],
-  ['models', '模型', 'Models'],
-  ['portfolio', '投资组合', 'Portfolio'],
-  ['panorama', '全景观察', 'Panorama'],
-];
+const filters = content.insights.filters;
 ---
 
 <section class="insights-page" data-node-id="2002:2833">
@@ -29,36 +29,29 @@ const filters = [
     loading="lazy"
   />
   <h1 class="insights-title">
-    News &amp; Content{lang === 'zh' && <span>最新动态</span>}
+    {insightsContent.title.en}
+    {lang === 'zh' && <span>{insightsContent.title.zh}</span>}
   </h1>
-  <p class="insights-intro">
-    {pick(
-      lang,
-      '聚焦星连资本、被投企业与 AI 产业生态的最新进展，\n持续捕捉技术演进与产业变化中的真实信号。',
-      'News from Link-X Capital, our portfolio, and the AI ecosystem. Following the real signals of technological and industrial change.',
-    )}
-  </p>
+  <p class="insights-intro">{insightsContent.intro[lang]}</p>
   <div
     class="insight-filters"
     role="group"
-    aria-label={pick(lang, '筛选文章', 'Filter stories')}
+    aria-label={insightsContent.filterLabel[lang]}
   >
-    {filters.map(([id, zh, en], i) => (
+    {filters.map(({ id, zh, en }, i) => (
       <>
         {i > 0 && <span aria-hidden="true">/</span>}
         <button data-filter={id} aria-pressed={id === 'all'}>
-          {pick(lang, zh, en)}
+          {lang === 'zh' ? zh : en}
         </button>
       </>
     ))}
   </div>
   <div class="insight-list">
-    {displayArticles.map(({ data, design }) => {
-      const date = new Date(
-        `2026-08-${String(design.day).padStart(2, '0')}T12:00:00Z`,
-      );
+    {displayArticles.map(({ article, row }) => {
+      const date = new Date(`${row.date}T12:00:00Z`);
       return (
-        <article class="insight-row" data-category={data.category}>
+        <article class="insight-row" data-category={article.category}>
           <time class="insight-date" datetime={date.toISOString().slice(0, 10)}>
             {String(date.getUTCDate()).padStart(2, '0')} /
             <small>
@@ -69,19 +62,25 @@ const filters = [
             </small>
           </time>
           <h2>
-            <a href={pageUrl(lang, data.route)}>
-              {lang === 'zh' ? design.title : data.title}
+            <a href={pageUrl(lang, article.route)}>
+              {lang === 'zh'
+                ? article.listTitle || article.title
+                : article.title}
             </a>
           </h2>
           <p class="insight-category">
-            {lang === 'zh' && <span>{design.labelZh}</span>}
-            <span>[ {design.labelEn} ]</span>
+            {lang === 'zh' && <span>{row.labelZh}</span>}
+            <span>[ {row.labelEn} ]</span>
           </p>
           <div class="insight-excerpt">
-            <p>{lang === 'zh' ? design.summary : data.summary}</p>
+            <p>
+              {lang === 'zh'
+                ? article.listSummary || article.summary
+                : article.summary}
+            </p>
             <a
-              href={pageUrl(lang, data.route)}
-              aria-label={`${ui[lang].more}：${data.title}`}
+              href={pageUrl(lang, article.route)}
+              aria-label={`${ui[lang].more}：${article.title}`}
             >
               {ui[lang].more}
             </a>
@@ -90,7 +89,7 @@ const filters = [
       );
     })}
   </div>
-  <p class="insights-copyright">Link- X Capital 2026 All Right Deserve.</p>
+  <p class="insights-copyright">{insightsContent.copyright}</p>
   <div class="empty-state" data-empty hidden>
     <p>{ui[lang].noResults}</p>
     <button data-filter-reset>{ui[lang].reset}</button>

@@ -1,6 +1,4 @@
 export {};
-const lang = document.body.dataset.lang === 'en' ? 'en' : 'zh';
-const say = (zh: string, en: string) => (lang === 'zh' ? zh : en);
 const liveStatus = document.querySelector<HTMLElement>('[data-status]');
 const menu = document.querySelector<HTMLDialogElement>('#site-menu');
 const menuOpener =
@@ -63,10 +61,9 @@ function filterStories(category: string, updateUrl = true) {
   const empty = document.querySelector<HTMLElement>('[data-empty]');
   if (empty) empty.hidden = visible > 0;
   if (liveStatus)
-    liveStatus.textContent = say(
-      `显示 ${visible} 篇文章`,
-      `${visible} stories shown`,
-    );
+    liveStatus.textContent = (
+      document.body.dataset.storiesStatus || ''
+    ).replace('{count}', String(visible));
   if (updateUrl) {
     const url = new URL(location.href);
     if (selected === 'all') url.searchParams.delete('category');
@@ -92,16 +89,14 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) =>
     const value = button.dataset.copy || location.href;
     try {
       await navigator.clipboard.writeText(value);
-      if (liveStatus) liveStatus.textContent = say('已复制', 'Copied');
+      const copied = document.body.dataset.copiedStatus || '';
+      if (liveStatus) liveStatus.textContent = copied;
       const previous = button.textContent;
-      button.textContent = say('已复制', 'Copied');
+      button.textContent = copied;
       window.setTimeout(() => (button.textContent = previous), 1800);
     } catch {
       if (liveStatus)
-        liveStatus.textContent = say(
-          '复制失败，请手动复制链接或邮箱',
-          'Please copy the link or email manually',
-        );
+        liveStatus.textContent = document.body.dataset.copyFailedStatus || '';
     }
   }),
 );

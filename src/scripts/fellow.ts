@@ -45,40 +45,7 @@ export function initFellow() {
   });
   const media = gsap.matchMedia();
   media.add('(prefers-reduced-motion: no-preference)', () => {
-    const point = document.querySelector<HTMLElement>('.fellow-orbit-point');
-    const swing = { phase: -0.42 };
-    const paintPoint = () => {
-      if (!point) return;
-      const parent = point.parentElement!;
-      const arc = parent.querySelector('.next-orbit')!.getBoundingClientRect();
-      const box = parent.getBoundingClientRect();
-      const radius = (arc.width * 1173) / 1920;
-      point.style.left = `${parent.clientWidth / 2 + Math.sin(swing.phase) * radius}px`;
-      point.style.top = `${arc.top - box.top + (arc.width * 30) / 1920 + (1 - Math.cos(swing.phase)) * radius}px`;
-    };
-    const swingTween = gsap.to(swing, {
-      phase: 0.42,
-      duration: 3.5,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-      paused: true,
-      onUpdate: paintPoint,
-    });
     const intro = document.querySelector('.fellow-intro')!;
-    let introVisible = false;
-    const syncSwing = () => {
-      if (introVisible && !document.hidden) swingTween.resume();
-      else swingTween.pause();
-    };
-    const observer = new IntersectionObserver((entries) => {
-      introVisible = entries[0].isIntersecting;
-      syncSwing();
-    });
-    observer.observe(intro);
-    document.addEventListener('visibilitychange', syncSwing);
-    const resize = new ResizeObserver(paintPoint);
-    resize.observe(intro);
     const desktop = matchMedia('(min-width:1024px)').matches;
     const introTimeline = gsap.timeline({
       scrollTrigger: {
@@ -89,15 +56,19 @@ export function initFellow() {
         scrub: 0.35,
       },
     });
-    introTimeline.fromTo(
-      '.fellow-intro h1',
-      { '--signal-fill': '0%' },
-      { '--signal-fill': '100%', duration: 0.35, ease: 'none' },
-      0,
-    );
+    introTimeline
+      .to(
+        '.fellow-intro .next-title-outline',
+        { opacity: 0, duration: 0.28 },
+        0,
+      )
+      .to('.fellow-intro .next-title-fill', { opacity: 1, duration: 0.28 }, 0)
+      .to('.fellow-intro .next-zh-outline', { opacity: 0, duration: 0.28 }, 0)
+      .to('.fellow-intro .next-zh-fill', { opacity: 1, duration: 0.28 }, 0)
+      .to('.fellow-intro .next-orbit', { opacity: 1, duration: 0.18 }, 0.22);
     if (desktop) {
       introTimeline.to(
-        '.fellow-intro h1',
+        '.fellow-intro .next-title-fill',
         {
           scale: 0.6615,
           y: () => (-innerWidth * 76) / 1920,
@@ -107,7 +78,7 @@ export function initFellow() {
         0.35,
       );
       introTimeline.to(
-        '.fellow-intro .next-outline',
+        '.fellow-intro .next-zh-fill',
         {
           scale: 0.802,
           y: () => (-innerWidth * 134) / 1920,
@@ -117,8 +88,18 @@ export function initFellow() {
         0.35,
       );
       introTimeline.to(
+        '.fellow-intro .signal-guides--opening',
+        { opacity: 0, duration: 0.18 },
+        0.64,
+      );
+      introTimeline.to(
+        '.fellow-intro .signal-guides--context',
+        { opacity: 1, duration: 0.18 },
+        0.64,
+      );
+      introTimeline.to(
         '.fellow-intro .next-orbit',
-        { y: () => (-innerWidth * 497) / 1920, duration: 0.45 },
+        { y: () => (-innerWidth * 467) / 1920, duration: 0.45 },
         0.35,
       );
       introTimeline.fromTo(
@@ -146,9 +127,9 @@ export function initFellow() {
     timeline.to(
       '.fellow-video-shell',
       {
-        width: desktop ? '100%' : '100%',
-        y: desktop ? () => -root.clientWidth * 0.16 : 0,
-        height: desktop ? 'calc(100% - 180px)' : 'auto',
+        width: desktop ? '80.8854167%' : '100%',
+        top: desktop ? () => (root.clientWidth * 201) / 1920 : undefined,
+        height: desktop ? () => (root.clientWidth * 771) / 1920 : 'auto',
         duration: 1,
         ease: 'none',
       },
@@ -157,9 +138,11 @@ export function initFellow() {
     if (desktop)
       timeline.to(
         '.fellow-media-title',
-        { opacity: 0, y: -60, duration: 0.35 },
-        0,
+        { opacity: 0, y: -60, duration: 0.25 },
+        0.45,
       );
+    if (desktop)
+      timeline.to('.fellow-media-orbit', { opacity: 0, duration: 0.35 }, 0.55);
     timeline.fromTo(
       '.fellow-media-caption',
       { opacity: 0 },
@@ -167,12 +150,6 @@ export function initFellow() {
       0.8,
     );
     document.fonts.ready.then(() => ScrollTrigger.refresh());
-    return () => {
-      observer.disconnect();
-      resize.disconnect();
-      document.removeEventListener('visibilitychange', syncSwing);
-      swingTween.kill();
-    };
   });
   const videoVisibility = new IntersectionObserver(
     (entries) => {

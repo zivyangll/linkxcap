@@ -1,20 +1,6 @@
----
-translationKey: "portfolio-yuanmu"
-lang: "en"
-route: "portfolio-yuanmu"
-title: "Yuanmu: how can AI agents reshape machining operations?"
-summary: "Exploring the opportunities where AI agents meet real manufacturing workflows."
-date: "2026-05-26"
-category: "applications"
-source: "https://www.linkxcap.com/zh/portfolio-yuanmu.html"
-sourceName: "Existing website (Chinese)"
-mock: true
-order: 0
----
-
 ## A starting point
 
-Exploring the opportunities where AI agents meet real manufacturing workflows.
+Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.
 
 The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
 

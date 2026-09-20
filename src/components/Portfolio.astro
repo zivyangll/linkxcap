@@ -1,5 +1,11 @@
 ---
-import { companies, sectors, pageUrl, type Lang } from '../lib/site';
+import {
+  companies,
+  sectors,
+  portfolioContent,
+  pageUrl,
+  type Lang,
+} from '../lib/site';
 import PageTitle from './PageTitle.astro';
 import CompanyLogo from './CompanyLogo.astro';
 import Arrow from './Arrow.astro';
@@ -8,8 +14,12 @@ const { lang } = Astro.props as { lang: Lang };
 
 <div class="portfolio-page" data-node-id="2002:526">
   <PageTitle
-    zh="投资组合"
-    en={lang === 'zh' ? 'Portfoilo' : 'Portfolio'}
+    zh={portfolioContent.title.zh}
+    en={
+      lang === 'zh'
+        ? portfolioContent.title.figmaZhEnglish
+        : portfolioContent.title.en
+    }
     lang={lang}
   />
   <div class="portfolio-grid">

@@ -532,9 +532,27 @@
 .fellow-intro {
   background: #f8f6f2;
 }
-.fellow-intro h1 {
-  --signal-fill: 100%;
+.fellow-intro .signal-guides {
+  pointer-events: none;
+}
+.fellow-intro .signal-guides--opening {
+  opacity: 1;
+}
+.fellow-intro .signal-guides--context {
+  opacity: 0;
+}
+.next-title-outline {
   position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: calc(438.05 * var(--u));
+  width: calc(761.128 * var(--u));
+  height: auto;
+  transform: translateX(-50%);
+}
+.fellow-intro .next-title-fill {
+  position: absolute;
+  z-index: 1;
   left: 50%;
   top: calc(414 * var(--u));
   transform: translateX(-50%);
@@ -544,18 +562,22 @@
   letter-spacing: -0.05em;
   line-height: 1.2;
   color: #090909;
+  opacity: 0;
 }
-@supports (-webkit-background-clip: text) {
-  .fellow-intro h1 {
-    -webkit-text-stroke: 1px #1d1d1d;
-    color: transparent;
-    background: linear-gradient(
-      to right,
-      #1d1d1d var(--signal-fill),
-      transparent var(--signal-fill)
-    );
-    background-clip: text;
-  }
+.next-zh {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: calc(584.85 * var(--u));
+  width: calc(583.518 * var(--u));
+  height: auto;
+  transform: translateX(-50%);
+}
+.next-zh-fill {
+  opacity: 0;
+}
+.fellow-intro .next-orbit {
+  opacity: 0;
 }
 .fellow-definition {
   position: absolute;
@@ -565,16 +587,31 @@
   color: #786d7f;
   font-size: 14px;
   white-space: nowrap;
+  opacity: 0;
 }
-.fellow-orbit-point {
+.fellow-context-marker {
   position: absolute;
-  z-index: 2;
+  display: block;
   left: 50%;
-  top: calc(681 * var(--u));
-  width: 9px;
-  height: 9px;
-  background: #573c79;
-  box-shadow: 0 0 15px #573c7950;
+  top: calc(294 * var(--u));
+  width: calc(13.929 * var(--u));
+  height: calc(13.929 * var(--u));
+  min-width: 8px;
+  min-height: 8px;
+  background: #090909;
+  box-shadow: none;
+  transform: translateX(-50%) rotate(45deg);
+}
+.fellow-context-marker::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(31.007 * var(--u));
+  height: calc(31.007 * var(--u));
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  opacity: 0.6;
 }
 .fellow-media-section {
   position: relative;
@@ -584,13 +621,27 @@
   background: #f8f6f2;
   isolation: isolate;
 }
-.fellow-media-section::before {
-  content: '';
+.fellow-media-guides {
   position: absolute;
-  inset: 0 12.86%;
-  border-inline: 1px dashed #d7d4d0;
+  inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
+}
+.fellow-media-guide {
+  position: absolute;
+  top: 50%;
+  max-width: none;
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+.fellow-media-orbit {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  top: calc(-1204 * var(--u));
+  width: calc(2406 * var(--u));
+  height: calc(2406 * var(--u));
+  max-width: none;
+  transform: translateX(-50%);
 }
 .fellow-media-title {
   text-align: center;
@@ -598,6 +649,7 @@
   top: calc(193 * var(--u));
   left: 0;
   width: 100%;
+  z-index: 2;
 }
 .fellow-media-title h2 {
   font-size: calc(63.557 * var(--u));
@@ -620,6 +672,7 @@
   background: #e4e2de;
   border-radius: 2px;
   overflow: hidden;
+  z-index: 2;
 }
 .fellow-video-shell video {
   display: block;
@@ -673,6 +726,12 @@
   text-align: center;
   font-size: 14px;
   color: #827984;
+  z-index: 3;
+}
+@media (min-width: 1024px) {
+  .fellow-media-caption {
+    display: none;
+  }
 }
 .contact-invitation h2 {
   font-size: calc(40 * var(--u));
@@ -769,11 +828,15 @@
     height: 75vw;
     min-height: 620px;
   }
-  .fellow-intro h1 {
+  .fellow-intro .next-title-fill {
     top: 240px;
     font-size: 8vw;
   }
-  .fellow-intro .next-outline {
+  .fellow-intro .next-title-outline {
+    top: 240px;
+    width: 58vw;
+  }
+  .fellow-intro .next-zh {
     top: 330px;
     width: 48vw;
     height: auto;
@@ -933,11 +996,15 @@
     min-height: 660px;
     height: 85svh;
   }
-  .fellow-intro h1 {
+  .fellow-intro .next-title-fill {
     top: 220px;
     font-size: clamp(38px, 10vw, 60px);
   }
-  .fellow-intro .next-outline {
+  .fellow-intro .next-title-outline {
+    top: 220px;
+    width: 78%;
+  }
+  .fellow-intro .next-zh {
     top: 302px;
     width: 72%;
     height: auto;
@@ -997,12 +1064,6 @@
   .network-logo img,
   .member-portrait img {
     transition: none;
-  }
-  .fellow-intro h1 {
-    --signal-fill: 100% !important;
-  }
-  .fellow-orbit-point {
-    left: 50%;
   }
 }
 

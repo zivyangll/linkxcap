@@ -2,6 +2,7 @@
 import {
   companies,
   sectors,
+  portfolioContent,
   asset,
   portfolioLogo,
   pageUrl,
@@ -55,7 +56,12 @@ const records = navCompanies.map((c) => ({
   data-node-id={company.slug === 'mosi' ? '2002:1359' : '2002:1282'}
 >
   <div class="company-heading">
-    <PageTitle as="h2" zh="投资组合" en="Portfolio" lang={lang} />
+    <PageTitle
+      as="h2"
+      zh={portfolioContent.title.zh}
+      en={portfolioContent.title.en}
+      lang={lang}
+    />
     <a class="text-link" href={pageUrl(lang, 'portfolio')}>
       {ui[lang].all}
     </a>
@@ -108,17 +114,11 @@ const records = navCompanies.map((c) => ({
         <i data-arc-side="bottom" data-arc-step={index + 1}></i>
       ))}
     </div>
-    <p class="company-scroll-hint">
-      {pick(
-        lang,
-        '滚动探索 / 点击选择',
-        'Scroll to explore / Select a company',
-      )}
-    </p>
+    <p class="company-scroll-hint">{portfolioContent.scrollHint[lang]}</p>
     <nav
       class="company-navigator"
       data-company-nav
-      aria-label={pick(lang, '浏览其他投资企业', 'Explore portfolio companies')}
+      aria-label={portfolioContent.navigatorLabel[lang]}
       tabindex="0"
     >
       <div class="company-nav-track">

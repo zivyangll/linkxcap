@@ -1,7 +1,7 @@
 ---
 import {
   team,
-  teamIntro,
+  teamContent,
   asset,
   pageUrl,
   pick,
@@ -16,8 +16,12 @@ const members = team.slice(0, 3);
 
 <section class="team-review" data-team-review data-node-id="2002:4567">
   <div class="team-review-heading">
-    <PageTitle zh="团队" en="Our Team" lang={lang} />
-    <p>{teamIntro}</p>
+    <PageTitle
+      zh={teamContent.title.zh}
+      en={teamContent.title.en}
+      lang={lang}
+    />
+    <p>{teamContent.intro}</p>
   </div>
   <div class="team-explorer">
     <div class="team-portraits">
@@ -59,11 +63,7 @@ const members = team.slice(0, 3);
               <p class="member-copy">{person.bio[lang]}</p>
             </div>
             <div class="team-bio-featured">
-              <p>
-                {lang === 'zh'
-                  ? '代表投资 · Featured Investments'
-                  : 'Featured Investments · 代表投资'}
-              </p>
+              <p>{teamContent.featured[lang]}</p>
               <p class="data-note">{ui[lang].mock}</p>
             </div>
           </div>

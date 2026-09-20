@@ -1,20 +1,6 @@
----
-translationKey: "insights-zhang-bo"
-lang: "en"
-route: "insights-zhang-bo"
-title: "Reflections on AGI Next and the future of intelligence"
-summary: "Returning to foundational questions about intelligence and the connection between research and industry."
-date: "2026-01-12"
-category: "models"
-source: "https://www.linkxcap.com/zh/insights-zhang-bo.html"
-sourceName: "Existing website (Chinese)"
-mock: true
-order: 2
----
-
 ## A starting point
 
-Returning to foundational questions about intelligence and the connection between research and industry.
+Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.
 
 The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
 

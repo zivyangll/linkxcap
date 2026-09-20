@@ -1,0 +1,990 @@
+{
+  "_editingGuide": {
+    "_note": "网站全部可编辑文案的唯一入口。以下划线开头的字段只供维护人员阅读，不会显示在页面上。洞察正文是唯一例外：正文放在 src/content/insights/，文件名和元数据仍由本文件 insights.articles 维护。",
+    "howToEdit": [
+      "先在本文件中按页面名称找到文案；zh 为中文，en 为英文。",
+      "短标题、按钮、说明、SEO 文案、团队资料、公司资料和洞察列表信息都只在本文件编辑。",
+      "洞察正文请编辑 insights.articles.files 指向的 Markdown 文件；不要在 Markdown 中重复填写标题或摘要。",
+      "不要修改 id、slug、route、files、image、logo 等标识字段，除非同步调整路由或素材。",
+      "修改后运行 npm run build；构建会检查洞察 JSON 列表与 Markdown 文件是否一一对应。"
+    ],
+    "sectionIndex": {
+      "site": "全站品牌名、邮箱、SEO、页脚、404 和入口跳转页。",
+      "navigation": "桌面导航、移动菜单和语言切换。",
+      "ui": "全站复用按钮、状态提示和无障碍文案。",
+      "pages.home": "首页五屏叙事、统计数字与投资方向。",
+      "pages.portfolio": "投资组合列表与详情页固定文案。",
+      "pages.team": "团队列表和人物详情页固定文案。人物资料在 team.items。",
+      "pages.insights": "洞察列表页和文章详情页固定文案。文章清单在 insights.articles。",
+      "pages.contact": "Contact/Fellow 全部标题、视频占位和联系文案。",
+      "pages.legal": "法律声明页面。",
+      "sectors.items": "投资方向名称和说明。",
+      "team.items": "人员姓名、职位、简介和图片标识。",
+      "companies": "投资组合公司名称、分类、简介、官网和详情。",
+      "insights": "洞察筛选项、视觉列表顺序、文章元数据和 Markdown 文件清单。"
+    }
+  },
+  "site": {
+    "_note": "全站基础信息。metaDescription 用于未单独提供摘要的页面；pageTitles 用于浏览器标题。",
+    "brand": "Link-X Capital",
+    "brandZh": "星连资本",
+    "email": "service@linkxcap.com",
+    "companyLegalName": {
+      "zh": "北京星连肇基私募基金管理有限责任公司",
+      "en": "Link-X Capital"
+    },
+    "copyright": "Link-X Capital 2026. All rights reserved.",
+    "recordNumber": "京ICP备2022019276号-1",
+    "metaDescription": {
+      "zh": "星连资本，与AGI时代的定义者同行。聚焦通用智能生态的创新与价值创造。",
+      "en": "Link-X Capital. Partnering with founders defining the AGI era."
+    },
+    "pageTitles": {
+      "index": {
+        "zh": "与AGI时代的定义者同行",
+        "en": "Partnering with founders defining the AGI era"
+      },
+      "portfolio": { "zh": "投资组合", "en": "Portfolio" },
+      "team": { "zh": "团队", "en": "Our Team" },
+      "insights": { "zh": "最新动态", "en": "News & Content" },
+      "contact": { "zh": "联系我们", "en": "Contact" },
+      "legal": { "zh": "法律声明", "en": "Legal notice" }
+    },
+    "redirectPage": {
+      "title": "Link-X Capital · 星连资本",
+      "zhLink": "星连资本 · 中文",
+      "enLink": "Link-X Capital · English"
+    },
+    "notFound": {
+      "title": "页面未找到",
+      "eyebrow": "LOST SIGNAL",
+      "zh": "这个信号暂时没有抵达。",
+      "en": "This page could not be found.",
+      "back": "返回首页 · Back home",
+      "english": "English"
+    }
+  },
+  "navigation": {
+    "_note": "items 控制主导航顺序和双语名称；移动菜单底部文字也在这里维护。page 必须与实际路由一致。",
+    "items": [
+      { "page": "index", "en": "Philosophy", "zh": "关于星连" },
+      { "page": "portfolio", "en": "Portfolio", "zh": "投资组合" },
+      { "page": "team", "en": "Team", "zh": "团队" },
+      { "page": "insights", "en": "Insight", "zh": "洞察" },
+      { "page": "contact", "en": "Contact", "zh": "联系我们" }
+    ],
+    "languageLabel": { "zh": "语言", "en": "Language" },
+    "mainNavLabel": { "zh": "主导航", "en": "Main navigation" },
+    "menuNavLabel": { "zh": "菜单导航", "en": "Menu navigation" },
+    "menuTitle": "Menu",
+    "menuContactTitle": {
+      "zh": "联系我们\nBuild with us",
+      "en": "Build with us"
+    },
+    "menuContactLink": "Contact us",
+    "languageNames": { "zh": "中文", "en": "English" },
+    "languageShort": { "zh": "中", "en": "EN" },
+    "wechatLabel": { "zh": "微信", "en": "WeChat" },
+    "menuFooter": "2026 北京星连肇基私募基金管理有限责任公司"
+  },
+  "ui": {
+    "_note": "全站复用的按钮、状态和无障碍提示。保留键名，只修改 zh/en 的显示文字。",
+    "zh": {
+      "menu": "菜单",
+      "close": "关闭",
+      "skip": "跳转到正文",
+      "more": "阅读全文",
+      "all": "查看全部",
+      "profile": "查看完整简介",
+      "expand": "查看简介",
+      "back": "返回",
+      "website": "访问官网",
+      "original": "阅读原文",
+      "copy": "复制链接",
+      "copied": "链接已复制",
+      "copyFailed": "复制失败，请复制浏览器地址",
+      "legal": "法律声明",
+      "mock": "设计预览 · 内容待确认",
+      "noResults": "暂无相关内容",
+      "reset": "查看全部内容",
+      "chapters": "文章目录",
+      "email": "联系邮箱",
+      "source": "原文来源",
+      "previous": "上一家",
+      "next": "下一家",
+      "pause": "暂停动态背景",
+      "resume": "开启动态背景"
+    },
+    "en": {
+      "menu": "Menu",
+      "close": "Close",
+      "skip": "Skip to content",
+      "more": "Read more",
+      "all": "View all",
+      "profile": "Full profile",
+      "expand": "View profile",
+      "back": "Back",
+      "website": "Visit website",
+      "original": "Read original",
+      "copy": "Copy link",
+      "copied": "Link copied",
+      "copyFailed": "Please copy the address from your browser",
+      "legal": "Legal notice",
+      "mock": "Design preview · Content pending approval",
+      "noResults": "No stories in this category yet",
+      "reset": "View all stories",
+      "chapters": "Contents",
+      "email": "Email",
+      "source": "Original source",
+      "previous": "Previous company",
+      "next": "Next company",
+      "pause": "Pause ambient motion",
+      "resume": "Enable ambient motion"
+    },
+    "clientMessages": {
+      "storiesShown": {
+        "zh": "显示 {count} 篇文章",
+        "en": "{count} stories shown"
+      },
+      "copied": { "zh": "已复制", "en": "Copied" },
+      "copyFailed": {
+        "zh": "复制失败，请手动复制链接或邮箱",
+        "en": "Please copy the link or email manually"
+      }
+    }
+  },
+  "socials": {
+    "_note": "页脚、移动菜单和联系页共用。微信为站内联系区锚点，不在此数组中。",
+    "items": [
+      { "name": "X", "en": "X", "href": "https://x.com/LinkXCapital" },
+      {
+        "name": "LinkedIn",
+        "en": "LinkedIn",
+        "href": "https://www.linkedin.com/company/link-x-%E6%98%9F%E8%BF%9E%E8%B5%84%E6%9C%AC/"
+      },
+      {
+        "name": "小红书",
+        "en": "Xiaohongshu",
+        "href": "https://xhslink.com/m/UjLFumWxau"
+      },
+      {
+        "name": "抖音",
+        "en": "Douyin",
+        "href": "https://www.douyin.com/user/MS4wLjABAAAAHYtbwIVUi113kSYUweZGc-tFiJGG1WPk8Jgldgk9Fhw"
+      }
+    ]
+  },
+  "pages": {
+    "home": {
+      "_note": "首页五屏文案。数组中的每一项对应一个视觉换行；统计数据目前为待确认占位。",
+      "opening": {
+        "chapter": "Chapter 01",
+        "title": { "zh": ["Open Signal", "远星初亮"], "en": ["Open Signal"] },
+        "body": {
+          "zh": [
+            "每一次时代变革初现之时，",
+            "总有少数非凡的头脑先于共识看见未来，",
+            "如远星初亮。",
+            "LINK- X 将这些通用智能时代的定义者链接成星群，",
+            "让远见辉映，照亮前路。"
+          ],
+          "en": [
+            "At the beginning of every era,",
+            "a few extraordinary minds see the future",
+            "before it becomes consensus.",
+            "Like the first light of a distant star.",
+            "Link-X connects these visionaries into a constellation,",
+            "illuminating the path ahead."
+          ]
+        }
+      },
+      "hero": {
+        "title": ["Partnering with founders", "Defining the AGI era"],
+        "zhTitle": ["与AGI时代的", "定义者同行"],
+        "orbitEyebrow": "open signal",
+        "orbitLabel": { "zh": "远星初亮", "en": "The first light" }
+      },
+      "about": {
+        "eyebrow": "ABOUT US",
+        "label": { "zh": "关于我们", "en": "Link-X Capital" },
+        "title": {
+          "zh": ["链接创新源头,", "加速价值创造。"],
+          "en": ["Connecting innovation.", "Accelerating value."]
+        },
+        "description": {
+          "zh": [
+            "星连资本（LinkX Capital）创建于 2021 年，是中国最早聚焦通用智能产业生态、",
+            "目前最活跃的 AI 风险投资基金之一。",
+            "我们围绕通用智能时代的关键技术栈与应用场景，投资基座模型、AI 基础设施、",
+            "多智能体、具身智能、AI 原生应用及智能硬件等方向。",
+            "我们与清华大学共建华清普智AI孵化器（T-ONE Innovation Lab），",
+            "打造活跃的全球青年科学家与企业家社区，推动科研、产业、政策与资本的多要素循环，",
+            "加速源头创新走向真实商业场景。"
+          ],
+          "en": [
+            "Founded in 2021, LinkX Capital is one of China’s earliest and most active AI-focused venture capital funds dedicated to the ecosystem of General-Purpose Intelligence. Centered on the key technology stacks and application scenarios of the AGI era, we invest in foundation models, AI infrastructure, multi-agent systems, embodied AI, AI-native applications, and intelligent hardware. Together with Tsinghua University, we co-build T-ONE Innovation Lab, connecting a global community of young scientists and entrepreneurs."
+          ]
+        }
+      },
+      "research": {
+        "title": ["Global Research,", "Proven Success."],
+        "stats": [
+          { "value": "160+", "label": "Portfolio Companies" },
+          { "value": "68+", "label": "Fund Partners" },
+          { "value": "25+", "label": "Portfolio Companies" },
+          { "value": "$100B+", "label": "Portfolio Companies" }
+        ],
+        "dataNote": {
+          "zh": "MOCK · 设计占位数据，指标与口径待确认",
+          "en": "MOCK · Design placeholders. Metrics pending approval."
+        }
+      },
+      "focus": {
+        "title": ["Focus", "Areas"],
+        "zhTitle": "我们寻找的星域",
+        "contactLink": { "zh": "联系我们", "en": "Contact us" },
+        "aboutLink": { "zh": "关于我们", "en": "About us" },
+        "ariaLabel": { "zh": "投资领域", "en": "Investment focus" },
+        "investmentYear": "2026"
+      }
+    },
+    "portfolio": {
+      "_note": "投资组合列表及公司详情的固定界面文案；具体公司资料在 companies。",
+      "title": {
+        "zh": "投资组合",
+        "en": "Portfolio",
+        "figmaZhEnglish": "Portfoilo"
+      },
+      "scrollHint": {
+        "zh": "滚动探索 / 点击选择",
+        "en": "Scroll to explore / Select a company"
+      },
+      "navigatorLabel": {
+        "zh": "浏览其他投资企业",
+        "en": "Explore portfolio companies"
+      }
+    },
+    "team": {
+      "_note": "团队页面固定文案；姓名、职务和人物简介在 team.items。",
+      "title": { "zh": "团队", "en": "Our Team" },
+      "intro": "Founded in 2021, LinkX Capital is one of China’s earliest and most active AI-focused venture capital funds dedicated to the ecosystem of General-Purpose Intelligence.Centered on the key technology stacks and application scenarios of the General-Purpose Intelligence era, we invest in areas such as foundation models, AI infrastructure, multi-agent systems, embodied AI, AI-native applications, and intelligent hardware.",
+      "eyebrow": "OUR TEAM",
+      "featured": {
+        "zh": "代表投资 · Featured Investments",
+        "en": "Featured Investments · 代表投资"
+      },
+      "contactLink": { "zh": "联系我们", "en": "Contact us" }
+    },
+    "insights": {
+      "_note": "洞察列表页和文章详情页共用文案；文章元数据和 Markdown 文件在根级 insights。",
+      "title": { "zh": "最新动态", "en": "News & Content" },
+      "intro": {
+        "zh": "聚焦星连资本、被投企业与 AI 产业生态的最新进展，\n持续捕捉技术演进与产业变化中的真实信号。",
+        "en": "News from Link-X Capital, our portfolio, and the AI ecosystem. Following the real signals of technological and industrial change."
+      },
+      "filterLabel": { "zh": "筛选文章", "en": "Filter stories" },
+      "copyright": "Link- X Capital 2026 All Right Deserve.",
+      "back": { "zh": "返回洞察", "en": "Back to Insight" },
+      "eyebrow": "INSIGHT",
+      "publisher": "Link-X Capital",
+      "mockBanner": {
+        "zh": "本文为版式演示稿，正文、翻译及日期待确认。请通过文末原文链接阅读现官网内容。",
+        "en": "This article is a layout demonstration. Text, translation and date are pending approval. Use the original source link below to read the existing website."
+      }
+    },
+    "contact": {
+      "_note": "Contact/Fellow 页所有可见文案。视频文件配置仍在 fellow-media.json，因为它属于媒体配置而非文案。",
+      "signalTitle": "The Next Signal",
+      "signalSubtitle": {
+        "zh": "与定义者同行",
+        "en": "Alongside the visionaries"
+      },
+      "joinCopy": {
+        "zh": "如果你正在寻找、定义，或亲手建造一个尚未被市场命名的未来，我们希望更早与你相遇。",
+        "en": "If you are seeking, defining, or personally building a future that the market has not yet named, we hope to meet you sooner."
+      },
+      "joinDisplay": {
+        "zh": [
+          "如果你正在寻找、定义，或亲手建造一个",
+          "尚未被市场命名的未来，我们希望更早与你相遇。"
+        ],
+        "en": [
+          "If you are seeking, defining, or personally building a future that the market has not yet named, we hope to meet you sooner."
+        ]
+      },
+      "definition": {
+        "zh": "与定义同行，与定义者同行",
+        "en": "Alongside ideas. Alongside their visionaries."
+      },
+      "videoPlaceholderAria": {
+        "zh": "品牌视频占位，正式视频待提供",
+        "en": "Brand film placeholder — final video pending"
+      },
+      "videoPlaceholder": {
+        "zh": "品牌视频 · 待提供",
+        "en": "Brand film · Coming soon"
+      },
+      "playVideo": { "zh": "播放视频", "en": "Play film" },
+      "joinTitle": { "zh": "加入我们", "en": "Join Us" },
+      "joinEyebrow": "Join Us",
+      "contactLink": "Contact us",
+      "detailsEyebrow": "BUILD WITH US",
+      "detailsTitle": {
+        "zh": "连接下一个信号",
+        "en": "Connect with the next signal"
+      },
+      "copyEmail": { "zh": "复制邮箱", "en": "Copy email" },
+      "findUs": { "zh": "找到我们", "en": "Find us" },
+      "wechat": [
+        {
+          "title": { "zh": "微信 · 星连资本", "en": "WeChat · Link-X Capital" },
+          "pending": {
+            "zh": "公众号二维码待提供，请先通过邮箱与我们联系。",
+            "en": "The official QR code will be added after confirmation. Please contact us by email."
+          }
+        },
+        {
+          "title": {
+            "zh": "微信 · 华清普智孵化器",
+            "en": "WeChat · T-ONE Innovation Lab"
+          },
+          "pending": {
+            "zh": "公众号二维码待提供，请先通过邮箱与我们联系。",
+            "en": "The official QR code will be added after confirmation. Please contact us by email."
+          }
+        }
+      ]
+    },
+    "legal": {
+      "_note": "法律声明页。当前仍是预览占位，正式上线前需由公司或法务审核。",
+      "eyebrow": "LEGAL NOTICE",
+      "title": { "zh": "法律声明", "en": "Legal notice" },
+      "banner": {
+        "zh": "设计预览：本页为占位说明，正式法律条款待公司审核。",
+        "en": "Design preview: this page contains placeholder information. Final legal terms are pending company review."
+      },
+      "sections": [
+        {
+          "heading": { "zh": "关于本次预览", "en": "About this preview" },
+          "body": {
+            "zh": "本网站为星连资本官网改版的设计与交互预览。部分介绍、数字、日期及文章正文使用演示内容，尚未完成业务审核，不应作为公司正式信息或投资依据。",
+            "en": "This website is a design and interaction preview for the Link-X Capital website redesign. Some descriptions, metrics, dates and article text are demonstration content pending approval and should not be treated as official company information or investment guidance."
+          }
+        },
+        {
+          "heading": {
+            "zh": "内容与知识产权",
+            "en": "Content and intellectual property"
+          },
+          "body": {
+            "zh": "品牌标识、人物插画及视觉素材用于本次设计还原；正式发布前，将根据素材交接表确认使用范围。",
+            "en": "Brand marks, portraits and design assets are used for this design preview. Their publication scope will be reviewed before the final release."
+          }
+        },
+        {
+          "heading": { "zh": "隐私与联系", "en": "Privacy and contact" },
+          "body": {
+            "zh": "本预览未接入表单收集或第三方分析服务。如需联系，请发送邮件至",
+            "en": "This preview does not include submission forms or third-party analytics. To get in touch, email"
+          }
+        }
+      ],
+      "existingSiteLink": {
+        "zh": "查看现官网法律声明",
+        "en": "View the existing website’s legal notice"
+      },
+      "existingSiteUrl": "https://www.linkxcap.com/{lang}/legal.html",
+      "fontsHeading": { "zh": "字体许可", "en": "Font licenses" },
+      "fontsBody": {
+        "zh": "本网站使用本地托管的字体子集，字形来自 Source Han Serif SC、Source Serif 4 和 LXGW Neo XiHei。派生字体分别命名为 LinkX Serif、LinkX Web Italic 和 LinkX Sans。",
+        "en": "This website serves local subsets derived from Source Han Serif SC, Source Serif 4 and LXGW Neo XiHei, renamed LinkX Serif, LinkX Web Italic and LinkX Sans."
+      },
+      "fontLicenses": [
+        {
+          "label": "Source Han Serif · SIL OFL 1.1",
+          "path": "licenses/Source-Han-Serif.txt"
+        },
+        {
+          "label": "Source Serif 4 · SIL OFL 1.1",
+          "path": "licenses/Source-Serif-4.txt"
+        },
+        {
+          "label": "LXGW Neo XiHei · IPA Font License 1.0",
+          "path": "licenses/LXGW-Neo-XiHei.txt"
+        }
+      ],
+      "restoreHeading": {
+        "zh": "恢复原始 IPA 字体",
+        "en": "Restoring the original IPA font"
+      },
+      "restoreBody": {
+        "zh": "如果希望使用原始字体，请从下方官网获取并安装 IPAexGothic（IPAexゴシック），然后重新加载本页。网站会优先使用本地已安装的 IPAexGothic 替代 LinkX Sans；原始字体的部分汉字字形与中文设计不同。",
+        "en": "To use the original font, download and install IPAexGothic from the official source below, then reload this page. The website prioritizes the locally installed IPAexGothic over LinkX Sans. Some glyphs in the original Japanese font differ from the Chinese design."
+      },
+      "fontDownload": {
+        "zh": "原始字体下载",
+        "en": "Download the original font"
+      },
+      "fontDownloadUrl": "https://moji.or.jp/ipafont/ipafontdownload/",
+      "fontDownloadName": "IPAexGothic",
+      "fontNotice": {
+        "zh": "字体来源与替换说明",
+        "en": "Font sources and replacement instructions"
+      },
+      "fontNoticePath": "licenses/FONT-NOTICE.md"
+    }
+  },
+  "sectors": {
+    "_note": "首页 Focus Areas 及投资组合分类共用。id 参与交互，不要随意修改。mock 表示文案是否仍待公司确认。",
+    "items": [
+      {
+        "id": "foundation",
+        "zh": "智能基础层",
+        "en": "Intelligence Foundations",
+        "desc": {
+          "zh": "模型、数据与训练范式，决定智能能力演进的速度与上限。我们关注持续推动模型能力跃迁的底层创新。",
+          "en": "Models, data and training paradigms shape the pace and possibilities of intelligence. We look for foundational innovations that enable the next leap in capability."
+        },
+        "mock": false
+      },
+      {
+        "id": "infrastructure",
+        "zh": "AI基础设施",
+        "en": "AI Infrastructure",
+        "desc": {
+          "zh": "从算力、芯片到推理系统，构建通用智能时代的基础设施，让智能以更高效率走向真实世界。",
+          "en": "From compute and chips to inference systems, infrastructure enables intelligence to reach the real world with greater efficiency."
+        },
+        "mock": true
+      },
+      {
+        "id": "applications",
+        "zh": "智能体与AI原生应用",
+        "en": "Agents & AI-Native applications",
+        "desc": {
+          "zh": "我们关注由智能体重新定义的工作方式与用户体验，寻找技术能力与真实需求相遇的创新。",
+          "en": "We explore new ways of working and experiences shaped by agents, where emerging capabilities meet real human needs."
+        },
+        "mock": true
+      },
+      {
+        "id": "physical",
+        "zh": "物理智能",
+        "en": "Physical Intelligence",
+        "desc": {
+          "zh": "让智能走出屏幕，在感知、行动与反馈中理解世界，探索机器人与智能硬件带来的新可能。",
+          "en": "Intelligence moves beyond the screen through perception, action and feedback, opening possibilities in robotics and intelligent hardware."
+        },
+        "mock": true
+      },
+      {
+        "id": "frontiers",
+        "zh": "长期前沿",
+        "en": "Long-term Frontiers",
+        "desc": {
+          "zh": "在共识形成之前，关注值得长期探索的问题，与看见未来的研究者和创业者共同前行。",
+          "en": "Before consensus forms, we explore questions worth pursuing over the long term, alongside researchers and founders who see what comes next."
+        },
+        "mock": true
+      }
+    ]
+  },
+  "team": {
+    "_note": "团队成员资料。id、image 与路由和 Figma 素材绑定；name、en、role、bio 是编辑重点。",
+    "items": [
+      {
+        "id": "alex",
+        "name": "张鸣晨",
+        "en": "Alex Zhang",
+        "role": { "zh": "主管合伙人", "en": "Managing Partner" },
+        "image": "imgImage212",
+        "mock": true,
+        "bio": {
+          "zh": "关注通用智能时代的技术演进与创业机会，与具有长期视野的创新者共同探索新的可能。个人履历与代表投资项目正在整理中，正式资料将在确认后更新。",
+          "en": "Exploring the evolution of general-purpose intelligence alongside founders with a long-term perspective. This profile is a layout preview; the approved biography and investment history will be added after review."
+        }
+      },
+      {
+        "id": "elliot",
+        "name": "王璞",
+        "en": "Elliot Wang",
+        "role": { "zh": "合伙人", "en": "Partner" },
+        "image": "imgImage213",
+        "mock": true,
+        "bio": {
+          "zh": "关注通用智能时代的技术演进与创业机会，与具有长期视野的创新者共同探索新的可能。个人履历与代表投资项目正在整理中，正式资料将在确认后更新。",
+          "en": "Exploring the evolution of general-purpose intelligence alongside founders with a long-term perspective. This profile is a layout preview; the approved biography and investment history will be added after review."
+        }
+      },
+      {
+        "id": "wenjue",
+        "name": "李文珏",
+        "en": "Wenjue Li",
+        "role": { "zh": "合伙人", "en": "Partner" },
+        "image": "imgImage211",
+        "mock": true,
+        "bio": {
+          "zh": "关注通用智能时代的技术演进与创业机会，与具有长期视野的创新者共同探索新的可能。个人履历与代表投资项目正在整理中，正式资料将在确认后更新。",
+          "en": "Exploring the evolution of general-purpose intelligence alongside founders with a long-term perspective. This profile is a layout preview; the approved biography and investment history will be added after review."
+        }
+      },
+      {
+        "id": "leo",
+        "name": "王晨",
+        "en": "Leo Wang",
+        "role": { "zh": "合伙人", "en": "Partner" },
+        "image": "imgImage215",
+        "mock": true,
+        "bio": {
+          "zh": "关注通用智能时代的技术演进与创业机会，与具有长期视野的创新者共同探索新的可能。个人履历与代表投资项目正在整理中，正式资料将在确认后更新。",
+          "en": "Exploring the evolution of general-purpose intelligence alongside founders with a long-term perspective. This profile is a layout preview; the approved biography and investment history will be added after review."
+        }
+      }
+    ]
+  },
+  "companiesNote": "投资组合公司资料。slug 是路由，website 是官网，name/desc/detail 为中文，nameEn/descEn/detailEn 为英文；group 字段保留来源分类，页面实际大类由代码映射。",
+  "companies": [
+    {
+      "name": "智谱AI",
+      "desc": "基础模型",
+      "detail": "中国领先的人工智能企业，专注 AGI 技术研发与产业化应用。公司已推出 GLM 系列自研大模型，并围绕大模型底座构建了覆盖 MaaS/API 服务、企业级私有化部署和智能体应用开发的产品体系。2026 年 1 月，智谱正式登陆港交所主板。",
+      "website": "https://www.zhipuai.cn/zh/about",
+      "group": "基础模型",
+      "groupEn": "Foundation Models",
+      "nameEn": "Z.ai",
+      "descEn": "Foundation models",
+      "detailEn": "Z.ai listed on the HKEX Main Board in January 2026 (stock code 02513.HK); the company builds GLM models, MaaS model services and agent applications across reasoning, coding, agents and multimodal capabilities.",
+      "slug": "zhipu-ai",
+      "featured": true
+    },
+    {
+      "name": "生数科技",
+      "desc": "多模态大模型",
+      "detail": "专注多模态通用大模型及应用研发。公司 2022 年 9 月即提出 U-ViT 创新架构，现已围绕 Vidu 系列自研多模态基础模型，构建 MaaS、SaaS、Agent 与 APP 产品矩阵，服务全球 200 多个国家和地区的创作者、内容机构和行业客户。",
+      "website": "https://www.shengshu.com/zh/about",
+      "group": "多模态大模型",
+      "groupEn": "Multimodal Models",
+      "nameEn": "GensPi",
+      "descEn": "Multimodal models",
+      "detailEn": "GensPi develops multimodal foundation models and applications. Vidu supports video generation and multimodal content creation through SaaS, MaaS and open-platform offerings.",
+      "slug": "shengshu-technology",
+      "featured": true
+    },
+    {
+      "name": "面壁智能",
+      "desc": "高效模型",
+      "detail": "专注高效大模型研发与端侧部署，现已推出 MiniCPM「面壁小钢炮」系列语言、多模态及全模态模型，以更小参数和更低算力成本实现高性能智能，并推动相关技术在手机、PC、汽车、机器人等终端场景落地。公司联合清华大学等团队提出的大模型“密度法则”相关研究发表于 Nature 子刊。",
+      "website": "https://modelbest.cn/",
+      "group": "高效模型",
+      "groupEn": "Efficient Models",
+      "nameEn": "ModelBest",
+      "descEn": "Efficient models",
+      "detailEn": "ModelBest builds the MiniCPM on-device model family, improving model knowledge density and deployment efficiency across phones, AIPCs, cockpits and robots.",
+      "slug": "modelbest",
+      "featured": false
+    },
+    {
+      "name": "模思智能",
+      "desc": "多模态大模型",
+      "detail": "专注情境交互智能的创新型公司。公司围绕  MOSS 系列模型研发，致力于构建下一代智能人机交互技术，通过融合文本、音频、视频、动作等模态，规模化物理世界的复杂真实情境，让 AI理解用户所处的全局情境，实现自然、连贯、可成长、可信赖的交互智能，推动多模态交互与具身智能的产业化落地。模思由上海创智学院与复旦大学联合孵化，由词元定义者、国际NLP与大模型顶尖学者复旦大学邱锡鹏教授创立；是国内少数完成“全模态基座模型能力闭环”的初创企业之一。",
+      "website": "https://home.mosi.cn",
+      "group": "多模态大模型",
+      "groupEn": "Multimodal Models",
+      "nameEn": "Mosi",
+      "descEn": "Multimodal Models",
+      "detailEn": "Co-incubated by the Shanghai Institute of Intelligent Science and Fudan University, Mosi Intelligence is founded by Prof. Xipeng Qiu, a top scholar in NLP and LLMs. Dedicated to MOSS model development, the company builds next-generation human-computer interaction technologies that fuse text, audio, video, and action modalities for multimodal interaction and embodied intelligence.",
+      "slug": "mosi",
+      "featured": false
+    },
+    {
+      "name": "瑞莱智慧",
+      "desc": "AI 安全",
+      "detail": "RealAI 是一家 AI 自主组织与安全技术公司，致力于构建能够自主完成组织级目标、持续学习进化的 AI 自主组织，并确保其安全、可信与可控。",
+      "website": "https://www.realai.ai/about?scrollId=t19",
+      "group": "AI 安全",
+      "groupEn": "AI Safety",
+      "nameEn": "RealAI",
+      "descEn": "AI safety",
+      "detailEn": "RealAI, initiated by Tsinghua University's Institute for AI Industry Research, provides AI platform and safety solutions across governance, finance, research, education and mobility.",
+      "slug": "realai",
+      "featured": false
+    },
+    {
+      "name": "趋境科技",
+      "desc": "推理优化",
+      "detail": "专注大模型推理优化与 AI Token 生产基础设施，构建 ATaaS 平台，为企业级大模型应用提供低时延、高吞吐、稳定结构化输出和可预测服务质量的 Token 规模化供给能力。公司团队源自清华高性能计算研究所，参与 KTransformers、Mooncake 等推理开源项目，致力以“以存换算”和异构协同架构降低推理成本、提升算力效率。",
+      "website": "https://approaching-ai.com/introduction",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "Approaching.AI",
+      "descEn": "Inference optimization",
+      "detailEn": "Approaching AI focuses on large-scale inference and token production, using heterogeneous compute coordination and memory-compute optimization to lower deployment cost.",
+      "slug": "approaching-ai",
+      "featured": false
+    },
+    {
+      "name": "无问芯穹",
+      "desc": "高效算力云平台",
+      "detail": "中国领先的 AI 原生基础设施企业，聚焦多元异构算力与软硬协同优化，打造连接 “M 种模型” 与 “N 种芯片” 的 “M×N” AI 基础设施范式。公司通过 Infini-AI 异构云平台，为大模型训练、推理与部署提供高性价比算力、原生工具链和推理加速能力，持续提升 Token 生产效率，并面向智能体时代构建可学习、可进化的 Agentic Infra。",
+      "website": "https://cloud.infini-ai.com/platform/ai",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "Infinigence AI",
+      "descEn": "Efficient AI cloud platform",
+      "detailEn": "Infinigence provides Agentic Infra and Agentic MaaS, managing multiple chip types for large-model training, production inference and enterprise agents.",
+      "slug": "infinigence-ai",
+      "featured": false
+    },
+    {
+      "name": "谦合益邦",
+      "desc": "高效能芯片",
+      "detail": "专注智能终端与云游戏核心芯片方案，依托 AIoT 高能效技术和云端高清流媒体加速技术，为终端智能教育、云游戏等场景提供低功耗、高性能的硬件加速能力。公司自研高能效 SoC 芯片 G100，面向实时语音、图像处理及智能终端应用，已在翻译笔、学习机等产品中逐步落地。",
+      "website": "https://www.agicmicro.com/gywm/",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "AGIC Micro",
+      "descEn": "Efficient chips",
+      "detailEn": "AGICmicro centers on AIoT energy efficiency and cloud HD streaming acceleration, offering high-efficiency SoCs, cloud gaming chips and chip design services.",
+      "slug": "agic-micro",
+      "featured": false
+    },
+    {
+      "name": "基流科技",
+      "desc": "智算基础设施",
+      "detail": "中国领先的独立 AI 算力集群提供商。围绕高速组网、集合通信、并行框架和管控调度等核心能力，公司打造了 Galaxy 端到端 AI 算力集群产品体系，覆盖 AI 算力设备、Mercury 算力网络系统与 Venus AI 算力操作系统，为大模型预训练、后训练、推理和智能体等场景提供高效、稳定、可扩展的 AI 基础设施能力。",
+      "website": "https://infrawaves.com/home",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "Infrawaves",
+      "descEn": "AI compute infrastructure",
+      "detailEn": "Infrawaves provides high-performance networking, communication optimization and the Venus compute platform for AI clusters, covering deployment, scheduling, training, inference, monitoring and maintenance.",
+      "slug": "infrawaves",
+      "featured": true
+    },
+    {
+      "name": "珀乐互动",
+      "desc": "AI 互动娱乐",
+      "detail": "聚焦 “AI+IP” 的数字内容科技公司。通过自研技术中台将 AI 大模型能力应用于 IP 开发、内容制作、运营与衍生环节，提升泛娱乐内容生产效率。公司已推出「剧灵 AI」「珀乐视界」等产品，业务覆盖 AIGC 动漫短剧、互动娱乐内容与多模态 IP 商业化。",
+      "group": "AI 互动娱乐",
+      "groupEn": "AI interactive entertainment",
+      "nameEn": "Polo Interactive",
+      "descEn": "AI interactive entertainment",
+      "detailEn": "Pule applies large-model capabilities to IP development, operations and derivatives through an in-house technology platform, improving digital-content production and monetization.",
+      "slug": "polo-interactive",
+      "featured": false
+    },
+    {
+      "name": "紫荆智康",
+      "desc": "AI 医疗",
+      "detail": "致力以 AI 提供便捷、低廉、优质的医疗服务。公司研发“紫荆 AI 医院”（Agent Hospital），通过疾病生成模型与数据飞轮机制推动医疗智能体自我进化，已构建二十多个科室的医疗 Agent，并在全国多个城市启动公开测试，推动优质智能医疗资源下沉与区域医疗资源均衡布局。",
+      "website": "https://www.tairex.cn/gy",
+      "group": "AI 医疗",
+      "groupEn": "AI healthcare",
+      "nameEn": "Tairex",
+      "descEn": "AI healthcare",
+      "detailEn": "Committed to making healthcare more accessible, affordable and high-quality through AI. Its Agent Hospital system uses disease-generation models and data flywheels to evolve medical agents across departments and support public testing in multiple cities.",
+      "slug": "tairex",
+      "featured": false
+    },
+    {
+      "name": "百奥几何",
+      "desc": "AI for Science",
+      "detail": "AI Native 生物科技公司，以生成式 AI 打造生命科学领域的“微观世界模型“，并与自动化实验室平台深度耦合，构建“设计—实验—学习“的自主闭环，从抗体、疫苗、多肽到酶工程，实现生命科学领域的自主科学发现——让生命从“被理解“走向“被设计“。",
+      "website": "https://www.biogeom.com/about/",
+      "group": "AI for Science",
+      "groupEn": "AI for Science",
+      "nameEn": "BioGeometry",
+      "descEn": "AI for Science",
+      "detailEn": "An AI-native biotech company using generative AI to build a “microscopic world model” of biology. By tightly integrating AI with automated laboratories, it creates a self-improving loop of design, experimentation, and learning—accelerating autonomous discovery across antibodies, vaccines, peptides, and enzyme engineering, and moving biology from being understood to being engineered.",
+      "slug": "biogeometry",
+      "featured": true
+    },
+    {
+      "name": "动易科技",
+      "desc": "具身/机器人",
+      "detail": "秉承 “Robot for AI” 的愿景，致力于打造新一代通用具身智能体。公司通过全栈自研机器人硬件，训练端到端运动控制系统，并融合多模态大模型，为生产制造、特种作业、生活服务等领域提供新一代 AI 生产力。其核心团队是国内少数能够将强化学习算法在全尺寸人形机器人运动控制中实现规模化落地的团队之一。",
+      "website": "https://www.phybot.tech/",
+      "group": "具身智能",
+      "groupEn": "Embodied Intelligence",
+      "nameEn": "Phybot",
+      "descEn": "Embodied intelligence / robotics",
+      "detailEn": "PHYBOT builds embodied agents through full-stack hardware, end-to-end motion control and multimodal models for manufacturing, special operations and life services.",
+      "slug": "phybot",
+      "featured": false
+    },
+    {
+      "name": "阿米奥机器人",
+      "desc": "具身/机器人",
+      "detail": "专注工业具身智能与规模化商业机器人应用，面向 3C、汽车电子等制造场景提供柔性生产与亚毫米级精密装配解决方案。公司融合人工智能、多模态感知与自主运动控制技术，产品覆盖复杂装配、精密检测、智能仓储等环节，核心团队具备自动驾驶、机器人和量产交付经验。",
+      "group": "具身智能",
+      "groupEn": "Embodied Intelligence",
+      "nameEn": "AMIO Robotics",
+      "descEn": "Embodied intelligence / robotics",
+      "detailEn": "Amigos develops intelligent robot systems and application solutions for large-scale commercial scenarios such as logistics, warehousing and retail automation.",
+      "slug": "amio-robotics",
+      "featured": false
+    },
+    {
+      "name": "辉羲智能",
+      "desc": "AI 芯片",
+      "detail": "面向智能驾驶与具身智能场景的高性能计算平台公司，致力于打造具身智能时代的算力底座。公司提供高算力通用具身智能芯片、开放工具链及全栈解决方案，并提出“数据闭环定义芯片”的产品方法学，将算力、算法和数据闭环协同纳入芯片架构设计，帮助车企与机器人企业构建低成本、大规模、可自动化迭代的智能系统。公司已发布基于 7nm 车规级工艺的高阶智能驾驶芯片“光至 R1”，面向高阶智能驾驶、机器人等场景提供高性能、可量产的算力支持。",
+      "website": "https://www.rhino.auto/about",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "RHINO",
+      "descEn": "AI chips",
+      "detailEn": "RHINO is a high-performance computing platform company for intelligent driving and embodied-intelligence scenarios. It builds general-purpose embodied-intelligence chips, open toolchains and full-stack solutions, using a data-closed-loop approach to chip definition for scalable intelligent systems.",
+      "slug": "rhino",
+      "featured": false
+    },
+    {
+      "name": "清程极智",
+      "desc": "训推优化",
+      "detail": "清程极智是专业的一站式全链路Token解决方案服务商，核心团队来自清华大学计算机系，依托自主研发的大模型推理引擎及智能路由算法，提升包括国产算力在内的智能算力使用效率，为行业提供高质量低成本的大模型Token服务。",
+      "website": "https://www.qc-ai.cn/",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "Qingcheng Jizhi",
+      "descEn": "Training and inference optimization",
+      "detailEn": "Qingcheng Jizhi provides end-to-end token infrastructure for large-model applications. Founded by a core team from Tsinghua University’s Department of Computer Science, the company uses its proprietary inference engine and intelligent routing technology to improve the efficiency of AI computing resources, including China-developed accelerators, and deliver reliable, high-quality token services at lower cost.",
+      "slug": "qingcheng-jizhi",
+      "featured": false
+    },
+    {
+      "name": "行云集成电路",
+      "desc": "AI 芯片",
+      "detail": "面向大模型推理场景的新一代 GPGPU 芯片公司，致力打造软件亲和、高显存规格的大模型推理芯片，用异构、白盒的硬件形态重塑大模型计算系统，推动大模型以更高质量、更低成本走向规模化应用。公司围绕超大显存规格、CUDA 兼容和全自研 GPGPU 架构构建核心能力，瞄准大模型推理中显存容量、算力效率和软件生态适配等关键瓶颈，目标是实现 AI 推理能力的普惠化。核心团队来自清华大学及全球顶尖 GPU/AI 芯片公司，具备芯片架构、编译器、系统软件和量产交付经验。",
+      "website": "https://xingyun.xin/",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "Xingyun IC",
+      "descEn": "GPGPU chips",
+      "detailEn": "Xingyun IC is a next-generation GPGPU chip company for large-model inference, building software-friendly, high-memory inference chips with CUDA compatibility and an in-house GPGPU architecture.",
+      "slug": "xingyun-ic",
+      "featured": false
+    },
+    {
+      "name": "吾云创新",
+      "desc": "硬件终端",
+      "detail": "Zettlab 是一家专注于 Agent Computer 与本地 AI 计算的创新公司，致力于让每个 Agent 都拥有自己的电脑。通过融合 AI、存储与边缘计算，Zettlab 打造面向个人、家庭与企业的智能计算平台，实现数据管理、内容生成与多智能体协作。",
+      "website": "https://zettlab.com/?srsltid=AfmBOopIGuwBtrgfMfQ6jBc-s1Qazc-PGTZkiC4GLbVvz0xnIwzLPkpu",
+      "group": "AI-native devices",
+      "groupEn": "AI-native devices",
+      "nameEn": "Zettlab",
+      "descEn": "Hardware Terminals",
+      "detailEn": "Zettlab is an AI-native computing company focused on Agent Computers and Local AI infrastructure. Its mission is to give every AI Agent its own computer. By integrating AI, storage, and edge computing, Zettlab builds intelligent computing platforms for individuals, homes, and enterprises, enabling private AI workflows, content generation, personal knowledge management, and multi-agent collaboration.",
+      "slug": "zettlab",
+      "featured": false
+    },
+    {
+      "name": "硅基流动",
+      "desc": "大模型推理与模型云服务",
+      "detail": "专注高性能大模型云服务与推理基础设施。公司通过 SiliconCloud 一站式模型云平台，结合自研 SiliconLLM、OneDiff 等推理与生成加速技术，为语言、多模态、文生图、视频生成等模型提供高性能、低成本的 API、微调、托管和部署服务，帮助开发者和企业更快、更便宜地构建生成式 AI 应用。",
+      "website": "https://www.siliconflow.com/",
+      "group": "AI 基础设施",
+      "groupEn": "AI Infrastructure",
+      "nameEn": "SiliconFlow",
+      "descEn": "Model cloud services",
+      "detailEn": "SiliconFlow focuses on high-performance model cloud services and inference infrastructure, providing API, fine-tuning, hosting and deployment services through SiliconCloud and acceleration technologies such as SiliconLLM and OneDiff.",
+      "slug": "siliconflow",
+      "featured": false
+    }
+  ],
+  "insights": {
+    "_note": "洞察内容注册表。新增文章时：1）在 articles 增加一项；2）把中英文 Markdown 正文放到 directory；3）在 files 填写相对 directory 的文件名。标题、摘要、日期、分类、来源、排序只在这里维护，Markdown 文件不再写 frontmatter。listRows 控制列表视觉顺序，允许重复以匹配设计稿。",
+    "directory": "src/content/insights",
+    "filters": [
+      { "id": "all", "zh": "全部", "en": "All" },
+      { "id": "applications", "zh": "应用", "en": "Applications" },
+      { "id": "models", "zh": "模型", "en": "Models" },
+      { "id": "portfolio", "zh": "投资组合", "en": "Portfolio" },
+      { "id": "panorama", "zh": "全景观察", "en": "Panorama" }
+    ],
+    "listRows": [
+      {
+        "article": "portfolio-yuanmu",
+        "date": "2026-08-26",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      },
+      {
+        "article": "portfolio-pole-ctv",
+        "date": "2026-08-13",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      },
+      {
+        "article": "insights-zhang-bo",
+        "date": "2026-08-05",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      },
+      {
+        "article": "insights-agi-2026",
+        "date": "2026-08-05",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      },
+      {
+        "article": "insights-zhang-bo",
+        "date": "2026-08-05",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      },
+      {
+        "article": "insights-zhang-bo",
+        "date": "2026-08-05",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      },
+      {
+        "article": "insights-zhang-bo",
+        "date": "2026-08-05",
+        "labelZh": "智能应用层",
+        "labelEn": "APPLICATION"
+      }
+    ],
+    "articles": [
+      {
+        "id": "portfolio-yuanmu",
+        "route": "portfolio-yuanmu",
+        "category": "applications",
+        "date": "2026-05-26",
+        "source": "https://www.linkxcap.com/zh/portfolio-yuanmu.html",
+        "mock": true,
+        "order": 0,
+        "files": {
+          "zh": "portfolio-yuanmu.zh.md",
+          "en": "portfolio-yuanmu.en.md"
+        },
+        "zh": {
+          "title": "圆木智能：AI智能体如何重塑机加工生产管理？",
+          "summary": "走进制造现场，观察智能体与真实生产流程相遇的机会。",
+          "listTitle": "原木智能：AI智能体如何重塑机加工生产管理？",
+          "listSummary": "订单随意插队打乱全盘生产，交货时间一再往后顺延，重金购置的设备白白闲置浪费产能。这些排产痛点，让无数加工厂倍感头疼。如今 AI 排产智能体应运而生，不仅革新生产作业工具，更颠覆传统管理思路。",
+          "sourceName": "现官网（中文）"
+        },
+        "en": {
+          "title": "Yuanmu: how can AI agents reshape machining operations?",
+          "summary": "Exploring the opportunities where AI agents meet real manufacturing workflows.",
+          "sourceName": "Existing website (Chinese)"
+        }
+      },
+      {
+        "id": "portfolio-pole-ctv",
+        "route": "portfolio-pole-ctv",
+        "category": "applications",
+        "date": "2026-03-18",
+        "source": "https://www.linkxcap.com/zh/portfolio-pole-ctv.html",
+        "mock": true,
+        "order": 1,
+        "files": {
+          "zh": "portfolio-pole-ctv.zh.md",
+          "en": "portfolio-pole-ctv.en.md"
+        },
+        "zh": {
+          "title": "珀乐互动 CTO 徐京徽：AI泛娱乐如何演进？",
+          "summary": "从内容生产到交互体验，讨论 AI 为泛娱乐带来的新可能。",
+          "listTitle": "珀乐互动 CTO 徐京徽：AI泛娱乐如何演进？",
+          "listSummary": "在生成式AI深入泛娱乐产业实践之后，行业发展已经不只是\"效率提升\"，而是生产、体验与商业生态层面的全方位重构。本文分享自星连资本被投企业珀乐互动 CTO 徐京徽。结合珀乐互动科技的实战经验，系统梳理了他对AI泛娱乐行业演进、痛点及破局路径的理解。",
+          "sourceName": "现官网（中文）"
+        },
+        "en": {
+          "title": "Polo Interactive: where is AI-powered entertainment heading?",
+          "summary": "From content creation to interactive experiences, exploring new possibilities for AI in entertainment.",
+          "sourceName": "Existing website (Chinese)"
+        }
+      },
+      {
+        "id": "insights-zhang-bo",
+        "route": "insights-zhang-bo",
+        "category": "models",
+        "date": "2026-01-12",
+        "source": "https://www.linkxcap.com/zh/insights-zhang-bo.html",
+        "mock": true,
+        "order": 2,
+        "files": {
+          "zh": "insights-zhang-bo.zh.md",
+          "en": "insights-zhang-bo.en.md"
+        },
+        "zh": {
+          "title": "AGI Next全明星峰会落幕｜张钹院士的压轴发言，为我们留下了什么？",
+          "summary": "回到智能发展的基础问题，关注研究突破与产业实践之间的联系。",
+          "listTitle": "张钹院士的压轴发言，为我们留下了什么？",
+          "listSummary": "\"人工智能时代的企业家，不是简单地提供产品和服务，而是要把知识、原理和应用变成可复用的工具，像水电一样交给人类。这是全新的、神圣的使命。\"",
+          "sourceName": "现官网（中文）"
+        },
+        "en": {
+          "title": "Reflections on AGI Next and the future of intelligence",
+          "summary": "Returning to foundational questions about intelligence and the connection between research and industry.",
+          "sourceName": "Existing website (Chinese)"
+        }
+      },
+      {
+        "id": "insights-agi-2026",
+        "route": "insights-agi-2026",
+        "category": "panorama",
+        "date": "2026-01-04",
+        "source": "https://www.linkxcap.com/zh/insights-agi-2026.html",
+        "mock": true,
+        "order": 3,
+        "files": {
+          "zh": "insights-agi-2026.zh.md",
+          "en": "insights-agi-2026.en.md"
+        },
+        "zh": {
+          "title": "2026年，在等到AGI之前，我们先做什么？",
+          "summary": "面对快速变化的技术，持续寻找值得长期投入的真实问题。",
+          "listTitle": "2026年在等到AGI之前，我们先做什么。",
+          "listSummary": "2026年开年即起风，AI行业IPO热潮席卷资本市场，壁仞科技、智谱AI、MiniMax密集推进上市进程，也因此有媒体判断2026年是\"IPO大年\"。这也从侧面印证了 AI 行业国产大模型正式从\"技术探索期\"迈入\"产业深耕期\"。",
+          "sourceName": "现官网（中文）"
+        },
+        "en": {
+          "title": "What should we build before AGI arrives?",
+          "summary": "Amid rapid technological change, finding real problems worth pursuing over the long term.",
+          "sourceName": "Existing website (Chinese)"
+        }
+      },
+      {
+        "id": "news-zhipu",
+        "route": "news-zhipu",
+        "category": "portfolio",
+        "date": "2026-01-08",
+        "source": "https://www.linkxcap.com/zh/news-zhipu.html",
+        "mock": true,
+        "order": 4,
+        "files": { "zh": "news-zhipu.zh.md", "en": "news-zhipu.en.md" },
+        "zh": {
+          "title": "智谱港股上市，星连资本见证成长",
+          "summary": "记录投资组合企业的发展节点，观察基础模型生态的持续演进。",
+          "sourceName": "现官网（中文）"
+        },
+        "en": {
+          "title": "Z.AI in Hong Kong: a milestone on the journey",
+          "summary": "Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.",
+          "sourceName": "Existing website (Chinese)"
+        }
+      },
+      {
+        "id": "news-agm-2025",
+        "route": "news-agm-2025",
+        "category": "panorama",
+        "date": "2025-11-21",
+        "source": "https://www.linkxcap.com/zh/news-agm-2025.html",
+        "mock": true,
+        "order": 5,
+        "files": { "zh": "news-agm-2025.zh.md", "en": "news-agm-2025.en.md" },
+        "zh": {
+          "title": "从模型突破到产业落地：2025 AI全景观察与2026展望",
+          "summary": "连接技术、产业与创业视角，梳理通用智能生态的变化。",
+          "sourceName": "现官网（中文）"
+        },
+        "en": {
+          "title": "From model breakthroughs to industry: the AI landscape and outlook",
+          "summary": "Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.",
+          "sourceName": "Existing website (Chinese)"
+        }
+      }
+    ]
+  }
+}

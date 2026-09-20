@@ -2,7 +2,7 @@
 import { createHash } from 'node:crypto';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { url, pageUrl, preview, type Lang } from '../lib/site';
+import { url, pageUrl, preview, siteContent, ui, type Lang } from '../lib/site';
 import fonts from '../data/fonts.json';
 import '../styles/global.css';
 import '../styles/figma-desktop.css';
@@ -20,9 +20,7 @@ const {
   lang,
   page = 'index',
   title,
-  description = lang === 'zh'
-    ? '星连资本，与AGI时代的定义者同行。聚焦通用智能生态的创新与价值创造。'
-    : 'Link-X Capital. Partnering with founders defining the AGI era.',
+  description = siteContent.metaDescription[lang],
   minimal = false,
   bodyClass = '',
   footer = true,
@@ -46,7 +44,7 @@ const canonical = absolute(pageUrl(lang, page));
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#fdfbf5" />
-    <title>{title} · Link-X Capital</title>
+    <title>{title} · {siteContent.brand}</title>
     <meta name="description" content={description} />
     {preview && <meta name="robots" content="noindex,follow" />}
     <link rel="canonical" href={canonical} />
@@ -61,7 +59,7 @@ const canonical = absolute(pageUrl(lang, page));
       hreflang="x-default"
       href={absolute(pageUrl('zh', page))}
     />
-    <meta property="og:title" content={`${title} · Link-X Capital`} />
+    <meta property="og:title" content={`${title} · ${siteContent.brand}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
@@ -79,7 +77,13 @@ const canonical = absolute(pageUrl(lang, page));
     />
     <style is:inline set:html={fontCss}></style>
   </head>
-  <body class={bodyClass} data-lang={lang}>
+  <body
+    class={bodyClass}
+    data-lang={lang}
+    data-stories-status={ui.clientMessages.storiesShown[lang]}
+    data-copied-status={ui.clientMessages.copied[lang]}
+    data-copy-failed-status={ui.clientMessages.copyFailed[lang]}
+  >
     <Header lang={lang} current={page} minimal={minimal} />
     <main id="main" tabindex="-1">
       <slot />

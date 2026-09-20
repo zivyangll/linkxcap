@@ -1,20 +1,6 @@
----
-translationKey: "portfolio-pole-ctv"
-lang: "en"
-route: "portfolio-pole-ctv"
-title: "Polo Interactive: where is AI-powered entertainment heading?"
-summary: "From content creation to interactive experiences, exploring new possibilities for AI in entertainment."
-date: "2026-03-18"
-category: "applications"
-source: "https://www.linkxcap.com/zh/portfolio-pole-ctv.html"
-sourceName: "Existing website (Chinese)"
-mock: true
-order: 1
----
-
 ## A starting point
 
-From content creation to interactive experiences, exploring new possibilities for AI in entertainment.
+Amid rapid technological change, finding real problems worth pursuing over the long term.
 
 The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
 

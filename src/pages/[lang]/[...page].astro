@@ -13,12 +13,33 @@ import {
   languages,
   companies,
   team,
+  insightArticles,
+  insightFileId,
+  pageTitle,
   type Lang,
   type Company,
+  type InsightArticle,
 } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles');
+  const bodies = await getCollection('insights');
+  const bodyById = new Map(bodies.map((body) => [body.id, body]));
+  const articles = insightArticles.map((meta) => {
+    const body = bodyById.get(insightFileId(meta.file));
+    if (!body)
+      throw new Error(
+        `Missing insight Markdown file: src/content/insights/${meta.file}`,
+      );
+    return { ...meta, body };
+  });
+  const registered = new Set(
+    insightArticles.map((item) => insightFileId(item.file)),
+  );
+  const unregistered = bodies.filter((body) => !registered.has(body.id));
+  if (unregistered.length)
+    throw new Error(
+      `Insight Markdown files missing from data/content.json: ${unregistered.map((body) => body.id).join(', ')}`,
+    );
   return languages.flatMap((lang) => [
     ...['portfolio', 'team', 'insights', 'contact', 'legal'].map((page) => ({
       params: { lang, page },
@@ -33,9 +54,9 @@ export async function getStaticPaths() {
       props: { kind: 'person', person },
     })),
     ...articles
-      .filter((a) => a.data.lang === lang)
+      .filter((a) => a.lang === lang)
       .map((article) => ({
-        params: { lang, page: article.data.route },
+        params: { lang, page: article.route },
         props: { kind: 'article', article },
       })),
   ]);
@@ -46,20 +67,9 @@ interface Props {
   kind: string;
   company?: Company;
   person?: (typeof team)[number];
-  article?: CollectionEntry<'articles'>;
+  article?: InsightArticle & { body: CollectionEntry<'insights'> };
 }
 const { kind, company, person, article } = Astro.props;
-const names: Record<string, [string, string]> = {
-  index: [
-    '与AGI时代的定义者同行',
-    'Partnering with founders defining the AGI era',
-  ],
-  portfolio: ['投资组合', 'Portfolio'],
-  team: ['团队', 'Our Team'],
-  insights: ['最新动态', 'News & Content'],
-  contact: ['联系我们', 'Contact'],
-  legal: ['法律声明', 'Legal notice'],
-};
 const title = company
   ? lang === 'zh'
     ? company.name
@@ -69,15 +79,15 @@ const title = company
       ? person.name
       : person.en
     : article
-      ? article.data.title
-      : names[kind]?.[lang === 'zh' ? 0 : 1] || 'Link-X Capital';
+      ? article.title
+      : pageTitle(lang, kind as Parameters<typeof pageTitle>[1]);
 ---
 
 <SiteLayout
   lang={lang}
   page={page}
   title={title}
-  description={article?.data.summary}
+  description={article?.summary}
   minimal={kind === 'company'}
   footer={!['portfolio', 'company', 'team', 'insights'].includes(kind)}
   bodyClass={
