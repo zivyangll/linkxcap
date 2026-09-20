@@ -237,6 +237,11 @@ test('five home chapters track scroll, reveal text and slide the second screen o
     'point-drop',
   );
   await expect(page.locator('.about-rays .diamond')).toHaveCSS('opacity', '1');
+  await expect(page.locator('.about-tangent-line')).toHaveCSS(
+    'background-image',
+    /repeating-linear-gradient/,
+  );
+  await expect(page.locator('.about-tangent-line')).toHaveCSS('opacity', '1');
   const dotDropped = (await page.locator('.about-rays .diamond').boundingBox())!
     .y;
   expect(dotDropped).toBeGreaterThan(enteringDotY + 40);
@@ -254,6 +259,13 @@ test('five home chapters track scroll, reveal text and slide the second screen o
   );
   await expect(page.locator('.philosophy-trail')).toHaveCSS('opacity', '0');
   await expect(page.locator('.about-rays .diamond')).toHaveCSS('opacity', '1');
+  await expect
+    .poll(() =>
+      page
+        .locator('.about-tangent-line')
+        .evaluate((e) => Number(getComputedStyle(e).opacity)),
+    )
+    .toBeGreaterThan(0);
   await expect
     .poll(
       async () => (await page.locator('.philosophy-orbit').boundingBox())!.x,
@@ -275,6 +287,7 @@ test('five home chapters track scroll, reveal text and slide the second screen o
     'data-motion-phase',
     'focus',
   );
+  await expect(page.locator('.about-tangent-line')).toHaveCSS('opacity', '0');
   await expect
     .poll(
       async () => (await page.locator('.about-rays .diamond').boundingBox())!.y,

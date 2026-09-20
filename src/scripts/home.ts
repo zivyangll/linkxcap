@@ -243,6 +243,7 @@ export function initHome() {
           const ring = scene.querySelector('.about-ring');
           const dot = scene.querySelector('.about-rays .diamond');
           const dropLine = scene.querySelector('.about-drop-line');
+          const tangentLine = scene.querySelector('.about-tangent-line');
           const label = scene.querySelector('.about-label');
           const titleLines = scene.querySelectorAll('.about-title span');
           const copy = scene.querySelector('.about-copy');
@@ -397,6 +398,17 @@ export function initHome() {
                 immediateRender: false,
               },
               0,
+            );
+            timeline.fromTo(
+              tangentLine,
+              { opacity: 1 },
+              {
+                opacity: 0,
+                duration: 0.18,
+                ease: 'none',
+                immediateRender: false,
+              },
+              0.32,
             );
             timeline.set(rayBeams, { opacity: 0, y: focusOffset }, 0);
             timeline.set(ring, { opacity: 0, y: focusOffset }, 0);

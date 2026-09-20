@@ -42,9 +42,29 @@
 .home-story.has-shared-orbit.is-about-active .hero .orbit-label {
   opacity: 0 !important;
 }
+.about-tangent-line {
+  display: none;
+}
 @media (min-width: 1024px) {
   .home-story.has-shared-orbit .about {
     z-index: 1;
+  }
+  .home-story.has-shared-orbit .about-tangent-line {
+    display: block;
+    position: absolute;
+    z-index: 1;
+    top: calc(358 * var(--u));
+    left: 0;
+    width: 100%;
+    height: calc(1 * var(--u));
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to right,
+      rgb(29 29 29 / 14%) 0,
+      rgb(29 29 29 / 14%) calc(4 * var(--u)),
+      transparent calc(4 * var(--u)),
+      transparent calc(9 * var(--u))
+    );
   }
   .home-story.has-shared-orbit .about-title {
     z-index: 2;
