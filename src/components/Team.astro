@@ -9,6 +9,7 @@ import {
   type Lang,
 } from '../lib/site';
 import PageTitle from './PageTitle.astro';
+import '../styles/team-review.css';
 const { lang } = Astro.props as { lang: Lang };
 const members = team.slice(0, 3);
 ---
@@ -21,7 +22,7 @@ const members = team.slice(0, 3);
   <div class="team-explorer">
     <div class="team-portraits">
       {members.map((person) => (
-        <div class="team-member">
+        <article class="team-member" data-team-member={person.id}>
           <button
             class="profile-toggle member-portrait"
             data-person={person.id}
@@ -40,31 +41,37 @@ const members = team.slice(0, 3);
               <span>{person.role[lang]}</span>
             </span>
           </button>
+          <div
+            class="member-bio team-bio"
+            id={`profile-${person.id}`}
+            data-person-bio={person.id}
+            aria-live="polite"
+            hidden
+          >
+            <div class="team-bio-identity">
+              <h2>{pick(lang, person.name, person.en)}</h2>
+              <p class="member-en">{pick(lang, person.en, person.name)}</p>
+            </div>
+            <div class="team-bio-summary">
+              <p class="member-role">
+                {person.role[lang]} / {person.role[lang === 'zh' ? 'en' : 'zh']}
+              </p>
+              <p class="member-copy">{person.bio[lang]}</p>
+            </div>
+            <div class="team-bio-featured">
+              <p>
+                {lang === 'zh'
+                  ? '代表投资 · Featured Investments'
+                  : 'Featured Investments · 代表投资'}
+              </p>
+              <p class="data-note">{ui[lang].mock}</p>
+            </div>
+          </div>
           <noscript>
             <a href={pageUrl(lang, `team-${person.id}`)}>
               {ui[lang].profile} ↗
             </a>
           </noscript>
-        </div>
-      ))}
-    </div>
-    <div class="team-biographies" aria-live="polite">
-      {members.map((person) => (
-        <article
-          class="member-bio team-bio"
-          id={`profile-${person.id}`}
-          data-person-bio={person.id}
-          hidden
-        >
-          <p class="eyebrow">LINK-X CAPITAL / {person.role.en}</p>
-          <h2>{pick(lang, person.name, person.en)}</h2>
-          {lang === 'zh' && <p class="member-en">{person.en}</p>}
-          <p class="member-role">{person.role[lang]}</p>
-          <p class="member-copy">{person.bio[lang]}</p>
-          <p class="data-note">{ui[lang].mock}</p>
-          <a class="line-link" href={pageUrl(lang, `team-${person.id}`)}>
-            {ui[lang].profile} ↗
-          </a>
         </article>
       ))}
     </div>

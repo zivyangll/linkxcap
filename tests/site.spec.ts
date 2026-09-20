@@ -92,8 +92,9 @@ test('team profiles work with touch', async ({ browser }) => {
   const button = page.locator('.profile-toggle').first();
   await button.tap();
   await expect(button).toHaveAttribute('aria-expanded', 'true');
-  await page.locator('.team-bio a').first().tap();
-  await expect(page.locator('main h1')).toContainText('张鸣晨');
+  await expect(page.locator('.team-bio').first()).toBeVisible();
+  await button.tap({ force: true });
+  await expect(button).toHaveAttribute('aria-expanded', 'false');
   await context.close();
 });
 test('focus controls and reduced motion', async ({ page }) => {

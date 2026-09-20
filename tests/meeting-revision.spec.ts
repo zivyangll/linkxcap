@@ -161,7 +161,79 @@ for (const width of [390, 768, 1440])
     await expect(page.locator('h1')).toHaveText('Mosi');
   });
 
-test('exactly three portraits reveal and hide the corresponding right biography', async ({
+test('desktop company rail remains a single continuous blurred arc at both ends', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('zh/portfolio/zhipu-ai.html');
+  const browser = page.locator('[data-company-browser]');
+  const rail = page.locator('[data-company-nav]');
+  await expect(browser).toHaveAttribute('data-rail-ready', 'true');
+
+  const circleErrors = await page
+    .locator('[data-company-link]')
+    .evaluateAll((links) => {
+      const orbit = document
+        .querySelector('.company-orbit')!
+        .getBoundingClientRect();
+      const center = {
+        x: orbit.left + orbit.width / 2,
+        y: orbit.top + orbit.height / 2,
+      };
+      const radius = orbit.width * (565 / 1187);
+      return links
+        .map((link) =>
+          link.querySelector('.rail-marker')!.getBoundingClientRect(),
+        )
+        .filter((marker) => marker.bottom > 0 && marker.top < innerHeight)
+        .map((marker) =>
+          Math.abs(
+            Math.hypot(
+              marker.left + marker.width / 2 - center.x,
+              marker.top + marker.height / 2 - center.y,
+            ) - radius,
+          ),
+        );
+    });
+  expect(Math.max(...circleErrors)).toBeLessThan(1);
+
+  await rail.focus();
+  await page.keyboard.press('Home');
+  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-arc-side=top]')
+        .evaluateAll(
+          (dots) =>
+            dots.filter(
+              (dot) => Number.parseFloat(getComputedStyle(dot).opacity) > 0.05,
+            ).length,
+        ),
+    )
+    .toBeGreaterThan(2);
+
+  await page.keyboard.press('End');
+  await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-arc-side=bottom]')
+        .evaluateAll(
+          (dots) =>
+            dots.filter(
+              (dot) => Number.parseFloat(getComputedStyle(dot).opacity) > 0.05,
+            ).length,
+        ),
+    )
+    .toBeGreaterThan(2);
+  await expect(page.locator('[data-company-link=tairex]')).not.toHaveCSS(
+    'filter',
+    'blur(0px)',
+  );
+});
+
+test('exactly three portraits swap to the corresponding in-card biography', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -172,10 +244,13 @@ test('exactly three portraits reveal and hide the corresponding right biography'
     const bio = page.locator(`[data-person-bio=${id}]`);
     await portrait.hover();
     await expect(bio).toBeVisible();
-    await expect(portrait).toHaveCSS('opacity', '1');
+    await expect(portrait).toHaveCSS('opacity', '0');
     const l = await portrait.boundingBox(),
       r = await bio.boundingBox();
-    expect(r!.x).toBeGreaterThan(l!.x + l!.width);
+    expect(r!.x).toBeGreaterThan(l!.x);
+    expect(r!.x + r!.width).toBeLessThan(l!.x + l!.width);
+    expect(r!.y).toBeGreaterThan(l!.y);
+    expect(r!.y + r!.height).toBeLessThan(l!.y + l!.height);
     await page.mouse.move(20, 150);
     await expect(bio).not.toBeVisible();
   }
@@ -254,8 +329,8 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
   }
   const star = page.locator('[data-sector=physical]');
   await star.hover();
-  await expect(star.locator('.star-glyph')).not.toHaveCSS('filter', 'none');
   if ((await scene.getAttribute('data-renderer')) === 'webgl') {
+    await expect(star.locator('.star-glyph')).toHaveCSS('filter', 'none');
     await expect(star).toHaveAttribute('data-hovered', 'true');
     await expect(scene).toHaveAttribute(
       'data-highlighted-node',
@@ -268,14 +343,17 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       .toBeGreaterThan(0);
     await expect(
       page.locator('[data-topology-anchor=sector-infrastructure]'),
-    ).toHaveCSS('opacity', '0.12');
+    ).toHaveAttribute('data-topology-state', 'unrelated');
+    await expect(star.locator('.glyph-active')).toBeVisible();
+    await expect(star.locator('.glyph-inactive')).toBeHidden();
     const value = await scene.getAttribute('data-render-frames');
     await expect
       .poll(() => scene.getAttribute('data-render-frames'))
       .not.toBe(value);
     await page.locator('[data-motion-toggle]').click();
     await expect(scene).toHaveAttribute('data-running', 'false');
-  }
+  } else
+    await expect(star.locator('.star-glyph')).not.toHaveCSS('filter', 'none');
 });
 
 test('portfolio hover illuminates original logo and selection opens its detail', async ({

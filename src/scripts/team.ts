@@ -4,6 +4,9 @@ if (root) {
   const buttons = Array.from(
     root.querySelectorAll<HTMLButtonElement>('[data-person]'),
   );
+  const cards = Array.from(
+    root.querySelectorAll<HTMLElement>('[data-team-member]'),
+  );
   const panels = Array.from(
     root.querySelectorAll<HTMLElement>('[data-person-bio]'),
   );
@@ -17,20 +20,25 @@ if (root) {
         String(button.dataset.person === id),
       ),
     );
+    cards.forEach((card) => {
+      card.classList.toggle('is-active', card.dataset.teamMember === id);
+    });
     panels.forEach((panel) => (panel.hidden = panel.dataset.personBio !== id));
   };
-  buttons.forEach((button) => {
-    button.addEventListener('pointerenter', (event) => {
+  cards.forEach((card) => {
+    const button = card.querySelector<HTMLButtonElement>('[data-person]');
+    if (!button) return;
+    card.addEventListener('pointerenter', (event) => {
       if (event.pointerType === 'mouse') {
         pinned = false;
         select(button.dataset.person);
       }
     });
-    button.addEventListener('pointerleave', (event) => {
+    card.addEventListener('pointerleave', (event) => {
       if (
         event.pointerType === 'mouse' &&
         !pinned &&
-        document.activeElement !== button
+        !card.contains(document.activeElement)
       )
         select();
     });

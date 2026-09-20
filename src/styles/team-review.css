@@ -1,0 +1,333 @@
+/* TEAM page fidelity: Figma Frame 571 (rest) and Frame 572 (active card). */
+body .team-review {
+  width: min(100%, 1920px);
+  max-width: none;
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 120px 20px 72px;
+}
+
+.team-review .team-review-heading {
+  display: block;
+}
+
+.team-review .team-review-heading .page-title {
+  position: static;
+}
+
+.team-review .team-review-heading > p {
+  max-width: 44rem;
+  margin-top: 32px;
+  padding: 0;
+  color: #111;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.team-review .team-explorer {
+  display: block;
+  margin-top: 48px;
+}
+
+.team-review .team-portraits {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  border-top: 1px solid rgb(29 29 29 / 20%);
+}
+
+.team-review .team-member {
+  position: relative;
+  min-width: 0;
+  height: min(150vw, 660px);
+  border-bottom: 1px solid rgb(29 29 29 / 20%);
+  overflow: hidden;
+}
+
+.team-review .profile-toggle {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  color: #111;
+  text-align: left;
+  opacity: 1;
+  transition: opacity 180ms ease;
+}
+
+.team-review .member-portrait img {
+  position: absolute;
+  left: 8%;
+  top: 5%;
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: none;
+  mix-blend-mode: multiply;
+  transition: opacity 180ms ease;
+}
+
+.team-review .member-caption {
+  position: absolute;
+  left: 8%;
+  bottom: 6%;
+  display: block;
+  margin: 0;
+}
+
+.team-review .member-caption strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.team-review .member-caption > span {
+  display: block;
+  margin-top: 8px;
+  color: #111;
+  font: 500 16px/1.2 var(--serif);
+  letter-spacing: 0.12em;
+}
+
+.team-review .team-bio {
+  position: absolute;
+  inset: 18px;
+  z-index: 2;
+  display: flex;
+  height: auto;
+  padding: 40px 24px;
+  flex-direction: column;
+  gap: 36px;
+  background:
+    linear-gradient(#111, #111) left top / 36px 2px no-repeat,
+    linear-gradient(#111, #111) left top / 2px 36px no-repeat,
+    linear-gradient(#111, #111) right top / 36px 2px no-repeat,
+    linear-gradient(#111, #111) right top / 2px 36px no-repeat,
+    linear-gradient(#111, #111) left bottom / 36px 2px no-repeat,
+    linear-gradient(#111, #111) left bottom / 2px 36px no-repeat,
+    linear-gradient(#111, #111) right bottom / 36px 2px no-repeat,
+    linear-gradient(#111, #111) right bottom / 2px 36px no-repeat,
+    var(--paper-alt);
+  color: #111;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transform: none;
+  transition: opacity 180ms ease;
+}
+
+.team-review .team-bio::before {
+  display: none;
+}
+
+.team-review .team-bio[hidden] {
+  display: none;
+}
+
+.team-review .team-bio h2 {
+  margin: 0;
+  font-size: clamp(34px, 10vw, 40px);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.team-review .member-en {
+  margin-top: 8px;
+  color: #111;
+  font-size: 22px;
+  line-height: 1.2;
+}
+
+.team-review .team-bio-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.team-review .member-role,
+.team-review .member-copy,
+.team-review .team-bio-featured > p:first-child {
+  margin: 0;
+  color: rgb(17 17 17 / 50%);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.team-review .member-copy {
+  font-size: 15px;
+}
+
+.team-review .team-bio-featured {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.team-review .team-bio .data-note {
+  margin: 0;
+  color: rgb(17 17 17 / 50%);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.team-review .team-member.is-active .profile-toggle {
+  opacity: 0;
+}
+
+@media (min-width: 1024px) {
+  body .team-review {
+    min-height: calc(1080 * var(--u));
+    padding: calc(194 * var(--u)) 0 0;
+  }
+
+  .team-review .team-review-heading {
+    position: relative;
+    display: flex;
+    height: calc(198 * var(--u));
+    padding: 0 calc(180 * var(--u));
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .team-review .team-review-heading > p {
+    width: calc(673 * var(--u));
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    font-size: max(10px, calc(14 * var(--u)));
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    text-align: right;
+  }
+
+  .team-review .team-explorer {
+    margin: 0;
+  }
+
+  .team-review .team-portraits {
+    grid-template-columns: 35.4166667% 29.1666667% 35.4166666%;
+    height: calc(658 * var(--u));
+  }
+
+  .team-review .team-member {
+    height: calc(658 * var(--u));
+    border-bottom: 0;
+    overflow: visible;
+  }
+
+  .team-review .team-member:not(:last-child) {
+    border-right: 1px solid rgb(29 29 29 / 20%);
+  }
+
+  .team-review .member-portrait img {
+    inset: auto;
+    max-width: none;
+  }
+
+  .team-review .team-member:nth-child(1) .member-portrait img {
+    left: calc(229 * var(--u));
+    top: calc(37 * var(--u));
+    width: calc(396.021 * var(--u));
+    height: calc(595 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(2) .member-portrait img {
+    left: calc(94 * var(--u));
+    top: calc(56 * var(--u));
+    width: calc(361 * var(--u));
+    height: calc(552 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(3) .member-portrait img {
+    left: calc(33 * var(--u));
+    top: calc(56 * var(--u));
+    width: calc(406.969 * var(--u));
+    height: calc(543 * var(--u));
+  }
+
+  .team-review .member-caption {
+    left: calc(50 * var(--u));
+    bottom: auto;
+    top: calc(557 * var(--u));
+  }
+
+  .team-review .team-member:first-child .member-caption {
+    left: calc(219 * var(--u));
+  }
+
+  .team-review .member-caption strong {
+    font-size: calc(24 * var(--u));
+  }
+
+  .team-review .member-caption > span {
+    margin-top: calc(8 * var(--u));
+    font-size: calc(16 * var(--u));
+  }
+
+  .team-review .team-bio {
+    inset: calc(20 * var(--u));
+    padding: calc(44 * var(--u)) calc(30 * var(--u));
+    gap: calc(80 * var(--u));
+    background:
+      linear-gradient(#111, #111) left top / calc(36 * var(--u))
+        max(1px, calc(2 * var(--u))) no-repeat,
+      linear-gradient(#111, #111) left top / max(1px, calc(2 * var(--u)))
+        calc(36 * var(--u)) no-repeat,
+      linear-gradient(#111, #111) right top / calc(36 * var(--u))
+        max(1px, calc(2 * var(--u))) no-repeat,
+      linear-gradient(#111, #111) right top / max(1px, calc(2 * var(--u)))
+        calc(36 * var(--u)) no-repeat,
+      linear-gradient(#111, #111) left bottom / calc(36 * var(--u))
+        max(1px, calc(2 * var(--u))) no-repeat,
+      linear-gradient(#111, #111) left bottom / max(1px, calc(2 * var(--u)))
+        calc(36 * var(--u)) no-repeat,
+      linear-gradient(#111, #111) right bottom / calc(36 * var(--u))
+        max(1px, calc(2 * var(--u))) no-repeat,
+      linear-gradient(#111, #111) right bottom / max(1px, calc(2 * var(--u)))
+        calc(36 * var(--u)) no-repeat,
+      var(--paper-alt);
+  }
+
+  .team-review .team-bio h2 {
+    font-size: calc(40 * var(--u));
+  }
+
+  .team-review .member-en {
+    margin-top: calc(8 * var(--u));
+    font-size: calc(24 * var(--u));
+  }
+
+  .team-review .team-bio-summary {
+    gap: calc(40 * var(--u));
+  }
+
+  .team-review .member-role,
+  .team-review .member-copy,
+  .team-review .team-bio-featured > p:first-child {
+    font-size: calc(18 * var(--u));
+    line-height: 1.2;
+  }
+
+  .team-review .team-bio-featured {
+    gap: calc(40 * var(--u));
+  }
+
+  .team-review .team-bio .data-note {
+    font-size: calc(14 * var(--u));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .team-review .profile-toggle,
+  .team-review .member-portrait img,
+  .team-review .team-bio {
+    transition: none;
+  }
+}

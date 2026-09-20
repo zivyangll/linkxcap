@@ -96,6 +96,18 @@ const records = navCompanies.map((c) => ({
     </a>
   </article>
   <div class="company-rail-shell">
+    <div
+      class="company-arc-continuation"
+      data-company-arc-continuation
+      aria-hidden="true"
+    >
+      {Array.from({ length: 6 }, (_, index) => (
+        <i data-arc-side="top" data-arc-step={index + 1}></i>
+      ))}
+      {Array.from({ length: 6 }, (_, index) => (
+        <i data-arc-side="bottom" data-arc-step={index + 1}></i>
+      ))}
+    </div>
     <p class="company-scroll-hint">
       {pick(
         lang,

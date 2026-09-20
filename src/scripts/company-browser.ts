@@ -17,6 +17,16 @@ if (root) {
   const links = Array.from(
     rail.querySelectorAll<HTMLAnchorElement>('[data-company-link]'),
   );
+  const continuation = root.querySelector<HTMLElement>(
+    '[data-company-arc-continuation]',
+  );
+  const topDots = Array.from(
+    continuation?.querySelectorAll<HTMLElement>('[data-arc-side="top"]') ?? [],
+  );
+  const bottomDots = Array.from(
+    continuation?.querySelectorAll<HTMLElement>('[data-arc-side="bottom"]') ??
+      [],
+  );
   const records: CompanyRecord[] = JSON.parse(
     root.querySelector('[data-company-records]')!.textContent!,
   );
@@ -25,6 +35,7 @@ if (root) {
   let frame = 0;
   let programmatic = false;
   let initialized = false;
+  const desktopRail = matchMedia('(min-width: 1024px)');
   const text = (selector: string, value: string) => {
     const el = root.querySelector(selector);
     if (el) el.textContent = value;
@@ -117,6 +128,24 @@ if (root) {
   const update = () => {
     frame = 0;
     const rr = rail.getBoundingClientRect();
+    const rootRect = root.getBoundingClientRect();
+    const orbit = root.querySelector<HTMLImageElement>('.company-orbit');
+    const orbitRect = orbit?.getBoundingClientRect();
+    // The Figma asset is a 1187px export around a 1130px circle. The
+    // navigation markers use that exact circle instead of approximating a
+    // second curve, so the crisp interactive points sit on the blurred orbit.
+    const orbitCenterX = orbitRect
+      ? orbitRect.left + orbitRect.width / 2
+      : rootRect.left + rootRect.width * (859 / 1920);
+    const orbitCenterY = orbitRect
+      ? orbitRect.top + orbitRect.height / 2
+      : rootRect.top + rootRect.height / 2;
+    const orbitRadius = orbitRect
+      ? orbitRect.width * (565 / 1187)
+      : rootRect.width * (565 / 1920);
+    const markerBaseX = rr.left + rail.clientWidth * 0.32 + 26;
+    const shellRect = continuation?.getBoundingClientRect();
+    const railCenterY = rr.top + rail.clientHeight / 2;
     let nearest = active,
       distance = Infinity;
     links.forEach((link, i) => {
@@ -126,19 +155,87 @@ if (root) {
         -1,
         Math.min(1, delta / (rail.clientHeight * 0.55)),
       );
-      link.style.setProperty(
-        '--rail-x',
-        `${-Math.pow(ratio, 2) * Math.min(160, rail.clientWidth * 0.24)}px`,
-      );
+      const rowCenterY = box.top + box.height / 2;
+      const circleDeltaY = rowCenterY - orbitCenterY;
+      const circleX =
+        orbitCenterX +
+        Math.sqrt(
+          Math.max(0, orbitRadius * orbitRadius - circleDeltaY * circleDeltaY),
+        );
+      const railX = desktopRail.matches
+        ? circleX - markerBaseX
+        : -Math.pow(ratio, 2) * Math.min(160, rail.clientWidth * 0.24);
+      link.style.setProperty('--rail-x', `${railX}px`);
       link.style.setProperty(
         '--rail-opacity',
         String(1 - Math.abs(ratio) * 0.65),
+      );
+      const edgeFade = Math.max(
+        0,
+        Math.min(1, (Math.abs(ratio) - 0.46) / 0.54),
+      );
+      link.style.setProperty(
+        '--rail-blur',
+        desktopRail.matches ? `${edgeFade * 3.2}px` : '0px',
       );
       if (Math.abs(delta) < distance) {
         distance = Math.abs(delta);
         nearest = i;
       }
     });
+    // The source artwork already contains the full dotted circle. Its right
+    // segment is covered by the rail shell so it cannot form a second arc.
+    // These virtual rows extend the real company markers before the first and
+    // after the last record, keeping the single reconstructed arc continuous
+    // even when the scroll reaches Home or End.
+    if (desktopRail.matches && continuation && shellRect && links.length) {
+      const first = links[0].getBoundingClientRect();
+      const last = links.at(-1)!.getBoundingClientRect();
+      const rowStep =
+        links.length > 1
+          ? links[1].getBoundingClientRect().top - first.top
+          : first.height;
+      const positionDot = (dot: HTMLElement, pageY: number) => {
+        const circleDeltaY = pageY - orbitCenterY;
+        const visible =
+          Math.abs(circleDeltaY) <= orbitRadius &&
+          pageY >= rr.top - rowStep * 0.5 &&
+          pageY <= rr.bottom + rowStep * 0.5;
+        const circleX =
+          orbitCenterX +
+          Math.sqrt(
+            Math.max(
+              0,
+              orbitRadius * orbitRadius - circleDeltaY * circleDeltaY,
+            ),
+          );
+        const normalized = Math.min(
+          1,
+          Math.abs(pageY - railCenterY) / (rail.clientHeight / 2),
+        );
+        const edgeFade = Math.max(0, (normalized - 0.42) / 0.58);
+        dot.style.left = `${circleX - shellRect.left}px`;
+        dot.style.top = `${pageY - shellRect.top}px`;
+        dot.style.setProperty(
+          '--arc-dot-opacity',
+          visible ? String(0.72 - edgeFade * 0.58) : '0',
+        );
+        dot.style.setProperty('--arc-dot-blur', `${edgeFade * 3.2}px`);
+        dot.style.setProperty('--arc-dot-scale', String(1 - edgeFade * 0.24));
+      };
+      const firstCenter = first.top + first.height / 2;
+      const lastCenter = last.top + last.height / 2;
+      topDots.forEach((dot, index) =>
+        positionDot(dot, firstCenter - rowStep * (index + 1)),
+      );
+      bottomDots.forEach((dot, index) =>
+        positionDot(dot, lastCenter + rowStep * (index + 1)),
+      );
+    } else {
+      [...topDots, ...bottomDots].forEach((dot) =>
+        dot.style.setProperty('--arc-dot-opacity', '0'),
+      );
+    }
     if (initialized && !programmatic && nearest !== active) select(nearest);
   };
   rail.addEventListener(

@@ -89,9 +89,9 @@ export function mountTopology(root: HTMLElement) {
   });
   const lines = new LineSegments(edgeGeometry, edgeMaterial);
   const highlightMaterial = new LineBasicMaterial({
-    color: 0xe8dcff,
+    color: 0xb2a2ff,
     transparent: true,
-    opacity: 0.95,
+    opacity: 1,
     depthWrite: false,
   });
   const highlightLines = new LineSegments(highlightGeometry, highlightMaterial);
@@ -152,22 +152,26 @@ export function mountTopology(root: HTMLElement) {
       element.dataset.hovered = 'true';
       updateHighlight();
       draw();
+      if (home) requestAnimationFrame(size);
     });
     element.addEventListener('pointerleave', () => {
       hovering = -1;
       delete element.dataset.hovered;
       updateHighlight();
       draw();
+      if (home) requestAnimationFrame(size);
     });
     element.addEventListener('focus', () => {
       hovering = index;
       updateHighlight();
       draw();
+      if (home) requestAnimationFrame(size);
     });
     element.addEventListener('blur', () => {
       hovering = -1;
       updateHighlight();
       draw();
+      if (home) requestAnimationFrame(size);
     });
     element.addEventListener('click', () => {
       if (!home) {
@@ -291,6 +295,28 @@ export function mountTopology(root: HTMLElement) {
     highlightedKeys = new Set(
       [...highlightedNodes].map((index) => anchors[index].key),
     );
+    if (home) {
+      anchors.forEach((anchor, index) => {
+        const current =
+          hoverNode >= 0 && anchor.key === anchors[hoverNode]?.key;
+        const connected = hoverNode >= 0 && highlightedKeys.has(anchor.key);
+        if (hoverNode < 0) delete anchor.element.dataset.topologyState;
+        else
+          anchor.element.dataset.topologyState = current
+            ? 'current'
+            : connected
+              ? 'connected'
+              : 'unrelated';
+        if (anchor.element.matches('.sector-star')) {
+          anchor.element.classList.toggle(
+            'is-active',
+            hoverNode >= 0
+              ? index === hoverNode
+              : anchor.element.getAttribute('aria-pressed') === 'true',
+          );
+        }
+      });
+    }
     highlightGeometry.dispose();
     highlightGeometry = new BufferGeometry();
     highlightGeometry.setAttribute(
@@ -341,7 +367,7 @@ export function mountTopology(root: HTMLElement) {
       }
     } else if (!paused) group.rotation.set(0, 0, 0);
     group.updateMatrixWorld(true);
-    anchors.forEach((a, i) => {
+    anchors.forEach((a) => {
       if (!a.visible) {
         a.element.style.removeProperty('translate');
         a.element.style.removeProperty('scale');
@@ -353,25 +379,16 @@ export function mountTopology(root: HTMLElement) {
         a.element.getAttribute('aria-pressed') === 'true' ||
         a.element.classList.contains('is-selected');
       const active = current || (hoverNode < 0 && selected);
-      const size = active
-        ? reduced.matches || paused
-          ? 1.8
-          : 1.7 + Math.sin(elapsed * 0.004) * 0.25
-        : connected
-          ? 1.3
-          : 1;
+      const sector = a.key.startsWith('sector-');
+      const size = active && sector ? 1.7023 : sector ? 0.8693 : 0.4;
       if (a.role === 'node') {
         a.mesh.scale.setScalar(size);
-        a.mesh.rotation.z = active && !staticMode ? elapsed * 0.0004 : 0;
+        a.mesh.rotation.z = active && !staticMode ? Math.PI / 4 : 0;
         a.mesh.material.color.setHex(
-          current ? 0xffffff : connected ? 0xc8adff : 0x9d84bf,
+          current ? 0xffffff : connected ? 0xb2a2ff : 0xffffff,
         );
         a.mesh.material.opacity =
-          hoverNode < 0 ? (selected ? 1 : 0.5) : connected ? 0.95 : 0.08;
-      }
-      if (home) {
-        if (hoverNode < 0) a.element.style.removeProperty('opacity');
-        else a.element.style.opacity = connected ? '1' : '0.12';
+          hoverNode < 0 ? (selected ? 1 : 0.3) : connected ? 1 : 0.2;
       }
       vector.copy(a.origin).applyMatrix4(group.matrixWorld);
       const depthScale = Math.max(
