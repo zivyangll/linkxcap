@@ -16,8 +16,89 @@
   height: 100vh;
   opacity: 0;
 }
+.home-story.has-shared-orbit.is-hero-handoff .philosophy-trail {
+  opacity: 1;
+}
 .home-story.has-shared-orbit .hero .scroll-trail {
   display: none;
+}
+.home-story.has-shared-orbit .hero-track-line {
+  visibility: hidden;
+}
+.home-story.has-shared-orbit .hero-track::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(1 * var(--u));
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(29 29 29 / 14%) 0,
+    rgb(29 29 29 / 14%) calc(4 * var(--u)),
+    transparent calc(4 * var(--u)),
+    transparent calc(13 * var(--u))
+  );
+}
+.home-story.has-shared-orbit.is-about-active .philosophy-trail,
+.home-story.has-shared-orbit.is-about-active .hero .orbit-label {
+  opacity: 0 !important;
+}
+@media (min-width: 1024px) {
+  .home-story.has-shared-orbit .about {
+    z-index: 1;
+  }
+  .home-story.has-shared-orbit .about-title {
+    z-index: 2;
+  }
+  .home-story.has-shared-orbit .research-axis {
+    width: calc(1 * var(--u));
+    border-left: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(29 29 29 / 20%) 0,
+      rgb(29 29 29 / 20%) calc(2 * var(--u)),
+      transparent calc(2 * var(--u)),
+      transparent calc(4 * var(--u))
+    );
+  }
+  .home-story.has-shared-orbit .about-rays {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(29 29 29 / 25%) 0,
+      rgb(29 29 29 / 25%) calc(5 * var(--u)),
+      transparent calc(5 * var(--u)),
+      transparent calc(12 * var(--u))
+    );
+  }
+  .home-story.has-shared-orbit .about-rays span {
+    background: repeating-linear-gradient(
+      to top,
+      rgb(29 29 29 / 25%) 0,
+      rgb(29 29 29 / 25%) calc(5 * var(--u)),
+      transparent calc(5 * var(--u)),
+      transparent calc(12 * var(--u))
+    );
+    -webkit-mask-image: linear-gradient(to top, #000 68%, transparent 100%);
+    mask-image: linear-gradient(to top, #000 68%, transparent 100%);
+  }
+  .home-story.has-shared-orbit .about-rays span:nth-of-type(3) {
+    display: none;
+  }
+  .home-story.has-shared-orbit .about-rays .about-drop-line {
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(29 29 29 / 25%) 0,
+      rgb(29 29 29 / 25%) calc(5 * var(--u)),
+      transparent calc(5 * var(--u)),
+      transparent calc(12 * var(--u))
+    );
+    mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  }
+  .home-story.has-shared-orbit .about-rays .diamond {
+    bottom: calc(-6 * var(--u));
+  }
+  .home-story.has-shared-orbit .about-rays .about-ring {
+    bottom: calc(-22.053 * var(--u));
+  }
 }
 .has-scroll-trail .opening-track {
   visibility: hidden;
