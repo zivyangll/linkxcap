@@ -326,6 +326,32 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
   await expect(page.locator('[data-fellow-video]')).toHaveCount(0);
 });
 
+test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('en/contact.html');
+  const outline = page.locator('.next-en-outline');
+  const fill = page.locator('.next-en-fill');
+  await expect(outline).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
+  await expect(fill).toHaveCSS('opacity', '0');
+  await page.evaluate(() => scrollTo(0, innerHeight * 0.74));
+  await expect
+    .poll(async () =>
+      Number(await fill.evaluate((e) => getComputedStyle(e).opacity)),
+    )
+    .toBeGreaterThan(0.9);
+  await expect
+    .poll(async () =>
+      Number(await outline.evaluate((e) => getComputedStyle(e).opacity)),
+    )
+    .toBeLessThan(0.1);
+  const fillBox = (await fill.boundingBox())!;
+  const contextBox = (await page.locator('.fellow-context').boundingBox())!;
+  expect(fillBox.y + fillBox.height).toBeLessThan(contextBox.y);
+});
+
 test('3D is deferred until visible, reacts to hover and pauses offscreen', async ({
   page,
   browserName,

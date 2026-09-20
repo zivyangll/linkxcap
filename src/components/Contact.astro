@@ -62,14 +62,14 @@ const { lang } = Astro.props as { lang: Lang };
   {lang === 'zh' ? (
     <>
       <img
-        class="next-zh next-zh-outline"
+        class="next-zh next-zh-outline next-subtitle-outline"
         src={asset('1617', 'img')}
         width="584"
         height="95"
         alt={contactContent.signalSubtitle.zh}
       />
       <img
-        class="next-zh next-zh-fill"
+        class="next-zh next-zh-fill next-subtitle-fill"
         src={asset('1692', 'img')}
         width="584"
         height="95"
@@ -78,7 +78,17 @@ const { lang } = Astro.props as { lang: Lang };
       />
     </>
   ) : (
-    <p class="next-en">{contactContent.signalSubtitle.en}</p>
+    <>
+      <p
+        class="next-en next-en-outline next-subtitle-outline"
+        aria-hidden="true"
+      >
+        {contactContent.signalSubtitle.en}
+      </p>
+      <p class="next-en next-en-fill next-subtitle-fill">
+        {contactContent.signalSubtitle.en}
+      </p>
+    </>
   )}
   <div class="fellow-context" data-node-id="2002:1753">
     <p>{contactContent.joinCopy[lang]}</p>

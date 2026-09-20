@@ -63,8 +63,16 @@ export function initFellow() {
         0,
       )
       .to('.fellow-intro .next-title-fill', { opacity: 1, duration: 0.28 }, 0)
-      .to('.fellow-intro .next-zh-outline', { opacity: 0, duration: 0.28 }, 0)
-      .to('.fellow-intro .next-zh-fill', { opacity: 1, duration: 0.28 }, 0)
+      .to(
+        '.fellow-intro .next-subtitle-outline',
+        { opacity: 0, duration: 0.28 },
+        0,
+      )
+      .to(
+        '.fellow-intro .next-subtitle-fill',
+        { opacity: 1, duration: 0.28 },
+        0,
+      )
       .to('.fellow-intro .next-orbit', { opacity: 1, duration: 0.18 }, 0.22);
     if (desktop) {
       introTimeline.to(
@@ -78,7 +86,7 @@ export function initFellow() {
         0.35,
       );
       introTimeline.to(
-        '.fellow-intro .next-zh-fill',
+        '.fellow-intro .next-subtitle-fill',
         {
           scale: 0.802,
           y: () => (-innerWidth * 134) / 1920,

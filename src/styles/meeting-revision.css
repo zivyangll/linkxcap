@@ -573,8 +573,20 @@
   height: auto;
   transform: translateX(-50%);
 }
-.next-zh-fill {
+.next-subtitle-fill {
   opacity: 0;
+}
+.fellow-intro .next-en {
+  z-index: 1;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.fellow-intro .next-en-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(9, 9, 9, 0.42);
+}
+.fellow-intro .next-en-fill {
+  color: #090909;
 }
 .fellow-intro .next-orbit {
   opacity: 0;
