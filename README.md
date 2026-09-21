@@ -1,5 +1,6 @@
 # Link-X Capital · 星连资本
 
+
 按照 Figma `final` 桌面稿实现的中英文品牌官网。Astro 静态生成、TypeScript、CSS/SVG、GSAP ScrollTrigger 和 Canvas 2D；服务器无需 Node.js 或数据库。
 
 ## 本地开发
