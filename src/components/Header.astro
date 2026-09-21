@@ -18,13 +18,14 @@ interface Props {
   minimal?: boolean;
 }
 const { lang, current, minimal = false } = Astro.props;
-const active = current.startsWith('portfolio')
-  ? 'portfolio'
-  : current.startsWith('team')
-    ? 'team'
-    : current === 'index' || current === 'contact' || current === 'legal'
-      ? current
-      : 'insights';
+const active =
+  current === 'portfolio' || current.startsWith('portfolio/')
+    ? 'portfolio'
+    : current.startsWith('team')
+      ? 'team'
+      : current === 'index' || current === 'contact' || current === 'legal'
+        ? current
+        : 'insights';
 const menuSocials = [
   { ...socials[0], key: '57' },
   { ...socials[2], key: '55' },

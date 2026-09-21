@@ -26,7 +26,68 @@ test('philosophy top bar gains a scroll mask and only collapses on narrow screen
   await page.setViewportSize({ width: 1100, height: 900 });
   await expect(page.locator('.desktop-nav')).toBeHidden();
   await expect(page.locator('[data-menu-open]')).toBeVisible();
-  await expect(page.locator('[data-menu-open]')).toHaveCSS('width', '42px');
+  await expect(page.locator('[data-menu-open]')).toHaveCSS('width', '48px');
+});
+
+test('all page templates share the same responsive top bar contract', async ({
+  page,
+}) => {
+  const routes = [
+    'zh/portfolio.html',
+    'zh/portfolio/zhipu-ai.html',
+    'zh/team.html',
+    'zh/insights.html',
+    'zh/contact.html',
+  ];
+
+  for (const route of routes) {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto(route);
+
+    const header = page.locator('[data-header]');
+    await expect(header).toHaveCSS('backdrop-filter', /blur\(16px\)/);
+    await expect(header).toHaveCSS(
+      'background-color',
+      /rgba\(253, 251, 245, 0\.84\)/,
+    );
+    await expect(page.locator('.desktop-nav')).toBeVisible();
+    await expect(page.locator('.language-switch')).toBeVisible();
+    await expect(page.locator('[data-menu-open]')).toBeHidden();
+
+    await page.setViewportSize({ width: 1100, height: 900 });
+    await expect(page.locator('.desktop-nav')).toBeHidden();
+    await expect(page.locator('.language-switch')).toBeVisible();
+    await expect(page.locator('[data-menu-open]')).toBeVisible();
+
+    await page.setViewportSize({ width: 390, height: 844 });
+    await expect(page.locator('.desktop-nav')).toBeHidden();
+    await expect(page.locator('[data-menu-open]')).toBeVisible();
+  }
+});
+
+test('insight detail activates Insights and keeps the compact menu close icon square', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1150, height: 900 });
+  await page.goto('zh/portfolio-yuanmu.html');
+
+  await expect(
+    page.locator('.desktop-nav a[href$="/zh/insights.html"]'),
+  ).toHaveAttribute('aria-current', 'page');
+  await expect(
+    page.locator('.desktop-nav a[href$="/zh/portfolio.html"]'),
+  ).not.toHaveAttribute('aria-current', 'page');
+
+  await page.locator('[data-menu-open]').click();
+  const close = page.locator('[data-menu-close]');
+  const closeIcon = close.locator('img');
+  await expect(close).toHaveCSS('width', '48px');
+  await expect(close).toHaveCSS('height', '48px');
+  await expect(closeIcon).toHaveCSS('width', '22px');
+  await expect(closeIcon).toHaveCSS('height', '22px');
+  await expect(
+    page.locator('#site-menu a[href$="/zh/insights.html"]'),
+  ).toHaveAttribute('aria-current', 'page');
 });
 
 for (const width of [1440, 1920]) {
@@ -135,9 +196,13 @@ for (const width of [390, 768, 1440])
       'aria-current',
       'page',
     );
-    await rail.evaluate((el) => {
-      el.scrollTop += 184;
-    });
+    if (width < 768) {
+      await page.locator('[data-company-link=mosi]').click();
+    } else {
+      await rail.evaluate((el) => {
+        el.scrollTop += 184;
+      });
+    }
     await expect(page.locator('[data-company-browser]')).toHaveAttribute(
       'data-current-company',
       'mosi',

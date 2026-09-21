@@ -97,6 +97,67 @@ test('team profiles work with touch', async ({ browser }) => {
   await expect(button).toHaveAttribute('aria-expanded', 'false');
   await context.close();
 });
+test('phone uses native company tabs and a static focus scene', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('zh/portfolio/zhipu-ai.html');
+  const rail = page.locator('[data-company-nav]');
+  await expect(page.locator('[data-company-loop-link]')).toHaveCount(0);
+  await expect(page.locator('.company-scroll-hint')).not.toBeVisible();
+  await expect(page.locator('.rail-marker').first()).not.toBeVisible();
+  await expect(page.locator('.company-arc-continuation')).not.toBeVisible();
+  await expect(page.locator('.rail-controls')).not.toBeVisible();
+  expect(
+    await rail.evaluate((element) => element.scrollWidth > element.clientWidth),
+  ).toBe(true);
+  expect(
+    await rail.evaluate(
+      (element) => element.scrollHeight <= element.clientHeight + 1,
+    ),
+  ).toBe(true);
+  await page.locator('[data-company-link=realai]').click();
+  await expect(page.locator('[data-company-browser]')).toHaveAttribute(
+    'data-current-company',
+    'realai',
+  );
+  await expect(page.locator('[data-company-title]')).toHaveText('瑞莱智慧');
+
+  await page.goto('zh/index.html');
+  await expect(page.locator('[data-topology]')).toHaveAttribute(
+    'data-renderer',
+    'static',
+  );
+  await expect(page.locator('.topology-canvas')).not.toBeVisible();
+  await expect(page.locator('[data-motion-toggle]')).not.toBeVisible();
+});
+test('phone Fellow sections use a non-overlapping natural flow', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('zh/contact.html');
+  const boxes = await page.evaluate(() => {
+    const box = (selector: string) =>
+      document.querySelector(selector)!.getBoundingClientRect();
+    const intro = box('.fellow-intro');
+    const media = box('.fellow-media-section');
+    const title = box('.fellow-media-title');
+    const video = box('[data-video-shell]');
+    const caption = box('.fellow-media-caption');
+    return {
+      introBottom: intro.bottom,
+      mediaTop: media.top,
+      titleBottom: title.bottom,
+      videoTop: video.top,
+      videoBottom: video.bottom,
+      captionTop: caption.top,
+    };
+  });
+  expect(boxes.mediaTop).toBeCloseTo(boxes.introBottom, 0);
+  expect(boxes.titleBottom).toBeLessThan(boxes.videoTop);
+  expect(boxes.videoBottom).toBeLessThan(boxes.captionTop);
+  await expect(page.locator('.pin-spacer')).toHaveCount(0);
+});
 test('focus controls and reduced motion', async ({ page }) => {
   await page.goto('zh/index.html');
   await page.locator('[data-sector=physical]').click();
@@ -125,6 +186,19 @@ test('English mobile copy follows the multiline heading', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
   await page.goto('en/index.html');
   await page.evaluate(() => document.fonts.ready);
+  await expect(page.locator('[data-home]')).toHaveAttribute(
+    'data-mobile-static',
+    'true',
+  );
+  await expect(page.locator('.scroll-trail').first()).not.toBeVisible();
+  await expect(page.locator('.hero-track')).not.toBeVisible();
+  await expect(page.locator('.about-rays')).not.toBeVisible();
+  await expect(page.locator('.about-decor')).not.toBeVisible();
+  await expect(page.locator('.opening-track .diamond')).toBeVisible();
+  await expect(page.locator('.chapter')).toBeVisible();
+  await expect(page.locator('.orbit-label')).not.toBeVisible();
+  await expect(page.locator('.about-label')).not.toBeVisible();
+  await expect(page.locator('.pin-spacer')).toHaveCount(0);
   const title = await page.locator('.about-title').boundingBox();
   const copy = await page.locator('.about-copy').boundingBox();
   expect(copy!.y).toBeGreaterThan(title!.y + title!.height + 15);

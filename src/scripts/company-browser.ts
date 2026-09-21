@@ -34,6 +34,7 @@ if (root) {
   links.forEach((link, index) => {
     link.dataset.companyIndex = String(index);
   });
+  const compactRail = matchMedia('(max-width: 767px)');
   const cloneCycle = () =>
     links.map((link, index) => {
       const clone = link.cloneNode(true) as HTMLAnchorElement;
@@ -45,8 +46,14 @@ if (root) {
       clone.removeAttribute('aria-current');
       return clone;
     });
-  track.prepend(...cloneCycle());
-  track.append(...cloneCycle());
+  // The desktop/tablet treatment is an intentionally continuous circular
+  // rail. On phones the same cloned, vertical rail is unnecessarily heavy
+  // and difficult to operate, so the original links become a native
+  // horizontal, tap-to-select list instead.
+  if (!compactRail.matches) {
+    track.prepend(...cloneCycle());
+    track.append(...cloneCycle());
+  }
   const rows = Array.from(
     track.querySelectorAll<HTMLAnchorElement>('a[data-company-index]'),
   );
@@ -144,6 +151,23 @@ if (root) {
   };
   const align = (index: number, preferOriginal = false) => {
     programmatic = true;
+    if (compactRail.matches) {
+      const link = links[index];
+      select(index);
+      rail.scrollTo({
+        left: Math.max(
+          0,
+          link.offsetLeft + link.offsetWidth / 2 - rail.clientWidth / 2,
+        ),
+        behavior: initialized && !reduced.matches ? 'smooth' : 'auto',
+      });
+      requestAnimationFrame(() => {
+        programmatic = false;
+        initialized = true;
+        root.dataset.railReady = 'true';
+      });
+      return;
+    }
     track.style.paddingBlock = `${Math.max(0, (rail.clientHeight - links[0].offsetHeight) / 2)}px`;
     rail.scrollTo({
       top: centerRow(closestRow(index, preferOriginal)),
@@ -158,6 +182,7 @@ if (root) {
     });
   };
   const normalizeLoopPosition = () => {
+    if (compactRail.matches) return;
     if (rows.length < records.length * 3) return;
     const first = rows[records.length];
     const second = rows[records.length + 1] ?? first;
@@ -174,6 +199,7 @@ if (root) {
   };
   const update = () => {
     frame = 0;
+    if (compactRail.matches) return;
     normalizeLoopPosition();
     const rr = rail.getBoundingClientRect();
     const rootRect = root.getBoundingClientRect();
@@ -259,9 +285,11 @@ if (root) {
   );
   rail.addEventListener('keydown', (event) => {
     const target =
-      event.key === 'ArrowDown'
+      event.key === 'ArrowDown' ||
+      (compactRail.matches && event.key === 'ArrowRight')
         ? (active + 1) % records.length
-        : event.key === 'ArrowUp'
+        : event.key === 'ArrowUp' ||
+            (compactRail.matches && event.key === 'ArrowLeft')
           ? (active - 1 + records.length) % records.length
           : event.key === 'Home'
             ? 0

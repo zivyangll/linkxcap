@@ -1,5 +1,6 @@
 export {};
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
+const compactViewport = matchMedia('(max-width: 767px)');
 const device = navigator as Navigator & {
   deviceMemory?: number;
   connection?: { saveData?: boolean };
@@ -8,6 +9,7 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-topology]')) {
   // All labels, links and hover states are server-rendered. WebGL is optional.
   if (
     motion.matches ||
+    compactViewport.matches ||
     device.connection?.saveData ||
     (device.deviceMemory ?? 8) < 4
   ) {

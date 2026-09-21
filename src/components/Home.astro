@@ -293,12 +293,21 @@ const { lang } = Astro.props;
   </section>
 </div>
 <script>
-  const start = () =>
-    import('../scripts/home')
-      .then((module) => module.initHome())
-      .catch(() => {
-        document.querySelector<HTMLElement>('[data-motion-toggle]')?.remove();
-      });
-  if (document.readyState === 'complete') start();
-  else window.addEventListener('load', start, { once: true });
+  const home = document.querySelector<HTMLElement>('[data-home]');
+  const compact = matchMedia('(max-width: 767px)');
+  if (compact.matches) {
+    home?.setAttribute('data-mobile-static', 'true');
+    document
+      .querySelector<HTMLElement>('[data-motion-toggle]')
+      ?.setAttribute('hidden', '');
+  } else {
+    const start = () =>
+      import('../scripts/home')
+        .then((module) => module.initHome())
+        .catch(() => {
+          document.querySelector<HTMLElement>('[data-motion-toggle]')?.remove();
+        });
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start, { once: true });
+  }
 </script>
