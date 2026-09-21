@@ -212,7 +212,10 @@ export function mountTopology(root: HTMLElement) {
         rect.width > 0 &&
         rect.height > 0 &&
         !a.element.closest<HTMLElement>('[hidden]');
-      a.mesh.visible = a.visible && a.role === 'node';
+      // The home constellation already has the exact Figma-authored diamond
+      // and corner marks in the DOM. Rendering an octahedron on top creates a
+      // second, outlined diamond, so Three.js owns only depth/lines there.
+      a.mesh.visible = !home && a.visible && a.role === 'node';
       if (!a.visible) return;
       a.x = rect.left - box.left + rect.width / 2;
       a.y = rect.top - box.top + rect.height / 2;
@@ -236,20 +239,36 @@ export function mountTopology(root: HTMLElement) {
     const graphNodes = anchors
       .map((anchor, index) => ({ anchor, index }))
       .filter(({ anchor }) => anchor.visible && anchor.role === 'node');
-    graphNodes.forEach(({ anchor, index }) => {
+    if (home) {
+      // Frame 493 is a hub-and-spoke diagram: the selected focus area links
+      // only to the companies in its currently visible constellation.
       graphNodes
-        .map(({ anchor: candidate, index: candidateIndex }) => ({
-          j: candidateIndex,
-          d: anchor.origin.distanceTo(candidate.origin),
-        }))
-        .filter((candidate) => candidate.j !== index)
-        .sort((a, b) => a.d - b.d)
-        .slice(0, 2)
-        .forEach(({ j }) => {
-          if (!edges.some(([a, b]) => a === j && b === index))
-            edges.push([index, j]);
+        .filter(({ anchor }) => anchor.key.startsWith('company-'))
+        .forEach(({ anchor, index }) => {
+          const sector = anchor.element.closest<HTMLElement>(
+            '[data-constellation]',
+          )?.dataset.constellation;
+          const sectorIndex = anchors.findIndex(
+            (candidate) => candidate.key === `sector-${sector}`,
+          );
+          if (sectorIndex >= 0) edges.push([sectorIndex, index]);
         });
-    });
+    } else {
+      graphNodes.forEach(({ anchor, index }) => {
+        graphNodes
+          .map(({ anchor: candidate, index: candidateIndex }) => ({
+            j: candidateIndex,
+            d: anchor.origin.distanceTo(candidate.origin),
+          }))
+          .filter((candidate) => candidate.j !== index)
+          .sort((a, b) => a.d - b.d)
+          .slice(0, 2)
+          .forEach(({ j }) => {
+            if (!edges.some(([a, b]) => a === j && b === index))
+              edges.push([index, j]);
+          });
+      });
+    }
     edgeGeometry.dispose();
     edgeGeometry = new BufferGeometry();
     edgeGeometry.setAttribute(
@@ -273,7 +292,7 @@ export function mountTopology(root: HTMLElement) {
     sync();
   }
   function updateHighlight() {
-    hoverNode =
+    const pointerNode =
       hovering < 0
         ? -1
         : anchors[hovering]?.role === 'node'
@@ -284,6 +303,14 @@ export function mountTopology(root: HTMLElement) {
                 anchor.role === 'node' &&
                 anchor.key === anchors[hovering]?.key,
             );
+    const selectedNode = home
+      ? anchors.findIndex(
+          (anchor) =>
+            anchor.role === 'node' &&
+            anchor.element.getAttribute('aria-pressed') === 'true',
+        )
+      : -1;
+    hoverNode = pointerNode >= 0 ? pointerNode : selectedNode;
     const highlightedEdges =
       hoverNode < 0
         ? []
@@ -330,7 +357,7 @@ export function mountTopology(root: HTMLElement) {
       ),
     );
     highlightLines.geometry = highlightGeometry;
-    lines.visible = hoverNode < 0;
+    lines.visible = !home && hoverNode < 0;
     highlightLines.visible = hoverNode >= 0 && highlightedEdges.length > 0;
     if (hoverNode >= 0) {
       root.dataset.highlightedNode = anchors[hoverNode].key;

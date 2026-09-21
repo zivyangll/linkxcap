@@ -1,376 +1,124 @@
 import { test, expect } from '@playwright/test';
 
-test('five home chapters track scroll, reveal text and slide the second screen out', async ({
+test('philosophy top bar gains a scroll mask and only collapses on narrow screens', async ({
   page,
 }) => {
-  await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/index.html');
-  await expect(page.locator('.story-scene')).toHaveCount(5);
-  await expect(page.locator('.opening')).toHaveClass(/has-scroll-trail/);
-  await expect(page.locator('.hero-track')).toBeVisible();
-  await expect(page.locator('.hero-track-line')).toBeVisible();
-  await expect(page.locator('.philosophy-orbit')).toBeVisible();
-  await expect(page.locator('.philosophy-trail')).toHaveCSS('opacity', '0');
-  await expect(page.locator('.hero-orbit')).toBeHidden();
-  await expect(page.locator('.about-orbit')).toBeHidden();
-  await expect(page.locator('.hero-track-end')).toHaveCSS('opacity', '0.55');
-  await expect(page.locator('.hero-track-end')).toHaveCSS(
+  const header = page.locator('[data-header]');
+  await expect(page.locator('.desktop-nav')).toBeVisible();
+  await expect(page.locator('[data-menu-open]')).toBeHidden();
+  await page.evaluate(() => scrollTo(0, 240));
+  await expect(header).toHaveClass(/is-scrolled/);
+  await expect(header).toHaveCSS('backdrop-filter', /blur\(16px\)/);
+  await expect(header).toHaveCSS(
     'background-color',
-    'rgb(201, 201, 201)',
+    /rgba\(253, 251, 245, 0\.84\)/,
   );
-  const before = await page
-    .locator('[data-scroll-trail=opening]')
-    .getAttribute('data-point');
-  const opacity = await page
-    .locator('.opening-copy')
-    .evaluate((e) => Number(getComputedStyle(e).opacity));
-  await page.evaluate(() => scrollTo(0, 360));
-  await expect
-    .poll(() =>
-      page.locator('[data-scroll-trail=opening]').getAttribute('data-point'),
-    )
-    .not.toBe(before);
-  await expect
-    .poll(() =>
-      page
-        .locator('.opening-copy')
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(opacity);
-  const start = await page
-    .locator('.hero')
-    .evaluate((e) => e.parentElement!.getBoundingClientRect().top + scrollY);
-  const handoffStart = start - 900 * 0.9;
-  await page.evaluate((y) => scrollTo(0, y), handoffStart + 2);
-  await expect(page.locator('[data-home]')).toHaveClass(/is-hero-handoff/);
-  const openingHandoffPoint = (await page
-    .locator('[data-scroll-trail=opening]')
-    .getAttribute('data-point'))!
-    .split(',')
-    .map(Number);
-  const openingCanvas = (await page
-    .locator('[data-scroll-trail=opening]')
-    .boundingBox())!;
-  const heroTrack = (await page.locator('.hero-track').boundingBox())!;
-  const heroGuide = (await page.locator('.hero-track-start').boundingBox())!;
-  const arcStart = (await page
-    .locator('.philosophy-trail')
-    .getAttribute('data-point'))!
-    .split(',')
-    .map(Number);
-  expect(openingCanvas.y + openingHandoffPoint[1]).toBeCloseTo(heroTrack.y, 0);
-  expect(arcStart[0]).toBeCloseTo(heroTrack.x + heroTrack.width / 2, 0);
-  expect(arcStart[1]).toBeCloseTo(heroTrack.y, 0);
-  await expect(page.locator('[data-scroll-trail=opening]')).toHaveCSS(
-    'opacity',
-    '1',
-  );
-  await page.evaluate((y) => scrollTo(0, y), handoffStart + 100);
-  await expect
-    .poll(() =>
-      page.locator('.hero').evaluate((e) => Number(e.dataset.handoffProgress)),
-    )
-    .toBeGreaterThan(0.03);
-  await expect
-    .poll(() => page.locator('.philosophy-trail').getAttribute('data-point'))
-    .not.toBe(arcStart.join(','));
-  const verticalPoint = (await page
-    .locator('.philosophy-trail')
-    .getAttribute('data-point'))!
-    .split(',')
-    .map(Number);
-  expect(verticalPoint[0]).toBeCloseTo(arcStart[0], 0);
-  expect(verticalPoint[1]).toBeGreaterThan(arcStart[1]);
-  expect(verticalPoint[1]).toBeLessThan(heroGuide.y + heroGuide.height / 2);
-  await page.evaluate((y) => scrollTo(0, y), start);
-  const orbitBefore = await page.locator('.philosophy-orbit').boundingBox();
-  const titleBefore = await page.locator('.hero-title').boundingBox();
-  const trackBefore = await page.locator('.hero-track').boundingBox();
-  const labelBefore = await page.locator('.orbit-label').boundingBox();
-  await expect(page.locator('.philosophy-orbit')).toHaveCSS('opacity', '0');
-  const heroGuideLine = await page
-    .locator('.hero-track')
-    .evaluate(
-      (element) => getComputedStyle(element, '::before').backgroundImage,
-    );
-  expect(heroGuideLine).toContain('repeating-linear-gradient');
-  await page.evaluate((y) => scrollTo(0, y), start + 575);
-  await expect
-    .poll(() =>
-      page
-        .locator('.philosophy-trail')
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(0.9);
-  const orbitAfter = await page.locator('.philosophy-orbit').boundingBox();
-  const titleAfter = await page.locator('.hero-title').boundingBox();
-  const trackAfter = await page.locator('.hero-track').boundingBox();
-  const labelAfter = await page.locator('.orbit-label').boundingBox();
-  expect(titleAfter!.x - titleBefore!.x).toBeCloseTo(
-    orbitAfter!.x - orbitBefore!.x,
-    0,
-  );
-  expect(titleAfter!.y - titleBefore!.y).toBeCloseTo(
-    orbitAfter!.y - orbitBefore!.y,
-    0,
-  );
-  expect(trackAfter!.x - trackBefore!.x).toBeCloseTo(
-    orbitAfter!.x - orbitBefore!.x,
-    0,
-  );
-  expect(trackAfter!.y - trackBefore!.y).toBeCloseTo(
-    orbitAfter!.y - orbitBefore!.y,
-    0,
-  );
-  expect(Math.abs(labelAfter!.x - labelBefore!.x)).toBeGreaterThan(40);
-  expect(Math.abs(labelAfter!.y - labelBefore!.y)).toBeGreaterThan(40);
-  const trailPoint = (await page
-    .locator('.philosophy-trail')
-    .getAttribute('data-point'))!
-    .split(',')
-    .map(Number);
-  const labelDot = (await page.locator('.orbit-label .diamond').boundingBox())!;
-  expect(labelDot.x + labelDot.width / 2).toBeCloseTo(trailPoint[0], 0);
-  expect(labelDot.y + labelDot.height / 2).toBeCloseTo(trailPoint[1], 0);
-  await page.evaluate((y) => scrollTo(0, y), start + 990);
-  await expect
-    .poll(() =>
-      page
-        .locator('.hero-title')
-        .evaluate((e) => e.getBoundingClientRect().right),
-    )
-    .toBeLessThan(500);
+  await expect(page.locator('.desktop-nav')).toBeVisible();
+  await expect(page.locator('[data-menu-open]')).toBeHidden();
 
-  const aboutStart = await page
-    .locator('.about')
-    .evaluate((e) => e.parentElement!.getBoundingClientRect().top + scrollY);
-  const aboutHandoffStart = aboutStart - 900 * 0.9;
-  await page.evaluate((y) => scrollTo(0, y), aboutHandoffStart + 2);
-  await expect(page.locator('[data-home]')).toHaveClass(/is-about-active/);
-  await expect(page.locator('.philosophy-orbit')).toHaveCSS('opacity', '1');
-  await expect(page.locator('.philosophy-trail')).toHaveCSS('opacity', '0');
-  await expect(page.locator('.hero .orbit-label')).toHaveCSS('opacity', '0');
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'line-drop',
-  );
-  await expect(page.locator('.about-rays .diamond')).toHaveCSS('opacity', '0');
-  await expect(page.locator('.about-rays')).toHaveCSS(
-    'background-image',
-    /repeating-linear-gradient/,
-  );
-  await expect(page.locator('.about-drop-line')).toHaveCSS(
-    'background-image',
-    /repeating-linear-gradient/,
-  );
-  await expect(page.locator('.about-rays span').first()).toHaveCSS(
-    'background-image',
-    /repeating-linear-gradient/,
-  );
-  const contactLine = (await page.locator('.about-rays').boundingBox())!;
-  const contactDot = (await page
-    .locator('.about-rays .diamond')
-    .boundingBox())!;
-  expect(contactDot.y + contactDot.height / 2).toBeCloseTo(
-    contactLine.y + contactLine.height,
-    0,
-  );
-  const orbitStart = (await page.locator('.philosophy-orbit').boundingBox())!.x;
-  const fallingLineStart = (await page.locator('.about-rays').boundingBox())!.y;
-  const titleOpacity = await page
-    .locator('.about-title span')
-    .first()
-    .evaluate((e) => Number(getComputedStyle(e).opacity));
-  await page.evaluate((y) => scrollTo(0, y), aboutHandoffStart + 100);
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'line-drop',
-  );
-  await expect(page.locator('.about-rays .diamond')).toHaveCSS('opacity', '0');
-  await expect
-    .poll(async () => (await page.locator('.about-rays').boundingBox())!.y)
-    .toBeGreaterThan(fallingLineStart + 10);
-  await page.evaluate((y) => scrollTo(0, y), aboutHandoffStart + 430);
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'point-drop',
-  );
-  await expect
-    .poll(() =>
-      page
-        .locator('.about-rays .diamond')
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(0);
-  await expect
-    .poll(() =>
-      page
-        .locator('.about-title span')
-        .first()
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(0.1);
-  await expect
-    .poll(
-      async () => (await page.locator('.philosophy-orbit').boundingBox())!.x,
-    )
-    .toBeCloseTo(orbitStart, 0);
-  const enteringTitleY = (await page
-    .locator('.about-title span')
-    .first()
-    .boundingBox())!.y;
-  const enteringTitleOpacity = await page
-    .locator('.about-title span')
-    .first()
-    .evaluate((e) => Number(getComputedStyle(e).opacity));
-  expect(enteringTitleOpacity).toBeGreaterThan(0);
-  expect(enteringTitleOpacity).toBeLessThan(1);
-  await expect(page.locator('.about')).toHaveCSS('z-index', '1');
-  await expect(page.locator('.about-title')).toHaveCSS('z-index', '2');
-  const enteringDotY = (await page
-    .locator('.about-rays .diamond')
-    .boundingBox())!.y;
-  await page.evaluate((y) => scrollTo(0, y), aboutStart - 20);
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'point-drop',
-  );
-  await expect(page.locator('.about-rays .diamond')).toHaveCSS('opacity', '1');
-  await expect(page.locator('.about-tangent-line')).toHaveCSS(
-    'background-image',
-    /repeating-linear-gradient/,
-  );
-  await expect(page.locator('.about-tangent-line')).toHaveCSS('opacity', '1');
-  const dotDropped = (await page.locator('.about-rays .diamond').boundingBox())!
-    .y;
-  expect(dotDropped).toBeGreaterThan(enteringDotY + 40);
-  const centeredTitle = (await page
-    .locator('.about-title span')
-    .first()
-    .boundingBox())!.x;
-  expect(
-    (await page.locator('.about-title span').first().boundingBox())!.y,
-  ).toBeGreaterThan(enteringTitleY + 40);
-  await page.evaluate((y) => scrollTo(0, y), aboutStart + 300);
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'pan-left',
-  );
-  await expect(page.locator('.philosophy-trail')).toHaveCSS('opacity', '0');
-  await expect(page.locator('.about-rays .diamond')).toHaveCSS('opacity', '1');
-  await expect
-    .poll(() =>
-      page
-        .locator('.about-tangent-line')
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(0);
-  await expect
-    .poll(
-      async () => (await page.locator('.philosophy-orbit').boundingBox())!.x,
-    )
-    .toBeLessThan(orbitStart - 40);
-  await expect
-    .poll(
-      async () =>
-        (await page.locator('.about-title span').first().boundingBox())!.x,
-    )
-    .toBeLessThan(centeredTitle - 20);
-  await expect(page.locator('.about-rays span').first()).toHaveCSS(
-    'opacity',
-    '0',
-  );
-  await expect(page.locator('.about-copy')).toHaveCSS('opacity', '0');
-  await page.evaluate((y) => scrollTo(0, y), aboutStart + 620);
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'focus',
-  );
-  await expect(page.locator('.about-tangent-line')).toHaveCSS('opacity', '0');
-  await expect
-    .poll(
-      async () => (await page.locator('.about-rays .diamond').boundingBox())!.y,
-    )
-    .toBeLessThan(dotDropped - 20);
-  await expect
-    .poll(() =>
-      page
-        .locator('.about-rays span')
-        .first()
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(0);
-  await page.evaluate((y) => scrollTo(0, y), aboutStart + 770);
-  await expect(page.locator('.about')).toHaveAttribute(
-    'data-motion-phase',
-    'details',
-  );
-  await expect
-    .poll(() =>
-      page
-        .locator('.about-copy')
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(0.5);
-  await expect(page.locator('.about-drop-line')).toHaveCSS('opacity', '1');
-  const finalDropLine = (await page.locator('.about-drop-line').boundingBox())!;
-  const finalDot = (await page.locator('.about-rays .diamond').boundingBox())!;
-  expect(finalDropLine.y + finalDropLine.height).toBeCloseTo(
-    finalDot.y + finalDot.height / 2,
-    0,
-  );
-  const finalRing = (await page.locator('.about-ring').boundingBox())!;
-  expect(finalRing.y + finalRing.height / 2).toBeCloseTo(
-    finalDot.y + finalDot.height / 2,
-    0,
-  );
-  await expect
-    .poll(() =>
-      page
-        .locator('.about-title span')
-        .first()
-        .evaluate((e) => Number(getComputedStyle(e).opacity)),
-    )
-    .toBeGreaterThan(titleOpacity);
-  const researchStart = await page
-    .locator('.research')
-    .evaluate((e) => e.parentElement!.getBoundingClientRect().top + scrollY);
-  await expect(page.locator('.research-axis')).toHaveCSS(
-    'background-image',
-    /repeating-linear-gradient/,
-  );
-  await expect(page.locator('.research-axis')).toHaveCSS(
-    'border-left-width',
-    '0px',
-  );
-  const researchHandoffStart = researchStart - 900 * 0.9;
-  await page.evaluate((y) => scrollTo(0, y), researchHandoffStart + 2);
-  const orbitLeavingStart = (await page
-    .locator('.philosophy-orbit')
-    .boundingBox())!.y;
-  const aboutLeavingStart = (await page
-    .locator('.about-title span')
-    .first()
-    .boundingBox())!.y;
-  await page.evaluate((y) => scrollTo(0, y), researchHandoffStart + 400);
-  const orbitLeavingEnd = (await page
-    .locator('.philosophy-orbit')
-    .boundingBox())!.y;
-  const aboutLeavingEnd = (await page
-    .locator('.about-title span')
-    .first()
-    .boundingBox())!.y;
-  expect(orbitLeavingEnd).toBeLessThan(orbitLeavingStart - 300);
-  expect(aboutLeavingEnd).toBeLessThan(aboutLeavingStart - 300);
-  expect(
-    Math.abs(
-      orbitLeavingEnd -
-        orbitLeavingStart -
-        (aboutLeavingEnd - aboutLeavingStart),
-    ),
-  ).toBeLessThan(25);
+  await page.evaluate(() => scrollTo(0, innerHeight * 3));
+  await expect(header).toHaveClass(/is-minimal/);
+  await expect(page.locator('.desktop-nav')).toBeVisible();
+  await expect(page.locator('[data-menu-open]')).toBeHidden();
+
+  await page.setViewportSize({ width: 1100, height: 900 });
+  await expect(page.locator('.desktop-nav')).toBeHidden();
+  await expect(page.locator('[data-menu-open]')).toBeVisible();
+  await expect(page.locator('[data-menu-open]')).toHaveCSS('width', '42px');
 });
+
+for (const width of [1440, 1920]) {
+  test(`philosophy transition has one point and no vertical reversal at ${width}px`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.setViewportSize({ width, height: width === 1920 ? 1080 : 900 });
+    await page.goto('zh/index.html');
+    const stage = page.locator('[data-philosophy-stage]');
+    await expect(page.locator('[data-home]')).toHaveClass(
+      /has-philosophy-motion/,
+    );
+    await expect(page.locator('.story-scene')).toHaveCount(5);
+    const bounds = await stage.evaluate((el) => {
+      const spacer = el.parentElement!;
+      return {
+        start: spacer.getBoundingClientRect().top + scrollY,
+        distance:
+          spacer.getBoundingClientRect().height -
+          el.getBoundingClientRect().height,
+      };
+    });
+    const sample = async (progress: number) => {
+      await page.evaluate(
+        (y) => scrollTo(0, y),
+        bounds.start + bounds.distance * progress,
+      );
+      await expect
+        .poll(async () =>
+          Number(await stage.getAttribute('data-motion-progress')),
+        )
+        .toBeCloseTo(progress, 3);
+      return await stage.evaluate((el) => {
+        const title = el.querySelector('.about-title span')!;
+        const point = (el.querySelector('canvas') as HTMLCanvasElement).dataset
+          .point!.split(',')
+          .map(Number);
+        return {
+          pointX: point[0],
+          pointY: point[1],
+          titleY: title.getBoundingClientRect().y,
+          titleOpacity: Number(getComputedStyle(title).opacity),
+          top: el.getBoundingClientRect().top,
+        };
+      });
+    };
+    await sample(0.15);
+    await expect(page.locator('.hero-track')).toBeHidden();
+    await expect(page.locator('.hero-orbit')).toBeHidden();
+    await expect(page.locator('.orbit-label .diamond')).toBeHidden();
+    await expect(page.locator('.about-rays')).toBeHidden();
+    await expect(page.locator('.philosophy-stage-canvas')).toBeVisible();
+    let previous = await sample(0.54);
+    const entering = await sample(0.58);
+    expect(entering.pointY).toBeGreaterThan(previous.pointY);
+    expect(entering.titleY).toBeGreaterThan(previous.titleY);
+    expect(entering.titleOpacity).toBeGreaterThan(0);
+    expect(entering.titleOpacity).toBeLessThan(1);
+    previous = entering;
+    for (const progress of [0.62, 0.68, 0.74, 0.84, 0.96]) {
+      const next = await sample(progress);
+      expect(Math.abs(next.top)).toBeLessThan(1);
+      expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
+      expect(next.titleY).toBeGreaterThanOrEqual(previous.titleY - 0.5);
+      expect(next.titleOpacity).toBeGreaterThanOrEqual(
+        previous.titleOpacity - 0.01,
+      );
+      previous = next;
+    }
+    await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+    // Returning through the handoff reconstructs identical positions, rather
+    // than depending on which of several triggers last wrote a transform.
+    const reversed = await sample(0.58);
+    expect(reversed.pointY).toBeCloseTo(entering.pointY, 0);
+    expect(reversed.titleY).toBeCloseTo(entering.titleY, 0);
+    await sample(0.96);
+    const leavingBefore = await stage.boundingBox();
+    const copyBefore = await page.locator('.about-title').boundingBox();
+    await page.evaluate(
+      (y) => scrollTo(0, y),
+      bounds.start + bounds.distance + 200,
+    );
+    const leavingAfter = await stage.boundingBox();
+    const copyAfter = await page.locator('.about-title').boundingBox();
+    expect(leavingAfter!.y).toBeLessThan(leavingBefore!.y - 150);
+    expect(copyAfter!.y - copyBefore!.y).toBeCloseTo(
+      leavingAfter!.y - leavingBefore!.y,
+      0,
+    );
+  });
+}
 
 for (const width of [390, 768, 1440])
   test(`right scroll updates company and preserves it after language change ${width}px`, async ({
@@ -417,7 +165,7 @@ for (const width of [390, 768, 1440])
     await expect(page.locator('h1')).toHaveText('Mosi');
   });
 
-test('desktop company rail remains a single continuous blurred arc at both ends', async ({
+test('desktop company rail remains a single continuous blurred looping arc', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -425,9 +173,11 @@ test('desktop company rail remains a single continuous blurred arc at both ends'
   const browser = page.locator('[data-company-browser]');
   const rail = page.locator('[data-company-nav]');
   await expect(browser).toHaveAttribute('data-rail-ready', 'true');
+  await expect(page.locator('[data-company-link]')).toHaveCount(19);
+  await expect(page.locator('[data-company-loop-link]')).toHaveCount(38);
 
   const circleErrors = await page
-    .locator('[data-company-link]')
+    .locator('[data-company-index]')
     .evaluateAll((links) => {
       const orbit = document
         .querySelector('.company-orbit')!
@@ -456,33 +206,38 @@ test('desktop company rail remains a single continuous blurred arc at both ends'
   await rail.focus();
   await page.keyboard.press('Home');
   await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
-  await expect
-    .poll(() =>
-      page
-        .locator('[data-arc-side=top]')
-        .evaluateAll(
-          (dots) =>
-            dots.filter(
-              (dot) => Number.parseFloat(getComputedStyle(dot).opacity) > 0.05,
-            ).length,
-        ),
-    )
-    .toBeGreaterThan(2);
+  await page.keyboard.press('ArrowUp');
+  await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
+  await page.keyboard.press('ArrowDown');
+  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
 
   await page.keyboard.press('End');
   await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
+  await page.keyboard.press('ArrowDown');
+  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
   await expect
     .poll(() =>
-      page
-        .locator('[data-arc-side=bottom]')
-        .evaluateAll(
-          (dots) =>
-            dots.filter(
-              (dot) => Number.parseFloat(getComputedStyle(dot).opacity) > 0.05,
-            ).length,
-        ),
+      page.locator('[data-company-loop-link]').evaluateAll(
+        (rows) =>
+          rows.filter((row) => {
+            const box = row.getBoundingClientRect();
+            const rail = document
+              .querySelector('[data-company-nav]')!
+              .getBoundingClientRect();
+            return box.bottom > rail.top && box.top < rail.bottom;
+          }).length,
+      ),
     )
-    .toBeGreaterThan(2);
+    .toBeGreaterThan(0);
+  await expect
+    .poll(() =>
+      rail.evaluate(
+        (element) =>
+          element.scrollTop > 0 &&
+          element.scrollTop < element.scrollHeight - element.clientHeight,
+      ),
+    )
+    .toBe(true);
   await expect(page.locator('[data-company-link=tairex]')).not.toHaveCSS(
     'filter',
     'blur(0px)',
@@ -495,6 +250,7 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/team.html');
   await expect(page.locator('[data-person]')).toHaveCount(3);
+  const bioWidths: number[] = [];
   for (const id of ['alex', 'elliot', 'wenjue']) {
     const portrait = page.locator(`[data-person=${id}]`);
     const bio = page.locator(`[data-person-bio=${id}]`);
@@ -507,9 +263,11 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
     expect(r!.x + r!.width).toBeLessThan(l!.x + l!.width);
     expect(r!.y).toBeGreaterThan(l!.y);
     expect(r!.y + r!.height).toBeLessThan(l!.y + l!.height);
+    bioWidths.push(r!.width);
     await page.mouse.move(20, 150);
     await expect(bio).not.toBeVisible();
   }
+  expect(Math.max(...bioWidths) - Math.min(...bioWidths)).toBeLessThan(1);
 });
 
 test('Fellow arc moves, window expands, and pending film stays explicitly marked', async ({
@@ -627,6 +385,14 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
   if (browserName === 'chromium')
     await expect(scene).toHaveAttribute('data-renderer', 'webgl');
   if ((await scene.getAttribute('data-renderer')) === 'webgl') {
+    await expect(scene).toHaveAttribute(
+      'data-highlighted-node',
+      'sector-foundation',
+    );
+    await expect(scene).toHaveAttribute('data-highlighted-edges', '3');
+    await expect(
+      page.locator('[data-topology-anchor=company-zhipu-ai]').first(),
+    ).toHaveAttribute('data-topology-state', 'connected');
     const surface = page.locator('[data-topology-drag]');
     const box = await surface.boundingBox();
     const rotation = await scene.getAttribute('data-rotation');
@@ -651,6 +417,7 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
     expect(Math.max(...draggedRotation.map(Math.abs))).toBeGreaterThan(0.15);
   }
   const star = page.locator('[data-sector=physical]');
+  await star.click();
   await star.hover();
   if ((await scene.getAttribute('data-renderer')) === 'webgl') {
     await expect(star.locator('.star-glyph')).toHaveCSS('filter', 'none');
@@ -663,10 +430,13 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       .poll(async () =>
         Number(await scene.getAttribute('data-highlighted-edges')),
       )
-      .toBeGreaterThan(0);
+      .toBe(3);
     await expect(
       page.locator('[data-topology-anchor=sector-infrastructure]'),
     ).toHaveAttribute('data-topology-state', 'unrelated');
+    await expect(
+      page.locator('[data-topology-anchor=company-phybot]').first(),
+    ).toHaveAttribute('data-topology-state', 'connected');
     await expect(star.locator('.glyph-active')).toBeVisible();
     await expect(star.locator('.glyph-inactive')).toBeHidden();
     const value = await scene.getAttribute('data-render-frames');

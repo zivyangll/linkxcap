@@ -1374,27 +1374,5 @@
     .about-rays span {
       display: none;
     }
-    .home-story.has-shared-orbit .philosophy-orbit {
-      display: block;
-      position: fixed;
-      z-index: 0;
-      left: calc(447 * var(--u));
-      top: calc(-1156 * var(--u));
-      width: calc(2406 * var(--u));
-      height: calc(2406 * var(--u));
-      max-width: none;
-      pointer-events: none;
-      opacity: 0;
-    }
-    .home-story.has-shared-orbit :is(.hero-orbit, .about-orbit, .about-decor) {
-      display: none;
-    }
-    .home-story.has-shared-orbit .about-rays span {
-      display: block;
-      opacity: 0;
-    }
-    .home-story.has-shared-orbit .about-rays .diamond {
-      opacity: 0;
-    }
   }
 }

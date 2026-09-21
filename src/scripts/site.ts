@@ -102,7 +102,12 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) =>
 );
 
 const header = document.querySelector<HTMLElement>('[data-header]');
-if (document.querySelector('[data-home]')) {
+const homeStory = document.querySelector('[data-home]');
+if (homeStory) {
+  const updateHeaderMask = () =>
+    header?.classList.toggle('is-scrolled', scrollY > 12);
+  updateHeaderMask();
+  window.addEventListener('scroll', updateHeaderMask, { passive: true });
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -123,9 +128,14 @@ if (document.querySelector('[data-home]')) {
   document
     .querySelectorAll('.story-scene')
     .forEach((section) => observer.observe(section));
-  window.addEventListener('pagehide', () => observer.disconnect(), {
-    once: true,
-  });
+  window.addEventListener(
+    'pagehide',
+    () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', updateHeaderMask);
+    },
+    { once: true },
+  );
 }
 
 // Content selection stays available if the optional animation chunk fails.

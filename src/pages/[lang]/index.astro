@@ -9,6 +9,6 @@ const lang = Astro.params.lang as Lang;
 const title = pageTitle(lang, 'index');
 ---
 
-<SiteLayout lang={lang} page="index" title={title}>
+<SiteLayout lang={lang} page="index" title={title} bodyClass="philosophy-page">
   <Home lang={lang} />
 </SiteLayout>

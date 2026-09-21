@@ -8,68 +8,123 @@
   pointer-events: none;
   z-index: 1;
 }
-.home-story.has-shared-orbit .philosophy-trail {
-  display: block;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
+.philosophy-page .site-header.is-scrolled {
+  background: rgb(253 251 245 / 84%);
+  border-bottom: 1px solid rgb(29 29 29 / 7%);
+  -webkit-backdrop-filter: blur(16px) saturate(115%);
+  backdrop-filter: blur(16px) saturate(115%);
 }
-.home-story.has-shared-orbit.is-hero-handoff .philosophy-trail {
-  opacity: 1;
+.philosophy-page .site-header.is-dark.is-scrolled {
+  background: rgb(29 29 29 / 78%);
+  border-bottom-color: rgb(255 255 255 / 10%);
 }
-.home-story.has-shared-orbit .hero .scroll-trail {
-  display: none;
+@media (min-width: 1280px) {
+  .philosophy-page .site-header.is-minimal {
+    height: calc(78 * var(--u));
+    min-height: 0;
+  }
+  .philosophy-page .site-header.is-minimal .home-link {
+    top: calc(28.82275 * var(--u));
+  }
+  .philosophy-page .site-header.is-minimal .desktop-nav,
+  .philosophy-page .site-header.is-minimal .language-switch {
+    display: flex;
+  }
+  .philosophy-page .site-header.is-minimal .menu-toggle {
+    display: none;
+  }
 }
-.home-story.has-shared-orbit .hero-track-line {
-  visibility: hidden;
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .philosophy-page .site-header .desktop-nav {
+    display: none;
+  }
+  .philosophy-page .site-header .language-switch {
+    display: flex;
+  }
+  .philosophy-page .site-header .menu-toggle,
+  .philosophy-page .site-header.is-minimal .menu-toggle {
+    display: block;
+    position: absolute;
+    left: auto;
+    right: max(24px, calc(44 * var(--u)));
+    top: 50%;
+    width: max(42px, calc(48 * var(--u)));
+    height: max(42px, calc(42 * var(--u)));
+    margin: 0;
+    padding: 0;
+    transform: translateY(-50%);
+  }
+  .philosophy-page .site-header .menu-toggle span {
+    left: 50%;
+    top: calc(50% - 4px);
+    width: 21px;
+    height: 1px;
+    transform: translateX(-50%);
+  }
+  .philosophy-page .site-header .menu-toggle span + span {
+    top: calc(50% + 4px);
+  }
 }
-.home-story.has-shared-orbit .hero-track::before {
-  content: '';
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: calc(1 * var(--u));
-  background: repeating-linear-gradient(
-    to bottom,
-    rgb(29 29 29 / 14%) 0,
-    rgb(29 29 29 / 14%) calc(4 * var(--u)),
-    transparent calc(4 * var(--u)),
-    transparent calc(13 * var(--u))
-  );
+/* Frames 510 → 514 → 515 share one viewport and one progress owner. */
+.philosophy-stage {
+  display: contents;
 }
-.home-story.has-shared-orbit.is-about-active .philosophy-trail,
-.home-story.has-shared-orbit.is-about-active .hero .orbit-label {
-  opacity: 0 !important;
-}
-.about-tangent-line {
+.philosophy-stage-canvas {
   display: none;
 }
 @media (min-width: 1024px) {
-  .home-story.has-shared-orbit .about {
-    z-index: 1;
+  .has-philosophy-motion .philosophy-stage {
+    display: block;
+    position: relative;
+    height: 100svh;
+    min-height: 650px;
+    overflow: clip;
+    isolation: isolate;
+    background: var(--paper, #fdfbf5);
   }
-  .home-story.has-shared-orbit .about-tangent-line {
+  .has-philosophy-motion .philosophy-stage > .story-scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    overflow: visible;
+    background: transparent;
+  }
+  .has-philosophy-motion .philosophy-stage-canvas {
     display: block;
     position: absolute;
-    z-index: 1;
-    top: calc(358 * var(--u));
-    left: 0;
+    inset: 0;
     width: 100%;
-    height: calc(1 * var(--u));
+    height: 100%;
     pointer-events: none;
-    background: repeating-linear-gradient(
-      to right,
-      rgb(29 29 29 / 14%) 0,
-      rgb(29 29 29 / 14%) calc(4 * var(--u)),
-      transparent calc(4 * var(--u)),
-      transparent calc(9 * var(--u))
-    );
+    z-index: 0;
   }
-  .home-story.has-shared-orbit .about-title {
+  .has-philosophy-motion .philosophy-stage :is(.hero, .about) {
+    z-index: 1;
+    pointer-events: none;
+  }
+  .has-philosophy-motion .hero .orbit-label {
+    pointer-events: auto;
+  }
+  .has-philosophy-motion
+    .philosophy-stage
+    :is(
+      .hero-orbit,
+      .hero-track,
+      .scroll-trail,
+      .orbit-label .diamond,
+      .about-orbit,
+      .about-decor,
+      .about-rays,
+      .about-tangent-line
+    ) {
+    display: none;
+  }
+  .has-philosophy-motion .about-title {
     z-index: 2;
   }
-  .home-story.has-shared-orbit .research-axis {
+  .has-philosophy-motion .research-axis {
     width: calc(1 * var(--u));
     border-left: 0;
     background: repeating-linear-gradient(
@@ -80,45 +135,9 @@
       transparent calc(4 * var(--u))
     );
   }
-  .home-story.has-shared-orbit .about-rays {
-    background: repeating-linear-gradient(
-      to bottom,
-      rgb(29 29 29 / 25%) 0,
-      rgb(29 29 29 / 25%) calc(5 * var(--u)),
-      transparent calc(5 * var(--u)),
-      transparent calc(12 * var(--u))
-    );
-  }
-  .home-story.has-shared-orbit .about-rays span {
-    background: repeating-linear-gradient(
-      to top,
-      rgb(29 29 29 / 25%) 0,
-      rgb(29 29 29 / 25%) calc(5 * var(--u)),
-      transparent calc(5 * var(--u)),
-      transparent calc(12 * var(--u))
-    );
-    -webkit-mask-image: linear-gradient(to top, #000 68%, transparent 100%);
-    mask-image: linear-gradient(to top, #000 68%, transparent 100%);
-  }
-  .home-story.has-shared-orbit .about-rays span:nth-of-type(3) {
-    display: none;
-  }
-  .home-story.has-shared-orbit .about-rays .about-drop-line {
-    background: repeating-linear-gradient(
-      to bottom,
-      rgb(29 29 29 / 25%) 0,
-      rgb(29 29 29 / 25%) calc(5 * var(--u)),
-      transparent calc(5 * var(--u)),
-      transparent calc(12 * var(--u))
-    );
-    mask-image: linear-gradient(to bottom, #000 70%, transparent);
-  }
-  .home-story.has-shared-orbit .about-rays .diamond {
-    bottom: calc(-6 * var(--u));
-  }
-  .home-story.has-shared-orbit .about-rays .about-ring {
-    bottom: calc(-22.053 * var(--u));
-  }
+}
+.about-tangent-line {
+  display: none;
 }
 .has-scroll-trail .opening-track {
   visibility: hidden;

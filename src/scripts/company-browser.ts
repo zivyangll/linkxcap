@@ -14,6 +14,7 @@ type CompanyRecord = {
 const root = document.querySelector<HTMLElement>('[data-company-browser]');
 if (root) {
   const rail = root.querySelector<HTMLElement>('[data-company-nav]')!;
+  const track = rail.querySelector<HTMLElement>('.company-nav-track')!;
   const links = Array.from(
     rail.querySelectorAll<HTMLAnchorElement>('[data-company-link]'),
   );
@@ -29,6 +30,25 @@ if (root) {
   );
   const records: CompanyRecord[] = JSON.parse(
     root.querySelector('[data-company-records]')!.textContent!,
+  );
+  links.forEach((link, index) => {
+    link.dataset.companyIndex = String(index);
+  });
+  const cloneCycle = () =>
+    links.map((link, index) => {
+      const clone = link.cloneNode(true) as HTMLAnchorElement;
+      clone.removeAttribute('data-company-link');
+      clone.dataset.companyLoopLink = link.dataset.companyLink!;
+      clone.dataset.companyIndex = String(index);
+      clone.setAttribute('aria-hidden', 'true');
+      clone.tabIndex = -1;
+      clone.removeAttribute('aria-current');
+      return clone;
+    });
+  track.prepend(...cloneCycle());
+  track.append(...cloneCycle());
+  const rows = Array.from(
+    track.querySelectorAll<HTMLAnchorElement>('a[data-company-index]'),
   );
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let active = records.findIndex((c) => c.slug === root.dataset.currentCompany);
@@ -69,11 +89,11 @@ if (root) {
     }
     active = index;
     root.dataset.currentCompany = company.slug;
-    links.forEach((a, i) =>
-      i === active
-        ? a.setAttribute('aria-current', 'page')
-        : a.removeAttribute('aria-current'),
-    );
+    rows.forEach((row) => {
+      if (Number(row.dataset.companyIndex) === active)
+        row.setAttribute('aria-current', 'page');
+      else row.removeAttribute('aria-current');
+    });
     if (updateUrl)
       history.replaceState({ company: company.slug }, '', company.url);
     document.title = `${company.title} · Link-X Capital`;
@@ -104,19 +124,31 @@ if (root) {
   };
   // Offset is measured from the real row centers. No absolute Figma y values
   // are mixed with scrollTop, so resizing and long names cannot shift selection.
-  const center = (index: number) => {
-    const a = links[index];
+  const centerRow = (row: HTMLAnchorElement) => {
     const rr = rail.getBoundingClientRect();
-    const r = a.getBoundingClientRect();
+    const r = row.getBoundingClientRect();
     return (
       rail.scrollTop + r.top - rr.top + r.height / 2 - rail.clientHeight / 2
     );
   };
-  const align = (index: number) => {
+  const closestRow = (index: number, preferOriginal = false) => {
+    if (preferOriginal) return links[index];
+    return rows
+      .filter((row) => Number(row.dataset.companyIndex) === index)
+      .reduce((closest, row) =>
+        Math.abs(centerRow(row) - rail.scrollTop) <
+        Math.abs(centerRow(closest) - rail.scrollTop)
+          ? row
+          : closest,
+      );
+  };
+  const align = (index: number, preferOriginal = false) => {
     programmatic = true;
-    const track = rail.querySelector<HTMLElement>('.company-nav-track')!;
     track.style.paddingBlock = `${Math.max(0, (rail.clientHeight - links[0].offsetHeight) / 2)}px`;
-    rail.scrollTo({ top: center(index), behavior: 'instant' });
+    rail.scrollTo({
+      top: centerRow(closestRow(index, preferOriginal)),
+      behavior: 'instant',
+    });
     select(index);
     requestAnimationFrame(() => {
       programmatic = false;
@@ -125,8 +157,24 @@ if (root) {
       update();
     });
   };
+  const normalizeLoopPosition = () => {
+    if (rows.length < records.length * 3) return;
+    const first = rows[records.length];
+    const second = rows[records.length + 1] ?? first;
+    const nextFirst = rows[records.length * 2];
+    const rowStep = Math.max(1, centerRow(second) - centerRow(first));
+    const cycleHeight = centerRow(nextFirst) - centerRow(first);
+    if (cycleHeight <= 0) return;
+    const lowerBound = centerRow(first) - rowStep / 2;
+    const upperBound = lowerBound + cycleHeight;
+    let nextTop = rail.scrollTop;
+    while (nextTop < lowerBound) nextTop += cycleHeight;
+    while (nextTop >= upperBound) nextTop -= cycleHeight;
+    if (Math.abs(nextTop - rail.scrollTop) > 0.5) rail.scrollTop = nextTop;
+  };
   const update = () => {
     frame = 0;
+    normalizeLoopPosition();
     const rr = rail.getBoundingClientRect();
     const rootRect = root.getBoundingClientRect();
     const orbit = root.querySelector<HTMLImageElement>('.company-orbit');
@@ -144,11 +192,9 @@ if (root) {
       ? orbitRect.width * (565 / 1187)
       : rootRect.width * (565 / 1920);
     const markerBaseX = rr.left + rail.clientWidth * 0.32 + 26;
-    const shellRect = continuation?.getBoundingClientRect();
-    const railCenterY = rr.top + rail.clientHeight / 2;
     let nearest = active,
       distance = Infinity;
-    links.forEach((link, i) => {
+    rows.forEach((link) => {
       const box = link.getBoundingClientRect();
       const delta = box.top + box.height / 2 - rr.top - rail.clientHeight / 2;
       const ratio = Math.max(
@@ -180,62 +226,14 @@ if (root) {
       );
       if (Math.abs(delta) < distance) {
         distance = Math.abs(delta);
-        nearest = i;
+        nearest = Number(link.dataset.companyIndex);
       }
     });
-    // The source artwork already contains the full dotted circle. Its right
-    // segment is covered by the rail shell so it cannot form a second arc.
-    // These virtual rows extend the real company markers before the first and
-    // after the last record, keeping the single reconstructed arc continuous
-    // even when the scroll reaches Home or End.
-    if (desktopRail.matches && continuation && shellRect && links.length) {
-      const first = links[0].getBoundingClientRect();
-      const last = links.at(-1)!.getBoundingClientRect();
-      const rowStep =
-        links.length > 1
-          ? links[1].getBoundingClientRect().top - first.top
-          : first.height;
-      const positionDot = (dot: HTMLElement, pageY: number) => {
-        const circleDeltaY = pageY - orbitCenterY;
-        const visible =
-          Math.abs(circleDeltaY) <= orbitRadius &&
-          pageY >= rr.top - rowStep * 0.5 &&
-          pageY <= rr.bottom + rowStep * 0.5;
-        const circleX =
-          orbitCenterX +
-          Math.sqrt(
-            Math.max(
-              0,
-              orbitRadius * orbitRadius - circleDeltaY * circleDeltaY,
-            ),
-          );
-        const normalized = Math.min(
-          1,
-          Math.abs(pageY - railCenterY) / (rail.clientHeight / 2),
-        );
-        const edgeFade = Math.max(0, (normalized - 0.42) / 0.58);
-        dot.style.left = `${circleX - shellRect.left}px`;
-        dot.style.top = `${pageY - shellRect.top}px`;
-        dot.style.setProperty(
-          '--arc-dot-opacity',
-          visible ? String(0.72 - edgeFade * 0.58) : '0',
-        );
-        dot.style.setProperty('--arc-dot-blur', `${edgeFade * 3.2}px`);
-        dot.style.setProperty('--arc-dot-scale', String(1 - edgeFade * 0.24));
-      };
-      const firstCenter = first.top + first.height / 2;
-      const lastCenter = last.top + last.height / 2;
-      topDots.forEach((dot, index) =>
-        positionDot(dot, firstCenter - rowStep * (index + 1)),
-      );
-      bottomDots.forEach((dot, index) =>
-        positionDot(dot, lastCenter + rowStep * (index + 1)),
-      );
-    } else {
-      [...topDots, ...bottomDots].forEach((dot) =>
-        dot.style.setProperty('--arc-dot-opacity', '0'),
-      );
-    }
+    // Real cloned rows now continue through both edges. The old dot-only
+    // fallback must stay hidden or it would create a second overlapping arc.
+    [...topDots, ...bottomDots].forEach((dot) =>
+      dot.style.setProperty('--arc-dot-opacity', '0'),
+    );
     if (initialized && !programmatic && nearest !== active) select(nearest);
   };
   rail.addEventListener(
@@ -245,7 +243,7 @@ if (root) {
     },
     { passive: true },
   );
-  links.forEach((link, i) =>
+  rows.forEach((link) =>
     link.addEventListener('click', (event) => {
       if (
         event.ctrlKey ||
@@ -256,15 +254,15 @@ if (root) {
       )
         return;
       event.preventDefault();
-      align(i);
+      align(Number(link.dataset.companyIndex));
     }),
   );
   rail.addEventListener('keydown', (event) => {
     const target =
       event.key === 'ArrowDown'
-        ? active + 1
+        ? (active + 1) % records.length
         : event.key === 'ArrowUp'
-          ? active - 1
+          ? (active - 1 + records.length) % records.length
           : event.key === 'Home'
             ? 0
             : event.key === 'End'
@@ -277,13 +275,13 @@ if (root) {
   });
   root
     .querySelector('[data-company-previous]')
-    ?.addEventListener('click', () => align(Math.max(0, active - 1)));
+    ?.addEventListener('click', () =>
+      align((active - 1 + records.length) % records.length),
+    );
   root
     .querySelector('[data-company-next]')
-    ?.addEventListener('click', () =>
-      align(Math.min(records.length - 1, active + 1)),
-    );
-  align(active);
+    ?.addEventListener('click', () => align((active + 1) % records.length));
+  align(active, true);
   const resize = new ResizeObserver(() => align(active));
   resize.observe(rail);
   document.fonts.ready.then(() => align(active));
