@@ -1,13 +1,5 @@
 ---
-import {
-  team,
-  teamContent,
-  asset,
-  pageUrl,
-  pick,
-  ui,
-  type Lang,
-} from '../lib/site';
+import { team, teamContent, pageUrl, pick, ui, type Lang } from '../lib/site';
 import PageTitle from './PageTitle.astro';
 import '../styles/team-review.css';
 const { lang } = Astro.props as { lang: Lang };
@@ -21,7 +13,7 @@ const members = team.slice(0, 3);
       en={teamContent.title.en}
       lang={lang}
     />
-    <p>{teamContent.intro}</p>
+    <p>{teamContent.intro[lang]}</p>
   </div>
   <div class="team-explorer">
     <div class="team-portraits">
@@ -35,7 +27,7 @@ const members = team.slice(0, 3);
             aria-label={`${pick(lang, person.name, person.en)} · ${ui[lang].expand}`}
           >
             <img
-              src={asset('4729', person.image)}
+              src={person.imageUrl}
               width="440"
               height="640"
               alt={pick(lang, person.name, person.en)}
@@ -64,11 +56,10 @@ const members = team.slice(0, 3);
             </div>
             <div class="team-bio-featured">
               <p>{teamContent.featured[lang]}</p>
-              <p class="data-note">{ui[lang].mock}</p>
             </div>
           </div>
           <noscript>
-            <a href={pageUrl(lang, `team-${person.id}`)}>
+            <a href={pageUrl(lang, `team-${person.slug}`)}>
               {ui[lang].profile} ↗
             </a>
           </noscript>

@@ -1,18 +1,21 @@
 ---
 import {
   contactContent,
-  navigationContent,
   siteContent,
   socials,
   asset,
   url,
+  fellowMedia,
   type Lang,
 } from '../lib/site';
 import Arrow from './Arrow.astro';
-import media from '../data/fellow-media.json';
 const mediaUrl = (src: string) =>
   /^(https?:)?\/\//.test(src) ? src : url(src);
 const { lang } = Astro.props as { lang: Lang };
+const media = {
+  src: fellowMedia.videoUrl,
+  poster: fellowMedia.posterUrl,
+};
 ---
 
 <section
@@ -141,35 +144,13 @@ const { lang } = Astro.props as { lang: Lang };
         playsinline
         loop
         preload="none"
-        poster={media.poster ? mediaUrl(media.poster) : undefined}
+        poster={media.poster || undefined}
         controls
       >
         <source src={mediaUrl(media.src)} type="video/mp4" />
-        {media.captionsZh && (
-          <track
-            kind="captions"
-            srclang="zh"
-            label={navigationContent.languageNames.zh}
-            src={mediaUrl(media.captionsZh)}
-            default={lang === 'zh'}
-          />
-        )}
-        {media.captionsEn && (
-          <track
-            kind="captions"
-            srclang="en"
-            label={navigationContent.languageNames.en}
-            src={mediaUrl(media.captionsEn)}
-            default={lang === 'en'}
-          />
-        )}
       </video>
     ) : (
-      <div
-        class="fellow-video-placeholder"
-        role="img"
-        aria-label={contactContent.videoPlaceholderAria[lang]}
-      >
+      <div class="fellow-video-placeholder">
         <span class="fellow-play" aria-hidden="true">
           <img
             src={asset('1811', 'imgEllipse16')}

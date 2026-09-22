@@ -1,3 +1,18 @@
+---
+id: 'insights-zhang-bo'
+route: 'insights-zhang-bo'
+category: 'models'
+date: '2026-01-12'
+source_url: 'https://www.linkxcap.com/zh/insights-zhang-bo.html'
+order: 2
+lang: 'zh'
+title: 'AGI Next全明星峰会落幕｜张钹院士的压轴发言，为我们留下了什么？'
+summary: '回到智能发展的基础问题，关注研究突破与产业实践之间的联系。'
+list_title: '张钹院士的压轴发言，为我们留下了什么？'
+list_summary: '"人工智能时代的企业家，不是简单地提供产品和服务，而是要把知识、原理和应用变成可复用的工具，像水电一样交给人类。这是全新的、神圣的使命。"'
+source_name: '现官网（中文）'
+---
+
 ## 观察起点
 
 回到智能发展的基础问题，关注研究突破与产业实践之间的联系。

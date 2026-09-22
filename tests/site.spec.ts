@@ -69,11 +69,12 @@ test('mobile menu supports Escape and focus return', async ({ page }) => {
 });
 test('filters, language state and original article link', async ({ page }) => {
   await page.goto('zh/insights.html');
+  await expect(page.locator('.insight-row:visible')).toHaveCount(6);
   await page.locator('[data-filter=models]').click();
-  await expect(page.locator('.insight-row:visible')).toHaveCount(4);
+  await expect(page.locator('.insight-row:visible')).toHaveCount(1);
   await page.locator('.language-switch [data-language=en]').click();
   await expect(page).toHaveURL(/en\/insights.html\?category=models/);
-  await expect(page.locator('.insight-row:visible')).toHaveCount(4);
+  await expect(page.locator('.insight-row:visible')).toHaveCount(1);
   await page.locator('.insight-row:visible h2 a').first().click();
   await expect(page.locator('.article-actions a')).toHaveAttribute(
     'href',

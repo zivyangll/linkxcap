@@ -83,22 +83,23 @@ const place = (x: unknown, y: unknown) =>
           height={Number(h)}
         />
       ))}
-      {scene.satellites.map(([slug, x, y, dx, dy]) => {
-        const company = companies.find((item) => item.slug === slug)!;
+      {scene.satellites.map(([companyId, x, y, dx, dy]) => {
+        const company = companies.find((item) => item.id === companyId);
+        if (!company) return null;
         const label = `(${homeContent.focus.investmentYear}, ${pick(lang, company.name, company.nameEn)})`;
         return (
           <>
             <a
               class="constellation-company"
-              data-topology-anchor={`company-${slug}`}
+              data-topology-anchor={`company-${company.id}`}
               data-topology-role="label"
               style={place(x, y)}
-              href={pageUrl(lang, `portfolio/${slug}`)}
+              href={pageUrl(lang, `portfolio/${company.slug}`)}
               set:text={label}
             />
             <i
               class="constellation-dot"
-              data-topology-anchor={`company-${slug}`}
+              data-topology-anchor={`company-${company.id}`}
               data-topology-role="node"
               style={place(dx, dy)}
               aria-hidden="true"

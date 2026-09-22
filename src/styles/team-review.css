@@ -170,13 +170,6 @@ body .team-review {
   gap: 22px;
 }
 
-.team-review .team-bio .data-note {
-  margin: 0;
-  color: rgb(17 17 17 / 50%);
-  font-size: 12px;
-  line-height: 1.4;
-}
-
 .team-review .team-member.is-active .profile-toggle {
   opacity: 0;
 }
@@ -321,10 +314,6 @@ body .team-review {
 
   .team-review .team-bio-featured {
     gap: calc(40 * var(--u));
-  }
-
-  .team-review .team-bio .data-note {
-    font-size: calc(14 * var(--u));
   }
 }
 

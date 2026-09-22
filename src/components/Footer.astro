@@ -1,12 +1,5 @@
 ---
-import {
-  pageUrl,
-  ui,
-  preview,
-  socials,
-  siteContent,
-  type Lang,
-} from '../lib/site';
+import { pageUrl, ui, socials, siteContent, type Lang } from '../lib/site';
 interface Props {
   lang: Lang;
 }
@@ -15,7 +8,7 @@ const { lang } = Astro.props;
 
 <footer class="site-footer">
   <div class="footer-main">
-    <p>{siteContent.copyright}</p>
+    <p>{siteContent.copyright[lang]}</p>
     <div class="footer-links">
       <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
       <a href={pageUrl(lang, 'legal')}>{ui[lang].legal}</a>
@@ -38,5 +31,4 @@ const { lang } = Astro.props;
       ))}
     </div>
   </div>
-  {preview && <p class="preview-note">{ui[lang].mock}</p>}
 </footer>

@@ -63,7 +63,7 @@ const canonical = absolute(pageUrl(lang, page));
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={absolute(url('assets/og.jpg'))} />
+    <meta property="og:image" content={absolute(siteContent.ogImageUrl)} />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />

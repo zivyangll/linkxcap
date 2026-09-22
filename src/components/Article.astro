@@ -39,9 +39,6 @@ const { Content, headings } = await render(article.body);
         ))}
     </nav>
     <div class="prose">
-      {article.mock && (
-        <p class="mock-banner">{insightsContent.mockBanner[lang]}</p>
-      )}
       <Content />
       <div class="article-actions">
         <a href={article.source} target="_blank" rel="noopener noreferrer">

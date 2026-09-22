@@ -1,3 +1,18 @@
+---
+id: 'news-agm-2025'
+route: 'news-agm-2025'
+category: 'panorama'
+date: '2025-11-21'
+source_url: 'https://www.linkxcap.com/zh/news-agm-2025.html'
+order: 5
+lang: 'zh'
+title: '从模型突破到产业落地：2025 AI全景观察与2026展望'
+summary: '连接技术、产业与创业视角，梳理通用智能生态的变化。'
+list_title: '从模型突破到产业落地：2025 AI全景观察与2026展望'
+list_summary: '连接技术、产业与创业视角，梳理通用智能生态的变化。'
+source_name: '现官网（中文）'
+---
+
 ## 观察起点
 
 连接技术、产业与创业视角，梳理通用智能生态的变化。

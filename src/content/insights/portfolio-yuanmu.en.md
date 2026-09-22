@@ -1,3 +1,18 @@
+---
+id: 'portfolio-yuanmu'
+route: 'portfolio-yuanmu'
+category: 'applications'
+date: '2026-05-26'
+source_url: 'https://www.linkxcap.com/zh/portfolio-yuanmu.html'
+order: 0
+lang: 'en'
+title: 'Yuanmu: how can AI agents reshape machining operations?'
+summary: 'Exploring the opportunities where AI agents meet real manufacturing workflows.'
+list_title: 'Yuanmu: how can AI agents reshape machining operations?'
+list_summary: 'Exploring the opportunities where AI agents meet real manufacturing workflows.'
+source_name: 'Existing website (Chinese)'
+---
+
 ## A starting point
 
 Exploring the opportunities where AI agents meet real manufacturing workflows.

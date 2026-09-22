@@ -1,3 +1,18 @@
+---
+id: 'insights-agi-2026'
+route: 'insights-agi-2026'
+category: 'panorama'
+date: '2026-01-04'
+source_url: 'https://www.linkxcap.com/zh/insights-agi-2026.html'
+order: 3
+lang: 'en'
+title: 'What should we build before AGI arrives?'
+summary: 'Amid rapid technological change, finding real problems worth pursuing over the long term.'
+list_title: 'What should we build before AGI arrives?'
+list_summary: 'Amid rapid technological change, finding real problems worth pursuing over the long term.'
+source_name: 'Existing website (Chinese)'
+---
+
 ## A starting point
 
 Amid rapid technological change, finding real problems worth pursuing over the long term.

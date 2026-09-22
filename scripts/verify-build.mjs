@@ -16,10 +16,24 @@ async function walk(dir) {
   ).flat();
 }
 const files = await walk('dist');
+const content = JSON.parse(await fs.readFile('src/data/content.json', 'utf8'));
 const htmlFiles = files.filter((f) => f.endsWith('.html'));
 const pages = htmlFiles.filter((f) => /^dist\/(zh|en)\//.test(f));
 assert.equal(pages.length, 70, 'Expected 35 pages per language');
 const failures = [];
+const contentAssetFiles = [
+  content.site.og_image_file,
+  ...content.team.map((person) => person.image_file),
+  ...content.companies.map((company) => company.logo_file),
+  content.media.fellow.poster_file,
+].filter(Boolean);
+for (const filename of contentAssetFiles) {
+  try {
+    await fs.access(path.join('dist/assets', filename));
+  } catch {
+    failures.push(`content.json: missing public/assets/${filename}`);
+  }
+}
 for (const file of htmlFiles) {
   const html = await fs.readFile(file, 'utf8');
   if (html.includes('figma.com/api/mcp/asset'))
@@ -73,10 +87,15 @@ const js = report
 assert(css <= 35 * 1024, `CSS exceeds 35 KiB gzip: ${css}`);
 // Three.js is an optional, viewport-loaded enhancement with its own budget.
 // Core navigation/content must remain within the original 120 KiB ceiling.
-const topologyJs = report.filter(f => /\/topology\..*\.js$/.test(f.file)).reduce((n, f) => n + f.gzip, 0);
+const topologyJs = report
+  .filter((f) => /\/topology\..*\.js$/.test(f.file))
+  .reduce((n, f) => n + f.gzip, 0);
 const coreJs = js - topologyJs;
 assert(coreJs <= 120 * 1024, `Core JS exceeds 120 KiB gzip: ${coreJs}`);
-assert(topologyJs <= 145 * 1024, `Optional 3D JS exceeds 145 KiB gzip: ${topologyJs}`);
+assert(
+  topologyJs <= 145 * 1024,
+  `Optional 3D JS exceeds 145 KiB gzip: ${topologyJs}`,
+);
 assert(js <= 200 * 1024, `Combined JS exceeds 200 KiB gzip: ${js}`);
 await fs.mkdir('.cache', { recursive: true });
 await fs.writeFile(

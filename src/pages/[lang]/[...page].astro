@@ -13,8 +13,8 @@ import {
   languages,
   companies,
   team,
-  insightArticles,
-  insightFileId,
+  insightFilters,
+  insightArticleFromData,
   pageTitle,
   type Lang,
   type Company,
@@ -23,22 +23,55 @@ import {
 
 export async function getStaticPaths() {
   const bodies = await getCollection('insights');
-  const bodyById = new Map(bodies.map((body) => [body.id, body]));
-  const articles = insightArticles.map((meta) => {
-    const body = bodyById.get(insightFileId(meta.file));
-    if (!body)
-      throw new Error(
-        `Missing insight Markdown file: src/content/insights/${meta.file}`,
-      );
-    return { ...meta, body };
-  });
-  const registered = new Set(
-    insightArticles.map((item) => insightFileId(item.file)),
-  );
-  const unregistered = bodies.filter((body) => !registered.has(body.id));
-  if (unregistered.length)
+  const articles = bodies.map((body) => ({
+    ...insightArticleFromData(body.data),
+    body,
+  }));
+  const routeKeys = articles.map(({ lang, route }) => `${lang}:${route}`);
+  if (new Set(routeKeys).size !== routeKeys.length)
     throw new Error(
-      `Insight Markdown files missing from data/content.json: ${unregistered.map((body) => body.id).join(', ')}`,
+      'Insight Markdown files contain duplicate language routes.',
+    );
+  const articleKeys = articles.map(({ id, lang }) => `${id}:${lang}`);
+  if (new Set(articleKeys).size !== articleKeys.length)
+    throw new Error(
+      'Insight Markdown files contain duplicate language entries.',
+    );
+  // `all` is the aggregate UI control. Articles must point to one concrete
+  // filter id so that selecting a category always has deterministic results.
+  const filterIds = new Set(
+    insightFilters.filter(({ id }) => id !== 'all').map(({ id }) => id),
+  );
+  const unknownCategories = articles.filter(
+    ({ category }) => !filterIds.has(category),
+  );
+  if (unknownCategories.length)
+    throw new Error(
+      `Insight Markdown category must match a concrete content filter id ("all" is reserved): ${unknownCategories.map(({ id, lang, category }) => `${id}.${lang} -> ${category}`).join(', ')}`,
+    );
+  const languagePairs = new Map<string, Set<Lang>>();
+  for (const { id, lang } of articles) {
+    const pair = languagePairs.get(id) || new Set<Lang>();
+    pair.add(lang);
+    languagePairs.set(id, pair);
+  }
+  const incomplete = [...languagePairs].filter(([, pair]) => pair.size !== 2);
+  if (incomplete.length)
+    throw new Error(
+      `Insight Markdown files require zh/en pairs: ${incomplete.map(([id]) => id).join(', ')}`,
+    );
+  const inconsistentPairs = [...languagePairs.keys()].flatMap((id) => {
+    const pair = articles.filter((article) => article.id === id);
+    const fields = ['route', 'category'] as const;
+    return fields
+      .filter(
+        (field) => new Set(pair.map((article) => article[field])).size > 1,
+      )
+      .map((field) => `${id}.${field}`);
+  });
+  if (inconsistentPairs.length)
+    throw new Error(
+      `Insight zh/en pairs must use the same route and category: ${inconsistentPairs.join(', ')}`,
     );
   return languages.flatMap((lang) => [
     ...['portfolio', 'team', 'insights', 'contact', 'legal'].map((page) => ({
@@ -50,7 +83,7 @@ export async function getStaticPaths() {
       props: { kind: 'company', company },
     })),
     ...team.map((person) => ({
-      params: { lang, page: `team-${person.id}` },
+      params: { lang, page: `team-${person.slug}` },
       props: { kind: 'person', person },
     })),
     ...articles

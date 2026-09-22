@@ -6,7 +6,6 @@ const { lang } = Astro.props as { lang: Lang };
 <article class="legal-page prose">
   <p class="eyebrow">{legalContent.eyebrow}</p>
   <h1>{legalContent.title[lang]}</h1>
-  <p class="mock-banner">{legalContent.banner[lang]}</p>
   {legalContent.sections.map((section, index) => (
     <>
       <h2>{section.heading[lang]}</h2>

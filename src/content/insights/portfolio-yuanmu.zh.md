@@ -1,3 +1,18 @@
+---
+id: 'portfolio-yuanmu'
+route: 'portfolio-yuanmu'
+category: 'applications'
+date: '2026-05-26'
+source_url: 'https://www.linkxcap.com/zh/portfolio-yuanmu.html'
+order: 0
+lang: 'zh'
+title: '圆木智能：AI智能体如何重塑机加工生产管理？'
+summary: '走进制造现场，观察智能体与真实生产流程相遇的机会。'
+list_title: '原木智能：AI智能体如何重塑机加工生产管理？'
+list_summary: '订单随意插队打乱全盘生产，交货时间一再往后顺延，重金购置的设备白白闲置浪费产能。这些排产痛点，让无数加工厂倍感头疼。如今 AI 排产智能体应运而生，不仅革新生产作业工具，更颠覆传统管理思路。'
+source_name: '现官网（中文）'
+---
+
 ## 观察起点
 
 走进制造现场，观察智能体与真实生产流程相遇的机会。

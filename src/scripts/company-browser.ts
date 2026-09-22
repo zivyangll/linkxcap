@@ -1,5 +1,6 @@
 export {};
 type CompanyRecord = {
+  id: string;
   slug: string;
   title: string;
   sector: string;
@@ -79,7 +80,7 @@ if (root) {
       logo.src = company.logo;
       logo.alt = company.title;
       const wrapper = logo.parentElement!;
-      wrapper.className = `company-logo company-logo--detail logo-${company.slug}`;
+      wrapper.className = `company-logo company-logo--detail logo-${company.id}`;
       const website = root.querySelector<HTMLAnchorElement>(
         '[data-company-website]',
       )!;

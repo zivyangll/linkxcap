@@ -1,3 +1,18 @@
+---
+id: 'portfolio-pole-ctv'
+route: 'portfolio-pole-ctv'
+category: 'applications'
+date: '2026-03-18'
+source_url: 'https://www.linkxcap.com/zh/portfolio-pole-ctv.html'
+order: 1
+lang: 'zh'
+title: '珀乐互动 CTO 徐京徽：AI泛娱乐如何演进？'
+summary: '从内容生产到交互体验，讨论 AI 为泛娱乐带来的新可能。'
+list_title: '珀乐互动 CTO 徐京徽：AI泛娱乐如何演进？'
+list_summary: '在生成式AI深入泛娱乐产业实践之后，行业发展已经不只是"效率提升"，而是生产、体验与商业生态层面的全方位重构。本文分享自星连资本被投企业珀乐互动 CTO 徐京徽。结合珀乐互动科技的实战经验，系统梳理了他对AI泛娱乐行业演进、痛点及破局路径的理解。'
+source_name: '现官网（中文）'
+---
+
 ## 观察起点
 
 从内容生产到交互体验，讨论 AI 为泛娱乐带来的新可能。

@@ -3,16 +3,16 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { pageUrl, siteContent } from '../lib/site';
 ---
 
-<SiteLayout lang="zh" title={siteContent.notFound.title} page="index">
+<SiteLayout lang="zh" title={siteContent.notFound.title.zh} page="index">
   <section class="not-found">
     <p>{siteContent.notFound.eyebrow}</p>
     <h1>404</h1>
     <p>
-      {siteContent.notFound.zh}
+      {siteContent.notFound.body.zh}
       <br />
-      {siteContent.notFound.en}
+      {siteContent.notFound.body.en}
     </p>
-    <a href={pageUrl('zh')}>{siteContent.notFound.back}</a>
+    <a href={pageUrl('zh')}>{siteContent.notFound.back.zh}</a>
     <a href={pageUrl('en')}>{siteContent.notFound.english}</a>
   </section>
 </SiteLayout>

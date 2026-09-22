@@ -1,3 +1,18 @@
+---
+id: 'news-zhipu'
+route: 'news-zhipu'
+category: 'portfolio'
+date: '2026-01-08'
+source_url: 'https://www.linkxcap.com/zh/news-zhipu.html'
+order: 4
+lang: 'zh'
+title: '智谱港股上市，星连资本见证成长'
+summary: '记录投资组合企业的发展节点，观察基础模型生态的持续演进。'
+list_title: '智谱港股上市，星连资本见证成长'
+list_summary: '记录投资组合企业的发展节点，观察基础模型生态的持续演进。'
+source_name: '现官网（中文）'
+---
+
 ## 观察起点
 
 记录投资组合企业的发展节点，观察基础模型生态的持续演进。

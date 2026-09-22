@@ -14,8 +14,10 @@
     "test:performance": "node scripts/performance-check.mjs"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.1",
     "astro": "7.3.3",
     "gsap": "3.15.0",
+    "rehype-sanitize": "^6.0.0",
     "three": "^0.186.0"
   },
   "devDependencies": {

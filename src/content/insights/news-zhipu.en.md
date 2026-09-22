@@ -1,3 +1,18 @@
+---
+id: 'news-zhipu'
+route: 'news-zhipu'
+category: 'portfolio'
+date: '2026-01-08'
+source_url: 'https://www.linkxcap.com/zh/news-zhipu.html'
+order: 4
+lang: 'en'
+title: 'Z.AI in Hong Kong: a milestone on the journey'
+summary: 'Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.'
+list_title: 'Z.AI in Hong Kong: a milestone on the journey'
+list_summary: 'Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.'
+source_name: 'Existing website (Chinese)'
+---
+
 ## A starting point
 
 Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.

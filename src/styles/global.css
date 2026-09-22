@@ -130,21 +130,13 @@
     font: 12px/1.5 var(--sans);
     letter-spacing: 0.12em;
   }
-  .data-note,
-  .preview-note {
+  .data-note {
     font: 11px/1.5 var(--sans);
     opacity: 0.6;
   }
   .text-link {
     text-underline-offset: 6px;
     text-decoration: underline;
-  }
-  .mock-banner {
-    padding: 15px 18px;
-    border-left: 2px solid var(--purple);
-    background: #573c7908;
-    font-size: 13px;
-    color: #64586b;
   }
   .diamond {
     display: block;
@@ -388,9 +380,6 @@
   }
   .footer-meta .social-links {
     margin-left: auto;
-  }
-  .preview-note {
-    margin-top: 18px;
   }
   .page-title {
     font-size: calc(52.25 * var(--u));
@@ -1477,9 +1466,6 @@
     opacity: 0.5;
     margin-bottom: 20px;
   }
-  .team-bio > .data-note {
-    margin: 20px 0;
-  }
   .team-bio > a {
     display: inline-block;
     border-bottom: 1px solid;
@@ -1539,9 +1525,6 @@
     font-size: 19px;
     line-height: 1.9;
     margin: 45px 0;
-  }
-  .profile-layout .data-note {
-    margin-bottom: 24px;
   }
   .insights-page {
     position: relative;
@@ -1977,9 +1960,6 @@
     .team-bio > a {
       margin-top: 10px;
     }
-    .team-bio .data-note {
-      margin: 10px 0;
-    }
     .team-heading > p {
       font-size: 12px;
     }
@@ -2340,9 +2320,6 @@
     }
     .team-bio .person-en {
       font-size: 23px;
-    }
-    .team-bio .data-note {
-      margin: 20px 0;
     }
     .insights-title {
       font-size: 56px;
@@ -3199,10 +3176,6 @@
     }
     .footer-meta .social-links {
       gap: 20px;
-    }
-    .preview-note {
-      font-size: 10px;
-      margin-top: 22px;
     }
     .site-menu nav a small {
       font-size: 15px;

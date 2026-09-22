@@ -1,3 +1,18 @@
+---
+id: 'news-agm-2025'
+route: 'news-agm-2025'
+category: 'panorama'
+date: '2025-11-21'
+source_url: 'https://www.linkxcap.com/zh/news-agm-2025.html'
+order: 5
+lang: 'en'
+title: 'From model breakthroughs to industry: the AI landscape and outlook'
+summary: 'Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.'
+list_title: 'From model breakthroughs to industry: the AI landscape and outlook'
+list_summary: 'Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.'
+source_name: 'Existing website (Chinese)'
+---
+
 ## A starting point
 
 Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.

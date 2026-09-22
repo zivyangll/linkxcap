@@ -1,5 +1,5 @@
 ---
-import { asset, pageUrl, team, teamContent, ui, type Lang } from '../lib/site';
+import { pageUrl, team, teamContent, ui, type Lang } from '../lib/site';
 const { lang, person } = Astro.props as {
   lang: Lang;
   person: (typeof team)[number];
@@ -13,7 +13,7 @@ const { lang, person } = Astro.props as {
   <div class="profile-layout">
     <img
       class="profile-portrait"
-      src={asset('4729', person.image)}
+      src={person.imageUrl}
       width="440"
       height="640"
       alt={lang === 'zh' ? person.name : person.en}
@@ -26,7 +26,6 @@ const { lang, person } = Astro.props as {
       <div class="profile-copy">
         <p>{person.bio[lang]}</p>
       </div>
-      <p class="data-note">{ui[lang].mock}</p>
       <a class="text-link" href={pageUrl(lang, 'contact')}>
         {teamContent.contactLink[lang]} ↗
       </a>

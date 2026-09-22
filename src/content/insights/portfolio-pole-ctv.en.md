@@ -1,3 +1,18 @@
+---
+id: 'portfolio-pole-ctv'
+route: 'portfolio-pole-ctv'
+category: 'applications'
+date: '2026-03-18'
+source_url: 'https://www.linkxcap.com/zh/portfolio-pole-ctv.html'
+order: 1
+lang: 'en'
+title: 'Polo Interactive: where is AI-powered entertainment heading?'
+summary: 'From content creation to interactive experiences, exploring new possibilities for AI in entertainment.'
+list_title: 'Polo Interactive: where is AI-powered entertainment heading?'
+list_summary: 'From content creation to interactive experiences, exploring new possibilities for AI in entertainment.'
+source_name: 'Existing website (Chinese)'
+---
+
 ## A starting point
 
 From content creation to interactive experiences, exploring new possibilities for AI in entertainment.

@@ -1,3 +1,18 @@
+---
+id: 'insights-zhang-bo'
+route: 'insights-zhang-bo'
+category: 'models'
+date: '2026-01-12'
+source_url: 'https://www.linkxcap.com/zh/insights-zhang-bo.html'
+order: 2
+lang: 'en'
+title: 'Reflections on AGI Next and the future of intelligence'
+summary: 'Returning to foundational questions about intelligence and the connection between research and industry.'
+list_title: 'Reflections on AGI Next and the future of intelligence'
+list_summary: 'Returning to foundational questions about intelligence and the connection between research and industry.'
+source_name: 'Existing website (Chinese)'
+---
+
 ## A starting point
 
 Returning to foundational questions about intelligence and the connection between research and industry.

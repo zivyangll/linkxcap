@@ -1,6 +1,6 @@
 ---
 import geometry from '../data/logo-geometry.json';
-import { portfolioLogo, type Company } from '../lib/site';
+import { type Company } from '../lib/site';
 interface Props {
   company: Company;
   detail?: boolean;
@@ -11,18 +11,18 @@ const box = geometry[company.logo as keyof typeof geometry];
 
 <span
   style={
-    detail
+    detail || !box
       ? undefined
       : `--logo-x:${box.x};--logo-y:${box.y};--logo-w:${box.width};--logo-h:${box.height}`
   }
   class:list={[
     'company-logo',
-    `logo-${company.slug}`,
+    `logo-${company.id}`,
     { 'company-logo--detail': detail },
   ]}
 >
   <img
-    src={portfolioLogo(company.slug)}
+    src={company.logoUrl}
     alt={`${company.nameEn} ${company.name}`}
     width="240"
     height="180"

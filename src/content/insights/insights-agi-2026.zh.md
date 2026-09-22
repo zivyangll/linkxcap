@@ -1,3 +1,18 @@
+---
+id: 'insights-agi-2026'
+route: 'insights-agi-2026'
+category: 'panorama'
+date: '2026-01-04'
+source_url: 'https://www.linkxcap.com/zh/insights-agi-2026.html'
+order: 3
+lang: 'zh'
+title: '2026年，在等到AGI之前，我们先做什么？'
+summary: '面对快速变化的技术，持续寻找值得长期投入的真实问题。'
+list_title: '2026年在等到AGI之前，我们先做什么。'
+list_summary: '2026年开年即起风，AI行业IPO热潮席卷资本市场，壁仞科技、智谱AI、MiniMax密集推进上市进程，也因此有媒体判断2026年是"IPO大年"。这也从侧面印证了 AI 行业国产大模型正式从"技术探索期"迈入"产业深耕期"。'
+source_name: '现官网（中文）'
+---
+
 ## 观察起点
 
 面对快速变化的技术，持续寻找值得长期投入的真实问题。

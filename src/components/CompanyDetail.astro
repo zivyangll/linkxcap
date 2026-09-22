@@ -4,7 +4,6 @@ import {
   sectors,
   portfolioContent,
   asset,
-  portfolioLogo,
   pageUrl,
   ui,
   pick,
@@ -16,22 +15,8 @@ import CompanyLogo from './CompanyLogo.astro';
 import Arrow from './Arrow.astro';
 const { lang, company } = Astro.props as { lang: Lang; company: Company };
 const sector = sectors.find((s) => s.id === company.sector)!;
-const navOrder = [
-  'agic-micro',
-  'approaching-ai',
-  'zhipu-ai',
-  'realai',
-  'mosi',
-  'modelbest',
-  'shengshu-technology',
-  'infrawaves',
-  'biogeometry',
-  ...companies.map((c) => c.slug),
-];
-const navCompanies = [...new Set(navOrder)].map((slug) =>
-  companies.find((c) => c.slug === slug)!,
-);
-const records = navCompanies.map((c) => ({
+const records = companies.map((c) => ({
+  id: c.id,
   slug: c.slug,
   title: pick(lang, c.name, c.nameEn),
   sector: pick(
@@ -42,7 +27,7 @@ const records = navCompanies.map((c) => ({
   description: pick(lang, c.detail, c.detailEn),
   english: c.detailEn,
   website: c.website || '',
-  logo: portfolioLogo(c.slug),
+  logo: c.logoUrl,
   url: pageUrl(lang, `portfolio/${c.slug}`),
   zhUrl: pageUrl('zh', `portfolio/${c.slug}`),
   enUrl: pageUrl('en', `portfolio/${c.slug}`),
@@ -53,7 +38,7 @@ const records = navCompanies.map((c) => ({
   class="company-detail company-browser"
   data-company-browser
   data-current-company={company.slug}
-  data-node-id={company.slug === 'mosi' ? '2002:1359' : '2002:1282'}
+  data-node-id={company.id === 'mosi' ? '2002:1359' : '2002:1282'}
 >
   <div class="company-heading">
     <PageTitle
@@ -122,7 +107,7 @@ const records = navCompanies.map((c) => ({
       tabindex="0"
     >
       <div class="company-nav-track">
-        {navCompanies.map((c) => (
+        {companies.map((c) => (
           <a
             href={pageUrl(lang, `portfolio/${c.slug}`)}
             data-company-link={c.slug}

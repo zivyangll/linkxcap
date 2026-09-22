@@ -1,22 +1,31 @@
 ---
+import { getCollection } from 'astro:content';
 import {
   pageUrl,
   asset,
   ui,
-  insightArticles,
+  insightArticleFromData,
   insightsContent,
   content,
   type Lang,
 } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
-const articles = insightArticles
+const articles = (await getCollection('insights'))
+  .map(({ data }) => insightArticleFromData(data))
   .filter((article) => article.lang === lang)
   .sort((a, b) => a.order - b.order);
-const displayArticles = content.insights.listRows.map((row) => ({
-  article: articles.find((article) => article.id === row.article)!,
-  row,
-}));
 const filters = content.insights.filters;
+const displayArticles = articles.map((article) => {
+  const filter = filters.find(({ id }) => id === article.category);
+  return {
+    article,
+    row: {
+      date: article.date,
+      labelZh: filter?.zh || article.category,
+      labelEn: (filter?.en || article.category).toUpperCase(),
+    },
+  };
+});
 ---
 
 <section class="insights-page" data-node-id="2002:2833">
