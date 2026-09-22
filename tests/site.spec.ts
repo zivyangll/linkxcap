@@ -48,8 +48,7 @@ test('language switch keeps current company, and detail refresh works', async ({
   page,
 }) => {
   await page.goto('zh/portfolio/modelbest.html');
-  await page.locator('[data-menu-open]').click();
-  await page.locator('#site-menu [data-language=en]').click();
+  await page.locator('.language-switch [data-language=en]').click();
   await expect(page).toHaveURL(/en\/portfolio\/modelbest.html$/);
   await page.reload();
   await expect(page.locator('main h1')).toContainText('ModelBest');
