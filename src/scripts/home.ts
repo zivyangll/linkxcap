@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { mountPhilosophyMotion } from './philosophy-motion';
+import { mountMobileHomeMotion } from './home-mobile-motion';
 
 export function initHome() {
   gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +15,7 @@ export function initHome() {
       if (!context.conditions?.motion) return;
       const desktop = !!context.conditions.desktop;
       const home = document.querySelector<HTMLElement>('[data-home]')!;
+      if (!desktop) return mountMobileHomeMotion(home);
       const scenes = Array.from(
         home.querySelectorAll<HTMLElement>('.story-scene'),
       );

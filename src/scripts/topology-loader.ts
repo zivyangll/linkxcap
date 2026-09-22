@@ -10,6 +10,8 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-topology]')) {
   if (
     motion.matches ||
     compactViewport.matches ||
+    (root.dataset.topologyKind === 'home' &&
+      matchMedia('(max-width: 1023px)').matches) ||
     device.connection?.saveData ||
     (device.deviceMemory ?? 8) < 4
   ) {

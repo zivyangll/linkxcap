@@ -1,0 +1,362 @@
+/* H5 only. Desktop geometry and choreography deliberately stay in their
+   existing files. Intrinsic heights keep short screens / enlarged text usable. */
+@media (max-width: 1023px) {
+  .home-story {
+    --mobile-rail: max(24px, env(safe-area-inset-left));
+    --mobile-inset: max(48px, calc(env(safe-area-inset-left) + 24px));
+    --mobile-right: max(24px, env(safe-area-inset-right));
+  }
+
+  .home-story :is(.opening, .hero, .about, .research) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(22px, 4svh, 36px);
+    height: auto;
+    min-height: 100svh;
+    max-height: none;
+    padding: max(108px, 14svh) var(--mobile-right)
+      max(40px, env(safe-area-inset-bottom)) var(--mobile-inset);
+    background: var(--paper);
+  }
+
+  .home-story
+    :is(
+      .chapter,
+      .opening-title,
+      .opening-copy,
+      .hero-title,
+      .hero-zh,
+      .about-label,
+      .about-title,
+      .about-copy,
+      .research h2,
+      .research-intro,
+      .research-stats
+    ) {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    margin: 0;
+    z-index: 2;
+  }
+
+  .home-story .chapter {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  .home-story .opening-title {
+    font-size: clamp(40px, 11vw, 64px);
+    line-height: 1.18;
+  }
+
+  .home-story .opening-copy {
+    max-width: 540px;
+    font-size: clamp(15px, 4.1vw, 20px);
+    line-height: 1.8;
+  }
+
+  .home-story .opening-copy br {
+    display: none;
+  }
+
+  .home-story .hero-title {
+    font-size: clamp(28px, 7.7vw, 48px);
+    line-height: 1.3;
+  }
+
+  .home-story .hero-zh {
+    font-size: clamp(38px, 10.3vw, 58px);
+    line-height: 1.25;
+  }
+
+  .home-story .about-title {
+    font-size: clamp(30px, 8.6vw, 50px);
+    line-height: 1.3;
+  }
+
+  .home-story .about-title span:first-child {
+    margin: 0 0 6px;
+  }
+
+  .home-story :is(.about-copy, .research-intro) {
+    max-width: 650px;
+    font-size: clamp(14px, 3.6vw, 18px);
+    line-height: 1.75;
+    letter-spacing: 0;
+  }
+
+  .home-story .intro-line {
+    display: inline;
+    white-space: normal;
+  }
+
+  .home-story .about-label {
+    font: 11px/1.5 var(--sans);
+    letter-spacing: 0.08em;
+    color: var(--purple);
+  }
+
+  .home-story .research h2 {
+    font-size: clamp(30px, 8.2vw, 48px);
+    line-height: 1.25;
+  }
+
+  .home-story .research h2 span {
+    margin: 0;
+    transform: none;
+  }
+
+  .home-story .research-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 16px;
+  }
+
+  .home-story .research-stats strong {
+    font-size: clamp(36px, 10vw, 56px);
+  }
+
+  .home-story .research-stats span {
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    letter-spacing: 0;
+  }
+
+  .home-story .research-stats .data-note {
+    position: static;
+    width: auto;
+    margin: 0;
+    font-size: 10px;
+  }
+
+  .home-story .research-axis {
+    left: var(--mobile-rail);
+  }
+
+  .home-story .research-axis::after {
+    top: 82px;
+    width: calc(100vw - 24px);
+  }
+
+  .home-story .research-axis > .diamond,
+  .home-story .research-axis-line {
+    display: none;
+  }
+
+  .home-story .research-marker {
+    top: 66px;
+    left: -16px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .home-story .opening-track {
+    left: var(--mobile-rail);
+    top: 32%;
+  }
+
+  /* Static fallback has no invisible copy and no scroll traps. */
+  .home-story[data-mobile-static]
+    :is(.hero-track, .about-rays, .about-decor, .about-label, .orbit-label) {
+    display: none;
+  }
+
+  .home-story.has-mobile-motion .opening-track,
+  .home-story.has-mobile-motion
+    .philosophy-stage
+    :is(
+      .hero-orbit,
+      .hero-track,
+      .scroll-trail,
+      .about-orbit,
+      .about-decor,
+      .about-rays,
+      .about-tangent-line,
+      .orbit-label .diamond
+    ) {
+    display: none;
+  }
+
+  .home-story.has-mobile-motion .philosophy-stage {
+    display: grid;
+    position: relative;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    height: 100svh;
+    isolation: isolate;
+    overflow: clip;
+    background: var(--paper);
+  }
+
+  .home-story.has-mobile-motion .philosophy-stage > .story-scene {
+    grid-area: 1 / 1;
+    align-self: start;
+    background: transparent;
+  }
+
+  .home-story.has-mobile-motion .hero {
+    padding-bottom: max(120px, 16svh);
+  }
+
+  .home-story.has-mobile-motion .philosophy-stage-canvas {
+    display: block;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .home-story.has-mobile-motion .orbit-label {
+    display: flex;
+    position: relative;
+    inset: auto;
+    align-self: flex-start;
+    align-items: flex-start;
+    min-height: 44px;
+    margin-top: 16px;
+    font-size: 12px;
+    z-index: 2;
+  }
+
+  /* Focus remains native touch UI, not a WebGL drag surface. The last screen
+     can grow with the selected description without clipping any controls. */
+  .home-story .focus {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    height: auto;
+    min-height: 100svh;
+    padding: 100px var(--mobile-right) max(32px, env(safe-area-inset-bottom))
+      var(--mobile-rail);
+  }
+
+  .home-story .focus-title {
+    position: relative;
+    inset: auto;
+    order: 0;
+    font-size: clamp(42px, 11vw, 64px);
+    line-height: 1.05;
+  }
+
+  .home-story .focus-title > span {
+    width: auto;
+    margin-top: 12px;
+    font-size: 28px;
+  }
+
+  .home-story .constellation {
+    position: relative;
+    inset: auto;
+    order: 1;
+    flex: none;
+    width: 100%;
+    height: clamp(240px, 31svh, 340px);
+  }
+
+  .home-story .sector-star {
+    min-height: 48px;
+    max-width: 62%;
+    padding: 8px;
+    transform: none;
+  }
+
+  .home-story .star-label,
+  .home-story .sector-star.is-active .star-label {
+    font-size: 11px;
+    line-height: 1.4;
+    margin-left: 8px;
+    max-width: 150px;
+  }
+
+  .home-story .star-glyph,
+  .home-story .sector-star.is-active .star-glyph {
+    flex: none;
+    width: 32px;
+    height: 32px;
+  }
+
+  .home-story .star-frontiers {
+    left: 0;
+    top: 0;
+  }
+
+  .home-story .star-applications {
+    left: 43%;
+    top: 16%;
+  }
+
+  .home-story .star-foundation {
+    left: 17%;
+    top: 36%;
+  }
+
+  .home-story .star-physical {
+    left: 0;
+    top: 62%;
+  }
+
+  .home-story .star-infrastructure {
+    left: 46%;
+    top: 78%;
+  }
+
+  .home-story .focus-panels {
+    position: relative;
+    inset: auto;
+    order: 2;
+    width: 100%;
+  }
+
+  .home-story .focus-panel h3 {
+    font-size: 18px;
+  }
+
+  .home-story .focus-panel h3 span:first-child {
+    letter-spacing: 0.2em;
+  }
+
+  .home-story .focus-panel h3 span:last-child {
+    margin: 6px 0 0;
+    font-size: 18px;
+  }
+
+  .home-story .focus-panel p {
+    margin: 16px 0 0;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .home-story .focus-links {
+    position: relative;
+    inset: auto;
+    order: 3;
+    flex-wrap: wrap;
+    gap: 12px 28px;
+    margin-top: auto;
+    font-size: 12px;
+  }
+
+  .home-story .focus-links a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .home-story .topology-drag-surface {
+    display: none;
+  }
+}
+
+/* A landscape phone should scroll its full content instead of trapping a
+   paragraph below a pinned viewport. Motion still reveals on natural scroll. */
+@media (max-width: 1023px) and (max-height: 599px) {
+  .home-story :is(.opening, .hero, .about, .research) {
+    padding-top: 100px;
+    padding-bottom: 48px;
+  }
+}

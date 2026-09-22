@@ -81,14 +81,14 @@ test('filters, language state and original article link', async ({ page }) => {
   );
   await expect(page.locator('.article-toc a')).toHaveCount(3);
 });
-test('team profiles work with touch', async ({ browser }) => {
+test('team profiles work with touch', async ({ browser, baseURL }) => {
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
     hasTouch: true,
     isMobile: true,
   });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/linkxcap/zh/team.html');
+  await page.goto(`${baseURL}zh/team.html`);
   const button = page.locator('.profile-toggle').first();
   await button.tap();
   await expect(button).toHaveAttribute('aria-expanded', 'true');
@@ -169,13 +169,14 @@ test('focus controls and reduced motion', async ({ page }) => {
 });
 test('core content and navigation remain available without JavaScript', async ({
   browser,
+  baseURL,
 }) => {
   const context = await browser.newContext({
     javaScriptEnabled: false,
     viewport: { width: 360, height: 800 },
   });
   const page = await context.newPage();
-  await page.goto('http://127.0.0.1:4321/linkxcap/zh/index.html');
+  await page.goto(`${baseURL}zh/index.html`);
   await expect(page.locator('.opening-copy')).toContainText('通用智能');
   await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
   await page.locator('.noscript-nav a[href$="/zh/portfolio.html"]').click();

@@ -8,6 +8,7 @@ import {
   type Lang,
 } from '../lib/site';
 import FocusConstellation from './FocusConstellation.astro';
+import '../styles/home-mobile.css';
 interface Props {
   lang: Lang;
 }
@@ -44,7 +45,7 @@ const { lang } = Astro.props;
     }
   </style>
 </noscript>
-<div class="home-story" data-home>
+<div class="home-story" data-home data-mobile-static="true">
   <section
     class="story-scene opening"
     data-node-id="2002:3297"
@@ -72,8 +73,7 @@ const { lang } = Astro.props;
       <p>
         {homeContent.opening.body[lang].map((line) => (
           <>
-            {line}
-            <br />
+            {line} <br />
           </>
         ))}
       </p>
@@ -293,21 +293,14 @@ const { lang } = Astro.props;
   </section>
 </div>
 <script>
-  const home = document.querySelector<HTMLElement>('[data-home]');
-  const compact = matchMedia('(max-width: 767px)');
-  if (compact.matches) {
-    home?.setAttribute('data-mobile-static', 'true');
-    document
-      .querySelector<HTMLElement>('[data-motion-toggle]')
-      ?.setAttribute('hidden', '');
-  } else {
-    const start = () =>
-      import('../scripts/home')
-        .then((module) => module.initHome())
-        .catch(() => {
-          document.querySelector<HTMLElement>('[data-motion-toggle]')?.remove();
-        });
-    if (document.readyState === 'complete') start();
-    else window.addEventListener('load', start, { once: true });
-  }
+  // Static HTML remains readable if motion is reduced or the chunk fails.
+  // initHome owns breakpoint changes, including rotating a phone/tablet.
+  const start = () =>
+    import('../scripts/home')
+      .then((module) => module.initHome())
+      .catch(() => {
+        document.querySelector<HTMLElement>('[data-motion-toggle]')?.remove();
+      });
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
 </script>
