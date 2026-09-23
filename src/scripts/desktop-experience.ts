@@ -19,6 +19,29 @@ export function initDesktopExperience() {
     let frame = 0,
       x = 0,
       y = 0;
+    const avoidLogo = (card: HTMLElement) => {
+      const logo = card.querySelector<HTMLElement>('.company-logo');
+      if (!logo) return { x, y };
+      const logoBox = logo.getBoundingClientRect();
+      const cardBox = card.getBoundingClientRect();
+      const radius = cursor.offsetWidth / 2;
+      const gap = Math.max(6, radius * 0.16);
+      const overlaps =
+        x + radius > logoBox.left - gap &&
+        x - radius < logoBox.right + gap &&
+        y + radius > logoBox.top - gap &&
+        y - radius < logoBox.bottom + gap;
+      if (!overlaps) return { x, y };
+      const left = logoBox.left - gap - radius;
+      const right = logoBox.right + gap + radius;
+      const leftFits = left - radius >= cardBox.left + gap;
+      const rightFits = right + radius <= cardBox.right - gap;
+      if (leftFits && rightFits)
+        return { x: x <= (logoBox.left + logoBox.right) / 2 ? left : right, y };
+      if (leftFits) return { x: left, y };
+      if (rightFits) return { x: right, y };
+      return { x: x < cardBox.left + cardBox.width / 2 ? left : right, y };
+    };
     const hide = () => {
       document.documentElement.classList.remove('has-live-cursor');
       cursor.hidden = true;
@@ -29,14 +52,16 @@ export function initDesktopExperience() {
     const move = (event: PointerEvent) => {
       if (event.pointerType !== 'mouse') return hide();
       const target = event.target as Element | null;
-      if (!target?.closest('.portfolio-card')) return hide();
+      const card = target?.closest<HTMLElement>('.portfolio-card');
+      if (!card) return hide();
       x = event.clientX;
       y = event.clientY;
       cursor.hidden = false;
       document.documentElement.classList.add('has-live-cursor');
       if (!frame)
         frame = requestAnimationFrame(() => {
-          cursor.style.transform = `translate3d(${x}px,${y}px,0) translate(-50%, -50%)`;
+          const position = avoidLogo(card);
+          cursor.style.transform = `translate3d(${position.x}px,${position.y}px,0) translate(-50%, -50%)`;
           frame = 0;
         });
     };
