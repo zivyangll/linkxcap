@@ -47,7 +47,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
   <svg
     class="constellation-fallback constellation-fallback--mobile"
     viewBox="0 0 360 560"
-    preserveAspectRatio="none"
+    preserveAspectRatio="xMidYMid meet"
     aria-hidden="true"
   >
     {scenes.map(({ mobile }) => (
@@ -82,7 +82,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
       <svg
         class="constellation-fallback constellation-fallback--mobile constellation-branches"
         viewBox="0 0 360 560"
-        preserveAspectRatio="none"
+        preserveAspectRatio="xMidYMid meet"
         aria-hidden="true"
       >
         {scene.companies.map(({ mobile }) => (

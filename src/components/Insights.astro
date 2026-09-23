@@ -25,13 +25,14 @@ const displayArticles = articles.map((article) => {
     },
   };
 });
+const orbitDuration = 72;
 const orbitDots = Array.from({ length: 32 }, (_, index) => {
   const angle = -Math.PI / 2 + (index / 32) * Math.PI * 2;
   const radius = 49.35;
   return {
     x: 50 + Math.cos(angle) * radius,
     y: 50 + Math.sin(angle) * radius,
-    delay: -(index / 32) * 48,
+    delay: -(index / 32) * orbitDuration,
     opacity: 0.22 + ((index * 7) % 11) / 18,
   };
 });
@@ -146,11 +147,11 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
   }
   @media (prefers-reduced-motion: no-preference) {
     .insights-orbit-points {
-      animation: insights-orbit-clockwise 48s linear infinite;
+      animation: insights-orbit-clockwise 72s linear infinite;
       animation-play-state: paused;
     }
     .insights-orbit-dot {
-      animation: insights-dot-focus 48s linear var(--dot-delay) infinite;
+      animation: insights-dot-focus 72s linear var(--dot-delay) infinite;
       animation-play-state: paused;
       will-change: filter, opacity, transform;
     }

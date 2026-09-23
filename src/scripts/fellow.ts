@@ -27,6 +27,38 @@ export function initFellow() {
         scrub: 0.35,
       },
     });
+    const openingVertical = [
+      ...intro.querySelectorAll<HTMLElement>(
+        '.signal-guides--opening .signal-guide-v',
+      ),
+    ].sort((a, b) => a.offsetLeft - b.offsetLeft);
+    const openingHorizontal = [
+      ...intro.querySelectorAll<HTMLElement>(
+        '.signal-guides--opening .signal-guide-h',
+      ),
+    ].sort((a, b) => a.offsetTop - b.offsetTop);
+    introTimeline.fromTo(
+      openingVertical,
+      { clipPath: 'inset(0 0 100% 0)' },
+      {
+        clipPath: 'inset(0 0 0% 0)',
+        duration: 0.24,
+        stagger: 0.035,
+        ease: 'power1.out',
+      },
+      0,
+    );
+    introTimeline.fromTo(
+      openingHorizontal,
+      { clipPath: 'inset(0 100% 0 0)' },
+      {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 0.22,
+        stagger: 0.035,
+        ease: 'power1.out',
+      },
+      0.1,
+    );
     introTimeline.to(
       '.fellow-intro .next-orbit',
       { opacity: 1, duration: 0.18 },
@@ -114,6 +146,27 @@ export function initFellow() {
       { opacity: 1, duration: 0.2 },
       0.8,
     );
+    const contactHero = document.querySelector<HTMLElement>('.contact-hero');
+    if (contactHero) {
+      const guides = [
+        ...contactHero.querySelectorAll<HTMLElement>('.contact-guides img'),
+      ].sort((a, b) => a.offsetLeft - b.offsetLeft);
+      gsap.fromTo(
+        guides,
+        { clipPath: 'inset(0 0 100% 0)' },
+        {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 0.58,
+          stagger: 0.12,
+          ease: 'power1.out',
+          scrollTrigger: {
+            trigger: contactHero,
+            start: 'top 72%',
+            once: true,
+          },
+        },
+      );
+    }
     document.fonts.ready.then(() => ScrollTrigger.refresh());
   });
   window.addEventListener(

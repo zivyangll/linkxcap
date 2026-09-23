@@ -32,15 +32,18 @@ export function initDesktopExperience() {
         y + radius > logoBox.top - gap &&
         y - radius < logoBox.bottom + gap;
       if (!overlaps) return { x, y };
-      const left = logoBox.left - gap - radius;
-      const right = logoBox.right + gap + radius;
-      const leftFits = left - radius >= cardBox.left + gap;
-      const rightFits = right + radius <= cardBox.right - gap;
-      if (leftFits && rightFits)
-        return { x: x <= (logoBox.left + logoBox.right) / 2 ? left : right, y };
-      if (leftFits) return { x: left, y };
-      if (rightFits) return { x: right, y };
-      return { x: x < cardBox.left + cardBox.width / 2 ? left : right, y };
+      // Keep a single, stable avoidance position above the logo. Choosing a
+      // side from every pointer packet made the arrow oscillate left/right.
+      return {
+        x: Math.max(
+          cardBox.left + radius + gap,
+          Math.min(
+            cardBox.right - radius - gap,
+            logoBox.left + logoBox.width / 2,
+          ),
+        ),
+        y: Math.max(cardBox.top + radius + gap, logoBox.top - radius - gap),
+      };
     };
     const hide = () => {
       document.documentElement.classList.remove('has-live-cursor');
@@ -71,6 +74,8 @@ export function initDesktopExperience() {
     window.addEventListener('scroll', hide, { passive: true });
     document.addEventListener('visibilitychange', hide);
     document.addEventListener('keydown', hide);
+    document.addEventListener('click', hide);
+    window.addEventListener('pageshow', hide);
     cleanup = () => {
       hide();
       cursor.remove();
@@ -80,6 +85,8 @@ export function initDesktopExperience() {
       window.removeEventListener('scroll', hide);
       document.removeEventListener('visibilitychange', hide);
       document.removeEventListener('keydown', hide);
+      document.removeEventListener('click', hide);
+      window.removeEventListener('pageshow', hide);
     };
   };
   update();

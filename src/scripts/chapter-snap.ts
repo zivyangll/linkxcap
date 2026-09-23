@@ -31,7 +31,12 @@ export function mountChapterSnap(home: HTMLElement) {
     tween?.kill();
     finish();
   };
-  const startSnap = (destination: number, y: number, arc = false) => {
+  const startSnap = (
+    destination: number,
+    y: number,
+    arc = false,
+    quick = false,
+  ) => {
     if (tween || Math.abs(destination - y) < 2) return;
     const position = { y };
     completingArc = arc;
@@ -45,8 +50,10 @@ export function mountChapterSnap(home: HTMLElement) {
       // Begin with the user's existing scroll direction, then decelerate into
       // the chapter stop. The old in/out curve paused before accelerating,
       // which made the hand-off feel like a sudden grab.
-      duration: gsap.utils.clamp(0.72, 1.35, 0.55 + distance / 1600),
-      ease: 'sine.out',
+      duration: quick
+        ? gsap.utils.clamp(0.24, 0.36, 0.18 + distance / 6000)
+        : gsap.utils.clamp(0.72, 1.35, 0.55 + distance / 1600),
+      ease: quick ? 'power2.out' : 'sine.out',
       lazy: false,
       onUpdate: () => window.scrollTo(0, position.y),
       onComplete: finish,
@@ -85,7 +92,10 @@ export function mountChapterSnap(home: HTMLElement) {
       if ((upper - y) / (upper - lower) < 0.75) return;
       destination = lower;
     }
-    startSnap(destination, y);
+    // The orbit has two authored stops: About Us first, then the final copy.
+    // Both settle quickly after the user's hand-off so the point lands with a
+    // deliberate snap instead of dragging through the remaining path.
+    startSnap(destination, y, false, direction > 0 && lowerIndex === 2);
   };
   const navigate = (event: WheelEvent | KeyboardEvent) => {
     // Once the orbit reaches one third, continued trackpad packets must not
@@ -183,7 +193,7 @@ export function mountChapterSnap(home: HTMLElement) {
       clearTimeout(timer);
       armed = true;
       direction = 1;
-      startSnap(anchors[2], y, true);
+      startSnap(anchors[2], y, true, true);
       return;
     }
     settle();

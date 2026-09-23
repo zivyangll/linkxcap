@@ -187,18 +187,17 @@ test('portfolio keeps the original grid and the original round arrow follows the
   expect(await cursor.locator('img').getAttribute('src')).toBe(
     await card.locator('.card-arrow img').getAttribute('src'),
   );
-  await expect
-    .poll(async () => {
-      const b = (await cursor.boundingBox())!;
-      return b.x + b.width / 2;
-    })
-    .toBeCloseTo(x, 0);
-  await expect
-    .poll(async () => {
-      const b = (await cursor.boundingBox())!;
-      return b.y + b.height / 2;
-    })
-    .toBeCloseTo(y, 0);
+  const logoBox = (await card.locator('.company-logo').boundingBox())!;
+  const firstCursorBox = (await cursor.boundingBox())!;
+  expect(firstCursorBox.y + firstCursorBox.height / 2).toBeLessThan(logoBox.y);
+  await page.mouse.move(
+    logoBox.x + logoBox.width * 0.8,
+    logoBox.y + logoBox.height * 0.8,
+  );
+  const secondCursorBox = (await cursor.boundingBox())!;
+  expect(secondCursorBox.x).toBeCloseTo(firstCursorBox.x, 0);
+  expect(secondCursorBox.y).toBeCloseTo(firstCursorBox.y, 0);
+  await expect(page.locator('.card-number')).toHaveCount(0);
   await expect(card.locator('.company-logo img')).toHaveCSS('filter', 'none');
   const heading = (await page.locator('.portfolio-page h1').boundingBox())!;
   await page.mouse.move(heading.x + 10, heading.y + 10);

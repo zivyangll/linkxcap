@@ -127,6 +127,17 @@
 
 /* Identical portrait height/baseline, including the narrower centre image. */
 @media (min-width: 1024px) {
+  /* Every portfolio mark uses the same quiet bounding box. Source-specific
+     crop rules still apply inside it, but no mark can dominate its card. */
+  .portfolio-page .portfolio-card .company-logo {
+    left: 28%;
+    top: 18%;
+    width: 44%;
+    height: 44%;
+  }
+  .portfolio-page .portfolio-card .company-logo img {
+    object-fit: contain;
+  }
   body .team-review .team-member:nth-child(n) .member-portrait img {
     left: 50%;
     top: calc(var(--portrait-top, 32) * var(--u));
@@ -236,6 +247,7 @@ body .team-review .team-bio {
   }
   .portfolio-card .company-logo img {
     filter: none;
+    object-fit: contain;
   }
   .portfolio-card .company-caption {
     opacity: 1;
@@ -379,6 +391,35 @@ body .team-review .team-bio {
   .portfolio-card *,
   .team-review * {
     animation: none !important;
+  }
+}
+
+@media (max-width: 1023px) {
+  .portfolio-page .portfolio-card .company-logo,
+  .portfolio-page .portfolio-card:is(:hover, :focus-visible) .company-logo {
+    position: absolute;
+    left: 25%;
+    top: 12%;
+    width: 50%;
+    height: 50%;
+  }
+
+  .contact-hero .contact-invitation h2 {
+    font-size: 28px;
+  }
+  .contact-hero .contact-invitation h2 span {
+    font-size: 34px;
+  }
+  .contact-hero .contact-copy {
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .contact-hero .contact-copy p[lang='en'] {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .contact-hero .contact-invitation .line-link {
+    font-size: 13px;
   }
 }
 @media (prefers-reduced-motion: reduce) {

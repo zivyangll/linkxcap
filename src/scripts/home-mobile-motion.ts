@@ -93,7 +93,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         context.save();
         context.translate(x, y);
         context.rotate(Math.PI / 4);
-        context.fillStyle = '#573c79';
+        context.fillStyle = '#a7a7a7';
         context.fillRect(-3.5, -3.5, 7, 7);
         context.restore();
       };
@@ -175,8 +175,9 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 13, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.globalAlpha = 1;
+        ctx.globalAlpha = 1 - smooth(phase(p, 0.92, 1));
         diamond(ctx, point.x, point.y);
+        ctx.globalAlpha = 1;
         stage.dataset.motionProgress = p.toFixed(4);
         stage.dataset.motionPhase =
           p < 0.5 ? 'arc' : p < 0.66 ? 'drop' : p < 0.86 ? 'pan' : 'details';

@@ -568,6 +568,18 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       .split(',')
       .map(Number);
     expect(Math.max(...draggedRotation.map(Math.abs))).toBeGreaterThan(0.15);
+    await expect(scene).toHaveAttribute('data-camera-state', 'front', {
+      timeout: 2500,
+    });
+    await expect
+      .poll(async () =>
+        Math.max(
+          ...(await scene.getAttribute('data-rotation'))!
+            .split(',')
+            .map((value) => Math.abs(Number(value))),
+        ),
+      )
+      .toBeLessThan(0.01);
   }
   const star = page.locator('[data-sector=physical]');
   await star.click();

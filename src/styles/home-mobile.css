@@ -212,7 +212,7 @@
   }
 
   .home-story.has-mobile-motion .orbit-label {
-    display: flex;
+    display: none;
     position: relative;
     inset: auto;
     align-self: flex-start;
@@ -259,7 +259,12 @@
     order: 1;
     flex: none;
     width: 100%;
-    height: clamp(240px, 31svh, 340px);
+    height: auto;
+    aspect-ratio: 360 / 560;
+  }
+
+  .home-story .about-label {
+    display: none;
   }
 
   .home-story .sector-star {

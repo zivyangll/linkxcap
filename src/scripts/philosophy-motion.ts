@@ -123,7 +123,9 @@ export function mountPhilosophyMotion(
     // The label follows the same point; its original diamond is hidden.
     orbitLabel.style.left = `${point.x - 115 * u}px`;
     orbitLabel.style.top = `${point.y + 10 * u}px`;
-    setPose(orbitLabel, 0, 0, 1);
+    // Let the travelling marker leave the composition instead of vanishing
+    // when the pinned stage hands off to the next chapter.
+    setPose(orbitLabel, 0, 0, 1 - smooth(range(p, 0.86, 0.97)));
     titleLines.forEach((el, index) => {
       setPose(
         el,
@@ -213,13 +215,13 @@ export function mountPhilosophyMotion(
       ctx.fillRect(-6 * u, -6 * u, 12 * u, 12 * u);
       ctx.restore();
     };
+    diamond(start.x + camera.x, point.y, '#c9c9c9', 0.55 * heroOpacity);
     diamond(
-      start.x + camera.x,
-      860 * u + camera.y,
-      '#c9c9c9',
-      0.55 * heroOpacity,
+      point.x,
+      point.y,
+      p < 0.54 ? '#a7a7a7' : '#090909',
+      1 - smooth(range(p, 0.94, 1)),
     );
-    diamond(point.x, point.y, p < 0.54 ? '#573c79' : '#090909', 1);
     ctx.globalAlpha = 1;
   }
   function resize() {

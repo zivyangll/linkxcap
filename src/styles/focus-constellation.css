@@ -104,6 +104,8 @@
     color: #77727e;
     white-space: normal;
     transition: color 240ms;
+    max-height: 4.1em;
+    overflow: hidden;
   }
   .home-story .focus .sector-star[data-label-side='left'] .star-label {
     left: auto;
@@ -167,6 +169,11 @@
     white-space: normal;
     font: max(10px, calc(15.4 * var(--u))) / 1.4 var(--serif);
     letter-spacing: 0;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    max-height: 4.2em;
+    overflow: hidden;
   }
   .home-story
     .focus
@@ -226,7 +233,8 @@
 }
 @media (max-width: 1023px), (hover: none), (pointer: coarse) {
   .home-story .focus .constellation {
-    height: clamp(520px, 150vw, 680px);
+    height: auto;
+    aspect-ratio: 360 / 560;
     overflow: visible;
     touch-action: pan-y;
   }
@@ -287,6 +295,7 @@
     text-align: left;
     white-space: normal;
     color: #b7accd;
+    display: none;
     background: var(--ink);
     padding: 2px 3px;
   }
@@ -339,6 +348,7 @@
     color: #bfb0e8;
     background: var(--ink);
     padding: 3px;
+    display: none;
   }
   .home-story
     .focus

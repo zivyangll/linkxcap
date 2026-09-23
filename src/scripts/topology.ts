@@ -104,6 +104,10 @@ export function mountTopology(root: HTMLElement) {
     pitch = 0,
     yawVelocity = 0,
     pitchVelocity = 0;
+  let correcting = false,
+    targetYaw = 0,
+    targetPitch = 0,
+    frontHoldUntil = 0;
   const projected = new Vector3();
   const endpoint = new Vector3();
   const enabled = () => motion.matches && !lost && !disposed;
@@ -111,6 +115,16 @@ export function mountTopology(root: HTMLElement) {
     root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
   const clearProjection = () =>
     anchors.forEach(({ element }) => element.style.removeProperty('translate'));
+  const correctView = () => {
+    // Return to the closest canonical front view, avoiding a long reverse spin.
+    targetYaw = Math.round(yaw / (Math.PI * 2)) * Math.PI * 2;
+    targetPitch = 0;
+    yawVelocity = pitchVelocity = 0;
+    correcting = true;
+    cycle = 0;
+    root.dataset.cameraState = 'settling';
+    sync();
+  };
 
   function select() {
     active =
@@ -208,8 +222,20 @@ export function mountTopology(root: HTMLElement) {
         .copy(anchor.origin)
         .applyMatrix4(graph.matrixWorld)
         .project(camera);
-      const x = ((projected.x + 1) * width) / 2 - anchor.x;
-      const y = ((1 - projected.y) * height) / 2 - anchor.y;
+      let finalX = ((projected.x + 1) * width) / 2;
+      let finalY = ((1 - projected.y) * height) / 2;
+      if (!touch.matches) {
+        const side = anchor.element.dataset.labelSide;
+        const isCompany = !!anchor.element.dataset.focusSector;
+        const reserve = isCompany ? Math.min(260, width * 0.16) : 210;
+        finalX = Math.max(
+          side === 'left' ? reserve : 28,
+          Math.min(width - (side === 'left' ? 28 : reserve), finalX),
+        );
+        finalY = Math.max(42, Math.min(height - 48, finalY));
+      }
+      const x = finalX - anchor.x;
+      const y = finalY - anchor.y;
       anchor.element.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
     }
     const positions = branchGeometry.getAttribute('position');
@@ -242,7 +268,28 @@ export function mountTopology(root: HTMLElement) {
       const delta = Math.min(elapsed, 100);
       last = time;
       growth = Math.min(1, growth + elapsed / BRANCH_MS);
-      if (!held() && !dragging) {
+      if (correcting && !dragging) {
+        const correction = 1 - Math.pow(0.001, delta / 520);
+        yaw += (targetYaw - yaw) * correction;
+        pitch += (targetPitch - pitch) * correction;
+        graph.rotation.set(pitch, yaw, 0);
+        if (
+          Math.abs(targetYaw - yaw) < 0.001 &&
+          Math.abs(targetPitch - pitch) < 0.001
+        ) {
+          yaw = targetYaw;
+          pitch = targetPitch;
+          graph.rotation.set(pitch, yaw, 0);
+          correcting = false;
+          frontHoldUntil = time + 900;
+          root.dataset.cameraState = 'front';
+        }
+      } else if (time < frontHoldUntil && !dragging) {
+        yaw = targetYaw;
+        pitch = targetPitch;
+        cycle = 0;
+        graph.rotation.set(pitch, yaw, 0);
+      } else if (!held() && !dragging) {
         cycle += elapsed;
         orbit += delta;
         yaw += yawVelocity;
@@ -270,12 +317,14 @@ export function mountTopology(root: HTMLElement) {
           ? 'paused'
           : dragging
             ? 'drag'
-            : held()
-              ? 'held'
-              : 'auto';
+            : correcting
+              ? 'settling'
+              : held()
+                ? 'held'
+                : 'auto';
       draw();
     }
-    if (root.dataset.focusPinned === 'true' && growth === 1) {
+    if (root.dataset.focusPinned === 'true' && growth === 1 && !correcting) {
       sync();
       return;
     }
@@ -289,7 +338,7 @@ export function mountTopology(root: HTMLElement) {
       enabled() &&
       visible &&
       !document.hidden &&
-      !(root.dataset.focusPinned === 'true' && growth === 1);
+      !(root.dataset.focusPinned === 'true' && growth === 1 && !correcting);
     root.dataset.running = String(running);
     if (running) frame = requestAnimationFrame(tick);
   }
@@ -310,6 +359,8 @@ export function mountTopology(root: HTMLElement) {
     dragX = event.clientX;
     dragY = event.clientY;
     yawVelocity = pitchVelocity = 0;
+    correcting = false;
+    frontHoldUntil = 0;
     root.setPointerCapture(pointer);
     root.dataset.dragging = 'true';
   };
@@ -338,11 +389,16 @@ export function mountTopology(root: HTMLElement) {
     root.dataset.dragged = 'true';
     if (root.hasPointerCapture(pointer)) root.releasePointerCapture(pointer);
     pointer = -1;
+    correctView();
+  };
+  const clickToCorrect = (event: MouseEvent) => {
+    if ((event.target as Element).closest('[data-sector]')) correctView();
   };
   root.addEventListener('pointerdown', beginDrag);
   root.addEventListener('pointermove', moveDrag);
   root.addEventListener('pointerup', endDrag);
   root.addEventListener('pointercancel', endDrag);
+  root.addEventListener('click', clickToCorrect);
   root.addEventListener('focuschange', select);
   const visibility = new IntersectionObserver(
     ([entry]) => {
@@ -389,6 +445,7 @@ export function mountTopology(root: HTMLElement) {
     root.removeEventListener('pointermove', moveDrag);
     root.removeEventListener('pointerup', endDrag);
     root.removeEventListener('pointercancel', endDrag);
+    root.removeEventListener('click', clickToCorrect);
     baseGeometry.dispose();
     branchGeometry.dispose();
     baseMaterial.dispose();

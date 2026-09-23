@@ -158,10 +158,7 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
     )
     .toBe(true);
   await sample(page, 0.1);
-  await page.locator('.orbit-label').click();
-  await expect
-    .poll(async () => Number(await stage.getAttribute('data-motion-progress')))
-    .toBeCloseTo(0.97, 2);
+  await expect(page.locator('.orbit-label')).toBeHidden();
   await expect(
     page.locator('.language-switch [data-language=en]'),
   ).toHaveAttribute('href', /en\/index\.html#about$/);
