@@ -1220,7 +1220,7 @@
     border-color: transparent;
   }
   .portfolio-card:is(:hover, :focus-visible) .company-logo {
-    transform: translateY(-20%);
+    transform: translateY(-24%) scale(0.9);
     opacity: 1;
   }
   .portfolio-card:is(:hover, :focus-visible) .company-logo img {
