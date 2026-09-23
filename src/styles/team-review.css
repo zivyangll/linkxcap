@@ -265,8 +265,11 @@ body .team-review {
   }
 
   .team-review .team-bio {
-    inset: calc(20 * var(--u));
-    width: auto;
+    top: calc(20 * var(--u));
+    bottom: calc(20 * var(--u));
+    left: auto;
+    right: auto;
+    width: calc(520 * var(--u));
     max-width: none;
     padding: calc(44 * var(--u)) calc(30 * var(--u));
     gap: calc(80 * var(--u));
@@ -289,6 +292,15 @@ body .team-review {
       linear-gradient(#111, #111) right bottom / max(1px, calc(2 * var(--u)))
         calc(36 * var(--u)) no-repeat,
       var(--paper-alt);
+  }
+
+  .team-review .team-member:first-child .team-bio {
+    right: calc(20 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(2) .team-bio,
+  .team-review .team-member:last-child .team-bio {
+    left: calc(20 * var(--u));
   }
 
   .team-review .team-bio h2 {
