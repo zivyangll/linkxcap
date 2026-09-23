@@ -5,6 +5,15 @@ export function initFellow() {
   gsap.registerPlugin(ScrollTrigger);
   const root = document.querySelector<HTMLElement>('[data-fellow-media]');
   if (!root) return;
+  let expanded = false;
+  const setExpanded = (next: boolean) => {
+    if (expanded === next) return;
+    expanded = next;
+    root.dataset.mediaExpanded = String(next);
+    root.dispatchEvent(
+      new CustomEvent('fellowmediachange', { detail: { expanded: next } }),
+    );
+  };
   const media = gsap.matchMedia();
   media.add(DESKTOP_MOTION, () => {
     const intro = document.querySelector('.fellow-intro')!;
@@ -76,6 +85,7 @@ export function initFellow() {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           root.dataset.mediaProgress = self.progress.toFixed(3);
+          setExpanded(self.progress >= 0.8);
         },
       },
     });
@@ -106,5 +116,12 @@ export function initFellow() {
     );
     document.fonts.ready.then(() => ScrollTrigger.refresh());
   });
-  window.addEventListener('pagehide', () => media.revert(), { once: true });
+  window.addEventListener(
+    'pagehide',
+    () => {
+      setExpanded(false);
+      media.revert();
+    },
+    { once: true },
+  );
 }

@@ -34,6 +34,24 @@ if (root) {
           ?.focus({ preventScroll: true });
     }),
   );
+  const desktopHover = matchMedia(
+    '(min-width: 1024px) and (hover: hover) and (pointer: fine)',
+  );
+  cards.forEach((card) => {
+    card.addEventListener('pointerenter', (event) => {
+      if (desktopHover.matches && event.pointerType === 'mouse')
+        select(card.dataset.teamMember);
+    });
+    card.addEventListener('pointerleave', (event) => {
+      const related = event.relatedTarget;
+      if (
+        desktopHover.matches &&
+        event.pointerType === 'mouse' &&
+        (!related || !(related instanceof Node) || !card.contains(related))
+      )
+        select();
+    });
+  });
   panels.forEach((panel) => {
     panel.addEventListener('click', (event) => {
       if (

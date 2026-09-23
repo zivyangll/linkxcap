@@ -2,8 +2,9 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PHILOSOPHY_ARC } from './philosophy-motion';
 
-// Only a deliberate wheel/key gesture schedules a snap. Native scrolling stays
-// enabled; another gesture immediately interrupts the settling animation.
+// Native scrolling stays enabled until a chapter threshold is crossed. The
+// orbit's one-third hand-off is detected during scrolling so a trackpad does
+// not have to become idle before the remaining two thirds can complete.
 export function mountChapterSnap(home: HTMLElement) {
   let anchors: number[] = [];
   let timer = 0;
@@ -12,12 +13,16 @@ export function mountChapterSnap(home: HTMLElement) {
   let firstThreshold = 0;
   let arcThreshold = 0;
   let tween: gsap.core.Tween | undefined;
+  let completingArc = false;
+  let lastScrollY = scrollY;
   let previousBehavior = '';
   const finish = () => {
     if (home.dataset.snapping) {
       document.documentElement.style.scrollBehavior = previousBehavior;
       delete home.dataset.snapping;
     }
+    if (completingArc) delete home.dataset.arcSnapActive;
+    completingArc = false;
     tween = undefined;
     armed = false;
   };
@@ -25,6 +30,22 @@ export function mountChapterSnap(home: HTMLElement) {
     clearTimeout(timer);
     tween?.kill();
     finish();
+  };
+  const startSnap = (destination: number, y: number, arc = false) => {
+    if (tween || Math.abs(destination - y) < 2) return;
+    const position = { y };
+    completingArc = arc;
+    if (arc) home.dataset.arcSnapActive = 'true';
+    previousBehavior = document.documentElement.style.scrollBehavior;
+    document.documentElement.style.scrollBehavior = 'auto';
+    home.dataset.snapping = 'true';
+    tween = gsap.to(position, {
+      y: destination,
+      duration: gsap.utils.clamp(0.5, 1.6, Math.abs(destination - y) / 2200),
+      ease: 'power3.inOut',
+      onUpdate: () => window.scrollTo(0, position.y),
+      onComplete: finish,
+    });
   };
   const settle = () => {
     if (
@@ -59,20 +80,12 @@ export function mountChapterSnap(home: HTMLElement) {
       if ((upper - y) / (upper - lower) < 0.75) return;
       destination = lower;
     }
-    if (Math.abs(destination - y) < 2) return;
-    const position = { y };
-    previousBehavior = document.documentElement.style.scrollBehavior;
-    document.documentElement.style.scrollBehavior = 'auto';
-    home.dataset.snapping = 'true';
-    tween = gsap.to(position, {
-      y: destination,
-      duration: gsap.utils.clamp(0.5, 1.6, Math.abs(destination - y) / 2200),
-      ease: 'power3.inOut',
-      onUpdate: () => window.scrollTo(0, position.y),
-      onComplete: finish,
-    });
+    startSnap(destination, y);
   };
   const navigate = (event: WheelEvent | KeyboardEvent) => {
+    // Once the orbit reaches one third, continued trackpad packets must not
+    // cancel the automatic completion that is already in progress.
+    if (tween) return;
     cancel();
     if (document.querySelector('dialog[open]')) return;
     const target = event.target as Element | null;
@@ -134,6 +147,7 @@ export function mountChapterSnap(home: HTMLElement) {
       arcThreshold = Math.round(
         philosophy.start + (philosophy.end - philosophy.start) * arcProgress,
       );
+      lastScrollY = scrollY;
       home.dataset.snapStops = anchors.join(',');
       home.dataset.snapThresholds = anchors
         .slice(0, -1)
@@ -147,7 +161,29 @@ export function mountChapterSnap(home: HTMLElement) {
         .join(',');
     },
   });
-  window.addEventListener('scroll', settle, { passive: true });
+  const onScroll = () => {
+    const y = scrollY;
+    const movingDown = y > lastScrollY + 0.5;
+    lastScrollY = y;
+    if (
+      armed &&
+      direction > 0 &&
+      movingDown &&
+      !tween &&
+      anchors.length > 2 &&
+      y >= arcThreshold &&
+      y < anchors[2] - 2 &&
+      !document.querySelector('dialog[open]')
+    ) {
+      clearTimeout(timer);
+      armed = true;
+      direction = 1;
+      startSnap(anchors[2], y, true);
+      return;
+    }
+    settle();
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('wheel', navigate, { passive: true });
   window.addEventListener('keydown', navigate);
   window.addEventListener('pointerdown', cancel, { passive: true });
@@ -155,12 +191,13 @@ export function mountChapterSnap(home: HTMLElement) {
   return () => {
     cancel();
     measure.kill();
-    window.removeEventListener('scroll', settle);
+    window.removeEventListener('scroll', onScroll);
     window.removeEventListener('wheel', navigate);
     window.removeEventListener('keydown', navigate);
     window.removeEventListener('pointerdown', cancel);
     window.removeEventListener('blur', cancel);
     delete home.dataset.snapStops;
     delete home.dataset.snapThresholds;
+    delete home.dataset.arcSnapActive;
   };
 }

@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import {
   pageUrl,
-  asset,
   ui,
   insightArticleFromData,
   insightsContent,
@@ -26,17 +25,30 @@ const displayArticles = articles.map((article) => {
     },
   };
 });
+const orbitDots = Array.from({ length: 32 }, (_, index) => {
+  const angle = -Math.PI / 2 + (index / 32) * Math.PI * 2;
+  const radius = 49.35;
+  return {
+    x: 50 + Math.cos(angle) * radius,
+    y: 50 + Math.sin(angle) * radius,
+    delay: -(index / 32) * 48,
+    opacity: 0.22 + ((index * 7) % 11) / 18,
+  };
+});
 ---
 
 <section class="insights-page" data-node-id="2002:2833">
-  <img
-    class="insights-orbit"
-    src={asset('2833', 'imgEllipse9')}
-    width="1954"
-    height="1954"
-    alt=""
-    loading="lazy"
-  />
+  <div class="insights-orbit" aria-hidden="true">
+    <div class="insights-orbit-points">
+      {orbitDots.map((dot, index) => (
+        <i
+          class="insights-orbit-dot"
+          data-orbit-dot={index}
+          style={`--dot-x:${dot.x.toFixed(4)}%;--dot-y:${dot.y.toFixed(4)}%;--dot-delay:${dot.delay.toFixed(3)}s;--dot-rest-opacity:${dot.opacity.toFixed(3)};`}
+        ></i>
+      ))}
+    </div>
+  </div>
   <h1 class="insights-title">
     {insightsContent.title.en}
     {lang === 'zh' && <span>{insightsContent.title.zh}</span>}
@@ -109,13 +121,41 @@ const displayArticles = articles.map((article) => {
   import '../scripts/insights-motion';
 </script>
 <style>
+  .insights-orbit {
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+  .insights-orbit-points {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    transform-origin: 50% 50%;
+  }
+  .insights-orbit-dot {
+    position: absolute;
+    left: var(--dot-x);
+    top: var(--dot-y);
+    display: block;
+    width: clamp(3px, calc(7 * var(--u)), 8px);
+    aspect-ratio: 1;
+    border-radius: 1px;
+    background: #343331;
+    opacity: var(--dot-rest-opacity);
+    transform: translate(-50%, -50%);
+    transform-origin: 50% 50%;
+  }
   @media (prefers-reduced-motion: no-preference) {
-    .insights-orbit {
+    .insights-orbit-points {
       animation: insights-orbit-clockwise 48s linear infinite;
       animation-play-state: paused;
-      transform-origin: 50% 50%;
     }
-    .insights-orbit[data-orbit-running='true'] {
+    .insights-orbit-dot {
+      animation: insights-dot-focus 48s linear var(--dot-delay) infinite;
+      animation-play-state: paused;
+      will-change: filter, opacity, transform;
+    }
+    .insights-orbit[data-orbit-running='true'] .insights-orbit-points,
+    .insights-orbit[data-orbit-running='true'] .insights-orbit-dot {
       animation-play-state: running;
     }
     @keyframes insights-orbit-clockwise {
@@ -124,6 +164,25 @@ const displayArticles = articles.map((article) => {
       }
       to {
         transform: rotate(1turn);
+      }
+    }
+    @keyframes insights-dot-focus {
+      0%,
+      36%,
+      100% {
+        filter: blur(0);
+        opacity: 0.86;
+        transform: translate(-50%, -50%) scale(0.92);
+      }
+      68% {
+        filter: blur(calc(5 * var(--u)));
+        opacity: 0.14;
+        transform: translate(-50%, -50%) scale(1.75);
+      }
+      84% {
+        filter: blur(calc(3 * var(--u)));
+        opacity: 0.3;
+        transform: translate(-50%, -50%) scale(1.35);
       }
     }
   }

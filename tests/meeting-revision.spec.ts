@@ -343,9 +343,11 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
   for (const id of ['alex', 'elliot', 'wenjue']) {
     const portrait = page.locator(`[data-person=${id}]`);
     const bio = page.locator(`[data-person-bio=${id}]`);
-    await portrait.hover();
-    await expect(bio).toBeHidden();
-    await portrait.click();
+    const portraitBox = (await portrait.boundingBox())!;
+    await page.mouse.move(
+      portraitBox.x + portraitBox.width / 2,
+      portraitBox.y + portraitBox.height / 2,
+    );
     await expect(bio).toBeVisible();
     await expect(portrait).toHaveCSS('opacity', '0');
     const l = await portrait.boundingBox(),
@@ -356,10 +358,8 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
     expect(r!.y + r!.height).toBeLessThan(l!.y + l!.height);
     gaps.push(r!.x - l!.x, l!.x + l!.width - r!.x - r!.width);
     await page.mouse.move(20, 150);
-    await expect(bio).toBeVisible();
+    await expect(bio).toBeHidden();
     await expect(bio.locator('button')).toHaveCount(0);
-    await bio.click();
-    await expect(bio).not.toBeVisible();
   }
   expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThan(1);
 });
@@ -416,7 +416,7 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
   const start = await page
     .locator('[data-fellow-media]')
     .evaluate((e) => e.getBoundingClientRect().top + scrollY);
-  await page.evaluate((y) => scrollTo(0, y + 650), start);
+  await page.evaluate((y) => scrollTo(0, y + 900), start);
   await expect
     .poll(
       async () =>
@@ -430,8 +430,37 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
     Math.abs(expandedVideo.x + expandedVideo.width / 2 - 720),
   ).toBeLessThan(1);
   await expect(page.locator('.fellow-video-placeholder')).toHaveCount(0);
-  await expect(page.locator('[data-fellow-video] source')).toHaveAttribute('src', '/linkxcap/assets/video_example.mp4');
-  await expect(page.locator('[data-fellow-video]')).toHaveAttribute('preload', 'none');
+  await expect(page.locator('[data-fellow-video] source')).toHaveAttribute(
+    'src',
+    '/linkxcap/assets/video_example.mp4',
+  );
+  await expect(page.locator('[data-fellow-video]')).toHaveAttribute(
+    'preload',
+    'none',
+  );
+  await expect(page.locator('[data-fellow-video]')).toHaveAttribute(
+    'muted',
+    '',
+  );
+  await expect(page.locator('[data-fellow-media]')).toHaveAttribute(
+    'data-media-expanded',
+    'true',
+  );
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-fellow-video]')
+        .evaluate((element) => (element as HTMLVideoElement).currentTime),
+    )
+    .toBeGreaterThan(0.05);
+  await page.evaluate((y) => scrollTo(0, y + innerHeight * 2.5), start);
+  await expect
+    .poll(() =>
+      page
+        .locator('[data-fellow-video]')
+        .evaluate((element) => (element as HTMLVideoElement).paused),
+    )
+    .toBe(true);
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({

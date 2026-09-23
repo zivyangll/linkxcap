@@ -51,6 +51,7 @@ test('opening stops at AGI, the arc settles on About Us before the full copy, an
   expect(travelled).toBeGreaterThan(0.25);
   expect(travelled).toBeLessThan(1 / 3);
   await page.mouse.wheel(0, 45);
+  await expect(home).toHaveAttribute('data-arc-snap-active', 'true');
   await expect
     .poll(() => page.evaluate(() => scrollY), { timeout: 7000 })
     .toBeCloseTo(stops[2], -1);
@@ -109,6 +110,32 @@ test('small gestures stay native and a pointer press interrupts an automatic tra
   await page.mouse.up();
 });
 
+test('continuous trackpad input cannot strand the opening point after one third of its orbit', async ({
+  page,
+}) => {
+  await page.goto('zh/index.html');
+  const home = page.locator('[data-home]');
+  await expect(home).toHaveAttribute('data-snap-thresholds', /,/);
+  const stops = (await home.getAttribute('data-snap-stops'))!
+    .split(',')
+    .map(Number);
+  await page.evaluate((y) => scrollTo(0, y), stops[1]);
+  await page.waitForTimeout(80);
+  let triggered = false;
+  for (let index = 0; index < 48; index++) {
+    await page.mouse.wheel(0, 60);
+    triggered = (await home.getAttribute('data-arc-snap-active')) === 'true';
+    if (triggered) break;
+    await page.waitForTimeout(24);
+  }
+  expect(triggered).toBe(true);
+  await expect
+    .poll(() => page.evaluate(() => scrollY), { timeout: 7000 })
+    .toBeCloseTo(stops[2], -1);
+  await expect(home).not.toHaveAttribute('data-snapping', 'true');
+  await expect(page.locator('.about-label')).toBeVisible();
+});
+
 test('key text progressively resolves from blurred to sharp', async ({
   page,
 }) => {
@@ -127,6 +154,7 @@ test('key text progressively resolves from blurred to sharp', async ({
     (y) => scrollTo(0, y),
     bounds.start + bounds.distance * 0.58,
   );
+  await page.waitForTimeout(80);
   const line = page.locator('.about-title span').first();
   await expect
     .poll(() =>
@@ -137,6 +165,7 @@ test('key text progressively resolves from blurred to sharp', async ({
     (y) => scrollTo(0, y),
     bounds.start + bounds.distance * 0.97,
   );
+  await page.waitForTimeout(80);
   await expect(line).toHaveCSS('filter', 'blur(0px)');
 });
 
@@ -226,39 +255,35 @@ test('image loading holder settles and failed images show their label', async ({
   );
 });
 
-for (const width of [390, 1440]) {
-  test(`video plays inline only after a click at ${width}px`, async ({
-    page,
-  }) => {
-    await page.setViewportSize({ width, height: 844 });
-    const requests: string[] = [];
-    page.on('request', (request) => {
-      if (request.url().endsWith('video_example.mp4'))
-        requests.push(request.url());
-    });
-    await page.goto('zh/contact.html');
-    const video = page.locator('[data-fellow-video]');
-    const play = page.locator('[data-video-play]');
-    await play.scrollIntoViewIfNeeded();
-    await expect(video.locator('source')).toHaveAttribute(
-      'src',
-      '/linkxcap/assets/video_example.mp4',
-    );
-    expect(requests).toEqual([]);
-    expect(await video.evaluate((el) => (el as HTMLVideoElement).paused)).toBe(
-      true,
-    );
-    await play.click();
-    await expect
-      .poll(() => video.evaluate((el) => (el as HTMLVideoElement).currentTime))
-      .toBeGreaterThan(0.05);
-    await expect(page.locator('dialog[open]')).toHaveCount(0);
-    await expect(video).toHaveAttribute('playsinline', '');
-    await video.evaluate((el) => (el as HTMLVideoElement).pause());
-    await expect(play).toBeVisible();
-    expect(requests.length).toBeGreaterThan(0);
+test('mobile video supports direct inline playback', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const requests: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().endsWith('video_example.mp4'))
+      requests.push(request.url());
   });
-}
+  await page.goto('zh/contact.html');
+  const video = page.locator('[data-fellow-video]');
+  const play = page.locator('[data-video-play]');
+  await play.scrollIntoViewIfNeeded();
+  await expect(video.locator('source')).toHaveAttribute(
+    'src',
+    '/linkxcap/assets/video_example.mp4',
+  );
+  expect(requests).toEqual([]);
+  expect(await video.evaluate((el) => (el as HTMLVideoElement).paused)).toBe(
+    true,
+  );
+  await play.click();
+  await expect
+    .poll(() => video.evaluate((el) => (el as HTMLVideoElement).currentTime))
+    .toBeGreaterThan(0.05);
+  await expect(page.locator('dialog[open]')).toHaveCount(0);
+  await expect(video).toHaveAttribute('playsinline', '');
+  await video.evaluate((el) => (el as HTMLVideoElement).pause());
+  await expect(play).toBeVisible();
+  expect(requests.length).toBeGreaterThan(0);
+});
 
 for (const lang of ['zh', 'en'])
   test(`H5 ${lang} opening becomes solid automatically without scrolling`, async ({
@@ -298,12 +323,17 @@ for (const lang of ['zh', 'en']) {
   }) => {
     await page.goto(`${lang}/insights.html`);
     const orbit = page.locator('.insights-orbit');
+    const points = page.locator('.insights-orbit-points');
+    const dots = page.locator('.insights-orbit-dot');
+    await expect(dots).toHaveCount(32);
     await expect(orbit).toHaveAttribute('data-orbit-running', 'true');
-    const before = await orbit.evaluate((el) => getComputedStyle(el).transform);
+    const before = await points.evaluate(
+      (el) => getComputedStyle(el).transform,
+    );
     await expect
-      .poll(() => orbit.evaluate((el) => getComputedStyle(el).transform))
+      .poll(() => points.evaluate((el) => getComputedStyle(el).transform))
       .not.toBe(before);
-    const frames = await orbit.evaluate((el) =>
+    const frames = await points.evaluate((el) =>
       el
         .getAnimations()
         .flatMap((a) => (a.effect as KeyframeEffect).getKeyframes()),
@@ -313,9 +343,27 @@ for (const lang of ['zh', 'en']) {
         /rotate\((?:360deg|1turn)\)/.test(String(frame.transform)),
       ),
     ).toBe(true);
+    const dotFrames = await dots
+      .first()
+      .evaluate((el) =>
+        el
+          .getAnimations()
+          .flatMap((a) => (a.effect as KeyframeEffect).getKeyframes()),
+      );
+    expect(
+      dotFrames.some(
+        (frame) =>
+          Number(frame.opacity) >= 0.8 &&
+          /blur\((?:0(?:px)?|)\)/.test(String(frame.filter)),
+      ),
+    ).toBe(true);
+    expect(
+      dotFrames.some((frame) => /blur\([^0]/.test(String(frame.filter))),
+    ).toBe(true);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await expect(orbit).toHaveAttribute('data-orbit-running', 'false');
-    await expect(orbit).toHaveCSS('animation-name', 'none');
+    await expect(points).toHaveCSS('animation-name', 'none');
+    await expect(dots.first()).toHaveCSS('animation-name', 'none');
     await expect(page.locator('.insight-row').first()).toBeVisible();
   });
 }
