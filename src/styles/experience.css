@@ -102,14 +102,11 @@
     width: 50.7%;
     height: 36.6%;
   }
-  .has-live-cursor-ready .portfolio-page .card-arrow {
+  /* The fixed card arrow must never flash before the lazy cursor module is
+     ready or after a back-forward cache restore. Keyboard focus still has the
+     card corners and caption as its visible state. */
+  .portfolio-page .card-arrow {
     visibility: hidden;
-  }
-  .has-live-cursor-ready
-    .portfolio-page
-    .portfolio-card:focus-visible
-    .card-arrow {
-    visibility: visible;
   }
   .fellow-intro :is(.next-title-outline, .next-subtitle-outline) {
     animation: signal-outline 1.35s ease-in-out 0.1s both;

@@ -177,6 +177,7 @@ test('portfolio keeps the original grid and the original round arrow follows the
   await expect(page.locator('.portfolio-page canvas')).toHaveCount(0);
   await expect(page.locator('[data-orbit-pause]')).toHaveCount(0);
   const card = page.locator('[data-company-card]').first();
+  await expect(card.locator('.card-arrow')).toHaveCSS('visibility', 'hidden');
   const box = (await card.boundingBox())!;
   const cursor = page.locator('.live-cursor');
   const x = Math.round(box.x + box.width * 0.6),
@@ -213,7 +214,6 @@ test('portfolio keeps the original grid and the original round arrow follows the
   ]);
   await page.goBack();
   await expect(page.locator('.live-cursor')).toBeHidden();
-  await expect(page.locator('html')).toHaveClass(/has-live-cursor-ready/);
   await expect(
     page.locator('.portfolio-card').first().locator('.card-arrow'),
   ).toHaveCSS('visibility', 'hidden');

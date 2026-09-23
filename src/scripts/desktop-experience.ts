@@ -18,7 +18,6 @@ export function initDesktopExperience() {
     // Use the original portfolio arrow asset inside its original circular frame.
     cursor.append(source.cloneNode(true));
     document.body.append(cursor);
-    document.documentElement.classList.add('has-live-cursor-ready');
     let frame = 0,
       currentX = 0,
       currentY = 0,
@@ -80,7 +79,6 @@ export function initDesktopExperience() {
     cleanup = () => {
       hide();
       cursor.remove();
-      document.documentElement.classList.remove('has-live-cursor-ready');
       document.removeEventListener('pointermove', move);
       document.documentElement.removeEventListener('pointerleave', hide);
       window.removeEventListener('blur', hide);
