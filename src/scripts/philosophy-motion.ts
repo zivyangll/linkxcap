@@ -68,7 +68,7 @@ export function mountPhilosophyMotion(
     const detail = smooth(range(p, 0.82, 0.96));
     const sequenceDistance = Math.max(innerHeight * 2.6, 1);
     const leftStarFadeStart = PHILOSOPHY_ARC.start + 100 / sequenceDistance;
-    const leftStarFadeEnd = PHILOSOPHY_ARC.end;
+    const leftStarFadeEnd = leftStarFadeStart + 400 / sequenceDistance;
     const leftStarFadeProgress = range(p, leftStarFadeStart, leftStarFadeEnd);
     const leftStarOpacity =
       p < PHILOSOPHY_ARC.start
@@ -231,7 +231,7 @@ export function mountPhilosophyMotion(
       ctx.restore();
     };
     // At the fork, the left point is fully solid. It holds for exactly 100px
-    // of scroll, then fades gradually and only disappears at the guide's end.
+    // of scroll, then completes its fade over a fixed 400px scroll distance.
     diamond(start.x + camera.x, leftStarY, '#a7a7a7', leftStarOpacity);
     diamond(
       point.x,
