@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 12,
+  "schemaVersion": 13,
   "site": {
     "brand_cn": "星连资本",
     "brand_en": "Link-X Capital",
@@ -303,14 +303,12 @@
         {
           "title_cn": "微信 · 星连资本",
           "title_en": "WeChat · Link-X Capital",
-          "pending_cn": "公众号二维码待提供，请先通过邮箱与我们联系。",
-          "pending_en": "The official QR code will be added after confirmation. Please contact us by email."
+          "image_file": "wechat-linkx-capital.png"
         },
         {
           "title_cn": "微信 · 华清普智孵化器",
           "title_en": "WeChat · T-ONE Innovation Lab",
-          "pending_cn": "公众号二维码待提供，请先通过邮箱与我们联系。",
-          "pending_en": "The official QR code will be added after confirmation. Please contact us by email."
+          "image_file": "wechat-tone-innovation-lab.png"
         }
       ]
     },

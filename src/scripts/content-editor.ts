@@ -47,6 +47,7 @@ const labels: Record<string, string> = {
   team: '团队成员',
   insights: '洞察内容',
   media: '媒体配置',
+  wechat: '微信公众号二维码',
   home: '首页',
   portfolio: '投资组合页',
   contact: '联系与 Fellow 页面',
@@ -107,7 +108,8 @@ const sectionNotes: Record<string, string> = {
     '洞察列表页和文章详情页的公共文案；文章内容在 src/content/insights/*.md 中维护',
   insights:
     '文章 Markdown 的 category 必须填写下方某个筛选项的结构 ID；all 仅表示“全部文章”，不能作为文章分类',
-  'pages.contact': '联系与 Fellow 页的可见文案',
+  'pages.contact':
+    '联系与 Fellow 页的可见文案；微信公众号二维码只填写图片文件名，文件放在 public/assets 根目录',
   media:
     '视频和封面只填写文件名，文件统一放在 public/assets 根目录；例如 video_example.mp4，不配置字幕',
   'pages.legal': '当前仍是预览占位，正式上线前需由公司或法务审核',
@@ -906,7 +908,7 @@ function restoreDraft() {
   let legacy = false;
   try {
     serialized = localStorage.getItem(storageKey);
-    for (const version of [11, 10, 9]) {
+    for (const version of [12, 11, 10, 9]) {
       if (serialized) break;
       serialized = localStorage.getItem(
         storageKey.replace(
@@ -950,7 +952,7 @@ function restoreDraft() {
     setStatus(
       validation.valid
         ? legacy
-          ? '已恢复并升级旧版本草稿，视频改为文件名，已移除旧播放按钮和动态背景按钮文案；旧草稿原件保留，首次修改后保存为新版本。'
+          ? '已恢复并升级旧版本草稿，视频和微信公众号二维码均改为文件名；旧草稿原件保留，首次修改后保存为新版本。'
           : '已恢复当前域名下的本地草稿。'
         : '已恢复本地草稿；其中仍有格式问题，请修正后再导出。',
       validation.valid ? 'saved' : 'error',

@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 12;
+export const CONTENT_SCHEMA_VERSION = 13;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {
@@ -303,7 +303,7 @@ export function validateContentConfig(
 export function upgradeContentConfig(candidate: unknown): unknown {
   if (
     !isObject(candidate) ||
-    ![9, 10, 11].includes(candidate.schemaVersion as number) ||
+    ![9, 10, 11, 12].includes(candidate.schemaVersion as number) ||
     !isObject(candidate.ui) ||
     !isObject(candidate.media) ||
     !isObject(candidate.media.fellow)
@@ -318,6 +318,21 @@ export function upgradeContentConfig(candidate: unknown): unknown {
     const contact = { ...pages.contact };
     delete contact.play_video_cn;
     delete contact.play_video_en;
+    if (Array.isArray(contact.wechat)) {
+      const files = [
+        'wechat-linkx-capital.png',
+        'wechat-tone-innovation-lab.png',
+      ];
+      contact.wechat = contact.wechat.map((item, index) => {
+        if (!isObject(item)) return item;
+        const next = { ...item };
+        if (!Object.hasOwn(next, 'image_file'))
+          next.image_file = files[index] || '';
+        delete next.pending_cn;
+        delete next.pending_en;
+        return next;
+      });
+    }
     pages.contact = contact;
   }
   if (

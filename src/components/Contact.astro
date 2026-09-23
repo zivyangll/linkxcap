@@ -4,6 +4,7 @@ import {
   siteContent,
   socials,
   asset,
+  contentAsset,
   fellowMedia,
   type Lang,
 } from '../lib/site';
@@ -233,7 +234,15 @@ const media = {
     {contactContent.wechat.map((item) => (
       <details>
         <summary>{item.title[lang]}</summary>
-        <p>{item.pending[lang]}</p>
+        <img
+          class="contact-wechat-qr"
+          src={contentAsset(item.imageFile)}
+          width="240"
+          height="240"
+          loading="lazy"
+          decoding="async"
+          alt={`${item.title[lang]}${lang === 'zh' ? '二维码' : ' QR code'}`}
+        />
       </details>
     ))}
   </div>

@@ -114,7 +114,7 @@ type ContactContent = {
   detailsTitle: Localized;
   copyEmail: Localized;
   findUs: Localized;
-  wechat: Array<{ title: Localized; pending: Localized }>;
+  wechat: Array<{ title: Localized; imageFile: string }>;
 };
 type LegalContent = {
   eyebrow: string;
