@@ -906,7 +906,7 @@ function restoreDraft() {
   let legacy = false;
   try {
     serialized = localStorage.getItem(storageKey);
-    for (const version of [10, 9]) {
+    for (const version of [11, 10, 9]) {
       if (serialized) break;
       serialized = localStorage.getItem(
         storageKey.replace(
@@ -950,7 +950,7 @@ function restoreDraft() {
     setStatus(
       validation.valid
         ? legacy
-          ? '已恢复并升级旧版本草稿，视频改为文件名，已移除动态背景按钮文案；旧草稿原件保留，首次修改后保存为新版本。'
+          ? '已恢复并升级旧版本草稿，视频改为文件名，已移除旧播放按钮和动态背景按钮文案；旧草稿原件保留，首次修改后保存为新版本。'
           : '已恢复当前域名下的本地草稿。'
         : '已恢复本地草稿；其中仍有格式问题，请修正后再导出。',
       validation.valid ? 'saved' : 'error',

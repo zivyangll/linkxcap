@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const hash = 'a4f9c2e71b6d4830c5a8e2f94d7b136c';
 const editorPath = `${hash}.html`;
 const validPath = `${editorPath}?debug=true`;
-const storageKey = `linkx-content-editor:127.0.0.1:schema-11`;
+const storageKey = `linkx-content-editor:127.0.0.1:schema-12`;
 
 test('invalid and duplicate debug parameters never initialize the editor', async ({
   page,
@@ -344,7 +344,9 @@ test('export uses the latest fields and can round-trip through import', async ({
   for await (const chunk of stream) chunks.push(Buffer.from(chunk));
   const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
   expect(exported.site.brand_cn).toBe('导出即时内容');
-  expect(exported.schemaVersion).toBe(11);
+  expect(exported.schemaVersion).toBe(12);
+  expect(exported.pages.contact).not.toHaveProperty('play_video_cn');
+  expect(exported.pages.contact).not.toHaveProperty('play_video_en');
   expect(exported.insights.articles).toBeUndefined();
   expect(exported.insights.list_rows).toBeUndefined();
 
@@ -401,7 +403,7 @@ test('editor remains usable on a 360px mobile viewport', async ({ page }) => {
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
-for (const version of [9, 10])
+for (const version of [9, 10, 11])
   test(`v${version} drafts preserve edits and migrate video filenames without overwriting the old draft`, async ({
     page,
   }) => {
@@ -417,13 +419,15 @@ for (const version of [9, 10])
       'https://example.com/assets/video_example.mp4';
     delete legacy.media.fellow.video_file;
     legacy.site.brand_cn = '保留我的品牌修改';
+    legacy.pages.contact.play_video_cn = '旧播放视频';
+    legacy.pages.contact.play_video_en = 'Old play film';
     Object.assign(legacy.ui, {
       pause_cn: '旧暂停',
       pause_en: 'Old pause',
       resume_cn: '旧开启',
       resume_en: 'Old resume',
     });
-    const previousKey = storageKey.replace('schema-11', `schema-${version}`);
+    const previousKey = storageKey.replace('schema-12', `schema-${version}`);
     await page.evaluate(
       ({ previousKey, storageKey, legacy }) => {
         localStorage.removeItem(storageKey);
@@ -453,12 +457,14 @@ for (const version of [9, 10])
     const chunks: Buffer[] = [];
     for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
     const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    expect(exported.schemaVersion).toBe(11);
+    expect(exported.schemaVersion).toBe(12);
     expect(exported.site.brand_cn).toBe('保留我的品牌修改');
     expect(exported.media.fellow.video_file).toBe('video_example.mp4');
     expect(exported.media.fellow).not.toHaveProperty('video_url');
     expect(exported.ui).not.toHaveProperty('pause_cn');
     expect(exported.ui).not.toHaveProperty('resume_en');
+    expect(exported.pages.contact).not.toHaveProperty('play_video_cn');
+    expect(exported.pages.contact).not.toHaveProperty('play_video_en');
   });
 
 test('video filename can be edited and exported, and invalid URLs identify the media field', async ({

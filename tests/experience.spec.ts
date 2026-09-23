@@ -255,7 +255,9 @@ test('image loading holder settles and failed images show their label', async ({
   );
 });
 
-test('mobile video supports direct inline playback', async ({ page }) => {
+test('mobile video autoplays when visible and toggles on direct click', async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const requests: string[] = [];
   page.on('request', (request) => {
@@ -264,24 +266,25 @@ test('mobile video supports direct inline playback', async ({ page }) => {
   });
   await page.goto('zh/contact.html');
   const video = page.locator('[data-fellow-video]');
-  const play = page.locator('[data-video-play]');
-  await play.scrollIntoViewIfNeeded();
+  await video.scrollIntoViewIfNeeded();
   await expect(video.locator('source')).toHaveAttribute(
     'src',
     '/linkxcap/assets/video_example.mp4',
   );
-  expect(requests).toEqual([]);
-  expect(await video.evaluate((el) => (el as HTMLVideoElement).paused)).toBe(
-    true,
-  );
-  await play.click();
   await expect
     .poll(() => video.evaluate((el) => (el as HTMLVideoElement).currentTime))
     .toBeGreaterThan(0.05);
+  await video.click();
+  await expect
+    .poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused))
+    .toBe(true);
+  await video.click();
+  await expect
+    .poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused))
+    .toBe(false);
   await expect(page.locator('dialog[open]')).toHaveCount(0);
   await expect(video).toHaveAttribute('playsinline', '');
-  await video.evaluate((el) => (el as HTMLVideoElement).pause());
-  await expect(play).toBeVisible();
+  await expect(page.locator('[data-video-play]')).toHaveCount(0);
   expect(requests.length).toBeGreaterThan(0);
 });
 

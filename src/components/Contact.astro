@@ -142,7 +142,12 @@ const media = {
         loop
         preload="none"
         poster={media.poster || undefined}
-        controls
+        tabindex="0"
+        role="button"
+        aria-label={
+          lang === 'zh' ? '点击暂停或播放视频' : 'Pause or play video'
+        }
+        aria-pressed="false"
       >
         <source src={media.src} type="video/mp4" />
       </video>
@@ -164,16 +169,6 @@ const media = {
         </span>
         <p>{contactContent.videoPlaceholder[lang]}</p>
       </div>
-    )}
-    {media.src && (
-      <button
-        class="fellow-video-play"
-        data-video-play
-        data-play={contactContent.playVideo[lang]}
-        data-retry={contactContent.playVideo[lang]}
-      >
-        {contactContent.playVideo[lang]}
-      </button>
     )}
   </div>
   <p class="fellow-media-caption">{contactContent.joinCopy[lang]}</p>

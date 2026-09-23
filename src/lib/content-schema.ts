@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 11;
+export const CONTENT_SCHEMA_VERSION = 12;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {
@@ -303,7 +303,7 @@ export function validateContentConfig(
 export function upgradeContentConfig(candidate: unknown): unknown {
   if (
     !isObject(candidate) ||
-    ![9, 10].includes(candidate.schemaVersion as number) ||
+    ![9, 10, 11].includes(candidate.schemaVersion as number) ||
     !isObject(candidate.ui) ||
     !isObject(candidate.media) ||
     !isObject(candidate.media.fellow)
@@ -313,6 +313,13 @@ export function upgradeContentConfig(candidate: unknown): unknown {
   for (const key of ['pause_cn', 'pause_en', 'resume_cn', 'resume_en'])
     delete ui[key];
   const fellow = { ...candidate.media.fellow };
+  const pages = { ...(candidate.pages as Record<string, unknown>) };
+  if (isObject(pages.contact)) {
+    const contact = { ...pages.contact };
+    delete contact.play_video_cn;
+    delete contact.play_video_en;
+    pages.contact = contact;
+  }
   if (
     Object.hasOwn(fellow, 'video_url') &&
     !Object.hasOwn(fellow, 'video_file')
@@ -338,6 +345,7 @@ export function upgradeContentConfig(candidate: unknown): unknown {
     ...candidate,
     schemaVersion: CONTENT_SCHEMA_VERSION,
     ui,
+    pages,
     media: { ...candidate.media, fellow },
   };
 }

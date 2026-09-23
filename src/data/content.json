@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 11,
+  "schemaVersion": 12,
   "site": {
     "brand_cn": "星连资本",
     "brand_en": "Link-X Capital",
@@ -288,8 +288,6 @@
       "definition_en": "Alongside ideas. Alongside their visionaries.",
       "video_placeholder_cn": "品牌视频 · 待提供",
       "video_placeholder_en": "Brand film · Coming soon",
-      "play_video_cn": "播放视频",
-      "play_video_en": "Play film",
       "join_title_cn": "加入我们",
       "join_title_en": "Join Us",
       "join_eyebrow": "Join Us",

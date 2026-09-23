@@ -1,18 +1,20 @@
 export function initInlineVideo() {
   const video = document.querySelector<HTMLVideoElement>('[data-fellow-video]');
   const shell = video?.closest<HTMLElement>('[data-video-shell]');
-  const play = shell?.querySelector<HTMLButtonElement>('[data-video-play]');
-  if (!video || !shell || !play) return;
+  if (!video || !shell) return;
   const section = shell.closest<HTMLElement>('[data-fellow-media]');
+  const desktopFinePointer = matchMedia(
+    '(min-width: 1024px) and (hover: hover) and (pointer: fine)',
+  );
   let request = 0;
   let visible = false;
   let expanded = section?.dataset.mediaExpanded === 'true';
+  let pointerStarted = false;
+  let manuallyPaused = false;
   const state = (value: string) => {
     shell.dataset.videoState = value;
     shell.setAttribute('aria-busy', String(value === 'loading'));
-    play.hidden = value === 'playing';
-    play.textContent =
-      value === 'error' ? play.dataset.retry! : play.dataset.play!;
+    video.setAttribute('aria-pressed', String(value === 'playing'));
   };
   const start = async () => {
     const current = ++request;
@@ -32,12 +34,36 @@ export function initInlineVideo() {
     state('idle');
   };
   const syncAutoPlayback = () => {
-    if (expanded && visible && !document.hidden && video.paused) void start();
-    else if ((!expanded || !visible || document.hidden) && !video.paused)
-      pause();
+    const shouldPlay =
+      visible &&
+      !document.hidden &&
+      (expanded || !desktopFinePointer.matches || pointerStarted);
+    if (shouldPlay && !manuallyPaused && video.paused) void start();
+    else if ((!shouldPlay || manuallyPaused) && !video.paused) pause();
   };
   state('idle');
-  play.addEventListener('click', start);
+  const toggle = () => {
+    if (!video.paused || shell.dataset.videoState === 'loading') {
+      manuallyPaused = true;
+      pause();
+    } else {
+      manuallyPaused = false;
+      pointerStarted = true;
+      void start();
+    }
+  };
+  video.addEventListener('click', toggle);
+  video.addEventListener('pointerenter', (event) => {
+    if (event.pointerType !== 'mouse' || document.hidden) return;
+    pointerStarted = true;
+    manuallyPaused = false;
+    if (video.paused) void start();
+  });
+  video.addEventListener('keydown', (event) => {
+    if (!['Enter', ' '].includes(event.key)) return;
+    event.preventDefault();
+    toggle();
+  });
   video.addEventListener('playing', () => state('playing'));
   video.addEventListener('waiting', () => state('loading'));
   video.addEventListener('error', () => state('error'));
@@ -47,6 +73,10 @@ export function initInlineVideo() {
   const visibility = new IntersectionObserver(
     ([entry]) => {
       visible = entry.isIntersecting && entry.intersectionRatio >= 0.35;
+      if (!visible) {
+        pointerStarted = false;
+        manuallyPaused = false;
+      }
       syncAutoPlayback();
     },
     { threshold: [0, 0.35, 0.7] },

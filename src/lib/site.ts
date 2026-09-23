@@ -107,7 +107,6 @@ type ContactContent = {
   joinDisplay: Localized<string[]>;
   definition: Localized;
   videoPlaceholder: Localized;
-  playVideo: Localized;
   joinTitle: Localized;
   joinEyebrow: string;
   contactLink: string;

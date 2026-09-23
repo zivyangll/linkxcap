@@ -453,6 +453,20 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
         .evaluate((element) => (element as HTMLVideoElement).currentTime),
     )
     .toBeGreaterThan(0.05);
+  const video = page.locator('[data-fellow-video]');
+  await video.click();
+  await expect
+    .poll(() =>
+      video.evaluate((element) => (element as HTMLVideoElement).paused),
+    )
+    .toBe(true);
+  await page.mouse.move(20, 150);
+  await video.hover();
+  await expect
+    .poll(() =>
+      video.evaluate((element) => (element as HTMLVideoElement).paused),
+    )
+    .toBe(false);
   await page.evaluate((y) => scrollTo(0, y + innerHeight * 2.5), start);
   await expect
     .poll(() =>
