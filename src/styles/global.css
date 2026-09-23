@@ -2432,7 +2432,10 @@
       padding-right: 20px;
     }
     .menu-contact h2 {
-      font-size: 28px;
+      font-size: 22px;
+    }
+    .menu-contact p {
+      font-size: 12px;
     }
     .menu-bottom {
       margin-top: 28px;
