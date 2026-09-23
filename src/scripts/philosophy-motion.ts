@@ -68,12 +68,12 @@ export function mountPhilosophyMotion(
     const detail = smooth(range(p, 0.82, 0.96));
     const sequenceDistance = Math.max(innerHeight * 2.6, 1);
     const leftStarFadeStart = PHILOSOPHY_ARC.start + 100 / sequenceDistance;
-    const leftStarFadeEnd = leftStarFadeStart + 280 / sequenceDistance;
+    const leftStarFadeEnd = PHILOSOPHY_ARC.end;
+    const leftStarFadeProgress = range(p, leftStarFadeStart, leftStarFadeEnd);
     const leftStarOpacity =
       p < PHILOSOPHY_ARC.start
         ? 0
-        : 1 - smooth(range(p, leftStarFadeStart, leftStarFadeEnd));
-    const leftStarDrop = 75 * u * smooth(range(p, PHILOSOPHY_ARC.start, 0.12));
+        : 1 - leftStarFadeProgress * leftStarFadeProgress;
     const aboutOffset = 100 * u * smooth(range(p, 0.49, 0.58));
     const heroOpacity = 1 - smooth(range(p, 0.4, 0.55));
     const titleOpacity = smooth(range(p, 0.54, 0.64));
@@ -99,6 +99,11 @@ export function mountPhilosophyMotion(
       x: arcPoint.x - local.x - 322 * u * pan,
       y: arcPoint.y - local.y - 151 * u * pan,
     };
+    const leftStarY = lerp(
+      start.y,
+      height,
+      smooth(range(p, PHILOSOPHY_ARC.start, PHILOSOPHY_ARC.end)),
+    );
     const center = { x: circle.x + camera.x, y: circle.y + camera.y };
     const point = {
       x: arcPoint.x - 322 * u * pan,
@@ -120,7 +125,7 @@ export function mountPhilosophyMotion(
     stage.dataset.motionPhase = phase;
     stage.dataset.motionProgress = p.toFixed(4);
     canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
-    canvas.dataset.leftStarPoint = `${(start.x + camera.x).toFixed(2)},${(point.y + leftStarDrop).toFixed(2)}`;
+    canvas.dataset.leftStarPoint = `${(start.x + camera.x).toFixed(2)},${leftStarY.toFixed(2)}`;
     canvas.dataset.leftStarOpacity = leftStarOpacity.toFixed(3);
     hero.dataset.scrollProgress = arc.toFixed(3);
     about.dataset.scrollProgress = range(p, 0.54, 1).toFixed(3);
@@ -226,13 +231,8 @@ export function mountPhilosophyMotion(
       ctx.restore();
     };
     // At the fork, the left point is fully solid. It holds for exactly 100px
-    // of scroll, then fades over the following 280px instead of disappearing.
-    diamond(
-      start.x + camera.x,
-      point.y + leftStarDrop,
-      '#a7a7a7',
-      leftStarOpacity,
-    );
+    // of scroll, then fades gradually and only disappears at the guide's end.
+    diamond(start.x + camera.x, leftStarY, '#a7a7a7', leftStarOpacity);
     diamond(
       point.x,
       point.y,
