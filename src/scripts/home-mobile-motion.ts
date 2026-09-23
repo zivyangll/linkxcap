@@ -93,7 +93,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         context.save();
         context.translate(x, y);
         context.rotate(Math.PI / 4);
-        context.fillStyle = '#a7a7a7';
+        context.fillStyle = '#090909';
         context.fillRect(-3.5, -3.5, 7, 7);
         context.restore();
       };

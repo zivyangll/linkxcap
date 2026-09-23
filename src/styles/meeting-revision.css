@@ -15,6 +15,11 @@
 .philosophy-stage-canvas {
   display: none;
 }
+.home-story
+  :is(.opening-track, .hero-track, .orbit-label, .about-rays)
+  .diamond {
+  background: #090909;
+}
 @media (min-width: 1024px) {
   .has-philosophy-motion .philosophy-stage {
     display: block;
