@@ -66,6 +66,7 @@ export function mountPhilosophyMotion(
     const drop = smooth(range(p, 0.54, 0.68));
     const pan = smooth(range(p, 0.69, 0.88));
     const detail = smooth(range(p, 0.82, 0.96));
+    const aboutOffset = 100 * u * smooth(range(p, 0.49, 0.58));
     const heroOpacity = 1 - smooth(range(p, 0.4, 0.55));
     const titleOpacity = smooth(range(p, 0.54, 0.64));
     const start = { x: 467.485 * u, y: 99.485 * u };
@@ -96,7 +97,7 @@ export function mountPhilosophyMotion(
       y:
         p < 0.035
           ? start.y * range(p, 0, 0.035)
-          : arcPoint.y + 50 * u * drop + 104 * u * pan,
+          : arcPoint.y + 50 * u * drop + 104 * u * pan + aboutOffset,
     };
     const phase =
       p < 0.035
@@ -136,7 +137,7 @@ export function mountPhilosophyMotion(
     setPose(
       aboutLabel,
       lerp(point.x - 116 * u, 564 * u, pan) - 564 * u,
-      lerp(point.y - 26 * u, 516 * u, pan) - 516 * u,
+      lerp(point.y - 26 * u, 616 * u, pan) - 616 * u,
       titleOpacity,
     );
     setPose(copy, 100 * u * (1 - detail), 0, detail);

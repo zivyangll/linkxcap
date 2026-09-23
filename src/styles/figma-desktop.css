@@ -197,7 +197,7 @@
     }
     .about-rays {
       left: calc(638 * var(--u));
-      height: calc(459 * var(--u));
+      height: calc(559 * var(--u));
     }
     .about-rays span {
       height: calc(847.378 * var(--u));
@@ -218,7 +218,7 @@
     }
     .about-title {
       left: calc(667 * var(--u));
-      top: calc(384 * var(--u));
+      top: calc(484 * var(--u));
     }
     .about-title span:first-child {
       margin-left: calc(160 * var(--u));
@@ -226,7 +226,7 @@
     }
     .about-label {
       left: calc(564 * var(--u));
-      top: calc(516 * var(--u));
+      top: calc(616 * var(--u));
       width: calc(79 * var(--u));
       font-size: calc(15.615 * var(--u));
       line-height: calc(19.98 * var(--u));
@@ -234,7 +234,7 @@
     }
     .about-copy {
       left: calc(841 * var(--u));
-      top: calc(615 * var(--u));
+      top: calc(715 * var(--u));
       width: auto;
       font-size: calc(20 * var(--u));
       line-height: 1.5;
