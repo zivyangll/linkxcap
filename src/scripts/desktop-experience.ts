@@ -3,8 +3,10 @@ import { DESKTOP_MOTION } from './motion-policy';
 export function initDesktopExperience() {
   const media = matchMedia(DESKTOP_MOTION);
   let cleanup = () => {};
+  let suspend = () => {};
   const update = () => {
     cleanup();
+    suspend = () => {};
     if (!media.matches) return;
     const source = document.querySelector<HTMLImageElement>(
       '.portfolio-card .card-arrow img',
@@ -16,38 +18,35 @@ export function initDesktopExperience() {
     // Use the original portfolio arrow asset inside its original circular frame.
     cursor.append(source.cloneNode(true));
     document.body.append(cursor);
+    document.documentElement.classList.add('has-live-cursor-ready');
     let frame = 0,
-      x = 0,
-      y = 0;
-    const avoidLogo = (card: HTMLElement) => {
-      const logo = card.querySelector<HTMLElement>('.company-logo');
-      if (!logo) return { x, y };
-      const logoBox = logo.getBoundingClientRect();
-      const cardBox = card.getBoundingClientRect();
-      const radius = cursor.offsetWidth / 2;
-      const gap = Math.max(6, radius * 0.16);
-      const overlaps =
-        x + radius > logoBox.left - gap &&
-        x - radius < logoBox.right + gap &&
-        y + radius > logoBox.top - gap &&
-        y - radius < logoBox.bottom + gap;
-      if (!overlaps) return { x, y };
-      // Keep a single, stable avoidance position above the logo. Choosing a
-      // side from every pointer packet made the arrow oscillate left/right.
-      return {
-        x: Math.max(
-          cardBox.left + radius + gap,
-          Math.min(
-            cardBox.right - radius - gap,
-            logoBox.left + logoBox.width / 2,
-          ),
-        ),
-        y: Math.max(cardBox.top + radius + gap, logoBox.top - radius - gap),
-      };
+      currentX = 0,
+      currentY = 0,
+      targetX = 0,
+      targetY = 0,
+      visible = false;
+    const paint = () => {
+      if (!visible) {
+        frame = 0;
+        return;
+      }
+      currentX += (targetX - currentX) * 0.3;
+      currentY += (targetY - currentY) * 0.3;
+      if (
+        Math.abs(targetX - currentX) < 0.1 &&
+        Math.abs(targetY - currentY) < 0.1
+      ) {
+        currentX = targetX;
+        currentY = targetY;
+      }
+      cursor.style.transform = `translate3d(${currentX.toFixed(2)}px,${currentY.toFixed(2)}px,0) translate(-50%, -50%)`;
+      if (currentX === targetX && currentY === targetY) frame = 0;
+      else frame = requestAnimationFrame(paint);
     };
     const hide = () => {
+      visible = false;
       document.documentElement.classList.remove('has-live-cursor');
-      cursor.hidden = true;
+      cursor.classList.remove('is-visible');
       cancelAnimationFrame(frame);
       frame = 0;
     };
@@ -57,16 +56,17 @@ export function initDesktopExperience() {
       const target = event.target as Element | null;
       const card = target?.closest<HTMLElement>('.portfolio-card');
       if (!card) return hide();
-      x = event.clientX;
-      y = event.clientY;
-      cursor.hidden = false;
+      targetX = event.clientX;
+      targetY = event.clientY;
+      if (!visible) {
+        currentX = targetX;
+        currentY = targetY;
+        cursor.style.transform = `translate3d(${currentX}px,${currentY}px,0) translate(-50%, -50%)`;
+      }
+      visible = true;
+      cursor.classList.add('is-visible');
       document.documentElement.classList.add('has-live-cursor');
-      if (!frame)
-        frame = requestAnimationFrame(() => {
-          const position = avoidLogo(card);
-          cursor.style.transform = `translate3d(${position.x}px,${position.y}px,0) translate(-50%, -50%)`;
-          frame = 0;
-        });
+      if (!frame) frame = requestAnimationFrame(paint);
     };
     document.addEventListener('pointermove', move, { passive: true });
     document.documentElement.addEventListener('pointerleave', hide);
@@ -76,9 +76,11 @@ export function initDesktopExperience() {
     document.addEventListener('keydown', hide);
     document.addEventListener('click', hide);
     window.addEventListener('pageshow', hide);
+    suspend = hide;
     cleanup = () => {
       hide();
       cursor.remove();
+      document.documentElement.classList.remove('has-live-cursor-ready');
       document.removeEventListener('pointermove', move);
       document.documentElement.removeEventListener('pointerleave', hide);
       window.removeEventListener('blur', hide);
@@ -91,12 +93,7 @@ export function initDesktopExperience() {
   };
   update();
   media.addEventListener('change', update);
-  window.addEventListener(
-    'pagehide',
-    () => {
-      cleanup();
-      media.removeEventListener('change', update);
-    },
-    { once: true },
-  );
+  // Keep the listeners and cursor in the browser's back-forward cache. Only
+  // clear the visible state so returning cannot expose the card's fixed arrow.
+  window.addEventListener('pagehide', () => suspend());
 }

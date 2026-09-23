@@ -187,29 +187,45 @@ test('portfolio keeps the original grid and the original round arrow follows the
   expect(await cursor.locator('img').getAttribute('src')).toBe(
     await card.locator('.card-arrow img').getAttribute('src'),
   );
-  const logoBox = (await card.locator('.company-logo').boundingBox())!;
   const firstCursorBox = (await cursor.boundingBox())!;
-  expect(firstCursorBox.y + firstCursorBox.height / 2).toBeLessThan(logoBox.y);
-  await page.mouse.move(
-    logoBox.x + logoBox.width * 0.8,
-    logoBox.y + logoBox.height * 0.8,
-  );
+  expect(firstCursorBox.x + firstCursorBox.width / 2).toBeCloseTo(x, 0);
+  expect(firstCursorBox.y + firstCursorBox.height / 2).toBeCloseTo(y, 0);
+  const nextX = Math.round(box.x + box.width * 0.35);
+  const nextY = Math.round(box.y + box.height * 0.7);
+  await page.mouse.move(nextX, nextY);
+  await page.waitForTimeout(260);
   const secondCursorBox = (await cursor.boundingBox())!;
-  expect(secondCursorBox.x).toBeCloseTo(firstCursorBox.x, 0);
-  expect(secondCursorBox.y).toBeCloseTo(firstCursorBox.y, 0);
+  expect(secondCursorBox.x + secondCursorBox.width / 2).toBeCloseTo(nextX, 0);
+  expect(secondCursorBox.y + secondCursorBox.height / 2).toBeCloseTo(nextY, 0);
   await expect(page.locator('.card-number')).toHaveCount(0);
   await expect(card.locator('.company-logo img')).toHaveCSS('filter', 'none');
   const heading = (await page.locator('.portfolio-page h1').boundingBox())!;
   await page.mouse.move(heading.x + 10, heading.y + 10);
   await expect(cursor).toBeHidden();
-  await expect(page.locator('html')).not.toHaveClass(/has-live-cursor/);
+  await expect(page.locator('html')).not.toHaveClass(
+    /(?:^|\s)has-live-cursor(?:\s|$)/,
+  );
   await page.mouse.move(x, y);
   await expect(cursor).toBeVisible();
+  await Promise.all([
+    page.waitForURL(/portfolio\/.+\.html$/),
+    page.mouse.click(x, y),
+  ]);
+  await page.goBack();
+  await expect(page.locator('.live-cursor')).toBeHidden();
+  await expect(page.locator('html')).toHaveClass(/has-live-cursor-ready/);
+  await expect(
+    page.locator('.portfolio-card').first().locator('.card-arrow'),
+  ).toHaveCSS('visibility', 'hidden');
+  await page.mouse.move(x, y);
+  await expect(page.locator('.live-cursor')).toBeVisible();
   await page.mouse.wheel(0, 50);
   await expect(cursor).toBeHidden();
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await expect(cursor).toHaveCount(0);
-  await expect(page.locator('html')).not.toHaveClass(/has-live-cursor/);
+  await expect(page.locator('html')).not.toHaveClass(
+    /(?:^|\s)has-live-cursor(?:\s|$)/,
+  );
 });
 
 test('PC and H5 motion owners are removed and rebuilt independently on resize', async ({

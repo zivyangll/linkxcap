@@ -86,16 +86,30 @@
     backdrop-filter: blur(7px);
     pointer-events: none;
     z-index: 2147483646;
+    opacity: 0;
+    visibility: hidden;
+    will-change: transform;
+    transition:
+      opacity 0.14s ease,
+      visibility 0s linear 0.14s;
   }
-  .live-cursor[hidden] {
-    display: none;
+  .live-cursor.is-visible {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
   }
   .live-cursor img {
     width: 50.7%;
     height: 36.6%;
   }
-  .has-live-cursor .portfolio-page .card-arrow {
+  .has-live-cursor-ready .portfolio-page .card-arrow {
     visibility: hidden;
+  }
+  .has-live-cursor-ready
+    .portfolio-page
+    .portfolio-card:focus-visible
+    .card-arrow {
+    visibility: visible;
   }
   .fellow-intro :is(.next-title-outline, .next-subtitle-outline) {
     animation: signal-outline 1.35s ease-in-out 0.1s both;
