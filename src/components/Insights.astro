@@ -6,6 +6,7 @@ import {
   insightArticleFromData,
   insightsContent,
   content,
+  currentYear,
   type Lang,
 } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
@@ -111,7 +112,10 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
       );
     })}
   </div>
-  <p class="insights-copyright">{insightsContent.copyright}</p>
+  <p class="insights-copyright">
+    Link-X Capital <time data-current-year>{currentYear}</time>. All rights
+    reserved.
+  </p>
   <div class="empty-state" data-empty hidden>
     <p>{ui[lang].noResults}</p>
     <button data-filter-reset>{ui[lang].reset}</button>

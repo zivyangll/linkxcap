@@ -113,8 +113,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
         >
           <i class="constellation-dot" aria-hidden="true"></i>
           <span class="constellation-company-label">
-            ({homeContent.focus.investmentYear},{' '}
-            {pick(lang, company.name, company.nameEn)})
+            {`(${company.investmentYear}, ${pick(lang, company.name, company.nameEn)})`}
           </span>
         </a>
       ))}

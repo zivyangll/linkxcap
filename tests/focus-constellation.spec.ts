@@ -55,12 +55,14 @@ test('hover immediately selects every sector and connects only its configured co
         links.map((link) => ({
           key: (link as HTMLElement).dataset.topologyAnchor,
           href: link.getAttribute('href'),
+          label: link.textContent?.trim(),
         })),
       ),
     ).toEqual(
       companies.map((company) => ({
         key: `company-${company.id}`,
         href: `/linkxcap/zh/portfolio/${company.slug}.html`,
+        label: `(${company.investment_year}, ${company.name_cn})`,
       })),
     );
     await expect(button.locator('.diamond')).toHaveCSS(

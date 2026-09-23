@@ -66,6 +66,22 @@ test('mobile menu supports Escape and focus return', async ({ page }) => {
   await page.locator('#site-menu a[href$="/zh/team.html"]').click();
   await expect(page.locator('main h1')).toContainText('团队');
 });
+test('footer, menu and insights use the current runtime year', async ({
+  page,
+}) => {
+  const year = String(new Date().getFullYear());
+  await page.goto('zh/index.html');
+  await expect(page.locator('.site-footer [data-current-year]')).toHaveText(
+    year,
+  );
+  await expect(page.locator('.menu-bottom [data-current-year]')).toHaveText(
+    year,
+  );
+  await page.goto('zh/insights.html');
+  await expect(
+    page.locator('.insights-copyright [data-current-year]'),
+  ).toHaveText(year);
+});
 test('filters, language state and original article link', async ({ page }) => {
   await page.goto('zh/insights.html');
   await expect(page.locator('.insight-row:visible')).toHaveCount(6);

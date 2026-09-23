@@ -1,13 +1,11 @@
 {
-  "schemaVersion": 13,
+  "schemaVersion": 14,
   "site": {
     "brand_cn": "星连资本",
     "brand_en": "Link-X Capital",
     "email": "service@linkxcap.com",
     "company_legal_name_cn": "北京星连肇基私募基金管理有限责任公司",
     "company_legal_name_en": "Link-X Capital",
-    "copyright_cn": "Link-X Capital 2026. All rights reserved.",
-    "copyright_en": "Link-X Capital 2026. All rights reserved.",
     "record_number": "京ICP备2022019276号-1",
     "meta_description_cn": "星连资本，与AGI时代的定义者同行。聚焦通用智能生态的创新与价值创造。",
     "meta_description_en": "Link-X Capital. Partnering with founders defining the AGI era.",
@@ -85,8 +83,7 @@
     "language_short_cn": "中",
     "language_short_en": "EN",
     "wechat_label_cn": "微信",
-    "wechat_label_en": "WeChat",
-    "menu_footer": "2026 北京星连肇基私募基金管理有限责任公司"
+    "wechat_label_en": "WeChat"
   },
   "ui": {
     "menu_cn": "菜单",
@@ -230,7 +227,6 @@
         "about_link_en": "About us",
         "aria_label_cn": "投资领域",
         "aria_label_en": "Investment focus",
-        "investment_year": "2026",
         "title_en": [
           "Focus",
           "Areas"
@@ -265,7 +261,6 @@
       "intro_en": "News from Link-X Capital, our portfolio, and the AI ecosystem. Following the real signals of technological and industrial change.",
       "filter_label_cn": "筛选文章",
       "filter_label_en": "Filter stories",
-      "copyright": "Link- X Capital 2026 All Right Deserve.",
       "back_cn": "返回洞察",
       "back_en": "Back to Insight",
       "eyebrow": "INSIGHT",
@@ -486,6 +481,7 @@
       "detail_cn": "中国领先的人工智能企业，专注 AGI 技术研发与产业化应用。公司已推出 GLM 系列自研大模型，并围绕大模型底座构建了覆盖 MaaS/API 服务、企业级私有化部署和智能体应用开发的产品体系。2026 年 1 月，智谱正式登陆港交所主板。",
       "detail_en": "Z.ai listed on the HKEX Main Board in January 2026 (stock code 02513.HK); the company builds GLM models, MaaS model services and agent applications across reasoning, coding, agents and multimodal capabilities.",
       "website_url": "https://www.zhipuai.cn/zh/about",
+      "investment_year": "2026",
       "sector_id": "foundation",
       "logo_file": "zhipu-ai.webp"
     },
@@ -499,6 +495,7 @@
       "detail_cn": "专注多模态通用大模型及应用研发。公司 2022 年 9 月即提出 U-ViT 创新架构，现已围绕 Vidu 系列自研多模态基础模型，构建 MaaS、SaaS、Agent 与 APP 产品矩阵，服务全球 200 多个国家和地区的创作者、内容机构和行业客户。",
       "detail_en": "GensPi develops multimodal foundation models and applications. Vidu supports video generation and multimodal content creation through SaaS, MaaS and open-platform offerings.",
       "website_url": "https://www.shengshu.com/zh/about",
+      "investment_year": "2026",
       "sector_id": "foundation",
       "logo_file": "shengshu-technology.webp"
     },
@@ -512,6 +509,7 @@
       "detail_cn": "中国领先的独立 AI 算力集群提供商。围绕高速组网、集合通信、并行框架和管控调度等核心能力，公司打造了 Galaxy 端到端 AI 算力集群产品体系，覆盖 AI 算力设备、Mercury 算力网络系统与 Venus AI 算力操作系统，为大模型预训练、后训练、推理和智能体等场景提供高效、稳定、可扩展的 AI 基础设施能力。",
       "detail_en": "Infrawaves provides high-performance networking, communication optimization and the Venus compute platform for AI clusters, covering deployment, scheduling, training, inference, monitoring and maintenance.",
       "website_url": "https://infrawaves.com/home",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "infrawaves.webp"
     },
@@ -525,6 +523,7 @@
       "detail_cn": "AI Native 生物科技公司，以生成式 AI 打造生命科学领域的“微观世界模型“，并与自动化实验室平台深度耦合，构建“设计—实验—学习“的自主闭环，从抗体、疫苗、多肽到酶工程，实现生命科学领域的自主科学发现——让生命从“被理解“走向“被设计“。",
       "detail_en": "An AI-native biotech company using generative AI to build a “microscopic world model” of biology. By tightly integrating AI with automated laboratories, it creates a self-improving loop of design, experimentation, and learning—accelerating autonomous discovery across antibodies, vaccines, peptides, and enzyme engineering, and moving biology from being understood to being engineered.",
       "website_url": "https://www.biogeom.com/about/",
+      "investment_year": "2026",
       "sector_id": "applications",
       "logo_file": "biogeometry.webp"
     },
@@ -538,6 +537,7 @@
       "detail_cn": "专注情境交互智能的创新型公司。公司围绕  MOSS 系列模型研发，致力于构建下一代智能人机交互技术，通过融合文本、音频、视频、动作等模态，规模化物理世界的复杂真实情境，让 AI理解用户所处的全局情境，实现自然、连贯、可成长、可信赖的交互智能，推动多模态交互与具身智能的产业化落地。模思由上海创智学院与复旦大学联合孵化，由词元定义者、国际NLP与大模型顶尖学者复旦大学邱锡鹏教授创立；是国内少数完成“全模态基座模型能力闭环”的初创企业之一。",
       "detail_en": "Co-incubated by the Shanghai Institute of Intelligent Science and Fudan University, Mosi Intelligence is founded by Prof. Xipeng Qiu, a top scholar in NLP and LLMs. Dedicated to MOSS model development, the company builds next-generation human-computer interaction technologies that fuse text, audio, video, and action modalities for multimodal interaction and embodied intelligence.",
       "website_url": "https://home.mosi.cn",
+      "investment_year": "2026",
       "sector_id": "foundation",
       "logo_file": "mosi.webp"
     },
@@ -551,6 +551,7 @@
       "detail_cn": "专注工业具身智能与规模化商业机器人应用，面向 3C、汽车电子等制造场景提供柔性生产与亚毫米级精密装配解决方案。公司融合人工智能、多模态感知与自主运动控制技术，产品覆盖复杂装配、精密检测、智能仓储等环节，核心团队具备自动驾驶、机器人和量产交付经验。",
       "detail_en": "Amigos develops intelligent robot systems and application solutions for large-scale commercial scenarios such as logistics, warehousing and retail automation.",
       "website_url": "",
+      "investment_year": "2026",
       "sector_id": "physical",
       "logo_file": "amio-robotics.webp"
     },
@@ -564,6 +565,7 @@
       "detail_cn": "RealAI 是一家 AI 自主组织与安全技术公司，致力于构建能够自主完成组织级目标、持续学习进化的 AI 自主组织，并确保其安全、可信与可控。",
       "detail_en": "RealAI, initiated by Tsinghua University's Institute for AI Industry Research, provides AI platform and safety solutions across governance, finance, research, education and mobility.",
       "website_url": "https://www.realai.ai/about?scrollId=t19",
+      "investment_year": "2026",
       "sector_id": "applications",
       "logo_file": "realai.webp"
     },
@@ -577,6 +579,7 @@
       "detail_cn": "专注智能终端与云游戏核心芯片方案，依托 AIoT 高能效技术和云端高清流媒体加速技术，为终端智能教育、云游戏等场景提供低功耗、高性能的硬件加速能力。公司自研高能效 SoC 芯片 G100，面向实时语音、图像处理及智能终端应用，已在翻译笔、学习机等产品中逐步落地。",
       "detail_en": "AGICmicro centers on AIoT energy efficiency and cloud HD streaming acceleration, offering high-efficiency SoCs, cloud gaming chips and chip design services.",
       "website_url": "https://www.agicmicro.com/gywm/",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "agic-micro.webp"
     },
@@ -590,6 +593,7 @@
       "detail_cn": "中国领先的 AI 原生基础设施企业，聚焦多元异构算力与软硬协同优化，打造连接 “M 种模型” 与 “N 种芯片” 的 “M×N” AI 基础设施范式。公司通过 Infini-AI 异构云平台，为大模型训练、推理与部署提供高性价比算力、原生工具链和推理加速能力，持续提升 Token 生产效率，并面向智能体时代构建可学习、可进化的 Agentic Infra。",
       "detail_en": "Infinigence provides Agentic Infra and Agentic MaaS, managing multiple chip types for large-model training, production inference and enterprise agents.",
       "website_url": "https://cloud.infini-ai.com/platform/ai",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "infinigence-ai.webp"
     },
@@ -603,6 +607,7 @@
       "detail_cn": "面向智能驾驶与具身智能场景的高性能计算平台公司，致力于打造具身智能时代的算力底座。公司提供高算力通用具身智能芯片、开放工具链及全栈解决方案，并提出“数据闭环定义芯片”的产品方法学，将算力、算法和数据闭环协同纳入芯片架构设计，帮助车企与机器人企业构建低成本、大规模、可自动化迭代的智能系统。公司已发布基于 7nm 车规级工艺的高阶智能驾驶芯片“光至 R1”，面向高阶智能驾驶、机器人等场景提供高性能、可量产的算力支持。",
       "detail_en": "RHINO is a high-performance computing platform company for intelligent driving and embodied-intelligence scenarios. It builds general-purpose embodied-intelligence chips, open toolchains and full-stack solutions, using a data-closed-loop approach to chip definition for scalable intelligent systems.",
       "website_url": "https://www.rhino.auto/about",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "rhino.webp"
     },
@@ -616,6 +621,7 @@
       "detail_cn": "专注高性能大模型云服务与推理基础设施。公司通过 SiliconCloud 一站式模型云平台，结合自研 SiliconLLM、OneDiff 等推理与生成加速技术，为语言、多模态、文生图、视频生成等模型提供高性能、低成本的 API、微调、托管和部署服务，帮助开发者和企业更快、更便宜地构建生成式 AI 应用。",
       "detail_en": "SiliconFlow focuses on high-performance model cloud services and inference infrastructure, providing API, fine-tuning, hosting and deployment services through SiliconCloud and acceleration technologies such as SiliconLLM and OneDiff.",
       "website_url": "https://www.siliconflow.com/",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "siliconflow.webp"
     },
@@ -629,6 +635,7 @@
       "detail_cn": "聚焦 “AI+IP” 的数字内容科技公司。通过自研技术中台将 AI 大模型能力应用于 IP 开发、内容制作、运营与衍生环节，提升泛娱乐内容生产效率。公司已推出「剧灵 AI」「珀乐视界」等产品，业务覆盖 AIGC 动漫短剧、互动娱乐内容与多模态 IP 商业化。",
       "detail_en": "Pule applies large-model capabilities to IP development, operations and derivatives through an in-house technology platform, improving digital-content production and monetization.",
       "website_url": "",
+      "investment_year": "2026",
       "sector_id": "applications",
       "logo_file": "polo-interactive.webp"
     },
@@ -642,6 +649,7 @@
       "detail_cn": "秉承 “Robot for AI” 的愿景，致力于打造新一代通用具身智能体。公司通过全栈自研机器人硬件，训练端到端运动控制系统，并融合多模态大模型，为生产制造、特种作业、生活服务等领域提供新一代 AI 生产力。其核心团队是国内少数能够将强化学习算法在全尺寸人形机器人运动控制中实现规模化落地的团队之一。",
       "detail_en": "PHYBOT builds embodied agents through full-stack hardware, end-to-end motion control and multimodal models for manufacturing, special operations and life services.",
       "website_url": "https://www.phybot.tech/",
+      "investment_year": "2026",
       "sector_id": "physical",
       "logo_file": "phybot.webp"
     },
@@ -655,6 +663,7 @@
       "detail_cn": "专注高效大模型研发与端侧部署，现已推出 MiniCPM「面壁小钢炮」系列语言、多模态及全模态模型，以更小参数和更低算力成本实现高性能智能，并推动相关技术在手机、PC、汽车、机器人等终端场景落地。公司联合清华大学等团队提出的大模型“密度法则”相关研究发表于 Nature 子刊。",
       "detail_en": "ModelBest builds the MiniCPM on-device model family, improving model knowledge density and deployment efficiency across phones, AIPCs, cockpits and robots.",
       "website_url": "https://modelbest.cn/",
+      "investment_year": "2026",
       "sector_id": "foundation",
       "logo_file": "modelbest.webp"
     },
@@ -668,6 +677,7 @@
       "detail_cn": "致力以 AI 提供便捷、低廉、优质的医疗服务。公司研发“紫荆 AI 医院”（Agent Hospital），通过疾病生成模型与数据飞轮机制推动医疗智能体自我进化，已构建二十多个科室的医疗 Agent，并在全国多个城市启动公开测试，推动优质智能医疗资源下沉与区域医疗资源均衡布局。",
       "detail_en": "Committed to making healthcare more accessible, affordable and high-quality through AI. Its Agent Hospital system uses disease-generation models and data flywheels to evolve medical agents across departments and support public testing in multiple cities.",
       "website_url": "https://www.tairex.cn/gy",
+      "investment_year": "2026",
       "sector_id": "applications",
       "logo_file": "tairex.webp"
     },
@@ -681,6 +691,7 @@
       "detail_cn": "Zettlab 是一家专注于 Agent Computer 与本地 AI 计算的创新公司，致力于让每个 Agent 都拥有自己的电脑。通过融合 AI、存储与边缘计算，Zettlab 打造面向个人、家庭与企业的智能计算平台，实现数据管理、内容生成与多智能体协作。",
       "detail_en": "Zettlab is an AI-native computing company focused on Agent Computers and Local AI infrastructure. Its mission is to give every AI Agent its own computer. By integrating AI, storage, and edge computing, Zettlab builds intelligent computing platforms for individuals, homes, and enterprises, enabling private AI workflows, content generation, personal knowledge management, and multi-agent collaboration.",
       "website_url": "https://zettlab.com/",
+      "investment_year": "2026",
       "sector_id": "physical",
       "logo_file": "zettlab.webp"
     },
@@ -694,6 +705,7 @@
       "detail_cn": "清程极智是专业的一站式全链路Token解决方案服务商，核心团队来自清华大学计算机系，依托自主研发的大模型推理引擎及智能路由算法，提升包括国产算力在内的智能算力使用效率，为行业提供高质量低成本的大模型Token服务。",
       "detail_en": "Qingcheng Jizhi provides end-to-end token infrastructure for large-model applications. Founded by a core team from Tsinghua University’s Department of Computer Science, the company uses its proprietary inference engine and intelligent routing technology to improve the efficiency of AI computing resources, including China-developed accelerators, and deliver reliable, high-quality token services at lower cost.",
       "website_url": "https://www.qc-ai.cn/",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "qingcheng-jizhi.webp"
     },
@@ -707,6 +719,7 @@
       "detail_cn": "专注大模型推理优化与 AI Token 生产基础设施，构建 ATaaS 平台，为企业级大模型应用提供低时延、高吞吐、稳定结构化输出和可预测服务质量的 Token 规模化供给能力。公司团队源自清华高性能计算研究所，参与 KTransformers、Mooncake 等推理开源项目，致力以“以存换算”和异构协同架构降低推理成本、提升算力效率。",
       "detail_en": "Approaching AI focuses on large-scale inference and token production, using heterogeneous compute coordination and memory-compute optimization to lower deployment cost.",
       "website_url": "https://approaching-ai.com/introduction",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "approaching-ai.webp"
     },
@@ -720,6 +733,7 @@
       "detail_cn": "面向大模型推理场景的新一代 GPGPU 芯片公司，致力打造软件亲和、高显存规格的大模型推理芯片，用异构、白盒的硬件形态重塑大模型计算系统，推动大模型以更高质量、更低成本走向规模化应用。公司围绕超大显存规格、CUDA 兼容和全自研 GPGPU 架构构建核心能力，瞄准大模型推理中显存容量、算力效率和软件生态适配等关键瓶颈，目标是实现 AI 推理能力的普惠化。核心团队来自清华大学及全球顶尖 GPU/AI 芯片公司，具备芯片架构、编译器、系统软件和量产交付经验。",
       "detail_en": "Xingyun IC is a next-generation GPGPU chip company for large-model inference, building software-friendly, high-memory inference chips with CUDA compatibility and an in-house GPGPU architecture.",
       "website_url": "https://xingyun.xin/",
+      "investment_year": "2026",
       "sector_id": "infrastructure",
       "logo_file": "xingyun-ic.webp"
     }

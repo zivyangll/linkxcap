@@ -1,5 +1,9 @@
 import { mountFocusControls } from './focus-controls';
 export {};
+const currentYear = String(new Date().getFullYear());
+document
+  .querySelectorAll<HTMLElement>('[data-current-year]')
+  .forEach((element) => (element.textContent = currentYear));
 const liveStatus = document.querySelector<HTMLElement>('[data-status]');
 const menu = document.querySelector<HTMLDialogElement>('#site-menu');
 const menuOpener =

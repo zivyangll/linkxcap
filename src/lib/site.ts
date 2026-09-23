@@ -28,6 +28,7 @@ export const asset = (node: string, key: string) => {
   return url(src);
 };
 export const preview = import.meta.env.PUBLIC_CONTENT_MODE !== 'production';
+export const currentYear = new Date().getFullYear();
 
 type AnyRecord = Record<string, any>;
 type Localized<T = string> = { zh: T; en: T };
@@ -45,7 +46,6 @@ type NavigationContent = {
   wechatLabel: Localized;
   menuTitle: string;
   menuContactLink: string;
-  menuFooter: string;
 };
 type HomeContent = {
   opening: {
@@ -76,7 +76,6 @@ type HomeContent = {
     contactLink: Localized;
     aboutLink: Localized;
     ariaLabel: Localized;
-    investmentYear: string;
   };
 };
 type PortfolioContent = {
@@ -95,7 +94,6 @@ type InsightsContent = {
   title: Localized;
   intro: Localized;
   filterLabel: Localized;
-  copyright: string;
   back: Localized;
   eyebrow: string;
   publisher: string;
@@ -165,7 +163,6 @@ export const siteContent = {
   brandZh: raw.site.brand_cn,
   email: raw.site.email,
   companyLegalName: pair(raw.site, 'company_legal_name'),
-  copyright: pair(raw.site, 'copyright'),
   recordNumber: raw.site.record_number,
   metaDescription: pair(raw.site, 'meta_description'),
   ogImageUrl: contentAsset(raw.site.og_image_file),
@@ -310,6 +307,7 @@ const companySchema = z.looseObject({
   detail: z.string(),
   detailEn: z.string(),
   website: z.string().optional(),
+  investmentYear: z.string(),
   sector: z.string(),
   logoUrl: z.string(),
 });
@@ -324,6 +322,7 @@ const sourceCompanies = z.array(companySchema).parse(
     detail: company.detail_cn,
     detailEn: company.detail_en,
     website: company.website_url || undefined,
+    investmentYear: company.investment_year,
     sector: company.sector_id,
     logoUrl: contentAsset(company.logo_file),
   })),

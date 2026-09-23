@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 13;
+export const CONTENT_SCHEMA_VERSION = 14;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {
@@ -212,6 +212,7 @@ function validateRelations(config: Record<string, unknown>, errors: string[]) {
       'description_en',
       'detail_cn',
       'detail_en',
+      'investment_year',
       'sector_id',
       'logo_file',
     ],
@@ -245,6 +246,15 @@ function validateRelations(config: Record<string, unknown>, errors: string[]) {
       )
         errors.push(
           `content.companies[${index}].slug：只能使用小写字母、数字和连字符，且不能以连字符开头或结尾`,
+        );
+      if (
+        isObject(company) &&
+        typeof company.investment_year === 'string' &&
+        company.investment_year &&
+        !/^\d{4}$/.test(company.investment_year)
+      )
+        errors.push(
+          `content.companies[${index}].investment_year：请填写4位年份`,
         );
       if (
         isObject(company) &&
@@ -303,7 +313,7 @@ export function validateContentConfig(
 export function upgradeContentConfig(candidate: unknown): unknown {
   if (
     !isObject(candidate) ||
-    ![9, 10, 11, 12].includes(candidate.schemaVersion as number) ||
+    ![9, 10, 11, 12, 13].includes(candidate.schemaVersion as number) ||
     !isObject(candidate.ui) ||
     !isObject(candidate.media) ||
     !isObject(candidate.media.fellow)
@@ -313,7 +323,35 @@ export function upgradeContentConfig(candidate: unknown): unknown {
   for (const key of ['pause_cn', 'pause_en', 'resume_cn', 'resume_en'])
     delete ui[key];
   const fellow = { ...candidate.media.fellow };
+  const site = isObject(candidate.site)
+    ? { ...candidate.site }
+    : candidate.site;
+  if (isObject(site)) {
+    delete site.copyright_cn;
+    delete site.copyright_en;
+  }
+  const navigation = isObject(candidate.navigation)
+    ? { ...candidate.navigation }
+    : candidate.navigation;
+  if (isObject(navigation)) delete navigation.menu_footer;
   const pages = { ...(candidate.pages as Record<string, unknown>) };
+  let sharedInvestmentYear = '';
+  if (isObject(pages.home)) {
+    const home = { ...pages.home };
+    if (isObject(home.focus)) {
+      const focus = { ...home.focus };
+      if (typeof focus.investment_year === 'string')
+        sharedInvestmentYear = focus.investment_year;
+      delete focus.investment_year;
+      home.focus = focus;
+    }
+    pages.home = home;
+  }
+  if (isObject(pages.insights)) {
+    const insights = { ...pages.insights };
+    delete insights.copyright;
+    pages.insights = insights;
+  }
   if (isObject(pages.contact)) {
     const contact = { ...pages.contact };
     delete contact.play_video_cn;
@@ -356,11 +394,26 @@ export function upgradeContentConfig(candidate: unknown): unknown {
     fellow.video_file = filename;
     delete fellow.video_url;
   }
+  const companies = Array.isArray(candidate.companies)
+    ? candidate.companies.map((company) => {
+        if (!isObject(company)) return company;
+        return {
+          ...company,
+          investment_year:
+            typeof company.investment_year === 'string'
+              ? company.investment_year
+              : sharedInvestmentYear,
+        };
+      })
+    : candidate.companies;
   return {
     ...candidate,
     schemaVersion: CONTENT_SCHEMA_VERSION,
+    site,
+    navigation,
     ui,
     pages,
+    companies,
     media: { ...candidate.media, fellow },
   };
 }

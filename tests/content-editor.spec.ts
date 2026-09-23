@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const hash = 'a4f9c2e71b6d4830c5a8e2f94d7b136c';
 const editorPath = `${hash}.html`;
 const validPath = `${editorPath}?debug=true`;
-const storageKey = `linkx-content-editor:127.0.0.1:schema-13`;
+const storageKey = `linkx-content-editor:127.0.0.1:schema-14`;
 
 test('invalid and duplicate debug parameters never initialize the editor', async ({
   page,
@@ -50,6 +50,18 @@ test('valid entry loads grouped bilingual fields and stays out of sitemap', asyn
   await expect(
     page.locator('[data-config-path="companies.0.slug"]'),
   ).not.toHaveAttribute('readonly', '');
+  await expect(
+    page.locator('[data-config-path="companies.0.investment_year"]'),
+  ).toHaveValue('2026');
+  await expect(
+    page.locator('[data-config-path="companies.0.sector_id"]'),
+  ).toHaveJSProperty('tagName', 'SELECT');
+  await expect(
+    page.locator('[data-config-path="pages.home.focus.investment_year"]'),
+  ).toHaveCount(0);
+  await expect(
+    page.locator('[data-config-path="site.copyright_cn"]'),
+  ).toHaveCount(0);
   const sitemap = await (await request.get('sitemap.xml')).text();
   expect(sitemap).not.toContain(hash);
 });
@@ -120,6 +132,24 @@ test('business images accept filenames instead of CDN URLs', async ({
   await expect(error).toContainText('只能填写文件名');
   await logoFile.fill('zhipu-ai.webp');
   await expect(error).toHaveCount(0);
+});
+
+test('each company edits its own investment year and selects its constellation direction', async ({
+  page,
+}) => {
+  await page.goto(validPath);
+  await page.getByRole('tab', { name: '投资组合', exact: true }).click();
+  const year = page.locator('[data-config-path="companies.0.investment_year"]');
+  const direction = page.locator('[data-config-path="companies.0.sector_id"]');
+  await year.fill('2021');
+  await direction.selectOption('physical');
+  await expect(direction.locator('option:checked')).toContainText('物理智能');
+  const stored = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key)!),
+    storageKey,
+  );
+  expect(stored.companies[0].investment_year).toBe('2021');
+  expect(stored.companies[0].sector_id).toBe('physical');
 });
 
 test('company tabs can rename, drag, add, delete and persist their order', async ({
@@ -344,7 +374,10 @@ test('export uses the latest fields and can round-trip through import', async ({
   for await (const chunk of stream) chunks.push(Buffer.from(chunk));
   const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
   expect(exported.site.brand_cn).toBe('导出即时内容');
-  expect(exported.schemaVersion).toBe(13);
+  expect(exported.schemaVersion).toBe(14);
+  expect(exported.site).not.toHaveProperty('copyright_cn');
+  expect(exported.navigation).not.toHaveProperty('menu_footer');
+  expect(exported.pages.home.focus).not.toHaveProperty('investment_year');
   expect(exported.pages.contact).not.toHaveProperty('play_video_cn');
   expect(exported.pages.contact).not.toHaveProperty('play_video_en');
   expect(exported.insights.articles).toBeUndefined();
@@ -403,7 +436,7 @@ test('editor remains usable on a 360px mobile viewport', async ({ page }) => {
   expect(overflow).toBeLessThanOrEqual(1);
 });
 
-for (const version of [9, 10, 11, 12])
+for (const version of [9, 10, 11, 12, 13])
   test(`v${version} drafts preserve edits and migrate video filenames without overwriting the old draft`, async ({
     page,
   }) => {
@@ -419,6 +452,14 @@ for (const version of [9, 10, 11, 12])
       'https://example.com/assets/video_example.mp4';
     delete legacy.media.fellow.video_file;
     legacy.site.brand_cn = '保留我的品牌修改';
+    legacy.site.copyright_cn = 'Link-X Capital 2026. All rights reserved.';
+    legacy.site.copyright_en = 'Link-X Capital 2026. All rights reserved.';
+    legacy.navigation.menu_footer = '2026 旧菜单页脚';
+    legacy.pages.insights.copyright = 'Link-X Capital 2026';
+    legacy.pages.home.focus.investment_year = '2024';
+    legacy.companies.forEach((company: Record<string, unknown>) => {
+      delete company.investment_year;
+    });
     legacy.pages.contact.play_video_cn = '旧播放视频';
     legacy.pages.contact.play_video_en = 'Old play film';
     legacy.pages.contact.wechat.forEach(
@@ -434,7 +475,7 @@ for (const version of [9, 10, 11, 12])
       resume_cn: '旧开启',
       resume_en: 'Old resume',
     });
-    const previousKey = storageKey.replace('schema-13', `schema-${version}`);
+    const previousKey = storageKey.replace('schema-14', `schema-${version}`);
     await page.evaluate(
       ({ previousKey, storageKey, legacy }) => {
         localStorage.removeItem(storageKey);
@@ -464,7 +505,12 @@ for (const version of [9, 10, 11, 12])
     const chunks: Buffer[] = [];
     for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
     const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    expect(exported.schemaVersion).toBe(13);
+    expect(exported.schemaVersion).toBe(14);
+    expect(exported.companies[0].investment_year).toBe('2024');
+    expect(exported.pages.home.focus).not.toHaveProperty('investment_year');
+    expect(exported.site).not.toHaveProperty('copyright_cn');
+    expect(exported.navigation).not.toHaveProperty('menu_footer');
+    expect(exported.pages.insights).not.toHaveProperty('copyright');
     expect(exported.pages.contact.wechat[0].image_file).toBe(
       'wechat-linkx-capital.png',
     );

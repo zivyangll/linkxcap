@@ -55,7 +55,6 @@ const labels: Record<string, string> = {
   brand: '品牌名称',
   email: '邮箱',
   company_legal_name: '公司法定名称',
-  copyright: '版权文字',
   record_number: '备案号',
   meta_description: 'SEO 描述',
   og_image_file: '社交分享图片文件名',
@@ -91,7 +90,8 @@ const labels: Record<string, string> = {
   slug: '详情页路由 slug',
   route: '页面路由',
   page: '页面标识',
-  sector_id: '投资领域 ID',
+  investment_year: '投资年份',
+  sector_id: '投资方向（星域节点）',
 };
 
 const sectionNotes: Record<string, string> = {
@@ -101,7 +101,8 @@ const sectionNotes: Record<string, string> = {
   'pages.home':
     '首页五屏文案；数组中的每一项对应一个视觉换行，统计数据目前为待确认占位',
   'pages.portfolio': '投资组合列表及公司详情的固定界面文案',
-  companies: '公司 Logo 只填写文件名；对应图片放在 public/assets 根目录',
+  companies:
+    '公司 Logo 只填写文件名；投资年份显示在 Three.js 公司节点中，投资方向决定公司连接到哪个星域节点',
   'pages.team': '团队页面固定文案；姓名、职务和人物简介在团队成员中维护',
   team: '成员照片只填写文件名；路由 slug 决定 team-<slug>.html；内部结构 ID 已隐藏并由系统维护',
   'pages.insights':
@@ -418,8 +419,25 @@ function scalarField(
     caption.append(hint);
   }
   const readonly = isReadonly(key);
-  let control: HTMLInputElement | HTMLTextAreaElement;
-  if (typeof value === 'boolean') {
+  let control: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+  if (key === 'sector_id' && typeof value === 'string') {
+    const select = element('select');
+    const sectors = Array.isArray(current.sectors) ? current.sectors : [];
+    sectors.forEach((sector) => {
+      if (!isObject(sector) || typeof sector.id !== 'string') return;
+      const option = element('option');
+      option.value = sector.id;
+      const zh = typeof sector.name_cn === 'string' ? sector.name_cn : '';
+      const en = typeof sector.name_en === 'string' ? sector.name_en : '';
+      option.textContent = [zh, en].filter(Boolean).join(' / ') || sector.id;
+      select.append(option);
+    });
+    select.value = value;
+    select.dataset.configPath = path.join('.');
+    select.addEventListener('change', () => updateValue(path, select.value));
+    control = select;
+    wrapper.append(caption, control);
+  } else if (typeof value === 'boolean') {
     const input = element('input');
     input.type = 'checkbox';
     input.checked = value;
@@ -539,6 +557,7 @@ function createRecord(collection: string, records: JsonValue[]): JsonObject {
       detail_cn: '',
       detail_en: '',
       website_url: '',
+      investment_year: '',
       sector_id: firstSector,
       logo_file: '',
     };
@@ -908,7 +927,7 @@ function restoreDraft() {
   let legacy = false;
   try {
     serialized = localStorage.getItem(storageKey);
-    for (const version of [12, 11, 10, 9]) {
+    for (const version of [13, 12, 11, 10, 9]) {
       if (serialized) break;
       serialized = localStorage.getItem(
         storageKey.replace(
@@ -952,7 +971,7 @@ function restoreDraft() {
     setStatus(
       validation.valid
         ? legacy
-          ? '已恢复并升级旧版本草稿，视频和微信公众号二维码均改为文件名；旧草稿原件保留，首次修改后保存为新版本。'
+          ? '已恢复并升级旧版本草稿：页脚年份改为自动生成，公司投资年份与星域方向改在公司配置中维护；旧草稿原件保留，首次修改后保存为新版本。'
           : '已恢复当前域名下的本地草稿。'
         : '已恢复本地草稿；其中仍有格式问题，请修正后再导出。',
       validation.valid ? 'saved' : 'error',

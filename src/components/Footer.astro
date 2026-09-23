@@ -1,5 +1,12 @@
 ---
-import { pageUrl, ui, socials, siteContent, type Lang } from '../lib/site';
+import {
+  pageUrl,
+  ui,
+  socials,
+  siteContent,
+  currentYear,
+  type Lang,
+} from '../lib/site';
 interface Props {
   lang: Lang;
 }
@@ -8,7 +15,10 @@ const { lang } = Astro.props;
 
 <footer class="site-footer">
   <div class="footer-main">
-    <p>{siteContent.copyright[lang]}</p>
+    <p>
+      Link-X Capital <time data-current-year>{currentYear}</time>. All rights
+      reserved.
+    </p>
     <div class="footer-links">
       <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
       <a href={pageUrl(lang, 'legal')}>{ui[lang].legal}</a>

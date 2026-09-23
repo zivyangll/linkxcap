@@ -10,6 +10,7 @@ import {
   contactContent,
   socials,
   asset,
+  currentYear,
   type Lang,
 } from '../lib/site';
 interface Props {
@@ -164,7 +165,10 @@ const menuSocials = [
         </a>
       ))}
     </div>
-    <small>{navigationContent.menuFooter}</small>
+    <small>
+      <time data-current-year>{currentYear}</time>{' '}
+      {siteContent.companyLegalName[lang]}
+    </small>
   </div>
 </dialog>
 <noscript>

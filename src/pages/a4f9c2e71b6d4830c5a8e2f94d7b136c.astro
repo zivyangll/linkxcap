@@ -162,7 +162,8 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
   }
   button,
   input,
-  textarea {
+  textarea,
+  select {
     font: inherit;
   }
   button {
@@ -331,7 +332,8 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
     background: #fff5f6;
   }
   :global(.field.is-error-target input),
-  :global(.field.is-error-target textarea) {
+  :global(.field.is-error-target textarea),
+  :global(.field.is-error-target select) {
     border-color: #cf3548;
     box-shadow: 0 0 0 3px rgb(207 53 72 / 12%);
   }
@@ -753,7 +755,8 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
   :global(input[type='url']),
   :global(input[type='number']),
   :global(input[type='email']),
-  :global(textarea) {
+  :global(textarea),
+  :global(select) {
     width: 100%;
     border: 1px solid #cfcfd7;
     border-radius: 7px;
@@ -767,7 +770,8 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
     resize: vertical;
   }
   :global(input:focus),
-  :global(textarea:focus) {
+  :global(textarea:focus),
+  :global(select:focus) {
     outline: 2px solid #6b48dd;
     outline-offset: 1px;
   }
