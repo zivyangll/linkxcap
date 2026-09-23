@@ -288,3 +288,38 @@ for (const width of [360, 768])
       .not.toBe(rotation);
     await context.close();
   });
+
+test('narrow bilingual graphs keep company and category labels separate', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 360, height: 844 });
+  for (const lang of ['zh', 'en']) {
+    await page.goto(`${lang}/index.html`);
+    for (const sector of content.sectors) {
+      await page.locator(`[data-sector="${sector.id}"]`).click();
+      const overlaps = await page.locator('.constellation').evaluate((root) => {
+        const labels = [
+          ...root.querySelectorAll(
+            '.sector-star .star-label, .constellation-scene:not([hidden]) .constellation-company-label',
+          ),
+        ].map((element) => ({
+          text: element.textContent,
+          box: element.getBoundingClientRect(),
+        }));
+        return labels.flatMap((a, index) =>
+          labels
+            .slice(index + 1)
+            .filter(
+              (b) =>
+                Math.min(a.box.right, b.box.right) >
+                  Math.max(a.box.left, b.box.left) + 1 &&
+                Math.min(a.box.bottom, b.box.bottom) >
+                  Math.max(a.box.top, b.box.top) + 1,
+            )
+            .map((b) => [a.text, b.text]),
+        );
+      });
+      expect(overlaps).toEqual([]);
+    }
+  }
+});

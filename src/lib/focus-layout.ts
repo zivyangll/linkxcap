@@ -85,7 +85,7 @@ const mobileBranches: Record<string, number[][]> = {
     [45, 500],
     [145, 545],
     [300, 515],
-    [45, 400],
+    [15, 400],
   ],
   infrastructure: [
     [235, 15],
@@ -93,7 +93,7 @@ const mobileBranches: Record<string, number[][]> = {
     [325, 225],
     [320, 495],
     [190, 545],
-    [40, 465],
+    [15, 465],
     [30, 205],
     [45, 60],
   ],
