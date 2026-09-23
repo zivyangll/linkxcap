@@ -114,6 +114,12 @@
   .fellow-intro :is(.next-title-fill, .next-subtitle-fill) {
     animation: signal-fill 1.35s ease-in-out 0.1s both;
   }
+  .fellow-intro .signal-guides--opening .signal-guide-v {
+    clip-path: inset(0 0 100% 0);
+  }
+  .fellow-intro .signal-guides--opening .signal-guide-h {
+    clip-path: inset(0 100% 0 0);
+  }
   @keyframes signal-outline {
     from {
       opacity: 1;

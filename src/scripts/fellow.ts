@@ -18,15 +18,6 @@ export function initFellow() {
   media.add(DESKTOP_MOTION, () => {
     const intro = document.querySelector('.fellow-intro')!;
     const desktop = matchMedia('(min-width:1024px)').matches;
-    const introTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: intro,
-        start: 'top top',
-        end: desktop ? '+=80%' : 'bottom 40%',
-        pin: desktop,
-        scrub: 0.35,
-      },
-    });
     const openingVertical = [
       ...intro.querySelectorAll<HTMLElement>(
         '.signal-guides--opening .signal-guide-v',
@@ -37,33 +28,57 @@ export function initFellow() {
         '.signal-guides--opening .signal-guide-h',
       ),
     ].sort((a, b) => a.offsetTop - b.offsetTop);
-    introTimeline.fromTo(
+    const openingEntrance = gsap.timeline({ paused: true });
+    openingEntrance.fromTo(
       openingVertical,
       { clipPath: 'inset(0 0 100% 0)' },
       {
         clipPath: 'inset(0 0 0% 0)',
-        duration: 0.24,
-        stagger: 0.035,
+        duration: 0.5,
+        stagger: 0.07,
         ease: 'power1.out',
       },
-      0,
     );
-    introTimeline.fromTo(
+    openingEntrance.fromTo(
       openingHorizontal,
       { clipPath: 'inset(0 100% 0 0)' },
       {
         clipPath: 'inset(0 0% 0 0)',
-        duration: 0.22,
-        stagger: 0.035,
+        duration: 0.42,
+        stagger: 0.045,
         ease: 'power1.out',
       },
-      0.1,
+      '>-0.02',
     );
-    introTimeline.to(
+    openingEntrance.to(
       '.fellow-intro .next-orbit',
-      { opacity: 1, duration: 0.18 },
-      0.22,
+      { opacity: 1, duration: 0.2 },
+      '>-0.08',
     );
+    let openingForced = false;
+    const finishOpeningEntrance = () => {
+      if (openingEntrance.progress() >= 1) return;
+      openingForced = true;
+      openingEntrance.progress(1).pause();
+    };
+    // The outline-to-solid title transition lasts 1.45 seconds. Start the
+    // structural guides only after that entrance has completed so the page
+    // reads as one deliberate sequence: text, verticals, centre lines.
+    gsap.delayedCall(1.45, () => {
+      if (!openingForced) openingEntrance.play(0);
+    });
+    const introTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: intro,
+        start: 'top top',
+        end: desktop ? '+=80%' : 'bottom 40%',
+        pin: desktop,
+        scrub: 0.35,
+        onUpdate: (self) => {
+          if (self.progress > 0.02) finishOpeningEntrance();
+        },
+      },
+    });
     if (desktop) {
       introTimeline.to(
         '.fellow-intro .next-title-fill, .fellow-intro .next-title-outline',
