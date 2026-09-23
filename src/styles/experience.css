@@ -413,6 +413,7 @@ body .team-review .team-bio {
     top: 12%;
     width: 50%;
     height: 50%;
+    margin-top: 0;
   }
 
   .contact-hero .contact-invitation h2 {
