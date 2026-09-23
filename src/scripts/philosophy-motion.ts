@@ -5,6 +5,8 @@ const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const range = (value: number, start: number, end: number) =>
   clamp((value - start) / (end - start));
 const smooth = (value: number) => value * value * (3 - 2 * value);
+export const PHILOSOPHY_ARC = { start: 0.035, end: 0.54 };
+
 const lerp = (from: number, to: number, progress: number) =>
   from + (to - from) * progress;
 
@@ -60,7 +62,7 @@ export function mountPhilosophyMotion(
     if (!ctx || !width || !height) return;
     const p = progress.value;
     const u = width / 1920;
-    const arc = smooth(range(p, 0.035, 0.54));
+    const arc = smooth(range(p, PHILOSOPHY_ARC.start, PHILOSOPHY_ARC.end));
     const drop = smooth(range(p, 0.54, 0.68));
     const pan = smooth(range(p, 0.69, 0.88));
     const detail = smooth(range(p, 0.82, 0.96));
@@ -121,14 +123,16 @@ export function mountPhilosophyMotion(
     orbitLabel.style.left = `${point.x - 115 * u}px`;
     orbitLabel.style.top = `${point.y + 10 * u}px`;
     setPose(orbitLabel, 0, 0, 1);
-    titleLines.forEach((el, index) =>
+    titleLines.forEach((el, index) => {
       setPose(
         el,
         (index === 0 ? 109 : -52) * u * (1 - pan),
         -32 * u * (1 - drop),
         titleOpacity,
-      ),
-    );
+      );
+      el.style.filter = `blur(${((1 - titleOpacity) * 14).toFixed(2)}px)`;
+      el.style.letterSpacing = `${((1 - titleOpacity) * 0.09).toFixed(4)}em`;
+    });
     setPose(
       aboutLabel,
       lerp(point.x - 116 * u, 564 * u, pan) - 564 * u,
@@ -136,6 +140,7 @@ export function mountPhilosophyMotion(
       titleOpacity,
     );
     setPose(copy, 100 * u * (1 - detail), 0, detail);
+    copy.style.filter = `blur(${((1 - detail) * 8).toFixed(2)}px)`;
 
     ctx.clearRect(0, 0, width, height);
     const stroke = (opacity: number, drawPath: () => void, sparse = false) => {

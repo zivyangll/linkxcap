@@ -1,0 +1,460 @@
+/* Shared media holders reserve geometry without delaying readable content. */
+[data-image-holder] {
+  isolation: isolate;
+}
+[data-image-holder][data-image-state='loading']::after,
+[data-image-holder][data-image-state='error']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 8px;
+  background: rgb(87 60 121 / 5%);
+}
+[data-image-holder][data-image-state='error']::after {
+  content: attr(data-image-label);
+  display: grid;
+  place-items: center;
+  padding: 10px;
+  color: var(--ink);
+  font: 12px/1.5 var(--sans);
+  text-align: center;
+}
+[data-image-holder][data-image-state='error'] img {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: no-preference) {
+  [data-image-holder][data-image-state='loading']::after {
+    background: linear-gradient(
+      110deg,
+      transparent 20%,
+      rgb(87 60 121 / 9%) 45%,
+      transparent 70%
+    );
+    background-size: 220% 100%;
+    animation: holder-shine 1.6s ease-in-out infinite;
+  }
+}
+@keyframes holder-shine {
+  to {
+    background-position: -220% 0;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .opening :is(.opening-title, .opening-copy, .opening-track, .chapter) {
+    animation: opening-arrive 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .opening .scroll-trail {
+    animation: opening-arrive 1.15s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .opening .opening-copy {
+    animation-delay: 0.12s;
+  }
+  .opening .chapter {
+    animation-delay: 0.05s;
+  }
+  @keyframes opening-arrive {
+    from {
+      opacity: 0;
+      filter: blur(12px);
+      translate: 0 18px;
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+      translate: 0 0;
+    }
+  }
+  .has-live-cursor,
+  .has-live-cursor :is(a, button, [role='button']) {
+    cursor: none;
+  }
+  .live-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: calc(71 * var(--u));
+    height: calc(71 * var(--u));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--ink);
+    border-radius: 50%;
+    background: #cdcdcd20;
+    backdrop-filter: blur(7px);
+    pointer-events: none;
+    z-index: 2147483646;
+  }
+  .live-cursor[hidden] {
+    display: none;
+  }
+  .live-cursor img {
+    width: 50.7%;
+    height: 36.6%;
+  }
+  .has-live-cursor .portfolio-page .card-arrow {
+    visibility: hidden;
+  }
+  .fellow-intro :is(.next-title-outline, .next-subtitle-outline) {
+    animation: signal-outline 1.35s ease-in-out 0.1s both;
+  }
+  .fellow-intro :is(.next-title-fill, .next-subtitle-fill) {
+    animation: signal-fill 1.35s ease-in-out 0.1s both;
+  }
+  @keyframes signal-outline {
+    from {
+      opacity: 1;
+      filter: blur(0);
+    }
+    to {
+      opacity: 0;
+      filter: blur(1px);
+    }
+  }
+  @keyframes signal-fill {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+}
+
+/* Identical portrait height/baseline, including the narrower centre image. */
+@media (min-width: 1024px) {
+  body .team-review .team-member:nth-child(n) .member-portrait img {
+    left: 50%;
+    top: calc(var(--portrait-top, 32) * var(--u));
+    width: auto;
+    height: calc(var(--portrait-height, 590) * var(--u));
+    transform: translateX(-50%);
+    object-fit: contain;
+  }
+  /* Account for transparent margins in the three existing source images.
+     Visible drawing height is 500 design pixels with a shared top baseline. */
+  .member-portrait img[src$='team-alex.webp'] {
+    --portrait-height: 579.56;
+    --portrait-top: -26.46;
+  }
+  .member-portrait img[src$='team-elliot.webp'] {
+    --portrait-height: 633.33;
+    --portrait-top: -31.67;
+  }
+  .member-portrait img[src$='team-wenjue.webp'] {
+    --portrait-height: 556.88;
+    --portrait-top: -7.28;
+  }
+  .focus-links {
+    font-size: max(12px, calc(15 * var(--u)));
+  }
+  .contact-details h2 {
+    font-size: max(24px, calc(37 * var(--u)));
+  }
+  .contact-hero .line-link {
+    font-size: max(12px, calc(15 * var(--u)));
+  }
+  .footer-main,
+  .footer-links {
+    font-size: max(12px, calc(15 * var(--u)));
+  }
+  .footer-meta,
+  .insights-copyright,
+  .fellow-media-caption {
+    font-size: max(11px, calc(13 * var(--u)));
+  }
+}
+body .team-review .team-bio {
+  pointer-events: auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.team-review .profile-toggle:focus-visible,
+.team-review .team-bio:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: -4px;
+}
+.fellow-video-shell {
+  background: #151319;
+  isolation: isolate;
+}
+.fellow-video-shell video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: transparent;
+}
+.fellow-video-shell .fellow-video-play {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  display: grid;
+  place-content: center;
+  gap: 14px;
+  color: white;
+  font: 14px/1.5 var(--sans);
+  background: rgb(0 0 0 / 12%);
+  z-index: 2;
+}
+.fellow-video-shell .fellow-video-play::before {
+  content: '▷';
+  font-size: 42px;
+  line-height: 1;
+}
+.fellow-video-shell .fellow-video-play[hidden] {
+  display: none;
+}
+.fellow-video-shell[data-video-state='loading'] .fellow-video-play::before {
+  content: '';
+  width: 32px;
+  height: 32px;
+  margin: auto;
+  border: 2px solid rgb(255 255 255 / 25%);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: video-wait 1s linear infinite;
+}
+@keyframes video-wait {
+  to {
+    rotate: 360deg;
+  }
+}
+/* Avoid pale rectangular seams in decorative exports. */
+:is(
+  .next-orbit,
+  .company-orbit,
+  .about-decor img,
+  .signal-guides img,
+  .fellow-media-guide,
+  .contact-guides img
+) {
+  mix-blend-mode: multiply;
+}
+
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  html {
+    scroll-behavior: auto;
+  }
+  .home-story
+    :is(
+      [data-reveal],
+      .about-title span,
+      .hero,
+      .about,
+      .research-stats > div
+    ) {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .philosophy-stage {
+    display: block;
+    height: auto;
+  }
+  .home-story .philosophy-stage > .story-scene {
+    position: relative;
+  }
+  .portfolio-card .company-logo,
+  .portfolio-card:is(:hover, :focus-visible) .company-logo {
+    opacity: 1;
+    transform: none;
+  }
+  .portfolio-card .company-logo img {
+    filter: none;
+  }
+  .portfolio-card .company-caption {
+    opacity: 1;
+  }
+  .portfolio-card .card-arrow {
+    display: none;
+  }
+  .portfolio-card:active {
+    background: rgb(87 60 121 / 4%);
+  }
+  .sector-star .star-label {
+    opacity: 1;
+    color: #e7e1f2;
+  }
+  .insight-filters button,
+  .insight-filters button:not([aria-pressed='true']) {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    color: #777;
+    min-height: 44px;
+  }
+  .insight-filters button[aria-pressed='true'] {
+    color: #111;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 7px;
+  }
+  .company-browser {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100svh;
+    padding: 108px 24px 52px;
+    gap: 0;
+  }
+  .company-browser .company-heading {
+    position: static;
+    order: 0;
+    margin: 0 0 32px;
+    padding: 0;
+  }
+  .company-browser .company-content {
+    position: static;
+    order: 2;
+    width: 100%;
+    max-width: 44rem;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .company-browser .company-heading .page-title {
+    font-size: 32px;
+  }
+  .company-browser .company-heading .text-link {
+    font-size: 14px;
+  }
+  .company-browser .company-scroll-hint,
+  .company-browser .company-rail-shell::before {
+    display: none;
+  }
+  .company-browser .company-navigator {
+    background: transparent;
+  }
+  .company-browser .company-navigator a,
+  .company-browser .company-navigator a[aria-current] {
+    border-color: transparent;
+    background: transparent;
+    color: #777;
+  }
+  .company-browser .company-navigator a[aria-current] {
+    color: #111;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+  .company-browser .company-orbit,
+  .company-browser .company-arc-continuation,
+  .company-browser .rail-controls {
+    display: none;
+  }
+  .company-browser .company-rail-shell {
+    order: 1;
+    margin: 0 0 36px;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+  }
+  .company-browser .company-navigator {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    mask-image: none;
+    scroll-snap-type: none;
+  }
+  .company-browser .company-nav-track {
+    display: flex;
+    gap: 12px;
+    width: max-content;
+    padding: 0 12px !important;
+  }
+  .company-browser .company-navigator a,
+  .company-browser .company-navigator a[aria-current] {
+    position: relative;
+    flex: none;
+    width: auto;
+    height: auto;
+    min-height: 44px;
+    padding: 12px 4px;
+    font-size: 13px;
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .company-browser :is(.rail-marker, [data-company-loop-link]) {
+    display: none !important;
+  }
+  .fellow-intro .next-title-outline,
+  .fellow-intro .next-subtitle-outline {
+    display: none;
+  }
+  .fellow-intro .next-title-fill,
+  .fellow-intro .next-subtitle-fill,
+  .fellow-intro .fellow-context,
+  .fellow-media-caption {
+    opacity: 1;
+    visibility: visible;
+  }
+  .fellow-intro .next-subtitle-fill {
+    color: var(--ink);
+  }
+  .fellow-video-shell {
+    border: none;
+  }
+  .fellow-intro *,
+  .portfolio-card *,
+  .team-review * {
+    animation: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .live-cursor {
+    display: none;
+  }
+  [data-image-holder]::after,
+  .fellow-video-shell[data-video-state='loading'] .fellow-video-play::before {
+    animation: none;
+  }
+}
+
+/* H5 opening text resolves automatically, independent of scroll progress. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023px),
+  (prefers-reduced-motion: no-preference) and (hover: none),
+  (prefers-reduced-motion: no-preference) and (pointer: coarse) {
+  .home-story .opening-title {
+    animation: opening-title-solid 1.3s ease-out both;
+  }
+  .home-story .opening :is(.opening-copy, .chapter) {
+    animation: opening-copy-arrive 1s 120ms ease-out both;
+  }
+  @keyframes opening-title-solid {
+    from {
+      color: transparent;
+      -webkit-text-stroke: 0.7px var(--ink);
+      opacity: 0.5;
+      filter: blur(2px);
+    }
+    to {
+      color: var(--ink);
+      -webkit-text-stroke: 0px var(--ink);
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+  @keyframes opening-copy-arrive {
+    from {
+      opacity: 0;
+      translate: 0 12px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+}

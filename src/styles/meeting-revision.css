@@ -114,14 +114,7 @@
   pointer-events: auto;
   transition: opacity 0.2s ease;
 }
-.focus
-  :is(
-    .focus-title,
-    .focus-panels,
-    .constellation,
-    .motion-toggle,
-    .focus-links
-  ) {
+.focus :is(.focus-title, .focus-panels, .constellation, .focus-links) {
   z-index: 1;
 }
 .topology-canvas {
@@ -953,9 +946,6 @@
     font-size: 12px;
     gap: 20px;
   }
-  .focus .motion-toggle {
-    bottom: 65px;
-  }
   .portfolio-network {
     padding: 115px 24px 32px;
   }
@@ -1138,10 +1128,6 @@
   }
 }
 
-.focus .motion-toggle {
-  left: auto;
-  right: 5.52%;
-}
 .company-browser .company-navigator a > span {
   display: block;
 }
@@ -1420,17 +1406,11 @@
     align-items: center;
   }
 
-  .focus .motion-toggle {
-    display: none;
-  }
-
   [data-mobile-static] :is(.scroll-trail, .philosophy-stage-canvas) {
     display: none;
   }
 
-  [data-mobile-static]
-    :is(.opening, .hero, .about, .research, .philosophy-stage)
-    * {
+  [data-mobile-static] :is(.hero, .about, .research, .philosophy-stage) * {
     animation: none !important;
     transition: none !important;
   }

@@ -1,6 +1,6 @@
 /* H5 only. Desktop geometry and choreography deliberately stay in their
    existing files. Intrinsic heights keep short screens / enlarged text usable. */
-@media (max-width: 1023px) {
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
   .home-story {
     --mobile-rail: max(24px, env(safe-area-inset-left));
     --mobile-inset: max(48px, calc(env(safe-area-inset-left) + 24px));
@@ -223,6 +223,10 @@
     z-index: 2;
   }
 
+  .home-story.has-mobile-motion .opening .scroll-trail {
+    display: block;
+  }
+
   /* Focus remains native touch UI, not a WebGL drag surface. The last screen
      can grow with the selected description without clipping any controls. */
   .home-story .focus {
@@ -353,7 +357,7 @@
 }
 
 /* A landscape phone should scroll its full content instead of trapping a
-   paragraph below a pinned viewport. Motion still reveals on natural scroll. */
+   paragraph below a pinned viewport. All content remains in the natural document flow. */
 @media (max-width: 1023px) and (max-height: 599px) {
   .home-story :is(.opening, .hero, .about, .research) {
     padding-top: 100px;

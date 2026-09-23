@@ -1,159 +1,120 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { mountPhilosophyMotion } from './philosophy-motion';
-import { mountMobileHomeMotion } from './home-mobile-motion';
+import { DESKTOP_MOTION } from './motion-policy';
+import { mountChapterSnap } from './chapter-snap';
 
 export function initHome() {
   gsap.registerPlugin(ScrollTrigger);
   const media = gsap.matchMedia();
-  media.add(
-    {
-      desktop: '(min-width: 1024px)',
-      motion: '(prefers-reduced-motion: no-preference)',
-    },
-    (context) => {
-      if (!context.conditions?.motion) return;
-      const desktop = !!context.conditions.desktop;
-      const home = document.querySelector<HTMLElement>('[data-home]')!;
-      if (!desktop) return mountMobileHomeMotion(home);
-      const scenes = Array.from(
-        home.querySelectorAll<HTMLElement>('.story-scene'),
-      );
-      const cleanup: (() => void)[] = [];
-      let openingTrail: ReturnType<typeof createScrollTrail> | null = null;
-      let handoff = false;
-      scenes.slice(0, 4).forEach((scene, index) => {
-        // Frames 510, 514 and 515 share one pinned stage and one animation
-        // owner. No chapter/handoff timeline can write their transforms.
-        if (desktop && index === 1) {
-          cleanup.push(
-            mountPhilosophyMotion(home, (active) => {
-              handoff = active;
-              openingTrail?.redraw();
-            }),
-          );
-          return;
-        }
-        if (desktop && index === 2) return;
-        const canvas = scene.querySelector<HTMLCanvasElement>(
-          '[data-scroll-trail]',
+  media.add(DESKTOP_MOTION, () => {
+    const home = document.querySelector<HTMLElement>('[data-home]')!;
+    const scenes = Array.from(
+      home.querySelectorAll<HTMLElement>('.story-scene'),
+    );
+    const cleanup: (() => void)[] = [];
+    let openingTrail: ReturnType<typeof createScrollTrail> | null = null;
+    let handoff = false;
+    scenes.slice(0, 4).forEach((scene, index) => {
+      // Frames 510, 514 and 515 share one pinned stage and one animation
+      // owner. No chapter/handoff timeline can write their transforms.
+      if (index === 1) {
+        cleanup.push(
+          mountPhilosophyMotion(home, (active) => {
+            handoff = active;
+            openingTrail?.redraw();
+          }),
         );
-        const trail = canvas
-          ? createScrollTrail(
-              canvas,
-              index === 0 && desktop ? () => !handoff : undefined,
-            )
-          : null;
-        if (trail) {
-          cleanup.push(trail.destroy);
-          scene.classList.add('has-scroll-trail');
-          if (index === 0) openingTrail = trail;
-        }
-        const progress = { value: 0 };
-        const timeline = gsap.timeline({
-          scrollTrigger: {
-            id: `chapter-${index + 1}`,
-            trigger: scene,
-            start: desktop ? 'top top' : 'top 65%',
-            end: () => (desktop ? `+=${innerHeight * 0.7}` : 'bottom 30%'),
-            pin: desktop,
-            scrub: 0.3,
-            invalidateOnRefresh: true,
-            onUpdate: (self) => {
-              scene.dataset.scrollProgress = self.progress.toFixed(3);
-            },
+        return;
+      }
+      if (index === 2) return;
+      const canvas = scene.querySelector<HTMLCanvasElement>(
+        '[data-scroll-trail]',
+      );
+      const trail = canvas
+        ? createScrollTrail(canvas, index === 0 ? () => !handoff : undefined)
+        : null;
+      if (trail) {
+        cleanup.push(trail.destroy);
+        scene.classList.add('has-scroll-trail');
+        if (index === 0) openingTrail = trail;
+      }
+      const progress = { value: 0 };
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          id: `chapter-${index + 1}`,
+          trigger: scene,
+          start: 'top top',
+          end: () => `+=${innerHeight * 0.7}`,
+          pin: true,
+          scrub: 0.3,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            scene.dataset.scrollProgress = self.progress.toFixed(3);
           },
-        });
-        timeline.to(
-          progress,
+        },
+      });
+      timeline.to(
+        progress,
+        {
+          value: 1,
+          duration: 1,
+          ease: 'none',
+          onUpdate: () => trail?.draw(progress.value),
+        },
+        0,
+      );
+      const reveal = scene.querySelectorAll('[data-reveal]');
+      // The opening has a CSS entrance on initial paint, independent of scroll.
+      if (reveal.length && index !== 0)
+        timeline.fromTo(
+          reveal,
+          { opacity: 0, y: 28, filter: 'blur(12px)' },
           {
-            value: 1,
-            duration: 1,
-            ease: 'none',
-            onUpdate: () => trail?.draw(progress.value),
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.4,
+            stagger: 0.07,
+            ease: 'power1.out',
           },
           0,
         );
-        const reveal = scene.querySelectorAll(
-          index === 2
-            ? '[data-reveal]:not(.about-title):not(.about-copy)'
-            : '[data-reveal]',
+      if (index === 3) {
+        timeline.fromTo(
+          '.research-stats > div',
+          { opacity: 0, y: 36, clipPath: 'inset(100% 0 0)' },
+          {
+            opacity: 1,
+            y: 0,
+            clipPath: 'inset(0% 0 0)',
+            stagger: 0.09,
+            duration: 0.22,
+          },
+          0.2,
         );
-        if (reveal.length)
-          timeline.fromTo(
-            reveal,
-            { opacity: index === 0 ? 0.25 : 0, y: desktop ? 28 : 16 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.4,
-              stagger: 0.07,
-              ease: 'power1.out',
-            },
-            0,
-          );
-        if (index === 1)
-          timeline.fromTo(
-            '.hero-orbit',
-            { clipPath: 'inset(0 100% 0 0)' },
-            { clipPath: 'inset(0 0% 0 0)', duration: 0.7, ease: 'none' },
-            0,
-          );
-        if (index === 2) {
-          timeline.fromTo(
-            scene.querySelectorAll('.about-title,.about-copy'),
-            { opacity: 0, y: 20 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.42,
-              stagger: 0.08,
-              ease: 'power1.out',
-            },
-            0.2,
-          );
-          timeline.fromTo(
-            scene.querySelector('.about-rays .diamond'),
-            { y: -70 },
-            { y: 0, duration: 0.6, ease: 'none' },
-            0.08,
-          );
-        }
-        if (index === 3) {
-          timeline.fromTo(
-            '.research-stats > div',
-            { opacity: 0, y: 36, clipPath: 'inset(100% 0 0)' },
-            {
-              opacity: 1,
-              y: 0,
-              clipPath: 'inset(0% 0 0)',
-              stagger: 0.09,
-              duration: 0.22,
-            },
-            0.2,
-          );
-          timeline.fromTo(
-            '.research-marker',
-            { x: () => -innerWidth * 0.35, rotation: -90 },
-            { x: 0, rotation: 0, duration: 0.7, ease: 'power2.out' },
-            0,
-          );
-        }
+        timeline.fromTo(
+          '.research-marker',
+          { x: () => -innerWidth * 0.35, rotation: -90 },
+          { x: 0, rotation: 0, duration: 0.7, ease: 'power2.out' },
+          0,
+        );
+      }
+    });
+    cleanup.push(mountChapterSnap(home));
+    let disposed = false;
+    document.fonts.ready.then(() => {
+      if (!disposed) ScrollTrigger.refresh();
+    });
+    return () => {
+      disposed = true;
+      cleanup.forEach((fn) => fn());
+      scenes.forEach((scene) => {
+        scene.classList.remove('has-scroll-trail');
+        delete scene.dataset.scrollProgress;
       });
-      let disposed = false;
-      document.fonts.ready.then(() => {
-        if (!disposed) ScrollTrigger.refresh();
-      });
-      return () => {
-        disposed = true;
-        cleanup.forEach((fn) => fn());
-        scenes.forEach((scene) => {
-          scene.classList.remove('has-scroll-trail');
-          delete scene.dataset.scrollProgress;
-        });
-      };
-    },
-  );
+    };
+  });
   window.addEventListener('pagehide', () => media.revert(), { once: true });
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) location.reload();
@@ -168,22 +129,10 @@ function createScrollTrail(
   let width = 0,
     height = 0,
     value = 0;
-  const hero = canvas.dataset.scrollTrail?.startsWith('hero');
-  const point = (t: number) => {
-    if (!hero)
-      return {
-        x: width < 1024 ? 28 : (width * 467) / 1920,
-        y:
-          (width < 1024 ? height * 0.14 : (width * 480) / 1920) +
-          t * height * 0.556,
-      };
-    // The mobile chapter uses its original natural-scroll arc.
-    const angle = Math.PI - 0.046 - t * (Math.PI / 2 - 0.046);
-    return {
-      x: width * 1.3 + Math.cos(angle) * width * 1.22,
-      y: (width * 47) / 1920 + Math.sin(angle) * width * 1.22,
-    };
-  };
+  const point = (t: number) => ({
+    x: (width * 467) / 1920,
+    y: (width * 480) / 1920 + t * height * 0.556,
+  });
   const draw = (progress: number) => {
     value = progress;
     if (!ctx) return;
@@ -196,7 +145,7 @@ function createScrollTrail(
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, 'rgba(87,60,121,.95)');
     gradient.addColorStop(1, 'rgba(140,138,158,.58)');
-    ctx.strokeStyle = hero ? 'rgba(87,60,121,.42)' : gradient;
+    ctx.strokeStyle = gradient;
     ctx.lineWidth = 1;
     const dashUnit = Math.max(0.75, width / 1920);
     ctx.setLineDash([4 * dashUnit, 4 * dashUnit]);

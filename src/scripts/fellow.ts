@@ -1,50 +1,12 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { DESKTOP_MOTION } from './motion-policy';
 export function initFellow() {
   gsap.registerPlugin(ScrollTrigger);
   const root = document.querySelector<HTMLElement>('[data-fellow-media]');
   if (!root) return;
-  const video = root.querySelector<HTMLVideoElement>('[data-fellow-video]');
-  const play = root.querySelector<HTMLButtonElement>('[data-video-play]');
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let inView = false,
-    expanded = false,
-    pausedByUser = false,
-    requestingPlay = false;
-  const syncVideo = async (manual = false) => {
-    if (!video) return;
-    if (
-      document.hidden ||
-      !inView ||
-      (!manual && (!expanded || reduced.matches || pausedByUser))
-    ) {
-      video.pause();
-      return;
-    }
-    if (requestingPlay || !video.paused) return;
-    try {
-      requestingPlay = true;
-      await video.play();
-      if (play) play.hidden = true;
-    } catch {
-      if (play) play.hidden = false;
-    } finally {
-      requestingPlay = false;
-    }
-  };
-  video?.addEventListener('play', () => {
-    pausedByUser = false;
-  });
-  video?.addEventListener('pause', () => {
-    if (expanded && inView && !document.hidden && !requestingPlay)
-      pausedByUser = true;
-  });
-  play?.addEventListener('click', () => {
-    pausedByUser = false;
-    syncVideo(true);
-  });
   const media = gsap.matchMedia();
-  media.add('(prefers-reduced-motion: no-preference)', () => {
+  media.add(DESKTOP_MOTION, () => {
     const intro = document.querySelector('.fellow-intro')!;
     const desktop = matchMedia('(min-width:1024px)').matches;
     const introTimeline = gsap.timeline({
@@ -56,27 +18,14 @@ export function initFellow() {
         scrub: 0.35,
       },
     });
-    introTimeline
-      .to(
-        '.fellow-intro .next-title-outline',
-        { opacity: 0, duration: 0.28 },
-        0,
-      )
-      .to('.fellow-intro .next-title-fill', { opacity: 1, duration: 0.28 }, 0)
-      .to(
-        '.fellow-intro .next-subtitle-outline',
-        { opacity: 0, duration: 0.28 },
-        0,
-      )
-      .to(
-        '.fellow-intro .next-subtitle-fill',
-        { opacity: 1, duration: 0.28 },
-        0,
-      )
-      .to('.fellow-intro .next-orbit', { opacity: 1, duration: 0.18 }, 0.22);
+    introTimeline.to(
+      '.fellow-intro .next-orbit',
+      { opacity: 1, duration: 0.18 },
+      0.22,
+    );
     if (desktop) {
       introTimeline.to(
-        '.fellow-intro .next-title-fill',
+        '.fellow-intro .next-title-fill, .fellow-intro .next-title-outline',
         {
           scale: 0.6615,
           y: () => (-innerWidth * 76) / 1920,
@@ -86,7 +35,7 @@ export function initFellow() {
         0.35,
       );
       introTimeline.to(
-        '.fellow-intro .next-subtitle-fill',
+        '.fellow-intro .next-subtitle-fill, .fellow-intro .next-subtitle-outline',
         {
           scale: 0.802,
           y: () => (-innerWidth * 134) / 1920,
@@ -126,9 +75,7 @@ export function initFellow() {
         scrub: 0.4,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
-          expanded = self.progress > 0.38;
           root.dataset.mediaProgress = self.progress.toFixed(3);
-          syncVideo();
         },
       },
     });
@@ -159,26 +106,5 @@ export function initFellow() {
     );
     document.fonts.ready.then(() => ScrollTrigger.refresh());
   });
-  const videoVisibility = new IntersectionObserver(
-    (entries) => {
-      inView = entries[0].isIntersecting;
-      syncVideo();
-    },
-    { threshold: 0.3 },
-  );
-  videoVisibility.observe(root);
-  const onVisibility = () => {
-    syncVideo();
-  };
-  document.addEventListener('visibilitychange', onVisibility);
-  window.addEventListener(
-    'pagehide',
-    () => {
-      media.revert();
-      videoVisibility.disconnect();
-      video?.pause();
-      document.removeEventListener('visibilitychange', onVisibility);
-    },
-    { once: true },
-  );
+  window.addEventListener('pagehide', () => media.revert(), { once: true });
 }

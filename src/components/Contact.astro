@@ -4,13 +4,10 @@ import {
   siteContent,
   socials,
   asset,
-  url,
   fellowMedia,
   type Lang,
 } from '../lib/site';
 import Arrow from './Arrow.astro';
-const mediaUrl = (src: string) =>
-  /^(https?:)?\/\//.test(src) ? src : url(src);
 const { lang } = Astro.props as { lang: Lang };
 const media = {
   src: fellowMedia.videoUrl,
@@ -140,14 +137,13 @@ const media = {
     {media.src ? (
       <video
         data-fellow-video
-        muted
         playsinline
         loop
         preload="none"
         poster={media.poster || undefined}
         controls
       >
-        <source src={mediaUrl(media.src)} type="video/mp4" />
+        <source src={media.src} type="video/mp4" />
       </video>
     ) : (
       <div class="fellow-video-placeholder">
@@ -168,9 +164,16 @@ const media = {
         <p>{contactContent.videoPlaceholder[lang]}</p>
       </div>
     )}
-    <button class="fellow-video-play" data-video-play hidden>
-      {contactContent.playVideo[lang]}
-    </button>
+    {media.src && (
+      <button
+        class="fellow-video-play"
+        data-video-play
+        data-play={contactContent.playVideo[lang]}
+        data-retry={contactContent.playVideo[lang]}
+      >
+        {contactContent.playVideo[lang]}
+      </button>
+    )}
   </div>
   <p class="fellow-media-caption">{contactContent.joinCopy[lang]}</p>
 </section>
@@ -241,5 +244,20 @@ const media = {
 </section>
 
 <script>
-  import('../scripts/fellow').then((module) => module.initFellow());
+  import { initInlineVideo } from '../scripts/inline-video';
+  import { DESKTOP_MOTION } from '../scripts/motion-policy';
+  initInlineVideo();
+  const desktop = matchMedia(DESKTOP_MOTION);
+  let started = false;
+  const start = () => {
+    if (!desktop.matches || started) return;
+    started = true;
+    import('../scripts/fellow')
+      .then((module) => module.initFellow())
+      .catch(() => {
+        started = false;
+      });
+  };
+  start();
+  desktop.addEventListener('change', start);
 </script>

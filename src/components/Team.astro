@@ -21,6 +21,8 @@ const members = team.slice(0, 3);
         <article class="team-member" data-team-member={person.id}>
           <button
             class="profile-toggle member-portrait"
+            data-image-holder
+            data-image-label={pick(lang, person.name, person.en)}
             data-person={person.id}
             aria-controls={`profile-${person.id}`}
             aria-expanded="false"
@@ -42,6 +44,9 @@ const members = team.slice(0, 3);
             id={`profile-${person.id}`}
             data-person-bio={person.id}
             aria-live="polite"
+            tabindex="0"
+            aria-keyshortcuts="Escape"
+            title={ui[lang].close}
             hidden
           >
             <div class="team-bio-identity">

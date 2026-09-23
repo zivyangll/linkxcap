@@ -10,6 +10,8 @@ const box = geometry[company.logo as keyof typeof geometry];
 ---
 
 <span
+  data-image-holder
+  data-image-label={company.nameEn}
   style={
     detail || !box
       ? undefined

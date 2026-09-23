@@ -104,3 +104,27 @@ const displayArticles = articles.map((article) => {
     <button data-filter-reset>{ui[lang].reset}</button>
   </div>
 </section>
+
+<script>
+  import '../scripts/insights-motion';
+</script>
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .insights-orbit {
+      animation: insights-orbit-clockwise 48s linear infinite;
+      animation-play-state: paused;
+      transform-origin: 50% 50%;
+    }
+    .insights-orbit[data-orbit-running='true'] {
+      animation-play-state: running;
+    }
+    @keyframes insights-orbit-clockwise {
+      from {
+        transform: rotate(0turn);
+      }
+      to {
+        transform: rotate(1turn);
+      }
+    }
+  }
+</style>

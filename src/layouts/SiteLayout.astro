@@ -7,6 +7,7 @@ import fonts from '../data/fonts.json';
 import '../styles/global.css';
 import '../styles/figma-desktop.css';
 import '../styles/meeting-revision.css';
+import '../styles/experience.css';
 interface Props {
   lang: Lang;
   page?: string;
@@ -92,5 +93,6 @@ const canonical = absolute(pageUrl(lang, page));
     <p class="sr-only" role="status" aria-live="polite" data-status></p>
     <script src="../scripts/site.ts"></script>
     <script src="../scripts/topology-loader.ts"></script>
+    <script src="../scripts/experience.ts"></script>
   </body>
 </html>

@@ -398,18 +398,6 @@
     gap: 20px;
     flex-wrap: wrap;
   }
-  .motion-toggle {
-    position: absolute;
-    left: 8.65%;
-    bottom: 25px;
-    font: 11px var(--sans);
-    opacity: 0.5;
-    border-bottom: 1px solid currentColor;
-    padding: 8px 0;
-  }
-  .motion-toggle:hover {
-    opacity: 1;
-  }
   @keyframes menu-enter {
     from {
       opacity: 0;
@@ -2732,11 +2720,6 @@
     }
     .star-links {
       display: none;
-    }
-    .motion-toggle {
-      left: 24px;
-      bottom: 30px;
-      font-size: 10px;
     }
     .next-signal {
       min-height: 700px;

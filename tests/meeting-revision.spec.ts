@@ -158,24 +158,34 @@ for (const width of [1440, 1920]) {
       );
       previous = next;
     }
-    await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+    await expect
+      .poll(() =>
+        page
+          .locator('.about-copy')
+          .evaluate((el) => Number(getComputedStyle(el).opacity)),
+      )
+      .toBeGreaterThan(0.999);
     // Returning through the handoff reconstructs identical positions, rather
     // than depending on which of several triggers last wrote a transform.
     const reversed = await sample(0.58);
     expect(reversed.pointY).toBeCloseTo(entering.pointY, 0);
     expect(reversed.titleY).toBeCloseTo(entering.titleY, 0);
     await sample(0.96);
-    const leavingBefore = await stage.boundingBox();
-    const copyBefore = await page.locator('.about-title').boundingBox();
-    await page.evaluate(
-      (y) => scrollTo(0, y),
-      bounds.start + bounds.distance + 200,
-    );
-    const leavingAfter = await stage.boundingBox();
-    const copyAfter = await page.locator('.about-title').boundingBox();
-    expect(leavingAfter!.y).toBeLessThan(leavingBefore!.y - 150);
-    expect(copyAfter!.y - copyBefore!.y).toBeCloseTo(
-      leavingAfter!.y - leavingBefore!.y,
+    // Read stage and title in one browser frame; separate protocol round trips
+    // can otherwise sample different positions during native smooth scrolling.
+    const geometry = () =>
+      stage.evaluate((el) => ({
+        stage: el.getBoundingClientRect().y,
+        copy: el.querySelector('.about-title')!.getBoundingClientRect().y,
+      }));
+    const beforeExit = await geometry();
+    const exitY = bounds.start + bounds.distance + 200;
+    await page.evaluate((y) => scrollTo(0, y), exitY);
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(exitY, 0);
+    const afterExit = await geometry();
+    expect(afterExit.stage).toBeLessThan(beforeExit.stage - 150);
+    expect(afterExit.copy - beforeExit.copy).toBeCloseTo(
+      afterExit.stage - beforeExit.stage,
       0,
     );
   });
@@ -196,11 +206,17 @@ for (const width of [390, 768, 1440])
       'aria-current',
       'page',
     );
-    if (width < 768) {
+    if (width < 1024) {
       await page.locator('[data-company-link=mosi]').click();
     } else {
       await rail.evaluate((el) => {
-        el.scrollTop += 184;
+        const row = el.querySelector('[data-company-link="mosi"]')!;
+        const rect = row.getBoundingClientRect();
+        el.scrollTop +=
+          rect.top +
+          rect.height / 2 -
+          el.getBoundingClientRect().top -
+          el.clientHeight / 2;
       });
     }
     await expect(page.locator('[data-company-browser]')).toHaveAttribute(
@@ -219,12 +235,15 @@ for (const width of [390, 768, 1440])
       page.locator('[data-company-link=xingyun-ic]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.keyboard.press('Home');
-    await expect(
-      page.locator('[data-company-link=agic-micro]'),
-    ).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('[data-company-link=zhipu-ai]')).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     await page.locator('[data-company-link=mosi]').click();
-    await page.locator('[data-menu-open]').click();
-    await page.locator('#site-menu [data-language=en]').click();
+    if (width < 1280) {
+      await page.locator('[data-menu-open]').click();
+      await page.locator('#site-menu [data-language=en]').click();
+    } else await page.locator('.language-switch [data-language=en]').click();
     await expect(page.locator('h1')).toHaveText('Mosi');
     await page.reload();
     await expect(page.locator('h1')).toHaveText('Mosi');
@@ -252,11 +271,16 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
         y: orbit.top + orbit.height / 2,
       };
       const radius = orbit.width * (565 / 1187);
+      const rail = document
+        .querySelector('[data-company-nav]')!
+        .getBoundingClientRect();
       return links
         .map((link) =>
           link.querySelector('.rail-marker')!.getBoundingClientRect(),
         )
-        .filter((marker) => marker.bottom > 0 && marker.top < innerHeight)
+        .filter(
+          (marker) => marker.bottom > rail.top && marker.top < rail.bottom,
+        )
         .map((marker) =>
           Math.abs(
             Math.hypot(
@@ -270,16 +294,16 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
 
   await rail.focus();
   await page.keyboard.press('Home');
-  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
   await page.keyboard.press('ArrowUp');
   await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
 
   await page.keyboard.press('End');
   await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
   await expect
     .poll(() =>
       page.locator('[data-company-loop-link]').evaluateAll(
@@ -315,11 +339,13 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/team.html');
   await expect(page.locator('[data-person]')).toHaveCount(3);
-  const bioWidths: number[] = [];
+  const gaps: number[] = [];
   for (const id of ['alex', 'elliot', 'wenjue']) {
     const portrait = page.locator(`[data-person=${id}]`);
     const bio = page.locator(`[data-person-bio=${id}]`);
     await portrait.hover();
+    await expect(bio).toBeHidden();
+    await portrait.click();
     await expect(bio).toBeVisible();
     await expect(portrait).toHaveCSS('opacity', '0');
     const l = await portrait.boundingBox(),
@@ -328,11 +354,14 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
     expect(r!.x + r!.width).toBeLessThan(l!.x + l!.width);
     expect(r!.y).toBeGreaterThan(l!.y);
     expect(r!.y + r!.height).toBeLessThan(l!.y + l!.height);
-    bioWidths.push(r!.width);
+    gaps.push(r!.x - l!.x, l!.x + l!.width - r!.x - r!.width);
     await page.mouse.move(20, 150);
+    await expect(bio).toBeVisible();
+    await expect(bio.locator('button')).toHaveCount(0);
+    await bio.click();
     await expect(bio).not.toBeVisible();
   }
-  expect(Math.max(...bioWidths) - Math.min(...bioWidths)).toBeLessThan(1);
+  expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThan(1);
 });
 
 test('Fellow arc moves, window expands, and pending film stays explicitly marked', async ({
@@ -343,7 +372,8 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
   await page.goto('zh/contact.html');
   await expect(page.locator('.next-title-outline')).toBeVisible();
   await expect(page.locator('.next-zh-outline')).toBeVisible();
-  await expect(page.locator('.next-zh-fill')).toHaveCSS('opacity', '0');
+  await expect(page.locator('.next-zh-fill')).toHaveCSS('opacity', '1');
+  expect(await page.evaluate(() => scrollY)).toBe(0);
   await expect(
     page.locator('.signal-guides--opening .signal-guide-v'),
   ).toHaveCount(4);
@@ -399,10 +429,9 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
   expect(
     Math.abs(expandedVideo.x + expandedVideo.width / 2 - 720),
   ).toBeLessThan(1);
-  await expect(page.locator('.fellow-video-placeholder')).toContainText(
-    '待提供',
-  );
-  await expect(page.locator('[data-fellow-video]')).toHaveCount(0);
+  await expect(page.locator('.fellow-video-placeholder')).toHaveCount(0);
+  await expect(page.locator('[data-fellow-video] source')).toHaveAttribute('src', '/linkxcap/assets/video_example.mp4');
+  await expect(page.locator('[data-fellow-video]')).toHaveAttribute('preload', 'none');
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({
@@ -414,7 +443,8 @@ test('English Fellow subtitle changes from outline to fill without overlapping i
   const outline = page.locator('.next-en-outline');
   const fill = page.locator('.next-en-fill');
   await expect(outline).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
-  await expect(fill).toHaveCSS('opacity', '0');
+  await expect(fill).toHaveCSS('opacity', '1');
+  expect(await page.evaluate(() => scrollY)).toBe(0);
   await page.evaluate(() => scrollTo(0, innerHeight * 0.74));
   await expect
     .poll(async () =>
@@ -426,9 +456,24 @@ test('English Fellow subtitle changes from outline to fill without overlapping i
       Number(await outline.evaluate((e) => getComputedStyle(e).opacity)),
     )
     .toBeLessThan(0.1);
-  const fillBox = (await fill.boundingBox())!;
-  const contextBox = (await page.locator('.fellow-context').boundingBox())!;
-  expect(fillBox.y + fillBox.height).toBeLessThan(contextBox.y);
+  // Fill opacity now finishes automatically before scrolling. Wait for the
+  // scroll-driven layout as well, rather than treating opacity as its signal.
+  await expect
+    .poll(() => page.evaluate(() => scrollY))
+    .toBeCloseTo(900 * 0.74, 0);
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const title = document
+          .querySelector('.next-en-fill')!
+          .getBoundingClientRect();
+        const context = document
+          .querySelector('.fellow-context')!
+          .getBoundingClientRect();
+        return context.top - title.bottom;
+      }),
+    )
+    .toBeGreaterThan(0);
 });
 
 test('3D is deferred until visible, reacts to hover and pauses offscreen', async ({
@@ -454,7 +499,7 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       'data-highlighted-node',
       'sector-foundation',
     );
-    await expect(scene).toHaveAttribute('data-highlighted-edges', '3');
+    await expect(scene).toHaveAttribute('data-highlighted-edges', '4');
     await expect(
       page.locator('[data-topology-anchor=company-zhipu-ai]').first(),
     ).toHaveAttribute('data-topology-state', 'connected');
@@ -502,16 +547,22 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
     await expect(
       page.locator('[data-topology-anchor=company-phybot]').first(),
     ).toHaveAttribute('data-topology-state', 'connected');
-    await expect(star.locator('.glyph-active')).toBeVisible();
-    await expect(star.locator('.glyph-inactive')).toBeHidden();
+    await expect(star.locator('.diamond')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)',
+    );
     const value = await scene.getAttribute('data-render-frames');
     await expect
       .poll(() => scene.getAttribute('data-render-frames'))
       .not.toBe(value);
-    await page.locator('[data-motion-toggle]').click();
+    await expect(page.locator('[data-motion-toggle]')).toHaveCount(0);
+    await page.locator('.opening-title').scrollIntoViewIfNeeded();
     await expect(scene).toHaveAttribute('data-running', 'false');
   } else
-    await expect(star.locator('.star-glyph')).not.toHaveCSS('filter', 'none');
+    await expect(star.locator('.diamond')).toHaveCSS(
+      'background-color',
+      'rgb(255, 255, 255)',
+    );
 });
 
 test('portfolio hover illuminates original logo and selection opens its detail', async ({
@@ -519,7 +570,7 @@ test('portfolio hover illuminates original logo and selection opens its detail',
 }) => {
   await page.goto('zh/portfolio.html');
   const node = page.locator('[data-slug=zhipu-ai]');
-  const logo = node.locator('img');
+  const logo = node.locator('.company-logo img');
   const corners = node.locator('.card-corners');
   const previous = await logo.evaluate((e) => getComputedStyle(e).filter);
   await expect(corners).toHaveCSS('opacity', '0');

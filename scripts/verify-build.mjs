@@ -26,6 +26,7 @@ const contentAssetFiles = [
   ...content.team.map((person) => person.image_file),
   ...content.companies.map((company) => company.logo_file),
   content.media.fellow.poster_file,
+  content.media.fellow.video_file,
 ].filter(Boolean);
 for (const filename of contentAssetFiles) {
   try {

@@ -1,0 +1,354 @@
+/* Focus Areas: sparse diamonds and rays, scoped to this scene. */
+.home-story .focus .constellation-fallback {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: calc(1080 * var(--u));
+  fill: none;
+  stroke: #8d7bb6;
+  stroke-opacity: 0.14;
+  stroke-width: 1;
+  pointer-events: none;
+}
+.home-story .focus .constellation-branches {
+  stroke: #b2a2ee;
+  stroke-opacity: 0.7;
+}
+.home-story .focus[data-renderer='webgl'] .constellation-fallback {
+  visibility: hidden;
+}
+.home-story .focus .star-glyph::before {
+  content: none;
+}
+.home-story .focus .star-glyph .diamond {
+  display: block;
+  width: 7px;
+  height: 7px;
+  top: calc(50% - 3.5px);
+  left: calc(50% - 3.5px);
+  background: #8f7cce;
+  opacity: 0.72;
+  transition:
+    background-color 200ms,
+    scale 200ms,
+    opacity 200ms;
+}
+.home-story .focus .sector-star.is-active .star-glyph .diamond {
+  background: #fff;
+  opacity: 1;
+  scale: 1.5;
+}
+.home-story .focus .constellation-hub {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  left: calc(var(--sx) * var(--u));
+  top: calc(var(--sy) * var(--u));
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: #8f7cce;
+  opacity: 0.65;
+  pointer-events: none;
+}
+.home-story .focus .constellation-scene[hidden] {
+  display: none;
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .home-story .focus .focus-panels {
+    left: calc(106 * var(--u));
+    top: calc(700 * var(--u));
+  }
+  .home-story .focus .focus-panel h3 span:first-child {
+    letter-spacing: 0.42em;
+    white-space: normal;
+  }
+  .home-story .focus .focus-panel h3 span:last-child {
+    letter-spacing: -0.03em;
+  }
+  .home-story .focus .sector-star {
+    position: absolute;
+    left: calc(var(--sx) * var(--u));
+    top: calc(var(--sy) * var(--u));
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    display: block;
+    transform: translate(-50%, -50%);
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  .home-story .focus .sector-star .star-glyph {
+    width: 44px;
+    height: 44px;
+    scale: 1;
+    filter: none;
+  }
+  .home-story .focus .sector-star .star-label {
+    position: absolute;
+    inset: auto;
+    top: 50%;
+    left: calc(50% + 30 * var(--u));
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: max-content;
+    max-width: calc(248 * var(--u));
+    margin: 0;
+    text-align: left;
+    font: max(10px, calc(15 * var(--u))) / 1.35 var(--sans);
+    color: #77727e;
+    white-space: normal;
+    transition: color 240ms;
+  }
+  .home-story .focus .sector-star[data-label-side='left'] .star-label {
+    left: auto;
+    right: calc(50% + 30 * var(--u));
+    text-align: right;
+  }
+  .home-story .focus .star-foundation .star-label {
+    top: calc(50% - 35 * var(--u));
+  }
+  /* The transparent bridge joins label and diamond hit areas. */
+  .home-story .focus .star-label::before {
+    content: '';
+    position: absolute;
+    inset: -8px calc(-30 * var(--u));
+  }
+  .home-story .focus .sector-star .star-label span {
+    position: static;
+    order: 0;
+    font-size: inherit;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  .home-story .focus .sector-star.is-active .star-label {
+    color: #b2a2ee;
+    font: max(12px, calc(21 * var(--u))) / 1.35 var(--serif);
+    max-width: calc(310 * var(--u));
+  }
+  .home-story .focus .sector-star.is-active .star-label [lang='zh'] {
+    order: -1;
+    letter-spacing: 0.22em;
+  }
+  .home-story .focus .constellation-company {
+    position: absolute;
+    left: calc(var(--sx) * var(--u));
+    top: calc(var(--sy) * var(--u));
+    width: 18px;
+    height: 18px;
+    transform: translate(-50%, -50%);
+    color: #a99ac9;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+    border-radius: 50%;
+  }
+  .home-story .focus .constellation-company .constellation-dot {
+    width: 3px;
+    height: 3px;
+    top: calc(50% - 1.5px);
+    left: calc(50% - 1.5px);
+    background: currentColor;
+    transform: rotate(45deg);
+    pointer-events: none;
+  }
+  .home-story .focus .constellation-company-label {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 16 * var(--u));
+    transform: translateY(-50%);
+    width: max-content;
+    max-width: calc(230 * var(--u));
+    white-space: normal;
+    font: max(10px, calc(15.4 * var(--u))) / 1.4 var(--serif);
+    letter-spacing: 0;
+  }
+  .home-story
+    .focus
+    .constellation-company[data-label-side='left']
+    .constellation-company-label {
+    left: auto;
+    right: calc(50% + 16 * var(--u));
+    text-align: right;
+  }
+  .home-story .focus .constellation-company-label::before {
+    content: '';
+    position: absolute;
+    inset: -8px calc(-16 * var(--u));
+  }
+  .home-story .focus .constellation-company:is(:hover, :focus-visible) {
+    color: #ece5ff;
+  }
+  .home-story .focus :is(.sector-star, .constellation-company):focus-visible {
+    outline: 1px solid #b2a2ee;
+    outline-offset: 3px;
+  }
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .home-story .focus .constellation-scene:not([hidden]) .constellation-company {
+    animation: focus-branch-label-in 620ms ease-out both;
+  }
+  @keyframes focus-branch-label-in {
+    0%,
+    25% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+}
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  .home-story
+    .focus
+    :is(.constellation-fallback, .constellation-hub, .constellation-scene) {
+    display: none;
+  }
+  .home-story .focus .sector-star .star-label {
+    color: #b7accd;
+  }
+  .home-story .focus .sector-star.is-active .star-label {
+    color: #ede6ff;
+  }
+}
+
+/* The canvas belongs to the constellation itself, on both PC and H5. */
+.home-story .focus .constellation-fallback--mobile {
+  display: none;
+}
+.home-story .focus .topology-canvas {
+  z-index: 0;
+}
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  .home-story .focus .constellation {
+    height: clamp(520px, 150vw, 680px);
+    overflow: visible;
+    touch-action: pan-y;
+  }
+  .home-story .focus .constellation-fallback--mobile {
+    display: block;
+    height: 100%;
+  }
+  .home-story .focus .constellation-fallback--desktop {
+    display: none;
+  }
+  .home-story .focus .constellation-scene:not([hidden]) {
+    display: block;
+  }
+  .home-story .focus .topology-canvas {
+    display: block;
+  }
+  .home-story .focus[data-renderer='static'] .topology-canvas {
+    display: none;
+  }
+  .home-story .focus .constellation-hub {
+    display: block;
+    left: var(--mx);
+    top: var(--my);
+  }
+  .home-story .focus .sector-star {
+    position: absolute;
+    display: block;
+    left: var(--mx);
+    top: var(--my);
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    max-width: none;
+    padding: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 2;
+    touch-action: pan-y;
+  }
+  .home-story .focus .sector-star .star-glyph {
+    width: 44px;
+    height: 44px;
+    scale: 1;
+    filter: none;
+  }
+  .home-story .focus .sector-star .star-label {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 13px);
+    margin: 0;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: max-content;
+    max-width: clamp(90px, 28vw, 160px);
+    font: 11px/1.4 var(--sans);
+    text-align: left;
+    white-space: normal;
+    color: #b7accd;
+    background: var(--ink);
+    padding: 2px 3px;
+  }
+  .home-story .focus .sector-star[data-mobile-side='left'] .star-label {
+    left: auto;
+    right: calc(50% + 13px);
+    text-align: right;
+  }
+  .home-story .focus .sector-star .star-label span {
+    position: static;
+    font: inherit;
+    order: 0;
+    letter-spacing: 0;
+  }
+  .home-story .focus .sector-star.is-active .star-label {
+    color: #ede6ff;
+  }
+  .home-story .focus .sector-star.is-active .star-label [lang='zh'] {
+    order: -1;
+  }
+  .home-story .focus .constellation-company {
+    position: absolute;
+    left: var(--mx);
+    top: var(--my);
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    z-index: 1;
+    touch-action: pan-y;
+  }
+  .home-story .focus .constellation-company .constellation-dot {
+    width: 3px;
+    height: 3px;
+    left: calc(50% - 1.5px);
+    top: calc(50% - 1.5px);
+    background: #b2a2ee;
+    transform: rotate(45deg);
+  }
+  .home-story .focus .constellation-company-label {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 8px);
+    transform: translateY(-50%);
+    width: max-content;
+    max-width: clamp(82px, 27vw, 150px);
+    font: 10px/1.35 var(--serif);
+    white-space: normal;
+    letter-spacing: 0;
+    color: #bfb0e8;
+    background: var(--ink);
+    padding: 3px;
+  }
+  .home-story
+    .focus
+    .constellation-company[data-mobile-side='left']
+    .constellation-company-label {
+    left: auto;
+    right: calc(50% + 8px);
+    text-align: right;
+  }
+  .home-story .focus .focus-panels {
+    min-height: 190px;
+  }
+}

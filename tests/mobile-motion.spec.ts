@@ -105,7 +105,7 @@ for (const lang of ['zh', 'en']) {
       await expect(page.locator('[data-sector-panel=physical]')).toBeVisible();
       await expect(page.locator('[data-topology]')).toHaveAttribute(
         'data-renderer',
-        'static',
+        'webgl',
       );
       expect(errors).toEqual([]);
     });
@@ -117,6 +117,7 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('zh/index.html#about');
+  await page.evaluate(() => document.fonts.ready);
   const stage = page.locator('[data-philosophy-stage]');
   await expect
     .poll(async () => Number(await stage.getAttribute('data-motion-progress')))
@@ -131,9 +132,29 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
   await expect
     .poll(async () => Number(await stage.getAttribute('data-motion-progress')))
     .toBeCloseTo(0.97, 2);
-  const copy = await page.locator('.about-copy').boundingBox();
-  expect(copy!.y).toBeGreaterThan(72);
-  expect(copy!.y + copy!.height).toBeLessThan(844);
+  // A native smooth scroll and ScrollTrigger's scrub settle independently.
+  // Require the viewport to stay at its final destination before reading bounds.
+  await expect
+    .poll(() =>
+      page.evaluate(async () => {
+        const before = scrollY;
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        const box = document
+          .querySelector('.about-copy')!
+          .getBoundingClientRect();
+        const progress = Number(
+          (document.querySelector('[data-philosophy-stage]') as HTMLElement)
+            .dataset.motionProgress,
+        );
+        return (
+          Math.abs(scrollY - before) < 1 &&
+          Math.abs(progress - 0.97) < 0.005 &&
+          box.top > 72 &&
+          box.bottom < innerHeight
+        );
+      }),
+    )
+    .toBe(true);
   await sample(page, 0.1);
   await page.locator('.orbit-label').click();
   await expect
@@ -173,11 +194,10 @@ test('H5 menu works during a pinned chapter and resizing never duplicates pins',
     await expect(page.locator('.pin-spacer')).toHaveCount(3);
   }
   await page.setViewportSize({ width: 1440, height: 900 });
-  await expect(page.locator('[data-home]')).toHaveClass(
-    /has-philosophy-motion/,
-  );
+  // Wide touch tablets retain the H5 owner, regardless of viewport width.
+  await expect(page.locator('[data-home]')).toHaveClass(/has-mobile-motion/);
   await expect(page.locator('[data-home]')).not.toHaveClass(
-    /has-mobile-motion/,
+    /has-philosophy-motion/,
   );
   await expect(page.locator('.pin-spacer')).toHaveCount(3);
   await page.setViewportSize({ width: 390, height: 844 });
@@ -215,7 +235,7 @@ test('H5 animation import failure leaves the complete static story readable', as
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.route(
-    /\/(?:_astro\/home\.[^/]+\.js|src\/scripts\/home\.ts)/,
+    /\/(?:_astro\/home-mobile-motion\.[^/]+\.js|src\/scripts\/home-mobile-motion\.ts)/,
     (route) => route.abort(),
   );
   await page.goto('en/index.html');

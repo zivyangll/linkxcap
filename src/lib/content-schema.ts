@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 9;
+export const CONTENT_SCHEMA_VERSION = 11;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {
@@ -157,7 +157,12 @@ function validateAssetFilenames(
         child.includes('#')
       )
         errors.push(`${childPath}：只能填写文件名，不能包含目录或查询参数`);
-      if (!/\.(?:avif|gif|jpe?g|png|svg|webp)$/i.test(child))
+      if (key === 'video_file') {
+        if (!/^[^:<>\x00-\x1f]+\.mp4$/i.test(child))
+          errors.push(
+            `${childPath}：必须填写 MP4 视频文件名，例如 video_example.mp4`,
+          );
+      } else if (!/\.(?:avif|gif|jpe?g|png|svg|webp)$/i.test(child))
         errors.push(`${childPath}：必须是受支持的图片文件名`);
     }
     validateAssetFilenames(child, childPath, errors);
@@ -292,4 +297,47 @@ export function validateContentConfig(
   validateAssetFilenames(candidate, 'content', errors);
   validateRelations(candidate, errors);
   return { valid: errors.length === 0, errors: [...new Set(errors)] };
+}
+
+// Preserve older drafts/imports without merging defaults or overwriting storage.
+export function upgradeContentConfig(candidate: unknown): unknown {
+  if (
+    !isObject(candidate) ||
+    ![9, 10].includes(candidate.schemaVersion as number) ||
+    !isObject(candidate.ui) ||
+    !isObject(candidate.media) ||
+    !isObject(candidate.media.fellow)
+  )
+    return candidate;
+  const ui = { ...candidate.ui };
+  for (const key of ['pause_cn', 'pause_en', 'resume_cn', 'resume_en'])
+    delete ui[key];
+  const fellow = { ...candidate.media.fellow };
+  if (
+    Object.hasOwn(fellow, 'video_url') &&
+    !Object.hasOwn(fellow, 'video_file')
+  ) {
+    // The asset must be copied to public/assets; invalid names remain visible
+    // to the normal validator rather than silently discarding the user's value.
+    let filename = fellow.video_url;
+    if (typeof filename === 'string' && filename) {
+      try {
+        const source = new URL(filename, 'https://local.invalid/');
+        if (['https:', 'http:'].includes(source.protocol))
+          filename = decodeURIComponent(
+            source.pathname.slice(source.pathname.lastIndexOf('/') + 1),
+          );
+      } catch {
+        /* Keep the original value so validation explains the problem. */
+      }
+    }
+    fellow.video_file = filename;
+    delete fellow.video_url;
+  }
+  return {
+    ...candidate,
+    schemaVersion: CONTENT_SCHEMA_VERSION,
+    ui,
+    media: { ...candidate.media, fellow },
+  };
 }

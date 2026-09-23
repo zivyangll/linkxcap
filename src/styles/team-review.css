@@ -118,7 +118,7 @@ body .team-review {
   color: #111;
   opacity: 1;
   visibility: visible;
-  pointer-events: none;
+  pointer-events: auto;
   transform: none;
   transition: opacity 180ms ease;
 }
@@ -265,13 +265,12 @@ body .team-review {
   }
 
   .team-review .team-bio {
-    inset: calc(20 * var(--u)) auto;
-    left: 50%;
-    width: calc(518 * var(--u));
-    max-width: calc(100% - calc(40 * var(--u)));
+    inset: calc(20 * var(--u));
+    width: auto;
+    max-width: none;
     padding: calc(44 * var(--u)) calc(30 * var(--u));
     gap: calc(80 * var(--u));
-    transform: translateX(-50%);
+    transform: none;
     background:
       linear-gradient(#111, #111) left top / calc(36 * var(--u))
         max(1px, calc(2 * var(--u))) no-repeat,

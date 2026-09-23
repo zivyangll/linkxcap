@@ -93,7 +93,7 @@ test('team profiles work with touch', async ({ browser, baseURL }) => {
   await button.tap();
   await expect(button).toHaveAttribute('aria-expanded', 'true');
   await expect(page.locator('.team-bio').first()).toBeVisible();
-  await button.tap({ force: true });
+  await page.locator('[data-person-bio]:not([hidden])').tap();
   await expect(button).toHaveAttribute('aria-expanded', 'false');
   await context.close();
 });
@@ -204,7 +204,7 @@ test('English mobile copy follows the multiline heading', async ({ page }) => {
   const copy = await page.locator('.about-copy').boundingBox();
   expect(copy!.y).toBeGreaterThan(title!.y + title!.height + 15);
 });
-test('ambient canvas stops when paused and outside the viewport', async ({
+test('ambient canvas stops outside the viewport and has no background toggle', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -229,17 +229,7 @@ test('ambient canvas stops when paused and outside the viewport', async ({
       await page.locator('[data-topology]').getAttribute('data-render-frames'),
     ),
   ).toBeGreaterThan(running);
-  await page.locator('[data-motion-toggle]').click();
-  const paused = Number(
-    await page.locator('[data-topology]').getAttribute('data-render-frames'),
-  );
-  await page.waitForTimeout(250);
-  expect(
-    Number(
-      await page.locator('[data-topology]').getAttribute('data-render-frames'),
-    ),
-  ).toBe(paused);
-  await page.locator('[data-motion-toggle]').click();
+  await expect(page.locator('[data-motion-toggle]')).toHaveCount(0);
   await page.locator('.opening-title').scrollIntoViewIfNeeded();
   await page.waitForTimeout(500);
   const offscreen = Number(

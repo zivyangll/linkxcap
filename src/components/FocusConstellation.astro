@@ -1,6 +1,5 @@
 ---
 import {
-  asset,
   sectors,
   companies,
   homeContent,
@@ -8,148 +7,165 @@ import {
   pick,
   type Lang,
 } from '../lib/site';
+import {
+  focusHub,
+  focusLayout,
+  focusBranch,
+  mobileFocusHub,
+  mobileFocusLayout,
+  mobileFocusBranch,
+} from '../lib/focus-layout';
 const { lang } = Astro.props as { lang: Lang };
-const positions: Record<string, number[]> = {
-  foundation: [1297, 610, 1346, 586, 1297, 610, 1359, 581],
-  applications: [1476, 309, 1519, 292, 1476, 308, 1535, 279],
-  physical: [1008, 536.5, 1051, 519.52, 994, 539.38, 1048, 509.52],
-  infrastructure: [1659, 744, 1691, 735, 1659, 744, 1710, 714],
-  frontiers: [1077, 187, 1116, 170, 1077, 187, 1138, 157],
-};
-const scenes = [
-  {
-    id: 'foundation',
-    node: '3549',
-    lines: [
-      ['imgVector156', 1324.213, 633.42, 61.69, 81.07, 'rotate(177.67deg)'],
-      ['imgVector157', 1038.697, 634.594, 233.606, 169.811, 'scaleY(-1)'],
-      ['imgVector158', 1321.511, 633, 47.978, 240, 'none'],
-    ],
-    satellites: [
-      ['zhipu-ai', 890, 804, 1027, 810],
-      ['shengshu-technology', 1402, 723, 1392, 719],
-      ['modelbest', 1387, 891, 1369, 880],
-    ],
-  },
-  {
-    id: 'applications',
-    node: '3769',
-    lines: [
-      ['imgVector156', 1504.213, 333.897, 61.69, 81.07, 'rotate(177.67deg)'],
-      ['imgVector157', 1396.546, 332.788, 54.907, 118.425, 'scaleY(-1)'],
-      ['imgVector158', 1500.581, 161.722, 79.837, 121.557, 'scaleX(-1)'],
-      ['imgVector159', 1272, 281.517, 179, 46.966, 'scaleY(-1)'],
-    ],
-    satellites: [
-      ['realai', 1239, 446, 1390, 454],
-      ['tairex', 1582, 423.48, 1572, 419.48],
-      ['biogeometry', 1601, 139, 1584, 153],
-      ['polo-interactive', 1126, 321, 1262, 330],
-    ],
-  },
-  {
-    id: 'physical',
-    node: '3883',
-    lines: [
-      ['imgVector156', 1024.66, 563.427, 49.798, 254.584, 'rotate(177.67deg)'],
-      ['imgVector160', 931.637, 359.777, 34.011, 154.515, 'rotate(177.67deg)'],
-      ['imgVector157', 900.538, 563.323, 68.925, 164.394, 'scaleY(-1)'],
-    ],
-    satellites: [
-      ['phybot', 742, 728.52, 891, 736.52],
-      ['amio-robotics', 1094, 827, 1079, 824.52],
-      ['zettlab', 945, 336, 922, 347.52],
-    ],
-  },
-];
-const place = (x: unknown, y: unknown) =>
-  `left:calc(${x} * var(--u));top:calc(${y} * var(--u));`;
+const scenes = sectors.map((sector) => {
+  const members = companies.filter((company) => company.sector === sector.id);
+  return {
+    id: sector.id,
+    point: focusLayout[sector.id],
+    mobile: mobileFocusLayout[sector.id],
+    companies: members.map((company, index) => ({
+      ...company,
+      point: focusBranch(sector.id, index, members.length),
+      mobile: mobileFocusBranch(sector.id, index, members.length),
+    })),
+  };
+});
+const place = (x: number, y: number, mobile: { x: number; y: number }) =>
+  `--sx:${x};--sy:${y};--mx:${(mobile.x / 360) * 100}%;--my:${(mobile.y / 560) * 100}%;`;
 ---
 
 <div class="constellation" aria-label={homeContent.focus.ariaLabel[lang]}>
-  {scenes.map((scene) => (
+  <canvas class="topology-canvas" aria-hidden="true"></canvas>
+  <svg
+    class="constellation-fallback constellation-fallback--desktop"
+    viewBox="0 0 1920 1080"
+    aria-hidden="true"
+  >
+    {scenes.map(({ point }) => (
+      <line x1={focusHub.x} y1={focusHub.y} x2={point.x} y2={point.y} />
+    ))}
+  </svg>
+  <svg
+    class="constellation-fallback constellation-fallback--mobile"
+    viewBox="0 0 360 560"
+    preserveAspectRatio="none"
+    aria-hidden="true"
+  >
+    {scenes.map(({ mobile }) => (
+      <line
+        x1={mobileFocusHub.x}
+        y1={mobileFocusHub.y}
+        x2={mobile.x}
+        y2={mobile.y}
+      />
+    ))}
+  </svg>
+  {scenes.map((scene, index) => (
     <div
       class="constellation-scene"
       data-constellation={scene.id}
-      hidden={scene.id !== 'foundation'}
+      hidden={index !== 0}
     >
-      {scene.lines.map(([key, x, y, w, h, transform]) => (
-        <img
-          class="constellation-line"
-          src={asset(scene.node, String(key))}
-          style={`${place(x, y)}width:calc(${w} * var(--u));height:calc(${h} * var(--u));transform:${transform}`}
-          alt=""
-          width={Number(w)}
-          height={Number(h)}
-        />
+      <svg
+        class="constellation-fallback constellation-fallback--desktop constellation-branches"
+        viewBox="0 0 1920 1080"
+        aria-hidden="true"
+      >
+        {scene.companies.map(({ point }) => (
+          <line
+            x1={scene.point.x}
+            y1={scene.point.y}
+            x2={point.x}
+            y2={point.y}
+          />
+        ))}
+      </svg>
+      <svg
+        class="constellation-fallback constellation-fallback--mobile constellation-branches"
+        viewBox="0 0 360 560"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        {scene.companies.map(({ mobile }) => (
+          <line
+            x1={scene.mobile.x}
+            y1={scene.mobile.y}
+            x2={mobile.x}
+            y2={mobile.y}
+          />
+        ))}
+      </svg>
+      {scene.companies.map((company) => (
+        <a
+          class="constellation-company"
+          data-topology-anchor={`company-${company.id}`}
+          data-topology-role="node"
+          data-focus-sector={scene.id}
+          data-x={company.point.x}
+          data-y={company.point.y}
+          data-z={company.point.z}
+          data-mx={company.mobile.x}
+          data-my={company.mobile.y}
+          data-mz={company.mobile.z}
+          data-mobile-side={company.mobile.side}
+          data-label-side={company.point.side}
+          style={place(company.point.x, company.point.y, company.mobile)}
+          href={pageUrl(lang, `portfolio/${company.slug}`)}
+        >
+          <i class="constellation-dot" aria-hidden="true"></i>
+          <span class="constellation-company-label">
+            ({homeContent.focus.investmentYear},{' '}
+            {pick(lang, company.name, company.nameEn)})
+          </span>
+        </a>
       ))}
-      {scene.satellites.map(([companyId, x, y, dx, dy]) => {
-        const company = companies.find((item) => item.id === companyId);
-        if (!company) return null;
-        const label = `(${homeContent.focus.investmentYear}, ${pick(lang, company.name, company.nameEn)})`;
-        return (
-          <>
-            <a
-              class="constellation-company"
-              data-topology-anchor={`company-${company.id}`}
-              data-topology-role="label"
-              style={place(x, y)}
-              href={pageUrl(lang, `portfolio/${company.slug}`)}
-              set:text={label}
-            />
-            <i
-              class="constellation-dot"
-              data-topology-anchor={`company-${company.id}`}
-              data-topology-role="node"
-              style={place(dx, dy)}
-              aria-hidden="true"
-            ></i>
-          </>
-        );
-      })}
     </div>
   ))}
-  {sectors.map((s, i) => {
-    const [x, y, lx, ly, ax, ay, alx, aly] = positions[s.id];
+  {sectors.map((sector, index) => {
+    const point = focusLayout[sector.id];
+    const mobile = mobileFocusLayout[sector.id];
     return (
       <button
-        class:list={['sector-star', `star-${s.id}`, { 'is-active': i === 0 }]}
-        data-sector={s.id}
-        data-topology-anchor={`sector-${s.id}`}
+        class:list={[
+          'sector-star',
+          `star-${sector.id}`,
+          { 'is-active': index === 0 },
+        ]}
+        data-sector={sector.id}
+        data-topology-anchor={`sector-${sector.id}`}
         data-topology-role="node"
-        aria-controls={`sector-${s.id}`}
-        aria-pressed={i === 0}
-        style={`--sx:${x};--sy:${y};--lx:${lx};--ly:${ly};--ax:${ax};--ay:${ay};--alx:${alx};--aly:${aly}`}
+        data-x={point.x}
+        data-y={point.y}
+        data-z={point.z}
+        data-mx={mobile.x}
+        data-my={mobile.y}
+        data-mz={mobile.z}
+        data-mobile-side={mobile.side}
+        data-label-side={point.side}
+        aria-controls={`sector-${sector.id}`}
+        aria-pressed={index === 0}
+        style={place(point.x, point.y, mobile)}
       >
         <span class="star-glyph" aria-hidden="true">
-          <img
-            class="glyph-inactive"
-            src={asset('audit', s.id === 'frontiers' ? '3644' : '3617')}
-            alt=""
-            width="53"
-            height="53"
-          />
-          <img
-            class="glyph-active"
-            src={asset('audit', '3610')}
-            alt=""
-            width="102"
-            height="102"
-          />
           <i class="diamond"></i>
         </span>
         <span class="star-label">
-          <span lang="en">{s.en}</span>
-          {lang === 'zh' && <span lang="zh">{s.zh}</span>}
+          <span lang="en">{sector.en}</span>
+          {lang === 'zh' && <span lang="zh">{sector.zh}</span>}
         </span>
       </button>
     );
   })}
   <i
-    class="constellation-dot quiet-dot"
-    data-topology-anchor="quiet"
+    class="constellation-hub"
+    data-topology-anchor="hub"
     data-topology-role="node"
-    style={place(1181, 340)}
+    data-x={focusHub.x}
+    data-y={focusHub.y}
+    data-z={focusHub.z}
+    data-mx={mobileFocusHub.x}
+    data-my={mobileFocusHub.y}
+    data-mz={mobileFocusHub.z}
+    style={place(focusHub.x, focusHub.y, mobileFocusHub)}
     aria-hidden="true"
   ></i>
 </div>

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const hash = 'a4f9c2e71b6d4830c5a8e2f94d7b136c';
 const editorPath = `${hash}.html`;
 const validPath = `${editorPath}?debug=true`;
-const storageKey = `linkx-content-editor:127.0.0.1:schema-9`;
+const storageKey = `linkx-content-editor:127.0.0.1:schema-11`;
 
 test('invalid and duplicate debug parameters never initialize the editor', async ({
   page,
@@ -344,7 +344,7 @@ test('export uses the latest fields and can round-trip through import', async ({
   for await (const chunk of stream) chunks.push(Buffer.from(chunk));
   const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
   expect(exported.site.brand_cn).toBe('导出即时内容');
-  expect(exported.schemaVersion).toBe(9);
+  expect(exported.schemaVersion).toBe(11);
   expect(exported.insights.articles).toBeUndefined();
   expect(exported.insights.list_rows).toBeUndefined();
 
@@ -399,4 +399,85 @@ test('editor remains usable on a 360px mobile viewport', async ({ page }) => {
       document.documentElement.clientWidth,
   );
   expect(overflow).toBeLessThanOrEqual(1);
+});
+
+for (const version of [9, 10])
+  test(`v${version} drafts preserve edits and migrate video filenames without overwriting the old draft`, async ({
+    page,
+  }) => {
+    await page.goto(validPath);
+    await expect(page.locator('body')).toHaveAttribute(
+      'data-editor-state',
+      'ready',
+    );
+    const response = await page.request.get(`${hash}.content.json`);
+    const legacy = await response.json();
+    legacy.schemaVersion = version;
+    legacy.media.fellow.video_url =
+      'https://example.com/assets/video_example.mp4';
+    delete legacy.media.fellow.video_file;
+    legacy.site.brand_cn = '保留我的品牌修改';
+    Object.assign(legacy.ui, {
+      pause_cn: '旧暂停',
+      pause_en: 'Old pause',
+      resume_cn: '旧开启',
+      resume_en: 'Old resume',
+    });
+    const previousKey = storageKey.replace('schema-11', `schema-${version}`);
+    await page.evaluate(
+      ({ previousKey, storageKey, legacy }) => {
+        localStorage.removeItem(storageKey);
+        localStorage.setItem(previousKey, JSON.stringify(legacy));
+      },
+      { previousKey, storageKey, legacy },
+    );
+    await page.reload();
+    await expect(
+      page.locator('[data-config-path="site.brand_cn"]'),
+    ).toHaveValue('保留我的品牌修改');
+    expect(
+      await page.evaluate((key) => localStorage.getItem(key), storageKey),
+    ).toBeNull();
+    expect(
+      JSON.parse(
+        (await page.evaluate((key) => localStorage.getItem(key), previousKey))!,
+      ).ui.pause_cn,
+    ).toBe('旧暂停');
+    await expect(page.locator('[data-config-path="ui.pause_cn"]')).toHaveCount(
+      0,
+    );
+    const download = page.waitForEvent('download');
+    await page.locator('[data-export]').click();
+    const file = await download;
+    const stream = await file.createReadStream();
+    const chunks: Buffer[] = [];
+    for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
+    const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
+    expect(exported.schemaVersion).toBe(11);
+    expect(exported.site.brand_cn).toBe('保留我的品牌修改');
+    expect(exported.media.fellow.video_file).toBe('video_example.mp4');
+    expect(exported.media.fellow).not.toHaveProperty('video_url');
+    expect(exported.ui).not.toHaveProperty('pause_cn');
+    expect(exported.ui).not.toHaveProperty('resume_en');
+  });
+
+test('video filename can be edited and exported, and invalid URLs identify the media field', async ({
+  page,
+}) => {
+  await page.goto(validPath);
+  await page.getByRole('tab', { name: '联系方式和媒体', exact: true }).click();
+  const video = page.locator('[data-config-path="media.fellow.video_file"]');
+  await expect(video).toHaveValue('video_example.mp4');
+  await video.fill('https://example.com/movie.mp4');
+  await page.locator('[data-export]').click();
+  await expect(page.locator('[data-errors]')).toContainText('视频文件名');
+  await video.fill('my-film.mp4');
+  const download = page.waitForEvent('download');
+  await page.locator('[data-export]').click();
+  const stream = await (await download).createReadStream();
+  const chunks: Buffer[] = [];
+  for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
+  expect(
+    JSON.parse(Buffer.concat(chunks).toString('utf8')).media.fellow.video_file,
+  ).toBe('my-film.mp4');
 });

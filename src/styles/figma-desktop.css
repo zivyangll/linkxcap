@@ -1303,9 +1303,6 @@
     }
   }
   @media (prefers-reduced-motion: reduce) {
-    .motion-toggle {
-      display: none;
-    }
   }
 }
 @layer fidelity {

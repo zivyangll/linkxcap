@@ -362,6 +362,6 @@ export const pageTitle = (
 ) => siteContent.pageTitles[page][lang];
 
 export const fellowMedia = {
-  videoUrl: raw.media.fellow.video_url as string,
+  videoUrl: contentAsset(raw.media.fellow.video_file as string),
   posterUrl: contentAsset(raw.media.fellow.poster_file as string),
 };

@@ -1,3 +1,4 @@
+import { MOBILE_MOTION } from './motion-policy';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -17,23 +18,27 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         // No overlaid scenes on landscape/short screens: each paragraph must
         // remain in normal flow until it has been read.
         home.dataset.mobileMotion = 'natural';
-        home.querySelectorAll<HTMLElement>('[data-reveal]').forEach((element) =>
-          gsap.fromTo(
-            element,
-            { opacity: 0.6, y: 12 },
-            {
-              opacity: 1,
-              y: 0,
-              ease: 'power1.out',
-              scrollTrigger: {
-                trigger: element,
-                start: 'top 95%',
-                end: 'top 65%',
-                scrub: 0.2,
+        home
+          .querySelectorAll<HTMLElement>(
+            '.hero [data-reveal], .about [data-reveal], .research [data-reveal]',
+          )
+          .forEach((element) =>
+            gsap.fromTo(
+              element,
+              { opacity: 0.6, y: 12 },
+              {
+                opacity: 1,
+                y: 0,
+                ease: 'power1.out',
+                scrollTrigger: {
+                  trigger: element,
+                  start: 'top 95%',
+                  end: 'top 65%',
+                  scrub: 0.2,
+                },
               },
-            },
-          ),
-        );
+            ),
+          );
         let disposed = false;
         document.fonts.ready.then(() => {
           if (!disposed) ScrollTrigger.refresh();
@@ -57,6 +62,10 @@ export function mountMobileHomeMotion(home: HTMLElement) {
 
       home.removeAttribute('data-mobile-static');
       home.classList.add('has-mobile-motion');
+      const heroCopy = [
+        ...hero.querySelectorAll<HTMLElement>('.hero-title,.hero-zh'),
+      ];
+      const orbitLabel = hero.querySelector<HTMLElement>('.orbit-label')!;
       const progress = { value: 0 };
       const openingProgress = { value: 0 };
       let disposed = false;
@@ -134,6 +143,11 @@ export function mountMobileHomeMotion(home: HTMLElement) {
               ? start.y * phase(p, 0, 0.04)
               : tracked.y + height * (0.06 * drop + 0.19 * pan),
         };
+        heroCopy.forEach((element) => {
+          element.style.translate = `${(camera.x * 0.32).toFixed(2)}px ${camera.y.toFixed(2)}px`;
+        });
+        orbitLabel.style.left = `${point.x + 14}px`;
+        orbitLabel.style.top = `${point.y + 14}px`;
         ctx.clearRect(0, 0, width, height);
         ctx.strokeStyle = 'rgba(87,60,121,.3)';
         ctx.lineWidth = 1;
@@ -196,24 +210,11 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           scrub: 0.28,
         },
       });
-      openingTimeline
-        .to(
-          openingProgress,
-          { value: 1, duration: 1, ease: 'none', onUpdate: drawOpening },
-          0,
-        )
-        .fromTo(
-          opening.querySelectorAll('[data-reveal]'),
-          { opacity: 0.35, y: 18 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.35,
-            stagger: 0.08,
-            ease: 'power1.out',
-          },
-          0,
-        );
+      openingTimeline.to(
+        openingProgress,
+        { value: 1, duration: 1, ease: 'none', onUpdate: drawOpening },
+        0,
+      );
 
       // Both chapters occupy the same grid cell. One scrubbed timeline owns
       // the only dot and every reveal; reverse scrolling is deterministic.
@@ -244,10 +245,11 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         )
         .fromTo(
           about.querySelectorAll('.about-title span'),
-          { opacity: 0, y: 24 },
+          { opacity: 0, y: 24, filter: 'blur(8px)' },
           {
             opacity: 1,
             y: 0,
+            filter: 'blur(0px)',
             duration: 0.16,
             stagger: 0.05,
             ease: 'power1.out',
@@ -256,8 +258,14 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         )
         .fromTo(
           about.querySelector('.about-copy'),
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.18, ease: 'power1.out' },
+          { opacity: 0, y: 20, filter: 'blur(5px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.18,
+            ease: 'power1.out',
+          },
           0.72,
         )
         .to(
@@ -377,6 +385,11 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         home.classList.remove('has-mobile-motion');
         home.setAttribute('data-mobile-static', 'true');
         hero.inert = about.inert = false;
+        heroCopy.forEach((element) =>
+          element.style.removeProperty('translate'),
+        );
+        orbitLabel.style.removeProperty('left');
+        orbitLabel.style.removeProperty('top');
         delete stage.dataset.motionProgress;
         delete stage.dataset.motionPhase;
         delete canvas.dataset.point;
@@ -386,4 +399,13 @@ export function mountMobileHomeMotion(home: HTMLElement) {
     },
   );
   return () => media.revert();
+}
+
+export function initMobileHome() {
+  gsap.registerPlugin(ScrollTrigger);
+  const media = gsap.matchMedia();
+  media.add(MOBILE_MOTION, () =>
+    mountMobileHomeMotion(document.querySelector<HTMLElement>('[data-home]')!),
+  );
+  window.addEventListener('pagehide', () => media.revert(), { once: true });
 }

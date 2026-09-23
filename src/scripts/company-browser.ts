@@ -35,7 +35,9 @@ if (root) {
   links.forEach((link, index) => {
     link.dataset.companyIndex = String(index);
   });
-  const compactRail = matchMedia('(max-width: 767px)');
+  const compactRail = matchMedia(
+    '(max-width: 1023px), (hover: none), (pointer: coarse)',
+  );
   const cloneCycle = () =>
     links.map((link, index) => {
       const clone = link.cloneNode(true) as HTMLAnchorElement;
@@ -47,15 +49,15 @@ if (root) {
       clone.removeAttribute('aria-current');
       return clone;
     });
-  // The desktop/tablet treatment is an intentionally continuous circular
-  // rail. On phones the same cloned, vertical rail is unnecessarily heavy
+  // The desktop treatment is an intentionally continuous circular
+  // rail. On touch/narrow screens the same cloned, vertical rail is unnecessarily heavy
   // and difficult to operate, so the original links become a native
   // horizontal, tap-to-select list instead.
   if (!compactRail.matches) {
     track.prepend(...cloneCycle());
     track.append(...cloneCycle());
   }
-  const rows = Array.from(
+  let rows = Array.from(
     track.querySelectorAll<HTMLAnchorElement>('a[data-company-index]'),
   );
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -80,13 +82,14 @@ if (root) {
       logo.src = company.logo;
       logo.alt = company.title;
       const wrapper = logo.parentElement!;
+      wrapper.dataset.imageLabel = company.title;
       wrapper.className = `company-logo company-logo--detail logo-${company.id}`;
       const website = root.querySelector<HTMLAnchorElement>(
         '[data-company-website]',
       )!;
       website.hidden = !company.website;
       website.href = company.website;
-      if (!reduced.matches)
+      if (!reduced.matches && !compactRail.matches)
         root.querySelector('.company-content')!.animate(
           [
             { opacity: 0.45, transform: 'translateY(8px)' },
@@ -160,7 +163,7 @@ if (root) {
           0,
           link.offsetLeft + link.offsetWidth / 2 - rail.clientWidth / 2,
         ),
-        behavior: initialized && !reduced.matches ? 'smooth' : 'auto',
+        behavior: 'auto',
       });
       requestAnimationFrame(() => {
         programmatic = false;
@@ -218,7 +221,6 @@ if (root) {
     const orbitRadius = orbitRect
       ? orbitRect.width * (565 / 1187)
       : rootRect.width * (565 / 1920);
-    const markerBaseX = rr.left + rail.clientWidth * 0.32 + 26;
     let nearest = active,
       distance = Infinity;
     rows.forEach((link) => {
@@ -228,7 +230,13 @@ if (root) {
         -1,
         Math.min(1, delta / (rail.clientHeight * 0.55)),
       );
-      const rowCenterY = box.top + box.height / 2;
+      const marker = link
+        .querySelector<HTMLElement>('.rail-marker')!
+        .getBoundingClientRect();
+      const previousOffset =
+        parseFloat(link.style.getPropertyValue('--rail-x')) || 0;
+      const markerBaseX = marker.left + marker.width / 2 - previousOffset;
+      const rowCenterY = marker.top + marker.height / 2;
       const circleDeltaY = rowCenterY - orbitCenterY;
       const circleX =
         orbitCenterX +
@@ -270,20 +278,22 @@ if (root) {
     },
     { passive: true },
   );
-  rows.forEach((link) =>
-    link.addEventListener('click', (event) => {
-      if (
-        event.ctrlKey ||
-        event.metaKey ||
-        event.shiftKey ||
-        event.altKey ||
-        event.button !== 0
-      )
-        return;
-      event.preventDefault();
-      align(Number(link.dataset.companyIndex));
-    }),
-  );
+  rail.addEventListener('click', (event) => {
+    const link = (event.target as Element).closest<HTMLAnchorElement>(
+      'a[data-company-index]',
+    );
+    if (
+      !link ||
+      event.ctrlKey ||
+      event.metaKey ||
+      event.shiftKey ||
+      event.altKey ||
+      event.button !== 0
+    )
+      return;
+    event.preventDefault();
+    align(Number(link.dataset.companyIndex));
+  });
   rail.addEventListener('keydown', (event) => {
     const target =
       event.key === 'ArrowDown' ||
@@ -311,6 +321,27 @@ if (root) {
     .querySelector('[data-company-next]')
     ?.addEventListener('click', () => align((active + 1) % records.length));
   align(active, true);
+  const breakpoint = () => {
+    track
+      .querySelectorAll('[data-company-loop-link]')
+      .forEach((row) => row.remove());
+    if (!compactRail.matches) {
+      track.prepend(...cloneCycle());
+      track.append(...cloneCycle());
+    }
+    rows = [
+      ...track.querySelectorAll<HTMLAnchorElement>('a[data-company-index]'),
+    ];
+    rows.forEach((row) => {
+      row.style.removeProperty('--rail-x');
+      row.style.removeProperty('--rail-blur');
+      row.style.removeProperty('--rail-opacity');
+    });
+    rail.scrollTop = 0;
+    rail.scrollLeft = 0;
+    align(active, true);
+  };
+  compactRail.addEventListener('change', breakpoint);
   const resize = new ResizeObserver(() => align(active));
   resize.observe(rail);
   document.fonts.ready.then(() => align(active));
@@ -323,6 +354,7 @@ if (root) {
     () => {
       cancelAnimationFrame(frame);
       resize.disconnect();
+      compactRail.removeEventListener('change', breakpoint);
     },
     { once: true },
   );

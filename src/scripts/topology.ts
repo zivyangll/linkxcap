@@ -1,3 +1,4 @@
+import { TOPOLOGY_MOTION, TOUCH_LAYOUT } from './motion-policy';
 import {
   Scene,
   PerspectiveCamera,
@@ -5,190 +6,142 @@ import {
   Group,
   BufferGeometry,
   Float32BufferAttribute,
-  Points,
-  PointsMaterial,
   LineSegments,
   LineBasicMaterial,
   Vector3,
-  Mesh,
-  OctahedronGeometry,
-  MeshBasicMaterial,
-  AdditiveBlending,
 } from 'three';
 
 type Anchor = {
   element: HTMLElement;
-  origin: Vector3;
-  mesh: Mesh<OctahedronGeometry, MeshBasicMaterial>;
   key: string;
-  role: 'node' | 'label';
-  visible: boolean;
+  sector: string;
+  origin: Vector3;
   x: number;
   y: number;
-  width: number;
-  height: number;
 };
+const CYCLE_MS = 5200;
+const BRANCH_MS = 620;
+
 export function mountTopology(root: HTMLElement) {
   const canvas = root.querySelector<HTMLCanvasElement>('.topology-canvas')!;
-  const stage = root.querySelector<HTMLElement>('.network-stage') || root;
-  const home = root.dataset.topologyKind === 'home';
-  const dragSurface = home
-    ? root.querySelector<HTMLElement>('[data-topology-drag]')
-    : null;
+  const motion = matchMedia(TOPOLOGY_MOTION);
+  const touch = matchMedia(TOUCH_LAYOUT);
+  const stage = root.querySelector<HTMLElement>('.constellation')!;
   let renderer: WebGLRenderer;
   try {
     renderer = new WebGLRenderer({
       canvas,
       alpha: true,
-      antialias: false,
+      antialias: true,
       powerPreference: 'low-power',
     });
   } catch {
     root.dataset.renderer = 'static';
-    root.querySelector('[data-motion-toggle]')?.setAttribute('hidden', '');
     return;
   }
-  const scene = new Scene(),
-    camera = new PerspectiveCamera(38, 1, 1, 3000),
-    group = new Group();
+  const scene = new Scene();
+  const camera = new PerspectiveCamera(38, 1, 1, 3000);
+  const graph = new Group();
   camera.position.z = 1000;
-  scene.add(group);
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const anchors: Anchor[] = [];
-  const selector = home ? '[data-topology-anchor]' : '[data-node3d]';
-  const sharedGeometry = new OctahedronGeometry(5, 0);
+  scene.add(graph);
+  const anchors: Anchor[] = [
+    ...root.querySelectorAll<HTMLElement>('[data-topology-anchor]'),
+  ].map((element) => ({
+    element,
+    key: element.dataset.topologyAnchor!,
+    sector: element.dataset.sector || element.dataset.focusSector || '',
+    origin: new Vector3(),
+    x: 0,
+    y: 0,
+  }));
+  const sectors = anchors.filter((anchor) => !!anchor.element.dataset.sector);
+  const hub = anchors.find((anchor) => anchor.key === 'hub')!;
+  const baseGeometry = new BufferGeometry();
+  const branchGeometry = new BufferGeometry();
+  // Reuse GPU buffers across selections/resizes; automatic cycling must not
+  // allocate a replacement buffer every five seconds for the page lifetime.
+  baseGeometry.setAttribute(
+    'position',
+    new Float32BufferAttribute(new Float32Array(sectors.length * 6), 3),
+  );
+  branchGeometry.setAttribute(
+    'position',
+    new Float32BufferAttribute(new Float32Array(anchors.length * 6), 3),
+  );
+  const baseMaterial = new LineBasicMaterial({
+    color: 0x8d7bb6,
+    transparent: true,
+    opacity: 0.12,
+    depthWrite: false,
+  });
+  const branchMaterial = new LineBasicMaterial({
+    color: 0xb2a2ee,
+    transparent: true,
+    opacity: 0.72,
+    depthWrite: false,
+  });
+  const baseLines = new LineSegments(baseGeometry, baseMaterial);
+  const branchLines = new LineSegments(branchGeometry, branchMaterial);
+  baseLines.frustumCulled = branchLines.frustumCulled = false;
+  graph.add(baseLines, branchLines);
+  let active = sectors[0];
+  let companies: Anchor[] = [];
   let width = 0,
     height = 0,
     frame = 0,
-    last = 0,
-    visible = false,
-    paused = false,
-    disposed = false,
-    hovering = -1,
-    elapsed = 0;
-  let targetX = 0,
-    targetY = 0;
-  let dragPitch = 0,
-    dragYaw = 0,
-    pitchVelocity = 0,
-    yawVelocity = 0,
-    dragging = false,
-    dragPointer = -1,
+    last = 0;
+  let visible = false,
+    lost = false,
+    disposed = false;
+  let cycle = 0,
+    orbit = 0,
+    growth = 0;
+  let dragging = false,
+    pointer = -1,
     dragX = 0,
     dragY = 0;
-  let edges: number[][] = [];
-  let edgeGeometry = new BufferGeometry();
-  let highlightGeometry = new BufferGeometry();
-  let hoverNode = -1;
-  let highlightedKeys = new Set<string>();
-  const edgeMaterial = new LineBasicMaterial({
-    color: 0x8f7eaf,
-    transparent: true,
-    opacity: 0.25,
-    depthWrite: false,
-  });
-  const lines = new LineSegments(edgeGeometry, edgeMaterial);
-  const highlightMaterial = new LineBasicMaterial({
-    color: 0xb2a2ff,
-    transparent: true,
-    opacity: 1,
-    depthWrite: false,
-  });
-  const highlightLines = new LineSegments(highlightGeometry, highlightMaterial);
-  highlightLines.visible = false;
-  group.add(lines, highlightLines);
-  let seed = 9127;
-  const random = () => {
-    seed = (seed * 16807) % 2147483647;
-    return seed / 2147483647;
-  };
-  const starGeometry = new BufferGeometry();
-  const starPositions = Array.from(
-    { length: (innerWidth < 768 ? 130 : 400) * 3 },
-    (_, i) => (random() - 0.5) * (i % 3 === 2 ? 700 : 1500),
-  );
-  starGeometry.setAttribute(
-    'position',
-    new Float32BufferAttribute(starPositions, 3),
-  );
-  const starMaterial = new PointsMaterial({
-    color: 0xb2a2ff,
-    size: 1.2,
-    transparent: true,
-    opacity: 0.36,
-    depthWrite: false,
-    blending: AdditiveBlending,
-  });
-  const stars = new Points(starGeometry, starMaterial);
-  scene.add(stars);
-  root.querySelectorAll<HTMLElement>(selector).forEach((element, index) => {
-    const material = new MeshBasicMaterial({
-      color: 0xb2a2ff,
-      transparent: true,
-      opacity: 0.7,
-      wireframe: true,
-    });
-    const mesh = new Mesh(sharedGeometry, material);
-    group.add(mesh);
-    const role = element.dataset.topologyRole === 'label' ? 'label' : 'node';
-    mesh.visible = role === 'node';
-    anchors.push({
-      element,
-      origin: new Vector3(),
-      mesh,
-      key:
-        element.dataset.topologyAnchor ||
-        element.dataset.slug ||
-        `node-${index}`,
-      role,
-      visible: true,
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-    });
-    element.addEventListener('pointerenter', () => {
-      hovering = index;
-      element.dataset.hovered = 'true';
-      updateHighlight();
-      draw();
-      if (home) requestAnimationFrame(size);
-    });
-    element.addEventListener('pointerleave', () => {
-      hovering = -1;
-      delete element.dataset.hovered;
-      updateHighlight();
-      draw();
-      if (home) requestAnimationFrame(size);
-    });
-    element.addEventListener('focus', () => {
-      hovering = index;
-      updateHighlight();
-      draw();
-      if (home) requestAnimationFrame(size);
-    });
-    element.addEventListener('blur', () => {
-      hovering = -1;
-      updateHighlight();
-      draw();
-      if (home) requestAnimationFrame(size);
-    });
-    element.addEventListener('click', () => {
-      if (!home) {
-        element.classList.add('is-selected');
-        sessionStorage.setItem(
-          'linkx-selected-company',
-          element.dataset.slug || '',
-        );
-      } else requestAnimationFrame(size);
-    });
-  });
-  const selected = sessionStorage.getItem('linkx-selected-company');
-  if (selected)
-    anchors
-      .find((a) => a.element.dataset.slug === selected)
-      ?.element.classList.add('is-selected');
+  let yaw = 0,
+    pitch = 0,
+    yawVelocity = 0,
+    pitchVelocity = 0;
+  const projected = new Vector3();
+  const endpoint = new Vector3();
+  const enabled = () => motion.matches && !lost && !disposed;
+  const held = () =>
+    root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
+  const clearProjection = () =>
+    anchors.forEach(({ element }) => element.style.removeProperty('translate'));
+
+  function select() {
+    active =
+      sectors.find((anchor) => anchor.sector === root.dataset.focus) ||
+      sectors[0];
+    companies = anchors.filter(
+      (anchor) => anchor.element.dataset.focusSector === active.sector,
+    );
+    cycle = 0;
+    growth = 0;
+    // The hub stays subdued; only the selected sector's company rays brighten.
+    branchGeometry.setDrawRange(0, companies.length * 2);
+    root.dataset.highlightedNode = active.key;
+    root.dataset.highlightedKeys = [
+      active.key,
+      ...companies.map((anchor) => anchor.key),
+    ].join(',');
+    root.dataset.highlightedEdges = String(companies.length);
+    draw();
+    // A user selection can wake a tap-paused graph. During auto-cycling the
+    // existing tick owns scheduling, so never create a second RAF chain.
+    if (root.dataset.running === 'false') sync();
+  }
   function size() {
+    canvas.hidden = !enabled();
+    root.dataset.renderer = enabled() ? 'webgl' : 'static';
+    if (!enabled()) {
+      clearProjection();
+      sync();
+      return;
+    }
     const box = stage.getBoundingClientRect();
     width = box.width;
     height = box.height;
@@ -196,339 +149,204 @@ export function mountTopology(root: HTMLElement) {
     renderer.setPixelRatio(
       Math.min(
         devicePixelRatio,
-        width < 768 ? 1 : 1.5,
-        Math.sqrt(2500000 / (width * height)),
+        touch.matches ? 1.25 : 1.5,
+        Math.sqrt((touch.matches ? 900000 : 2500000) / (width * height)),
       ),
     );
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
+    camera.updateMatrixWorld();
     const span = 2 * Math.tan((38 * Math.PI) / 360) * 1000;
-    anchors.forEach((a, i) => {
-      a.element.style.removeProperty('translate');
-      a.element.style.removeProperty('scale');
-      const rect = a.element.getBoundingClientRect();
-      a.visible =
-        rect.width > 0 &&
-        rect.height > 0 &&
-        !a.element.closest<HTMLElement>('[hidden]');
-      // The home constellation already has the exact Figma-authored diamond
-      // and corner marks in the DOM. Rendering an octahedron on top creates a
-      // second, outlined diamond, so Three.js owns only depth/lines there.
-      a.mesh.visible = !home && a.visible && a.role === 'node';
-      if (!a.visible) return;
-      a.x = rect.left - box.left + rect.width / 2;
-      a.y = rect.top - box.top + rect.height / 2;
-      a.width = rect.width;
-      a.height = rect.height;
-      const keyDepth = Array.from(a.key).reduce(
-        (value, char) => (value * 31 + char.charCodeAt(0)) % 7,
-        0,
-      );
-      const z = home ? (keyDepth - 3) * 48 : ((i % 5) - 2) * 38;
-      // Unproject the authored 2D position at a real z depth; initial framing is unchanged.
+    const toWorld = (element: HTMLElement, target: Vector3) => {
+      const x = touch.matches
+        ? (Number(element.dataset.mx) * width) / 360
+        : (Number(element.dataset.x) * width) / 1920;
+      const y = touch.matches
+        ? (Number(element.dataset.my) * height) / 560
+        : (Number(element.dataset.y) * width) / 1920;
+      const z = Number(touch.matches ? element.dataset.mz : element.dataset.z);
       const perspective = (1000 - z) / 1000;
-      a.origin.set(
-        (a.x / width - 0.5) * span * camera.aspect * perspective,
-        (0.5 - a.y / height) * span * perspective,
+      return target.set(
+        (x / width - 0.5) * span * camera.aspect * perspective,
+        (0.5 - y / height) * span * perspective,
         z,
       );
-      a.mesh.position.copy(a.origin);
+    };
+    // Rotate around the graph's hub, not the centre of the whole page.
+    toWorld(hub.element, graph.position);
+    anchors.forEach((anchor) => {
+      anchor.x = touch.matches
+        ? (Number(anchor.element.dataset.mx) * width) / 360
+        : (Number(anchor.element.dataset.x) * width) / 1920;
+      anchor.y = touch.matches
+        ? (Number(anchor.element.dataset.my) * height) / 560
+        : (Number(anchor.element.dataset.y) * width) / 1920;
+      toWorld(anchor.element, anchor.origin).sub(graph.position);
     });
-    edges = [];
-    const graphNodes = anchors
-      .map((anchor, index) => ({ anchor, index }))
-      .filter(({ anchor }) => anchor.visible && anchor.role === 'node');
-    if (home) {
-      // Frame 493 is a hub-and-spoke diagram: the selected focus area links
-      // only to the companies in its currently visible constellation.
-      graphNodes
-        .filter(({ anchor }) => anchor.key.startsWith('company-'))
-        .forEach(({ anchor, index }) => {
-          const sector = anchor.element.closest<HTMLElement>(
-            '[data-constellation]',
-          )?.dataset.constellation;
-          const sectorIndex = anchors.findIndex(
-            (candidate) => candidate.key === `sector-${sector}`,
-          );
-          if (sectorIndex >= 0) edges.push([sectorIndex, index]);
-        });
-    } else {
-      graphNodes.forEach(({ anchor, index }) => {
-        graphNodes
-          .map(({ anchor: candidate, index: candidateIndex }) => ({
-            j: candidateIndex,
-            d: anchor.origin.distanceTo(candidate.origin),
-          }))
-          .filter((candidate) => candidate.j !== index)
-          .sort((a, b) => a.d - b.d)
-          .slice(0, 2)
-          .forEach(({ j }) => {
-            if (!edges.some(([a, b]) => a === j && b === index))
-              edges.push([index, j]);
-          });
-      });
-    }
-    edgeGeometry.dispose();
-    edgeGeometry = new BufferGeometry();
-    edgeGeometry.setAttribute(
-      'position',
-      new Float32BufferAttribute(
-        edges.flatMap(([a, b]) => [
-          ...anchors[a].origin.toArray(),
-          ...anchors[b].origin.toArray(),
-        ]),
-        3,
-      ),
-    );
-    edgeGeometry.setAttribute(
-      'color',
-      new Float32BufferAttribute(new Array(edges.length * 6).fill(0.5), 3),
-    );
-    edgeMaterial.vertexColors = true;
-    lines.geometry = edgeGeometry;
-    updateHighlight();
+    const positions = baseGeometry.getAttribute('position');
+    sectors.forEach((anchor, index) => {
+      positions.setXYZ(index * 2, hub.origin.x, hub.origin.y, hub.origin.z);
+      positions.setXYZ(
+        index * 2 + 1,
+        anchor.origin.x,
+        anchor.origin.y,
+        anchor.origin.z,
+      );
+    });
+    positions.needsUpdate = true;
     draw();
     sync();
   }
-  function updateHighlight() {
-    const pointerNode =
-      hovering < 0
-        ? -1
-        : anchors[hovering]?.role === 'node'
-          ? hovering
-          : anchors.findIndex(
-              (anchor) =>
-                anchor.visible &&
-                anchor.role === 'node' &&
-                anchor.key === anchors[hovering]?.key,
-            );
-    const selectedNode = home
-      ? anchors.findIndex(
-          (anchor) =>
-            anchor.role === 'node' &&
-            anchor.element.getAttribute('aria-pressed') === 'true',
-        )
-      : -1;
-    hoverNode = pointerNode >= 0 ? pointerNode : selectedNode;
-    const highlightedEdges =
-      hoverNode < 0
-        ? []
-        : edges.filter(([a, b]) => a === hoverNode || b === hoverNode);
-    const highlightedNodes = new Set<number>(
-      highlightedEdges.flatMap(([a, b]) => [a, b]),
-    );
-    if (hoverNode >= 0) highlightedNodes.add(hoverNode);
-    highlightedKeys = new Set(
-      [...highlightedNodes].map((index) => anchors[index].key),
-    );
-    if (home) {
-      anchors.forEach((anchor, index) => {
-        const current =
-          hoverNode >= 0 && anchor.key === anchors[hoverNode]?.key;
-        const connected = hoverNode >= 0 && highlightedKeys.has(anchor.key);
-        if (hoverNode < 0) delete anchor.element.dataset.topologyState;
-        else
-          anchor.element.dataset.topologyState = current
-            ? 'current'
-            : connected
-              ? 'connected'
-              : 'unrelated';
-        if (anchor.element.matches('.sector-star')) {
-          anchor.element.classList.toggle(
-            'is-active',
-            hoverNode >= 0
-              ? index === hoverNode
-              : anchor.element.getAttribute('aria-pressed') === 'true',
-          );
-        }
-      });
-    }
-    highlightGeometry.dispose();
-    highlightGeometry = new BufferGeometry();
-    highlightGeometry.setAttribute(
-      'position',
-      new Float32BufferAttribute(
-        highlightedEdges.flatMap(([a, b]) => [
-          ...anchors[a].origin.toArray(),
-          ...anchors[b].origin.toArray(),
-        ]),
-        3,
-      ),
-    );
-    highlightLines.geometry = highlightGeometry;
-    lines.visible = !home && hoverNode < 0;
-    highlightLines.visible = hoverNode >= 0 && highlightedEdges.length > 0;
-    if (hoverNode >= 0) {
-      root.dataset.highlightedNode = anchors[hoverNode].key;
-      root.dataset.highlightedKeys = [...highlightedKeys].join(',');
-      root.dataset.highlightedEdges = String(highlightedEdges.length);
-    } else {
-      delete root.dataset.highlightedNode;
-      delete root.dataset.highlightedKeys;
-      delete root.dataset.highlightedEdges;
-    }
-  }
-  const vector = new Vector3();
   function draw() {
-    if (disposed) return;
-    const staticMode = reduced.matches || width < 768 || paused;
-    if (!staticMode) {
-      if (home) {
-        if (!dragging) {
-          dragYaw += yawVelocity;
-          dragPitch = Math.max(
-            -Math.PI / 3,
-            Math.min(Math.PI / 3, dragPitch + pitchVelocity),
-          );
-          yawVelocity *= 0.92;
-          pitchVelocity *= 0.92;
-        }
-        const desiredYaw = dragYaw + targetX * 0.08;
-        const desiredPitch = dragPitch + targetY * 0.05;
-        group.rotation.y += (desiredYaw - group.rotation.y) * 0.18;
-        group.rotation.x += (desiredPitch - group.rotation.x) * 0.18;
-      } else {
-        group.rotation.y += (targetX * 0.12 - group.rotation.y) * 0.06;
-        group.rotation.x += (targetY * 0.08 - group.rotation.x) * 0.06;
-      }
-    } else if (!paused) group.rotation.set(0, 0, 0);
-    group.updateMatrixWorld(true);
-    anchors.forEach((a) => {
-      if (!a.visible) {
-        a.element.style.removeProperty('translate');
-        a.element.style.removeProperty('scale');
-        return;
-      }
-      const current = hoverNode >= 0 && a.key === anchors[hoverNode]?.key;
-      const connected = hoverNode >= 0 && highlightedKeys.has(a.key);
-      const selected =
-        a.element.getAttribute('aria-pressed') === 'true' ||
-        a.element.classList.contains('is-selected');
-      const active = current || (hoverNode < 0 && selected);
-      const sector = a.key.startsWith('sector-');
-      const size = active && sector ? 1.7023 : sector ? 0.8693 : 0.4;
-      if (a.role === 'node') {
-        a.mesh.scale.setScalar(size);
-        a.mesh.rotation.z = active && !staticMode ? Math.PI / 4 : 0;
-        a.mesh.material.color.setHex(
-          current ? 0xffffff : connected ? 0xb2a2ff : 0xffffff,
+    if (!enabled() || !width) return;
+    graph.updateMatrixWorld(true);
+    for (const anchor of anchors) {
+      if (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
+        continue;
+      projected
+        .copy(anchor.origin)
+        .applyMatrix4(graph.matrixWorld)
+        .project(camera);
+      const x = ((projected.x + 1) * width) / 2 - anchor.x;
+      const y = ((1 - projected.y) * height) / 2 - anchor.y;
+      anchor.element.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
+    }
+    const positions = branchGeometry.getAttribute('position');
+    if (positions) {
+      const reveal = 1 - Math.pow(1 - growth, 3);
+      companies.forEach((anchor, index) => {
+        endpoint.copy(active.origin).lerp(anchor.origin, reveal);
+        positions.setXYZ(
+          index * 2,
+          active.origin.x,
+          active.origin.y,
+          active.origin.z,
         );
-        a.mesh.material.opacity =
-          hoverNode < 0 ? (selected ? 1 : 0.3) : connected ? 1 : 0.2;
-      }
-      vector.copy(a.origin).applyMatrix4(group.matrixWorld);
-      const depthScale = Math.max(
-        0.82,
-        Math.min(1.22, 1000 / (1000 - vector.z)),
-      );
-      vector.project(camera);
-      if (!staticMode) {
-        const x = ((vector.x + 1) * width) / 2 - a.x,
-          y = ((1 - vector.y) * height) / 2 - a.y;
-        a.element.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
-        a.element.style.scale = depthScale.toFixed(3);
-      } else {
-        a.element.style.removeProperty('translate');
-        a.element.style.removeProperty('scale');
-      }
-    });
-    stars.rotation.y = staticMode ? 0 : Math.sin(elapsed * 0.00003) * 0.08;
+        positions.setXYZ(index * 2 + 1, endpoint.x, endpoint.y, endpoint.z);
+      });
+      positions.needsUpdate = true;
+    }
     renderer.render(scene, camera);
-    if (home)
-      root.dataset.rotation = `${group.rotation.x.toFixed(3)},${group.rotation.y.toFixed(3)}`;
+    root.dataset.rotation = `${graph.rotation.x.toFixed(3)},${graph.rotation.y.toFixed(3)}`;
+    root.dataset.branchProgress = growth.toFixed(3);
     root.dataset.renderFrames = String(
       Number(root.dataset.renderFrames || 0) + 1,
     );
   }
   function tick(time: number) {
     frame = 0;
-    if (!visible || paused || document.hidden || disposed || reduced.matches)
-      return;
-    if (time - last >= (width < 768 ? 40 : 25)) {
-      elapsed += Math.min(time - last, 50);
+    if (!enabled() || !visible || document.hidden) return;
+    if (time - last >= (touch.matches ? 40 : 30)) {
+      const elapsed = time - last;
+      const delta = Math.min(elapsed, 100);
       last = time;
+      growth = Math.min(1, growth + elapsed / BRANCH_MS);
+      if (!held() && !dragging) {
+        cycle += elapsed;
+        orbit += delta;
+        yaw += yawVelocity;
+        pitch = Math.max(-0.42, Math.min(0.42, pitch + pitchVelocity));
+        yawVelocity *= 0.86;
+        pitchVelocity *= 0.86;
+        graph.rotation.set(
+          pitch + Math.sin(orbit * 0.00012) * 0.1,
+          yaw + Math.sin(orbit * 0.00018) * (touch.matches ? 0.25 : 0.58),
+          0,
+        );
+        if (cycle >= CYCLE_MS) {
+          const next = sectors[(sectors.indexOf(active) + 1) % sectors.length];
+          root.dispatchEvent(
+            new CustomEvent('focusselect', { detail: next.sector }),
+          );
+        }
+      } else if (held()) {
+        // A hover must stop the pose immediately, including residual drag inertia.
+        yawVelocity = pitchVelocity = 0;
+        cycle = 0;
+      }
+      root.dataset.focusMode =
+        root.dataset.focusPinned === 'true'
+          ? 'paused'
+          : dragging
+            ? 'drag'
+            : held()
+              ? 'held'
+              : 'auto';
       draw();
+    }
+    if (root.dataset.focusPinned === 'true' && growth === 1) {
+      sync();
+      return;
     }
     frame = requestAnimationFrame(tick);
   }
   function sync() {
     cancelAnimationFrame(frame);
     frame = 0;
-    root.dataset.running = String(
-      visible && !paused && !document.hidden && !reduced.matches,
-    );
-    if (root.dataset.running === 'true' && !disposed)
-      frame = requestAnimationFrame(tick);
+    last = performance.now();
+    const running =
+      enabled() &&
+      visible &&
+      !document.hidden &&
+      !(root.dataset.focusPinned === 'true' && growth === 1);
+    root.dataset.running = String(running);
+    if (running) frame = requestAnimationFrame(tick);
   }
-  stage.addEventListener('pointermove', (event) => {
-    if (event.pointerType !== 'mouse') return;
-    const box = stage.getBoundingClientRect();
-    targetX = (event.clientX - box.left) / width - 0.5;
-    targetY = (event.clientY - box.top) / height - 0.5;
-  });
-  stage.addEventListener('pointerleave', () => {
-    if (!dragging) targetX = targetY = 0;
-  });
   const beginDrag = (event: PointerEvent) => {
     const box = stage.getBoundingClientRect();
-    const interactive = (event.target as Element | null)?.closest('a, button');
     if (
-      !home ||
-      !dragSurface ||
-      width < 768 ||
-      reduced.matches ||
-      paused ||
+      !enabled() ||
+      touch.matches ||
       event.button !== 0 ||
-      interactive ||
-      event.clientX < box.left + box.width * 0.45
+      event.pointerType !== 'mouse' ||
+      (event.target as Element).closest('a,button') ||
+      event.clientX < box.left + width * 0.45
     )
       return;
     event.preventDefault();
     dragging = true;
-    dragPointer = event.pointerId;
+    pointer = event.pointerId;
     dragX = event.clientX;
     dragY = event.clientY;
-    pitchVelocity = yawVelocity = 0;
-    stage.setPointerCapture(event.pointerId);
+    yawVelocity = pitchVelocity = 0;
+    root.setPointerCapture(pointer);
     root.dataset.dragging = 'true';
   };
   const moveDrag = (event: PointerEvent) => {
-    if (!dragging || event.pointerId !== dragPointer || !width || !height)
-      return;
-    event.preventDefault();
-    const deltaX = event.clientX - dragX;
-    const deltaY = event.clientY - dragY;
+    if (!dragging || event.pointerId !== pointer) return;
+    const dx = ((event.clientX - dragX) / width) * Math.PI * 1.2;
+    const dy = ((event.clientY - dragY) / height) * Math.PI * 0.8;
     dragX = event.clientX;
     dragY = event.clientY;
-    const yawStep = (deltaX / width) * Math.PI * 1.2;
-    const pitchStep = (deltaY / height) * Math.PI * 0.8;
-    yawVelocity = yawStep * 0.35;
-    pitchVelocity = pitchStep * 0.35;
-    dragYaw += yawStep;
-    dragPitch = Math.max(
-      -Math.PI / 3,
-      Math.min(Math.PI / 3, dragPitch + pitchStep),
+    yaw += dx;
+    pitch = Math.max(-0.42, Math.min(0.42, pitch + dy));
+    yawVelocity = dx * 0.2;
+    pitchVelocity = dy * 0.2;
+    graph.rotation.set(
+      pitch + Math.sin(orbit * 0.00012) * 0.1,
+      yaw + Math.sin(orbit * 0.00018) * (touch.matches ? 0.25 : 0.58),
+      0,
     );
     draw();
   };
   const endDrag = (event: PointerEvent) => {
-    if (!dragging || event.pointerId !== dragPointer) return;
+    if (!dragging || event.pointerId !== pointer) return;
     dragging = false;
-    dragPointer = -1;
+    cycle = 0;
     root.dataset.dragging = 'false';
     root.dataset.dragged = 'true';
-    if (stage.hasPointerCapture(event.pointerId))
-      stage.releasePointerCapture(event.pointerId);
-    sync();
+    if (root.hasPointerCapture(pointer)) root.releasePointerCapture(pointer);
+    pointer = -1;
   };
-  stage.addEventListener('pointerdown', beginDrag);
-  stage.addEventListener('pointermove', moveDrag);
-  stage.addEventListener('pointerup', endDrag);
-  stage.addEventListener('pointercancel', endDrag);
+  root.addEventListener('pointerdown', beginDrag);
+  root.addEventListener('pointermove', moveDrag);
+  root.addEventListener('pointerup', endDrag);
+  root.addEventListener('pointercancel', endDrag);
+  root.addEventListener('focuschange', select);
   const visibility = new IntersectionObserver(
-    (entries) => {
-      visible = entries[0].isIntersecting;
+    ([entry]) => {
+      visible = entry.isIntersecting;
       sync();
     },
     { threshold: 0.02 },
@@ -536,53 +354,51 @@ export function mountTopology(root: HTMLElement) {
   visibility.observe(stage);
   const resize = new ResizeObserver(size);
   resize.observe(stage);
-  const toggle = root.querySelector<HTMLButtonElement>('[data-motion-toggle]');
-  toggle?.addEventListener('click', () => {
-    paused = !paused;
-    toggle.setAttribute('aria-pressed', String(paused));
-    toggle.textContent = paused
-      ? toggle.dataset.resume!
-      : toggle.dataset.pause!;
-    sync();
-  });
-  const preferenceChange = () => {
-    size();
-    sync();
-  };
-  reduced.addEventListener('change', preferenceChange);
+  root.addEventListener('focushold', sync);
+  touch.addEventListener('change', size);
+  motion.addEventListener('change', size);
   document.addEventListener('visibilitychange', sync);
   canvas.addEventListener('webglcontextlost', (event) => {
     event.preventDefault();
-    paused = true;
-    root.dataset.renderer = 'static';
-    canvas.hidden = true;
-    anchors.forEach((a) => a.element.style.removeProperty('translate'));
+    lost = true;
+    size();
+  });
+  // The lightweight fallback remains interactive after a context loss; try recovery once restored.
+  canvas.addEventListener('webglcontextrestored', () => {
+    lost = false;
+    size();
+  });
+  select();
+  size();
+  window.addEventListener('pagehide', (event) => {
+    if (event.persisted) {
+      visible = false;
+      sync();
+      return;
+    }
+    disposed = true;
+    cancelAnimationFrame(frame);
+    visibility.disconnect();
+    resize.disconnect();
+    motion.removeEventListener('change', size);
+    touch.removeEventListener('change', size);
+    root.removeEventListener('focushold', sync);
+    document.removeEventListener('visibilitychange', sync);
+    root.removeEventListener('focuschange', select);
+    root.removeEventListener('pointerdown', beginDrag);
+    root.removeEventListener('pointermove', moveDrag);
+    root.removeEventListener('pointerup', endDrag);
+    root.removeEventListener('pointercancel', endDrag);
+    baseGeometry.dispose();
+    branchGeometry.dispose();
+    baseMaterial.dispose();
+    branchMaterial.dispose();
+    renderer.dispose();
+  });
+  window.addEventListener('pageshow', (event) => {
+    if (!event.persisted) return;
+    const box = stage.getBoundingClientRect();
+    visible = box.bottom > 0 && box.top < innerHeight;
     sync();
   });
-  root.dataset.renderer = 'webgl';
-  window.addEventListener(
-    'pagehide',
-    () => {
-      disposed = true;
-      cancelAnimationFrame(frame);
-      visibility.disconnect();
-      resize.disconnect();
-      reduced.removeEventListener('change', preferenceChange);
-      document.removeEventListener('visibilitychange', sync);
-      stage.removeEventListener('pointerdown', beginDrag);
-      stage.removeEventListener('pointermove', moveDrag);
-      stage.removeEventListener('pointerup', endDrag);
-      stage.removeEventListener('pointercancel', endDrag);
-      edgeGeometry.dispose();
-      highlightGeometry.dispose();
-      edgeMaterial.dispose();
-      highlightMaterial.dispose();
-      sharedGeometry.dispose();
-      anchors.forEach((a) => a.mesh.material.dispose());
-      starGeometry.dispose();
-      starMaterial.dispose();
-      renderer.dispose();
-    },
-    { once: true },
-  );
 }

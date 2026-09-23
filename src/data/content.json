@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 9,
+  "schemaVersion": 11,
   "site": {
     "brand_cn": "星连资本",
     "brand_en": "Link-X Capital",
@@ -123,10 +123,6 @@
     "previous_en": "Previous company",
     "next_cn": "下一家",
     "next_en": "Next company",
-    "pause_cn": "暂停动态背景",
-    "pause_en": "Pause ambient motion",
-    "resume_cn": "开启动态背景",
-    "resume_en": "Enable ambient motion",
     "client_messages": {
       "stories_shown_cn": "显示 {count} 篇文章",
       "stories_shown_en": "{count} stories shown",
@@ -763,8 +759,8 @@
   },
   "media": {
     "fellow": {
-      "video_url": "",
-      "poster_file": ""
+      "video_file": "video_example.mp4",
+      "poster_file": "video-example-poster.webp"
     }
   }
 }
