@@ -67,11 +67,13 @@ export function mountPhilosophyMotion(
     const pan = smooth(range(p, 0.69, 0.88));
     const detail = smooth(range(p, 0.82, 0.96));
     const sequenceDistance = Math.max(innerHeight * 2.6, 1);
-    const leftStarFadeStart = 0.54 + 100 / sequenceDistance;
+    const leftStarFadeStart = PHILOSOPHY_ARC.start + 100 / sequenceDistance;
     const leftStarFadeEnd = leftStarFadeStart + 280 / sequenceDistance;
     const leftStarOpacity =
-      smooth(range(p, 0.5, 0.54)) *
-      (1 - smooth(range(p, leftStarFadeStart, leftStarFadeEnd)));
+      p < PHILOSOPHY_ARC.start
+        ? 0
+        : 1 - smooth(range(p, leftStarFadeStart, leftStarFadeEnd));
+    const leftStarDrop = 75 * u * smooth(range(p, PHILOSOPHY_ARC.start, 0.12));
     const aboutOffset = 100 * u * smooth(range(p, 0.49, 0.58));
     const heroOpacity = 1 - smooth(range(p, 0.4, 0.55));
     const titleOpacity = smooth(range(p, 0.54, 0.64));
@@ -118,6 +120,7 @@ export function mountPhilosophyMotion(
     stage.dataset.motionPhase = phase;
     stage.dataset.motionProgress = p.toFixed(4);
     canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
+    canvas.dataset.leftStarPoint = `${(start.x + camera.x).toFixed(2)},${(point.y + leftStarDrop).toFixed(2)}`;
     canvas.dataset.leftStarOpacity = leftStarOpacity.toFixed(3);
     hero.dataset.scrollProgress = arc.toFixed(3);
     about.dataset.scrollProgress = range(p, 0.54, 1).toFixed(3);
@@ -224,7 +227,12 @@ export function mountPhilosophyMotion(
     };
     // At the fork, the left point is fully solid. It holds for exactly 100px
     // of scroll, then fades over the following 280px instead of disappearing.
-    diamond(start.x + camera.x, point.y, '#c9c9c9', leftStarOpacity);
+    diamond(
+      start.x + camera.x,
+      point.y + leftStarDrop,
+      '#a7a7a7',
+      leftStarOpacity,
+    );
     diamond(
       point.x,
       point.y,
