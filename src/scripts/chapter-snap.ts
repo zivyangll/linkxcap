@@ -39,10 +39,15 @@ export function mountChapterSnap(home: HTMLElement) {
     previousBehavior = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = 'auto';
     home.dataset.snapping = 'true';
+    const distance = Math.abs(destination - y);
     tween = gsap.to(position, {
       y: destination,
-      duration: gsap.utils.clamp(0.5, 1.6, Math.abs(destination - y) / 2200),
-      ease: 'power3.inOut',
+      // Begin with the user's existing scroll direction, then decelerate into
+      // the chapter stop. The old in/out curve paused before accelerating,
+      // which made the hand-off feel like a sudden grab.
+      duration: gsap.utils.clamp(0.72, 1.35, 0.55 + distance / 1600),
+      ease: 'sine.out',
+      lazy: false,
       onUpdate: () => window.scrollTo(0, position.y),
       onComplete: finish,
     });
@@ -103,7 +108,7 @@ export function mountChapterSnap(home: HTMLElement) {
         ['ArrowUp', 'PageUp'].includes(event.key) || event.shiftKey ? -1 : 1;
     }
     armed = true;
-    timer = window.setTimeout(settle, 160);
+    timer = window.setTimeout(settle, 90);
   };
   const measure = ScrollTrigger.create({
     id: 'home-chapter-snap',
