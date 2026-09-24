@@ -175,7 +175,8 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 13, 0, Math.PI * 2);
         ctx.stroke();
-        ctx.globalAlpha = 1 - smooth(phase(p, 0.92, 1));
+        // Match desktop: the About Us node stays visible after it appears.
+        ctx.globalAlpha = 1;
         diamond(ctx, point.x, point.y);
         ctx.globalAlpha = 1;
         stage.dataset.motionProgress = p.toFixed(4);

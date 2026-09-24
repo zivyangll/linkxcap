@@ -233,7 +233,9 @@ export function mountPhilosophyMotion(
     // At the fork, the left point is fully solid. It holds for exactly 100px
     // of scroll, then completes its fade over a fixed 400px scroll distance.
     diamond(start.x + camera.x, leftStarY, '#090909', leftStarOpacity);
-    diamond(point.x, point.y, '#090909', 1 - smooth(range(p, 0.94, 1)));
+    // Once the About Us node has entered the composition, keep it visible
+    // through the end of the pinned chapter.
+    diamond(point.x, point.y, '#090909', 1);
     ctx.globalAlpha = 1;
   }
   function resize() {
