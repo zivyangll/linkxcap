@@ -11,7 +11,6 @@ import {
   Points,
   ShaderMaterial,
   AdditiveBlending,
-  DynamicDrawUsage,
   Vector3,
 } from 'three';
 
@@ -23,19 +22,18 @@ type Anchor = {
   x: number;
   y: number;
 };
-type StarKeyframe = [number, number];
-type Star = {
-  x: number;
-  y: number;
-  size: number;
-  color: [number, number, number];
-  keyframes: StarKeyframe[];
-};
-type StarfieldSource = {
-  stars: Array<
-    [number, number, number, number, number, number, StarKeyframe[]]
-  >;
-};
+type Star = [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+];
 const CYCLE_MS = 5200;
 const BRANCH_MS = 620;
 const STARFIELD_Z = -650;
@@ -63,10 +61,8 @@ export function mountTopology(root: HTMLElement) {
   camera.position.z = 1000;
   scene.add(graph);
   let stars: Star[] = [];
-  let starfieldClock = 0;
   let starfieldGeometry: BufferGeometry | undefined;
   let starfieldMaterial: ShaderMaterial | undefined;
-  let starfieldOpacity: Float32BufferAttribute | undefined;
   let starfieldSize: Float32BufferAttribute | undefined;
   const anchors: Anchor[] = [
     ...root.querySelectorAll<HTMLElement>('[data-topology-anchor]'),
@@ -150,34 +146,6 @@ export function mountTopology(root: HTMLElement) {
     sync();
   };
 
-  const sampleStarOpacity = (keyframes: StarKeyframe[], frameValue: number) => {
-    if (!keyframes.length) return 0;
-    if (keyframes.length === 1) return keyframes[0][1] / 100;
-    for (let index = 0; index < keyframes.length - 1; index++) {
-      const from = keyframes[index];
-      const to = keyframes[index + 1];
-      if (frameValue > to[0]) continue;
-      const distance = Math.max(1, to[0] - from[0]);
-      const linear = Math.max(
-        0,
-        Math.min(1, (frameValue - from[0]) / distance),
-      );
-      const eased = linear * linear * (3 - 2 * linear);
-      return (from[1] + (to[1] - from[1]) * eased) / 100;
-    }
-    return keyframes.at(-1)![1] / 100;
-  };
-
-  const updateStarfield = (elapsed: number) => {
-    if (!starfieldOpacity || !stars.length) return;
-    starfieldClock = (starfieldClock + elapsed * 0.06) % 360;
-    const values = starfieldOpacity.array as Float32Array;
-    stars.forEach((star, index) => {
-      values[index] = sampleStarOpacity(star.keyframes, starfieldClock) * 0.82;
-    });
-    starfieldOpacity.needsUpdate = true;
-  };
-
   const layoutStarfield = () => {
     if (!starfieldGeometry || !starfieldSize || !width || !height) return;
     const positions = starfieldGeometry.getAttribute('position');
@@ -190,13 +158,13 @@ export function mountTopology(root: HTMLElement) {
     stars.forEach((star, index) => {
       positions.setXYZ(
         index,
-        (star.x - 960) * worldScale,
-        (540 - star.y) * worldScale,
+        (star[0] - 960) * worldScale,
+        (540 - star[1]) * worldScale,
         STARFIELD_Z,
       );
       sizes[index] = Math.max(
         touch.matches ? 1.8 : 1.4,
-        star.size * 1.65 * coverScale,
+        star[2] * 1.65 * coverScale,
       );
     });
     positions.needsUpdate = true;
@@ -206,18 +174,8 @@ export function mountTopology(root: HTMLElement) {
   const loadStarfield = async () => {
     try {
       const response = await fetch(canvas.dataset.starfieldSrc!);
-      const data = (await response.json()) as StarfieldSource;
-      const parsed = (data.stars || []).map(
-        ([x, y, size, red, green, blue, keyframes]) => ({
-          x,
-          y,
-          size,
-          color: [red, green, blue] as [number, number, number],
-          keyframes,
-        }),
-      );
-      if (disposed || !parsed.length) return;
-      stars = parsed;
+      stars = ((await response.json()) as { stars: Star[] }).stars;
+      if (disposed || !stars?.length) return;
 
       starfieldGeometry = new BufferGeometry();
       starfieldGeometry.setAttribute(
@@ -227,7 +185,9 @@ export function mountTopology(root: HTMLElement) {
       starfieldGeometry.setAttribute(
         'color',
         new Float32BufferAttribute(
-          new Float32Array(stars.flatMap((star) => star.color)),
+          new Float32Array(
+            stars.flatMap((star) => [star[3], star[4], star[5]]),
+          ),
           3,
         ),
       );
@@ -235,17 +195,20 @@ export function mountTopology(root: HTMLElement) {
         new Float32Array(stars.length),
         1,
       );
-      starfieldOpacity = new Float32BufferAttribute(
-        new Float32Array(stars.length),
-        1,
-      );
-      starfieldOpacity.setUsage(DynamicDrawUsage);
       starfieldGeometry.setAttribute('s', starfieldSize);
-      starfieldGeometry.setAttribute('a', starfieldOpacity);
+      starfieldGeometry.setAttribute(
+        'q',
+        new Float32BufferAttribute(
+          new Float32Array(
+            stars.flatMap((star) => [star[6], star[7], star[8], star[9]]),
+          ),
+          4,
+        ),
+      );
       starfieldMaterial = new ShaderMaterial({
-        uniforms: { u: { value: 1 } },
+        uniforms: { u: { value: 1 }, t: { value: 0 } },
         vertexShader:
-          'uniform float u;attribute vec3 color;attribute float s,a;varying vec3 c;varying float o;void main(){c=color;o=a;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);gl_PointSize=s*u;}',
+          'uniform float u,t;attribute vec3 color;attribute float s;attribute vec4 q;varying vec3 c;varying float o;void main(){c=color;o=mix(q.z,q.w,.5+.5*sin(t*q.y+q.x))*.82;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);gl_PointSize=s*u;}',
         fragmentShader:
           'varying vec3 c;varying float o;void main(){vec2 p=abs(gl_PointCoord-vec2(.5))*2.;float d=p.x+p.y;float a=((1.-smoothstep(.08,.34,d))*.72+(1.-smoothstep(.08,1.05,d))*.28)*o;if(a<.008)discard;gl_FragColor=vec4(c,a);}',
         transparent: true,
@@ -257,7 +220,6 @@ export function mountTopology(root: HTMLElement) {
       points.frustumCulled = false;
       points.renderOrder = -10;
       scene.add(points);
-      updateStarfield(0);
       layoutStarfield();
       root.dataset.starfield = 'ready';
       draw();
@@ -407,7 +369,7 @@ export function mountTopology(root: HTMLElement) {
       const elapsed = time - last;
       const delta = Math.min(elapsed, 100);
       last = time;
-      updateStarfield(elapsed);
+      if (starfieldMaterial) starfieldMaterial.uniforms.t.value = time / 1000;
       growth = Math.min(1, growth + elapsed / BRANCH_MS);
       if (correcting && !dragging) {
         const correction = 1 - Math.pow(0.001, delta / 520);
