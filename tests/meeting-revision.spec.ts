@@ -65,6 +65,38 @@ test('all page templates share the same responsive top bar contract', async ({
   }
 });
 
+test('compact desktop header controls share one vertical center', async ({
+  page,
+}) => {
+  for (const locale of ['zh', 'en']) {
+    for (const width of [1024, 1100, 1150, 1279]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`${locale}/index.html`);
+      await page.evaluate(() => document.fonts.ready);
+
+      for (const minimal of [false, true]) {
+        await page.locator('[data-header]').evaluate((header, enabled) => {
+          header.classList.toggle('is-minimal', enabled);
+        }, minimal);
+
+        const centers = await Promise.all(
+          ['.home-link', '.language-switch', '[data-menu-open]'].map(
+            async (selector) => {
+              const box = await page.locator(selector).boundingBox();
+              expect(box).not.toBeNull();
+              return box!.y + box!.height / 2;
+            },
+          ),
+        );
+
+        expect(Math.max(...centers) - Math.min(...centers)).toBeLessThanOrEqual(
+          0.5,
+        );
+      }
+    }
+  }
+});
+
 test('insight detail activates Insights and keeps the compact menu close icon square', async ({
   page,
 }) => {

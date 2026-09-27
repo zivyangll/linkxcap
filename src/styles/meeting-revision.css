@@ -1314,6 +1314,14 @@
     min-height: 72px;
   }
 
+  .site-header .home-link,
+  .site-header.is-minimal .home-link,
+  .site-header .language-switch,
+  .site-header.is-minimal .language-switch {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
   .site-header .desktop-nav,
   .site-header.is-minimal .desktop-nav {
     display: none;
