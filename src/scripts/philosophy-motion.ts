@@ -46,6 +46,8 @@ export function mountPhilosophyMotion(
   const progress = { value: 0 };
   let width = 0,
     height = 0;
+  let orbitLabelWidth = 0,
+    aboutLabelWidth = 0;
   let activeHandoff = false;
   home.classList.add('has-philosophy-motion');
 
@@ -136,7 +138,8 @@ export function mountPhilosophyMotion(
     about.inert = titleOpacity < 0.01;
     heroCopy.forEach((el) => setPose(el, camera.x, camera.y, 1));
     // The label follows the same point; its original diamond is hidden.
-    orbitLabel.style.left = `${point.x - 115 * u}px`;
+    const nodeLabelGap = Math.max(28 * u, 20);
+    orbitLabel.style.left = `${point.x - orbitLabelWidth - nodeLabelGap}px`;
     orbitLabel.style.top = `${point.y + 10 * u}px`;
     // Let the travelling marker leave the composition instead of vanishing
     // when the pinned stage hands off to the next chapter.
@@ -151,9 +154,15 @@ export function mountPhilosophyMotion(
       el.style.filter = `blur(${((1 - titleOpacity) * 14).toFixed(2)}px)`;
       el.style.letterSpacing = `${((1 - titleOpacity) * 0.09).toFixed(4)}em`;
     });
+    const aboutLabelLeft = 610 * u - aboutLabelWidth;
+    // CSS caps its desktop design unit above 1920px, while this canvas keeps
+    // scaling with the stage. Keep the animated label in canvas coordinates.
+    aboutLabel.style.left = `${aboutLabelLeft}px`;
+    aboutLabel.style.right = 'auto';
     setPose(
       aboutLabel,
-      lerp(point.x - 145 * u, 498 * u, pan) - 498 * u,
+      lerp(point.x - aboutLabelWidth - nodeLabelGap, aboutLabelLeft, pan) -
+        aboutLabelLeft,
       lerp(point.y - 26 * u, 616 * u, pan) - 616 * u,
       titleOpacity,
     );
@@ -241,6 +250,8 @@ export function mountPhilosophyMotion(
   function resize() {
     width = stage.clientWidth;
     height = stage.clientHeight;
+    orbitLabelWidth = orbitLabel.getBoundingClientRect().width;
+    aboutLabelWidth = aboutLabel.getBoundingClientRect().width;
     const dpr = Math.min(devicePixelRatio, 1.5);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);

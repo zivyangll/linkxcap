@@ -169,6 +169,69 @@ test('key text progressively resolves from blurred to sharp', async ({
   await expect(line).toHaveCSS('filter', 'blur(0px)');
 });
 
+test('desktop chapter and orbit node labels share one size and clear their diamonds', async ({
+  page,
+}) => {
+  for (const locale of ['zh', 'en']) {
+    for (const viewport of [
+      { width: 1024, height: 768 },
+      { width: 1366, height: 768 },
+      { width: 2160, height: 858 },
+    ]) {
+      await page.setViewportSize(viewport);
+      await page.goto(`${locale}/index.html`);
+      await page.evaluate(() => document.fonts.ready);
+      const stage = page.locator('[data-philosophy-stage]');
+      const sizes = await page
+        .locator('.chapter, .orbit-label, .about-label')
+        .evaluateAll((elements) =>
+          elements.map((element) => getComputedStyle(element).fontSize),
+        );
+      expect(new Set(sizes).size).toBe(1);
+      const chapterGap = await page.evaluate(() => {
+        const chapter = document
+          .querySelector('.chapter')!
+          .getBoundingClientRect();
+        const track = document
+          .querySelector('.opening-track')!
+          .getBoundingClientRect();
+        return track.left - chapter.right;
+      });
+      expect(chapterGap).toBeGreaterThanOrEqual(12);
+
+      const bounds = await stage.evaluate((element) => ({
+        start: element.parentElement!.getBoundingClientRect().top + scrollY,
+        distance:
+          element.parentElement!.getBoundingClientRect().height -
+          element.getBoundingClientRect().height,
+      }));
+      const gapAt = async (progress: number, selector: string) => {
+        await page.evaluate(
+          (target) => scrollTo(0, target),
+          bounds.start + bounds.distance * progress,
+        );
+        await expect
+          .poll(async () =>
+            Number(await stage.getAttribute('data-motion-progress')),
+          )
+          .toBeCloseTo(progress, 2);
+        return stage.evaluate((element, labelSelector) => {
+          const point = (element.querySelector('canvas')!.dataset.point || '')
+            .split(',')
+            .map(Number);
+          const stageBox = element.getBoundingClientRect();
+          const labelBox = element
+            .querySelector<HTMLElement>(labelSelector)!
+            .getBoundingClientRect();
+          return stageBox.left + point[0] - labelBox.right;
+        }, selector);
+      };
+      expect(await gapAt(0.3, '.orbit-label')).toBeGreaterThanOrEqual(18);
+      expect(await gapAt(0.58, '.about-label')).toBeGreaterThanOrEqual(18);
+    }
+  }
+});
+
 test('portfolio keeps the original grid and the original round arrow follows the pointer', async ({
   page,
 }) => {
