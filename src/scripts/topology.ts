@@ -235,25 +235,23 @@ export function mountTopology(root: HTMLElement) {
       const y = finalY - anchor.y;
       anchor.element.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
     }
-    if (!touch.matches) {
-      const bounds = stage.getBoundingClientRect();
-      for (const anchor of anchors) {
-        if (
-          !anchor.label ||
-          (anchor.element.dataset.focusSector &&
-            anchor.sector !== active.sector)
-        )
-          continue;
-        anchor.label.style.removeProperty('translate');
-        const box = anchor.label.getBoundingClientRect();
-        const x =
-          Math.max(bounds.left + 18 - box.left, 0) +
-          Math.min(bounds.right - 18 - box.right, 0);
-        const y =
-          Math.max(bounds.top + 18 - box.top, 0) +
-          Math.min(bounds.bottom - 18 - box.bottom, 0);
-        if (x || y) anchor.label.style.translate = `${x}px ${y}px`;
-      }
+    const bounds = stage.getBoundingClientRect();
+    const labelInset = touch.matches ? 4 : 18;
+    for (const anchor of anchors) {
+      if (
+        !anchor.label ||
+        (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
+      )
+        continue;
+      anchor.label.style.removeProperty('translate');
+      const box = anchor.label.getBoundingClientRect();
+      const x =
+        Math.max(bounds.left + labelInset - box.left, 0) +
+        Math.min(bounds.right - labelInset - box.right, 0);
+      const y =
+        Math.max(bounds.top + labelInset - box.top, 0) +
+        Math.min(bounds.bottom - labelInset - box.bottom, 0);
+      if (x || y) anchor.label.style.translate = `${x}px ${y}px`;
     }
     const positions = branchGeometry.getAttribute('position');
     if (positions) {

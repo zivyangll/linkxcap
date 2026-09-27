@@ -338,37 +338,84 @@ for (const width of [360, 768])
     await context.close();
   });
 
-test('narrow bilingual graphs keep company and category labels separate', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 360, height: 844 });
+for (const width of [360, 390, 768]) {
   for (const lang of ['zh', 'en']) {
-    await page.goto(`${lang}/index.html`);
-    for (const sector of content.sectors) {
-      await page.locator(`[data-sector="${sector.id}"]`).click();
-      const overlaps = await page.locator('.constellation').evaluate((root) => {
-        const labels = [
-          ...root.querySelectorAll(
-            '.sector-star .star-label, .constellation-scene:not([hidden]) .constellation-company-label',
-          ),
-        ].map((element) => ({
-          text: element.textContent,
-          box: element.getBoundingClientRect(),
-        }));
-        return labels.flatMap((a, index) =>
-          labels
-            .slice(index + 1)
-            .filter(
-              (b) =>
-                Math.min(a.box.right, b.box.right) >
-                  Math.max(a.box.left, b.box.left) + 1 &&
-                Math.min(a.box.bottom, b.box.bottom) >
-                  Math.max(a.box.top, b.box.top) + 1,
-            )
-            .map((b) => [a.text, b.text]),
-        );
+    test(`mobile ${lang} graph shows every full label at ${width}px without overlap`, async ({
+      browser,
+      baseURL,
+    }) => {
+      const context = await browser.newContext({
+        viewport: { width, height: 900 },
+        hasTouch: true,
+        isMobile: true,
+        reducedMotion: 'no-preference',
       });
-      expect(overlaps).toEqual([]);
-    }
+      const page = await context.newPage();
+      await page.goto(`${baseURL}${lang}/index.html`);
+      await page.locator('.constellation').scrollIntoViewIfNeeded();
+      for (const sector of content.sectors) {
+        await page.locator(`[data-sector="${sector.id}"]`).tap({ force: true });
+        await expect(page.locator('#focus')).toHaveAttribute(
+          'data-branch-progress',
+          '1.000',
+        );
+        const metrics = await page
+          .locator('.constellation')
+          .evaluate((root) => {
+            const rootBox = root.getBoundingClientRect();
+            const labels = [
+              ...root.querySelectorAll<HTMLElement>(
+                '.sector-star .star-label, .constellation-scene:not([hidden]) .constellation-company-label',
+              ),
+            ].map((element) => ({
+              text: element.textContent,
+              display: getComputedStyle(element).display,
+              clipped:
+                element.scrollWidth > element.clientWidth + 1 ||
+                element.scrollHeight > element.clientHeight + 1,
+              box: element.getBoundingClientRect(),
+            }));
+            const overlaps = labels.flatMap((a, index) =>
+              labels
+                .slice(index + 1)
+                .filter(
+                  (b) =>
+                    Math.min(a.box.right, b.box.right) >
+                      Math.max(a.box.left, b.box.left) + 1 &&
+                    Math.min(a.box.bottom, b.box.bottom) >
+                      Math.max(a.box.top, b.box.top) + 1,
+                )
+                .map((b) => [a.text, b.text]),
+            );
+            return {
+              count: labels.length,
+              hidden: labels.filter(
+                ({ display, box }) =>
+                  display === 'none' || box.width === 0 || box.height === 0,
+              ),
+              clipped: labels.filter((label) => label.clipped),
+              outside: labels.filter(
+                ({ box }) =>
+                  box.left < rootBox.left - 1 ||
+                  box.top < rootBox.top - 1 ||
+                  box.right > rootBox.right + 1 ||
+                  box.bottom > rootBox.bottom + 1,
+              ),
+              overlaps,
+            };
+          });
+        expect(metrics.count).toBe(
+          content.sectors.length +
+            content.companies.filter(
+              (company) => company.sector_id === sector.id,
+            ).length,
+        );
+        expect(metrics.hidden).toEqual([]);
+        expect(metrics.clipped).toEqual([]);
+        expect(metrics.outside).toEqual([]);
+        expect(metrics.overlaps).toEqual([]);
+      }
+      await context.close();
+    });
   }
-});
+}
