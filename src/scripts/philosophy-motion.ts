@@ -153,7 +153,7 @@ export function mountPhilosophyMotion(
     });
     setPose(
       aboutLabel,
-      lerp(point.x - 116 * u, 564 * u, pan) - 564 * u,
+      lerp(point.x - 145 * u, 498 * u, pan) - 498 * u,
       lerp(point.y - 26 * u, 616 * u, pan) - 616 * u,
       titleOpacity,
     );

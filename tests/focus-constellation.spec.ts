@@ -80,13 +80,34 @@ test('homepage topology renders the supplied twinkling starfield behind the grap
   const scene = await openScene(page);
   await expect(scene).toHaveAttribute('data-starfield', 'ready');
   expect(
-    await page.locator('.topology-canvas').evaluate(async (canvas) => {
+    await page.locator('.focus-starfield').evaluate(async (container) => {
       const response = await fetch(
-        (canvas as HTMLCanvasElement).dataset.starfieldSrc!,
+        (container as HTMLElement).dataset.lottieSrc!,
       );
-      return (await response.json()).stars.length;
+      const source = await response.arrayBuffer();
+      const hash = [
+        ...new Uint8Array(await crypto.subtle.digest('SHA-256', source)),
+      ]
+        .map((byte) => byte.toString(16).padStart(2, '0'))
+        .join('');
+      const animation = JSON.parse(new TextDecoder().decode(source));
+      return {
+        bytes: source.byteLength,
+        hash,
+        layers: animation.layers.length,
+      };
     }),
-  ).toBe(180);
+  ).toEqual({
+    bytes: 324909,
+    hash: 'f8d91b1d7c77e87c96a79b8b8f704fd0bbaf29e26294ebb3516cfe798c8cfecb',
+    layers: 180,
+  });
+  const starfield = page.locator('.focus-starfield');
+  await expect(starfield.locator('svg')).toBeVisible();
+  await expect(starfield.locator('svg')).toHaveAttribute(
+    'preserveAspectRatio',
+    'xMidYMid slice',
+  );
   const initialFrames = await scene.getAttribute('data-render-frames');
   await expect
     .poll(() => scene.getAttribute('data-render-frames'))
@@ -189,7 +210,10 @@ test('reduced motion has static connections, no automatic cycle and no Three.js 
 }) => {
   const requests: string[] = [];
   page.on('request', (request) => {
-    if (/topology\..*\.js/.test(request.url())) requests.push(request.url());
+    if (/(topology|starfield-lottie|lottie_light)\..*\.js/.test(request.url()))
+      requests.push(request.url());
+    if (/linkx-twinkling-starfield-transparent\.json/.test(request.url()))
+      requests.push(request.url());
   });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/index.html');

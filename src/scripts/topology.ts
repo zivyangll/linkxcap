@@ -8,35 +8,20 @@ import {
   Float32BufferAttribute,
   LineSegments,
   LineBasicMaterial,
-  Points,
-  ShaderMaterial,
-  AdditiveBlending,
   Vector3,
 } from 'three';
 
 type Anchor = {
   element: HTMLElement;
+  label: HTMLElement | null;
   key: string;
   sector: string;
   origin: Vector3;
   x: number;
   y: number;
 };
-type Star = [
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-  number,
-];
 const CYCLE_MS = 5200;
 const BRANCH_MS = 620;
-const STARFIELD_Z = -650;
 
 export function mountTopology(root: HTMLElement) {
   const canvas = root.querySelector<HTMLCanvasElement>('.topology-canvas')!;
@@ -60,14 +45,13 @@ export function mountTopology(root: HTMLElement) {
   const graph = new Group();
   camera.position.z = 1000;
   scene.add(graph);
-  let stars: Star[] = [];
-  let starfieldGeometry: BufferGeometry | undefined;
-  let starfieldMaterial: ShaderMaterial | undefined;
-  let starfieldSize: Float32BufferAttribute | undefined;
   const anchors: Anchor[] = [
     ...root.querySelectorAll<HTMLElement>('[data-topology-anchor]'),
   ].map((element) => ({
     element,
+    label: element.querySelector<HTMLElement>(
+      '.star-label, .constellation-company-label',
+    ),
     key: element.dataset.topologyAnchor!,
     sector: element.dataset.sector || element.dataset.focusSector || '',
     origin: new Vector3(),
@@ -134,7 +118,10 @@ export function mountTopology(root: HTMLElement) {
   const held = () =>
     root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
   const clearProjection = () =>
-    anchors.forEach(({ element }) => element.style.removeProperty('translate'));
+    anchors.forEach(({ element, label }) => {
+      element.style.removeProperty('translate');
+      label?.style.removeProperty('translate');
+    });
   const correctView = () => {
     // Return to the closest canonical front view, avoiding a long reverse spin.
     targetYaw = Math.round(yaw / (Math.PI * 2)) * Math.PI * 2;
@@ -144,87 +131,6 @@ export function mountTopology(root: HTMLElement) {
     cycle = 0;
     root.dataset.cameraState = 'settling';
     sync();
-  };
-
-  const layoutStarfield = () => {
-    if (!starfieldGeometry || !starfieldSize || !width || !height) return;
-    const positions = starfieldGeometry.getAttribute('position');
-    const sizes = starfieldSize.array as Float32Array;
-    const distance = camera.position.z - STARFIELD_Z;
-    const visibleHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * distance;
-    const visibleWidth = visibleHeight * camera.aspect;
-    const worldScale = Math.max(visibleWidth / 1920, visibleHeight / 1080);
-    const coverScale = Math.max(width / 1920, height / 1080);
-    stars.forEach((star, index) => {
-      positions.setXYZ(
-        index,
-        (star[0] - 960) * worldScale,
-        (540 - star[1]) * worldScale,
-        STARFIELD_Z,
-      );
-      sizes[index] = Math.max(
-        touch.matches ? 1.8 : 1.4,
-        star[2] * 1.65 * coverScale,
-      );
-    });
-    positions.needsUpdate = true;
-    starfieldSize.needsUpdate = true;
-  };
-
-  const loadStarfield = async () => {
-    try {
-      const response = await fetch(canvas.dataset.starfieldSrc!);
-      stars = ((await response.json()) as { stars: Star[] }).stars;
-      if (disposed || !stars?.length) return;
-
-      starfieldGeometry = new BufferGeometry();
-      starfieldGeometry.setAttribute(
-        'position',
-        new Float32BufferAttribute(new Float32Array(stars.length * 3), 3),
-      );
-      starfieldGeometry.setAttribute(
-        'color',
-        new Float32BufferAttribute(
-          new Float32Array(
-            stars.flatMap((star) => [star[3], star[4], star[5]]),
-          ),
-          3,
-        ),
-      );
-      starfieldSize = new Float32BufferAttribute(
-        new Float32Array(stars.length),
-        1,
-      );
-      starfieldGeometry.setAttribute('s', starfieldSize);
-      starfieldGeometry.setAttribute(
-        'q',
-        new Float32BufferAttribute(
-          new Float32Array(
-            stars.flatMap((star) => [star[6], star[7], star[8], star[9]]),
-          ),
-          4,
-        ),
-      );
-      starfieldMaterial = new ShaderMaterial({
-        uniforms: { u: { value: 1 }, t: { value: 0 } },
-        vertexShader:
-          'uniform float u,t;attribute vec3 color;attribute float s;attribute vec4 q;varying vec3 c;varying float o;void main(){c=color;o=mix(q.z,q.w,.5+.5*sin(t*q.y+q.x))*.82;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);gl_PointSize=s*u;}',
-        fragmentShader:
-          'varying vec3 c;varying float o;void main(){vec2 p=abs(gl_PointCoord-vec2(.5))*2.;float d=p.x+p.y;float a=((1.-smoothstep(.08,.34,d))*.72+(1.-smoothstep(.08,1.05,d))*.28)*o;if(a<.008)discard;gl_FragColor=vec4(c,a);}',
-        transparent: true,
-        depthTest: false,
-        depthWrite: false,
-        blending: AdditiveBlending,
-      });
-      const points = new Points(starfieldGeometry, starfieldMaterial);
-      points.frustumCulled = false;
-      points.renderOrder = -10;
-      scene.add(points);
-      layoutStarfield();
-      root.dataset.starfield = 'ready';
-      draw();
-      sync();
-    } catch {}
   };
 
   function select() {
@@ -261,13 +167,13 @@ export function mountTopology(root: HTMLElement) {
     width = box.width;
     height = box.height;
     if (!width || !height) return;
-    const pixelRatio = Math.min(
-      devicePixelRatio,
-      touch.matches ? 1.25 : 1.5,
-      Math.sqrt((touch.matches ? 900000 : 2500000) / (width * height)),
+    renderer.setPixelRatio(
+      Math.min(
+        devicePixelRatio,
+        touch.matches ? 1.25 : 1.5,
+        Math.sqrt((touch.matches ? 900000 : 2500000) / (width * height)),
+      ),
     );
-    renderer.setPixelRatio(pixelRatio);
-    if (starfieldMaterial) starfieldMaterial.uniforms.u.value = pixelRatio;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
@@ -299,7 +205,6 @@ export function mountTopology(root: HTMLElement) {
         : (Number(anchor.element.dataset.y) * width) / 1920;
       toWorld(anchor.element, anchor.origin).sub(graph.position);
     });
-    layoutStarfield();
     const positions = baseGeometry.getAttribute('position');
     sectors.forEach((anchor, index) => {
       positions.setXYZ(index * 2, hub.origin.x, hub.origin.y, hub.origin.z);
@@ -324,21 +229,31 @@ export function mountTopology(root: HTMLElement) {
         .copy(anchor.origin)
         .applyMatrix4(graph.matrixWorld)
         .project(camera);
-      let finalX = ((projected.x + 1) * width) / 2;
-      let finalY = ((1 - projected.y) * height) / 2;
-      if (!touch.matches) {
-        const side = anchor.element.dataset.labelSide;
-        const isCompany = !!anchor.element.dataset.focusSector;
-        const reserve = isCompany ? Math.min(260, width * 0.16) : 210;
-        finalX = Math.max(
-          side === 'left' ? reserve : 28,
-          Math.min(width - (side === 'left' ? 28 : reserve), finalX),
-        );
-        finalY = Math.max(42, Math.min(height - 48, finalY));
-      }
+      const finalX = ((projected.x + 1) * width) / 2;
+      const finalY = ((1 - projected.y) * height) / 2;
       const x = finalX - anchor.x;
       const y = finalY - anchor.y;
       anchor.element.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
+    }
+    if (!touch.matches) {
+      const bounds = stage.getBoundingClientRect();
+      for (const anchor of anchors) {
+        if (
+          !anchor.label ||
+          (anchor.element.dataset.focusSector &&
+            anchor.sector !== active.sector)
+        )
+          continue;
+        anchor.label.style.removeProperty('translate');
+        const box = anchor.label.getBoundingClientRect();
+        const x =
+          Math.max(bounds.left + 18 - box.left, 0) +
+          Math.min(bounds.right - 18 - box.right, 0);
+        const y =
+          Math.max(bounds.top + 18 - box.top, 0) +
+          Math.min(bounds.bottom - 18 - box.bottom, 0);
+        if (x || y) anchor.label.style.translate = `${x}px ${y}px`;
+      }
     }
     const positions = branchGeometry.getAttribute('position');
     if (positions) {
@@ -369,7 +284,6 @@ export function mountTopology(root: HTMLElement) {
       const elapsed = time - last;
       const delta = Math.min(elapsed, 100);
       last = time;
-      if (starfieldMaterial) starfieldMaterial.uniforms.t.value = time / 1000;
       growth = Math.min(1, growth + elapsed / BRANCH_MS);
       if (correcting && !dragging) {
         const correction = 1 - Math.pow(0.001, delta / 520);
@@ -529,7 +443,6 @@ export function mountTopology(root: HTMLElement) {
   });
   select();
   size();
-  void loadStarfield();
   window.addEventListener('pagehide', (event) => {
     if (event.persisted) {
       visible = false;
@@ -554,8 +467,6 @@ export function mountTopology(root: HTMLElement) {
     branchGeometry.dispose();
     baseMaterial.dispose();
     branchMaterial.dispose();
-    starfieldGeometry?.dispose();
-    starfieldMaterial?.dispose();
     renderer.dispose();
   });
   window.addEventListener('pageshow', (event) => {

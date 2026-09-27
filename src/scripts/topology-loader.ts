@@ -21,6 +21,12 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-topology]')) {
         if (!entries.some((entry) => entry.isIntersecting)) return;
         observer?.disconnect();
         started = true;
+        root.dataset.starfield = 'loading';
+        import('./starfield-lottie')
+          .then((module) => module.mountStarfield(root))
+          .catch(() => {
+            root.dataset.starfield = 'error';
+          });
         import('./topology')
           .then((module) => {
             module.mountTopology(root);

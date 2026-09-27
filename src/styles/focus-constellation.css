@@ -11,9 +11,19 @@
   pointer-events: none;
   transition: opacity 320ms ease;
 }
-.home-story
-  .focus[data-renderer='webgl'][data-starfield='ready']
-  .focus-starfield-fallback {
+.home-story .focus .focus-starfield {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.home-story .focus .focus-starfield > svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+.home-story .focus[data-starfield='ready'] .focus-starfield-fallback {
   opacity: 0;
 }
 .home-story .focus .constellation-fallback {

@@ -1266,6 +1266,24 @@
   border-bottom-color: rgb(255 255 255 / 10%);
 }
 
+@media (min-width: 768px) {
+  .site-header .language-switch,
+  .site-header.is-minimal .language-switch {
+    gap: clamp(18px, 1.25vw, 28px);
+    font-size: clamp(18px, 1vw, 22px);
+    line-height: 1.35;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-header .language-switch,
+  .site-header.is-minimal .language-switch {
+    gap: clamp(14px, 4vw, 20px);
+    font-size: clamp(15px, 4vw, 17px);
+    line-height: 1.35;
+  }
+}
+
 @media (min-width: 1280px) {
   .site-header.is-minimal {
     height: calc(78 * var(--u));

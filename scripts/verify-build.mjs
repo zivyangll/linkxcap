@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
 const base = (process.env.SITE_BASE || '/linkxcap').replace(/\/$/, '');
 async function walk(dir) {
@@ -17,6 +18,21 @@ async function walk(dir) {
 }
 const files = await walk('dist');
 const content = JSON.parse(await fs.readFile('src/data/content.json', 'utf8'));
+const starfieldName = 'linkx-twinkling-starfield-transparent.json';
+const starfieldHash =
+  'f8d91b1d7c77e87c96a79b8b8f704fd0bbaf29e26294ebb3516cfe798c8cfecb';
+for (const file of [
+  path.join('public/assets', starfieldName),
+  path.join('dist/assets', starfieldName),
+]) {
+  const source = await fs.readFile(file);
+  assert.equal(source.length, 324909, `${file}: original Lottie byte length`);
+  assert.equal(
+    createHash('sha256').update(source).digest('hex'),
+    starfieldHash,
+    `${file}: original Lottie checksum`,
+  );
+}
 const htmlFiles = files.filter((f) => f.endsWith('.html'));
 const pages = htmlFiles.filter((f) => /^dist\/(zh|en)\//.test(f));
 assert.equal(pages.length, 70, 'Expected 35 pages per language');
@@ -91,15 +107,20 @@ assert(css <= 35 * 1024, `CSS exceeds 35 KiB gzip: ${css}`);
 const topologyJs = report
   .filter((f) => /\/topology\..*\.js$/.test(f.file))
   .reduce((n, f) => n + f.gzip, 0);
-const coreJs = js - topologyJs;
+const lottieJs = report
+  .filter((f) => /\/starfield-lottie\..*\.js$/.test(f.file))
+  .reduce((n, f) => n + f.gzip, 0);
+const coreJs = js - topologyJs - lottieJs;
 assert(coreJs <= 120 * 1024, `Core JS exceeds 120 KiB gzip: ${coreJs}`);
 assert(
   topologyJs <= 145 * 1024,
   `Optional 3D JS exceeds 145 KiB gzip: ${topologyJs}`,
 );
-// gzip output varies slightly across CI platforms; retain a 2 KiB margin while
-// keeping the stricter core and optional-topology budgets above unchanged.
-assert(js <= 202 * 1024, `Combined JS exceeds 202 KiB gzip: ${js}`);
+assert(
+  lottieJs <= 55 * 1024,
+  `Original Lottie player exceeds 55 KiB gzip: ${lottieJs}`,
+);
+assert(js <= 260 * 1024, `Combined JS exceeds 260 KiB gzip: ${js}`);
 await fs.mkdir('.cache', { recursive: true });
 await fs.writeFile(
   '.cache/build-report.json',
@@ -111,6 +132,7 @@ await fs.writeFile(
       jsGzip: js,
       coreJsGzip: coreJs,
       optionalTopologyJsGzip: topologyJs,
+      optionalLottieJsGzip: lottieJs,
       chunks: report,
     },
     null,
