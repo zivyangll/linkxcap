@@ -5,6 +5,7 @@ import {
   homeContent,
   pageUrl,
   pick,
+  url,
   type Lang,
 } from '../lib/site';
 import {
@@ -34,7 +35,21 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
 ---
 
 <div class="constellation" aria-label={homeContent.focus.ariaLabel[lang]}>
-  <canvas class="topology-canvas" aria-hidden="true"></canvas>
+  <img
+    class="focus-starfield-fallback"
+    src={url('assets/linkx-twinkling-starfield-static.webp')}
+    width="1920"
+    height="1080"
+    alt=""
+    loading="lazy"
+    decoding="async"
+    aria-hidden="true"
+  />
+  <canvas
+    class="topology-canvas"
+    data-starfield-src={url('assets/linkx-twinkling-starfield-points.json')}
+    aria-hidden="true"
+  ></canvas>
   <svg
     class="constellation-fallback constellation-fallback--desktop"
     viewBox="0 0 1920 1080"

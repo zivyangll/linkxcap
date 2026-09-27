@@ -74,6 +74,29 @@ test('hover immediately selects every sector and connects only its configured co
   }
 });
 
+test('homepage topology renders the supplied twinkling starfield behind the graph', async ({
+  page,
+}) => {
+  const scene = await openScene(page);
+  await expect(scene).toHaveAttribute('data-starfield', 'ready');
+  expect(
+    await page.locator('.topology-canvas').evaluate(async (canvas) => {
+      const response = await fetch(
+        (canvas as HTMLCanvasElement).dataset.starfieldSrc!,
+      );
+      return (await response.json()).stars.length;
+    }),
+  ).toBe(180);
+  const initialFrames = await scene.getAttribute('data-render-frames');
+  await expect
+    .poll(() => scene.getAttribute('data-render-frames'))
+    .not.toBe(initialFrames);
+  await expect(page.locator('.focus-starfield-fallback')).toHaveCSS(
+    'opacity',
+    '0',
+  );
+});
+
 test('idle graph cycles automatically; hover holds pose and copy, leaving resumes the cycle', async ({
   page,
 }) => {
