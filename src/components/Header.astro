@@ -124,6 +124,10 @@ const menuSocials = [
           </>
         ))}
     </h2>
+    <div class="menu-invitation">
+      <p>{contactContent.joinCopy[lang]}</p>
+      {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
+    </div>
     <a class="line-link" href={pageUrl(lang, 'contact')}>
       {navigationContent.menuContactLink[lang]}
       <Arrow />

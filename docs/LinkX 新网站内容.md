@@ -478,25 +478,26 @@ The value of AI scheduling should be tested through equipment use, delivery perf
 
 ## 7\. 联系我们 \(`/en/contact.html`, `/zh/contact.html`\)
 
-| 新站字段 / 占位                 | 中文                                        | English                                                   |
-| ------------------------------- | ------------------------------------------- | --------------------------------------------------------- |
-| 大标题 `signalTitle`            | 下一个信号                                  | The Next Signal                                           |
-| 副标题 `signalSubtitle`         | 与先看见未来的人同行                        | Alongside those who see what comes next                   |
-| 画面叠字 `definition`           | 与远见同行，与定义者同行。                  | Alongside vision\. Alongside those who make it real\.     |
-| 品牌画面文字 `videoPlaceholder` | 与创业者同行                                | Alongside founders                                        |
-| 第二屏眉题 `joinEyebrow`        | 与我们对话                                  | CONNECT WITH US                                           |
-| 第二屏大标题 `joinTitle`        | 开始对话                                    | Start a Conversation                                      |
-| 联系链接 `contactLink`          | 联系我们                                    | Contact us                                                |
-| 详情区眉题 `detailsEyebrow`     | 与我们同行                                  | BUILD WITH US                                             |
-| 详情区标题 `detailsTitle`       | 连接下一个信号                              | Connect with the Next Signal                              |
-| 邮箱标签                        | 电子邮箱                                    | Email                                                     |
-| 邮箱                            | service@linkxcap\.com                       | service@linkxcap\.com                                     |
-| 复制按钮                        | 复制邮箱                                    | Copy email                                                |
-| 微信区标题 `findUs`             | 找到我们                                    | Find us                                                   |
-| 公众号                          | 星连资本官媒                                | LinkX Capital Official WeChat                             |
-| 社交链接                        | 华清普智 AI 孵化器小红书、抖音、X、LinkedIn | T\-ONE Innovation Lab on Xiaohongshu, Douyin, X, LinkedIn |
+| 新站字段 / 占位                 | 中文                                                                   | English                                                                                                              |
+| ------------------------------- | ---------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 大标题 `signalTitle`            | 下一个信号                                                             | The Next Signal                                                                                                      |
+| 副标题 `signalSubtitle`         | 与先看见未来的人同行                                                   | Alongside those who see what comes next                                                                              |
+| 主体短文 `joinCopy`             | 如果你正在探索一个世界尚未命名的未来，我们希望在信号初现时就与你相遇。 | If you are exploring a future the world has yet to name, we would like to meet you while the signal is still faint\. |
+| 画面叠字 `definition`           | 与远见同行，与定义者同行。                                             | Alongside vision\. Alongside those who make it real\.                                                                |
+| 品牌画面文字 `videoPlaceholder` | 与创业者同行                                                           | Alongside founders                                                                                                   |
+| 第二屏眉题 `joinEyebrow`        | 与我们对话                                                             | CONNECT WITH US                                                                                                      |
+| 第二屏大标题 `joinTitle`        | 开始对话                                                               | Start a Conversation                                                                                                 |
+| 联系链接 `contactLink`          | 联系我们                                                               | Contact us                                                                                                           |
+| 详情区眉题 `detailsEyebrow`     | 与我们同行                                                             | BUILD WITH US                                                                                                        |
+| 详情区标题 `detailsTitle`       | 连接下一个信号                                                         | Connect with the Next Signal                                                                                         |
+| 邮箱标签                        | 电子邮箱                                                               | Email                                                                                                                |
+| 邮箱                            | service@linkxcap\.com                                                  | service@linkxcap\.com                                                                                                |
+| 复制按钮                        | 复制邮箱                                                               | Copy email                                                                                                           |
+| 微信区标题 `findUs`             | 找到我们                                                               | Find us                                                                                                              |
+| 公众号                          | 星连资本官媒                                                           | LinkX Capital Official WeChat                                                                                        |
+| 社交链接                        | 华清普智 AI 孵化器小红书、抖音、X、LinkedIn                            | T\-ONE Innovation Lab on Xiaohongshu, Douyin, X, LinkedIn                                                            |
 
-新站原 `Join Us` 容易被读作招聘入口；当前无职位信息，改为“开始对话”。`Brand film · Coming soon` 属演示占位；视频未获批前，以静态品牌画面和上表短句替换。
+`joinCopy` 中文可按新站的两行排版拆分，但内容保持一段。新站原 `Join Us` 容易被读作招聘入口；当前无职位信息，改为“开始对话”。`Brand film · Coming soon` 属演示占位；视频未获批前，以静态品牌画面和上表短句替换。
 
 ## 8\. 法律声明 \(`/en/legal.html`, `/zh/legal.html`\)
 

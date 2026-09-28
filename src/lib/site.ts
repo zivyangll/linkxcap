@@ -113,6 +113,7 @@ type InsightsContent = {
 type ContactContent = {
   signalTitle: Localized;
   signalSubtitle: Localized;
+  joinCopy: Localized;
   joinDisplay: Localized<string[]>;
   definition: Localized;
   videoPlaceholder: Localized;

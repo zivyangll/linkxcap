@@ -95,6 +95,8 @@ const media = {
     </>
   )}
   <div class="fellow-context" data-node-id="2002:1753">
+    <p>{contactContent.joinCopy[lang]}</p>
+    {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
     <i class="fellow-context-marker" aria-hidden="true"></i>
   </div>
   <p class="fellow-definition">{contactContent.definition[lang]}</p>
@@ -173,6 +175,7 @@ const media = {
       </div>
     )}
   </div>
+  <p class="fellow-media-caption">{contactContent.joinCopy[lang]}</p>
 </section>
 <section class="contact-hero" data-node-id="2002:2021">
   <div class="contact-guides" aria-hidden="true">
@@ -203,6 +206,7 @@ const media = {
           </>
         ))}
       </p>
+      {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
     </div>
     <a class="line-link" href="#contact-details">
       {contactContent.contactLink[lang]}

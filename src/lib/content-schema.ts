@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 16;
+export const CONTENT_SCHEMA_VERSION = 17;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {

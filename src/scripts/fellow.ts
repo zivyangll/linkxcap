@@ -155,6 +155,12 @@ export function initFellow() {
       );
     if (desktop)
       timeline.to('.fellow-media-orbit', { opacity: 0, duration: 0.35 }, 0.55);
+    timeline.fromTo(
+      '.fellow-media-caption',
+      { opacity: 0 },
+      { opacity: 1, duration: 0.2 },
+      0.8,
+    );
     const contactHero = document.querySelector<HTMLElement>('.contact-hero');
     if (contactHero) {
       const guides = [
