@@ -157,7 +157,7 @@ function createScrollTrail(
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(Math.PI / 4);
-    ctx.fillStyle = '#090909';
+    ctx.fillStyle = '#573c79';
     ctx.shadowColor = 'rgba(90,90,90,.22)';
     ctx.shadowBlur = 10;
     ctx.fillRect(-4, -4, 8, 8);

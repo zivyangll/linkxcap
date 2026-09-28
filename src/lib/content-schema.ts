@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 14;
+export const CONTENT_SCHEMA_VERSION = 15;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {
@@ -212,7 +212,6 @@ function validateRelations(config: Record<string, unknown>, errors: string[]) {
       'description_en',
       'detail_cn',
       'detail_en',
-      'investment_year',
       'sector_id',
       'logo_file',
     ],

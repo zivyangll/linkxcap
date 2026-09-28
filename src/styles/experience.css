@@ -142,7 +142,36 @@
   }
 }
 
-/* Identical portrait height/baseline, including the narrower centre image. */
+/* Normalize each portrait's visible drawing instead of its transparent canvas. */
+body .team-review .team-member:nth-child(n) .member-portrait img {
+  left: 50%;
+  top: var(--portrait-top, -4.0083%);
+  width: auto;
+  height: var(--portrait-height, 91.8598%);
+  transform: translateX(-50%);
+  object-fit: contain;
+}
+
+.member-portrait img[src$='team-alex.webp'] {
+  --portrait-height: 88.0935%;
+  --portrait-top: -4.3424%;
+}
+
+.member-portrait img[src$='team-elliot.webp'] {
+  --portrait-height: 94.0577%;
+  --portrait-top: -4.8446%;
+}
+
+.member-portrait img[src$='team-leo.webp'] {
+  --portrait-height: 91.8598%;
+  --portrait-top: -4.0083%;
+}
+
+.member-portrait img[src$='team-wenjue.webp'] {
+  --portrait-height: 84.6457%;
+  --portrait-top: -1.4258%;
+}
+
 @media (min-width: 1024px) {
   /* Every portfolio mark uses the same quiet bounding box. Source-specific
      crop rules still apply inside it, but no mark can dominate its card. */
@@ -154,28 +183,6 @@
   }
   .portfolio-page .portfolio-card .company-logo img {
     object-fit: contain;
-  }
-  body .team-review .team-member:nth-child(n) .member-portrait img {
-    left: 50%;
-    top: calc(var(--portrait-top, 32) * var(--u));
-    width: auto;
-    height: calc(var(--portrait-height, 590) * var(--u));
-    transform: translateX(-50%);
-    object-fit: contain;
-  }
-  /* Account for transparent margins in the three existing source images.
-     Visible drawing height is 500 design pixels with a shared top baseline. */
-  .member-portrait img[src$='team-alex.webp'] {
-    --portrait-height: 579.56;
-    --portrait-top: -26.46;
-  }
-  .member-portrait img[src$='team-elliot.webp'] {
-    --portrait-height: 633.33;
-    --portrait-top: -31.67;
-  }
-  .member-portrait img[src$='team-wenjue.webp'] {
-    --portrait-height: 556.88;
-    --portrait-top: -7.28;
   }
   .focus-links {
     font-size: max(12px, calc(15 * var(--u)));
@@ -199,7 +206,13 @@
 body .team-review .team-bio {
   pointer-events: auto;
   overflow-y: auto;
-  overscroll-behavior: contain;
+  overscroll-behavior-y: auto;
+  scrollbar-width: none;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+body .team-review .team-bio::-webkit-scrollbar {
+  display: none;
 }
 .team-review .profile-toggle:focus-visible,
 .team-review .team-bio:focus-visible {

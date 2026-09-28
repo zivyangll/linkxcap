@@ -133,7 +133,8 @@ export function mountChapterSnap(home: HTMLElement) {
       if (!philosophy || !research) return;
       anchors = [
         self.start,
-        philosophy.start + (philosophy.end - philosophy.start) * 0.06,
+        philosophy.start +
+          (philosophy.end - philosophy.start) * PHILOSOPHY_ARC.start,
         philosophy.start + (philosophy.end - philosophy.start) * 0.58,
         philosophy.start + (philosophy.end - philosophy.start) * 0.97,
         research.start + (research.end - research.start) * 0.72,

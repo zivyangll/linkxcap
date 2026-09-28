@@ -19,7 +19,7 @@ const { lang, person } = Astro.props as {
       alt={lang === 'zh' ? person.name : person.en}
     />
     <div>
-      <p class="eyebrow">{teamContent.eyebrow}</p>
+      <p class="eyebrow">{teamContent.eyebrow[lang]}</p>
       <h1>{lang === 'zh' ? person.name : person.en}</h1>
       {lang === 'zh' && <p class="profile-en">{person.en}</p>}
       <p>{person.role[lang]}</p>

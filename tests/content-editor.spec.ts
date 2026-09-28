@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const hash = 'a4f9c2e71b6d4830c5a8e2f94d7b136c';
 const editorPath = `${hash}.html`;
 const validPath = `${editorPath}?debug=true`;
-const storageKey = `linkx-content-editor:127.0.0.1:schema-14`;
+const storageKey = `linkx-content-editor:127.0.0.1:schema-15`;
 
 test('invalid and duplicate debug parameters never initialize the editor', async ({
   page,
@@ -33,12 +33,12 @@ test('valid entry loads grouped bilingual fields and stays out of sitemap', asyn
     'data-editor-state',
     'ready',
   );
-  await expect(page.locator('.config-section')).toHaveCount(8);
+  await expect(page.locator('.config-section')).toHaveCount(9);
   await expect(page.locator('[data-config-path="site.brand_cn"]')).toHaveValue(
     '星连资本',
   );
   await expect(page.locator('[data-config-path="site.brand_en"]')).toHaveValue(
-    'Link-X Capital',
+    'LinkX Capital',
   );
   await expect(page.locator('[data-config-path="team.0.id"]')).toHaveCount(0);
   await expect(page.locator('[data-config-path="companies.0.id"]')).toHaveCount(
@@ -52,7 +52,7 @@ test('valid entry loads grouped bilingual fields and stays out of sitemap', asyn
   ).not.toHaveAttribute('readonly', '');
   await expect(
     page.locator('[data-config-path="companies.0.investment_year"]'),
-  ).toHaveValue('2026');
+  ).toHaveValue('');
   await expect(
     page.locator('[data-config-path="companies.0.sector_id"]'),
   ).toHaveJSProperty('tagName', 'SELECT');
@@ -259,7 +259,7 @@ test('every edit is immediately restored from the domain and schema isolated dra
   const chinese = page.locator('[data-config-path="site.brand_cn"]');
   const english = page.locator('[data-config-path="site.brand_en"]');
   await chinese.fill('星连资本草稿');
-  await english.fill('Link-X Draft');
+  await english.fill('LinkX Draft');
   await expect(page.locator('[data-save-status]')).toContainText(
     '已保存到本地',
   );
@@ -270,7 +270,7 @@ test('every edit is immediately restored from the domain and schema isolated dra
   expect(JSON.parse(stored!).site.brand_cn).toBe('星连资本草稿');
   await page.reload();
   await expect(chinese).toHaveValue('星连资本草稿');
-  await expect(english).toHaveValue('Link-X Draft');
+  await expect(english).toHaveValue('LinkX Draft');
   await expect(page.locator('[data-save-status]')).toContainText('已恢复');
 });
 
@@ -374,7 +374,7 @@ test('export uses the latest fields and can round-trip through import', async ({
   for await (const chunk of stream) chunks.push(Buffer.from(chunk));
   const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
   expect(exported.site.brand_cn).toBe('导出即时内容');
-  expect(exported.schemaVersion).toBe(14);
+  expect(exported.schemaVersion).toBe(15);
   expect(exported.site).not.toHaveProperty('copyright_cn');
   expect(exported.navigation).not.toHaveProperty('menu_footer');
   expect(exported.pages.home.focus).not.toHaveProperty('investment_year');
@@ -452,10 +452,10 @@ for (const version of [9, 10, 11, 12, 13])
       'https://example.com/assets/video_example.mp4';
     delete legacy.media.fellow.video_file;
     legacy.site.brand_cn = '保留我的品牌修改';
-    legacy.site.copyright_cn = 'Link-X Capital 2026. All rights reserved.';
-    legacy.site.copyright_en = 'Link-X Capital 2026. All rights reserved.';
+    legacy.site.copyright_cn = 'LinkX Capital 2026. All rights reserved.';
+    legacy.site.copyright_en = 'LinkX Capital 2026. All rights reserved.';
     legacy.navigation.menu_footer = '2026 旧菜单页脚';
-    legacy.pages.insights.copyright = 'Link-X Capital 2026';
+    legacy.pages.insights.copyright = 'LinkX Capital 2026';
     legacy.pages.home.focus.investment_year = '2024';
     legacy.companies.forEach((company: Record<string, unknown>) => {
       delete company.investment_year;
@@ -475,7 +475,7 @@ for (const version of [9, 10, 11, 12, 13])
       resume_cn: '旧开启',
       resume_en: 'Old resume',
     });
-    const previousKey = storageKey.replace('schema-14', `schema-${version}`);
+    const previousKey = storageKey.replace('schema-15', `schema-${version}`);
     await page.evaluate(
       ({ previousKey, storageKey, legacy }) => {
         localStorage.removeItem(storageKey);
@@ -505,7 +505,7 @@ for (const version of [9, 10, 11, 12, 13])
     const chunks: Buffer[] = [];
     for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
     const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    expect(exported.schemaVersion).toBe(14);
+    expect(exported.schemaVersion).toBe(15);
     expect(exported.companies[0].investment_year).toBe('2024');
     expect(exported.pages.home.focus).not.toHaveProperty('investment_year');
     expect(exported.site).not.toHaveProperty('copyright_cn');
@@ -530,7 +530,7 @@ test('video filename can be edited and exported, and invalid URLs identify the m
   await page.goto(validPath);
   await page.getByRole('tab', { name: '联系方式和媒体', exact: true }).click();
   const video = page.locator('[data-config-path="media.fellow.video_file"]');
-  await expect(video).toHaveValue('video_example.mp4');
+  await expect(video).toHaveValue('');
   await video.fill('https://example.com/movie.mp4');
   await page.locator('[data-export]').click();
   await expect(page.locator('[data-errors]')).toContainText('视频文件名');

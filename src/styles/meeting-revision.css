@@ -15,9 +15,7 @@
 .philosophy-stage-canvas {
   display: none;
 }
-.home-story
-  :is(.opening-track, .hero-track, .orbit-label, .about-rays)
-  .diamond {
+.home-story .about-rays .diamond {
   background: #090909;
 }
 @media (min-width: 1024px) {
@@ -86,9 +84,6 @@
 }
 .about-tangent-line {
   display: none;
-}
-.has-scroll-trail .opening-track {
-  visibility: hidden;
 }
 .home-story .story-scene {
   isolation: isolate;
@@ -607,6 +602,18 @@
   height: auto;
   transform: translateX(-50%);
 }
+.fellow-intro .next-title-outline--text {
+  top: calc(414 * var(--u));
+  width: max-content;
+  height: auto;
+  font-size: calc(108.717 * var(--u));
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.05em;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(9, 9, 9, 0.42);
+}
 .fellow-intro .next-title-fill {
   position: absolute;
   z-index: 1;
@@ -626,22 +633,27 @@
   z-index: 1;
   left: 50%;
   top: calc(584.85 * var(--u));
-  width: calc(583.518 * var(--u));
+  width: 100%;
   height: auto;
   transform: translateX(-50%);
 }
 .next-subtitle-fill {
   opacity: 0;
 }
+.fellow-intro .next-zh,
 .fellow-intro .next-en {
   z-index: 1;
+  font-size: calc(52 * var(--u));
   line-height: 1.15;
+  text-align: center;
   white-space: nowrap;
 }
+.fellow-intro .next-zh-outline,
 .fellow-intro .next-en-outline {
   color: transparent;
   -webkit-text-stroke: 1px rgba(9, 9, 9, 0.42);
 }
+.fellow-intro .next-zh-fill,
 .fellow-intro .next-en-fill {
   color: #090909;
 }
@@ -840,7 +852,7 @@
   }
   .company-browser .company-sector {
     font-size: 14px;
-    letter-spacing: 0.2em;
+    letter-spacing: normal;
     margin: 14px 0 30px;
   }
   .company-browser .company-description p {
@@ -888,7 +900,8 @@
     height: 75vw;
     min-height: 620px;
   }
-  .fellow-intro .next-title-fill {
+  .fellow-intro .next-title-fill,
+  .fellow-intro .next-title-outline--text {
     top: 240px;
     font-size: 8vw;
   }
@@ -898,8 +911,11 @@
   }
   .fellow-intro .next-zh {
     top: 330px;
-    width: 48vw;
     height: auto;
+  }
+  .fellow-intro .next-zh,
+  .fellow-intro .next-en {
+    font-size: 32px;
   }
   .fellow-intro .next-orbit {
     top: 420px;
@@ -1053,7 +1069,8 @@
     min-height: 660px;
     height: 85svh;
   }
-  .fellow-intro .next-title-fill {
+  .fellow-intro .next-title-fill,
+  .fellow-intro .next-title-outline--text {
     top: 220px;
     font-size: clamp(38px, 10vw, 60px);
   }
@@ -1254,19 +1271,49 @@
    navigation on wide screens, and the menu trigger only on narrow screens. */
 .site-header,
 .site-header.is-minimal {
-  background: rgb(253 251 245 / 84%);
-  border-bottom: 1px solid rgb(29 29 29 / 7%);
-  -webkit-backdrop-filter: blur(16px) saturate(115%);
-  backdrop-filter: blur(16px) saturate(115%);
+  position: fixed;
+  inset: 0 0 auto;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  background: rgb(211 211 211 / 10%);
+  border-bottom: 0;
+  -webkit-backdrop-filter: blur(7.5px);
+  backdrop-filter: blur(7.5px);
 }
 
 .site-header.is-dark,
 .site-header.is-dark.is-minimal {
-  background: rgb(29 29 29 / 78%);
-  border-bottom-color: rgb(255 255 255 / 10%);
+  background: transparent;
+  border-bottom-color: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
 }
 
-@media (min-width: 768px) {
+/* Figma's Chinese headings can stay large because they are compact. Keep the
+   same hierarchy for English while giving the longer copy its own measure. */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  body[data-lang='en'] .home-story .research h2 {
+    width: calc(480 * var(--u));
+    font-size: clamp(30px, calc(42 * var(--u)), 42px);
+    line-height: 1.18;
+  }
+
+  body[data-lang='en'] .home-story .research h2 span {
+    display: block;
+    width: 100%;
+    transform: none;
+  }
+
+  body[data-lang='en'] .home-story .focus-title > span {
+    width: calc(520 * var(--u));
+    font-size: clamp(28px, calc(40 * var(--u)), 40px);
+    line-height: 1.2;
+    letter-spacing: -0.04em;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1279px) {
   .site-header .language-switch,
   .site-header.is-minimal .language-switch {
     gap: clamp(18px, 1.25vw, 28px);
@@ -1583,7 +1630,8 @@
     transform: none !important;
   }
 
-  .fellow-intro .next-title-fill {
+  .fellow-intro .next-title-fill,
+  .fellow-intro .next-title-outline--text {
     font-size: clamp(38px, 11vw, 48px);
     white-space: normal;
   }
@@ -1599,6 +1647,7 @@
     transform: none !important;
   }
 
+  .fellow-intro .next-zh,
   .fellow-intro .next-en {
     font-size: clamp(28px, 9vw, 38px);
     white-space: normal;

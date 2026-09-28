@@ -129,7 +129,9 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
         >
           <i class="constellation-dot" aria-hidden="true"></i>
           <span class="constellation-company-label">
-            {`(${company.investmentYear}, ${pick(lang, company.name, company.nameEn)})`}
+            {company.investmentYear
+              ? `(${company.investmentYear}, ${pick(lang, company.name, company.nameEn)})`
+              : pick(lang, company.name, company.nameEn)}
           </span>
         </a>
       ))}
@@ -164,7 +166,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
           <i class="diamond"></i>
         </span>
         <span class="star-label">
-          <span lang="en">{sector.en}</span>
+          {lang === 'en' && <span lang="en">{sector.en}</span>}
           {lang === 'zh' && <span lang="zh">{sector.zh}</span>}
         </span>
       </button>

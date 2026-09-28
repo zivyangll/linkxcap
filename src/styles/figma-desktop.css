@@ -123,6 +123,7 @@
     .opening-copy {
       left: calc(1149 * var(--u));
       top: calc(484 * var(--u));
+      width: calc(617 * var(--u));
       line-height: calc(39.625 * var(--u));
     }
     .chapter {
@@ -135,8 +136,8 @@
       top: calc(490 * var(--u));
     }
     .opening-track .diamond {
-      left: calc(-5.515 * var(--u));
-      top: calc(-10.515 * var(--u));
+      left: calc(-6 * var(--u));
+      top: calc(-16 * var(--u));
     }
     .hero-track {
       left: calc(467 * var(--u));
@@ -158,7 +159,7 @@
     }
     .hero-title {
       left: calc(546 * var(--u));
-      top: calc(69 * var(--u));
+      top: calc(150 * var(--u));
     }
     .hero-zh {
       left: calc(546 * var(--u));
@@ -176,6 +177,9 @@
     }
     .orbit-label em {
       display: block;
+    }
+    body[data-lang='en'] .orbit-label :is(em, span) {
+      white-space: nowrap;
     }
     .orbit-label > span {
       display: block;
@@ -232,16 +236,18 @@
       line-height: calc(19.98 * var(--u));
       text-align: right;
     }
+    body[data-lang='en'] .about-label {
+      left: calc(470 * var(--u));
+      width: calc(140 * var(--u));
+      white-space: nowrap;
+    }
     .about-copy {
       left: calc(841 * var(--u));
       top: calc(715 * var(--u));
-      width: auto;
+      width: calc(742 * var(--u));
       font-size: calc(20 * var(--u));
       line-height: 1.5;
       letter-spacing: -0.05em;
-    }
-    body[data-lang='zh'] .intro-line {
-      white-space: nowrap;
     }
     body[data-lang='en'] .about-copy {
       width: 39%;
@@ -255,16 +261,16 @@
     }
     .research-intro {
       top: calc(248 * var(--u));
-      left: calc(960 * var(--u));
+      left: calc(1020 * var(--u));
       letter-spacing: -0.05em;
-      width: auto;
+      width: calc(682 * var(--u));
     }
     body[data-lang='en'] .research-intro {
       width: 38%;
     }
     .research-stats {
       top: calc(585 * var(--u));
-      left: calc(960 * var(--u));
+      left: calc(1020 * var(--u));
       width: auto;
       grid-template-columns: calc(182 * var(--u)) auto;
       gap: calc(69.4 * var(--u)) calc(165 * var(--u));
@@ -295,7 +301,10 @@
       padding-bottom: calc(160 * var(--u));
     }
     .portfolio-page > .page-title {
-      margin-bottom: calc(62.6 * var(--u));
+      margin-bottom: calc(28 * var(--u));
+    }
+    .portfolio-page > .portfolio-intro {
+      margin-bottom: calc(35 * var(--u));
     }
     .portfolio-grid {
       margin-left: calc(181 * var(--u));
@@ -329,7 +338,7 @@
     .company-sector {
       margin-top: calc(12 * var(--u));
       font-weight: 500;
-      letter-spacing: 1em;
+      letter-spacing: normal;
       line-height: 1.2;
     }
     .company-description {
@@ -933,9 +942,10 @@
     }
     .insight-filters {
       margin-top: calc(122.11 * var(--u));
-      width: calc(567 * var(--u));
-      justify-content: space-between;
-      gap: 0;
+      width: max-content;
+      max-width: 100%;
+      justify-content: flex-start;
+      gap: calc(18 * var(--u));
       letter-spacing: -0.05em;
       line-height: normal;
     }
@@ -1152,12 +1162,8 @@
     .research-axis::after {
       display: none;
     }
-    .research h2 span {
-      position: relative;
-      left: calc(-61 * var(--u));
-    }
     .portfolio-page > .page-title {
-      margin-bottom: calc(61.625 * var(--u));
+      margin-bottom: calc(28 * var(--u));
     }
     .portfolio-page {
       padding-bottom: calc(159 * var(--u));

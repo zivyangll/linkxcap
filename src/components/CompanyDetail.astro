@@ -7,6 +7,7 @@ import {
   pageUrl,
   ui,
   pick,
+  siteContent,
   type Company,
   type Lang,
 } from '../lib/site';
@@ -31,6 +32,10 @@ const records = companies.map((c) => ({
   url: pageUrl(lang, `portfolio/${c.slug}`),
   zhUrl: pageUrl('zh', `portfolio/${c.slug}`),
   enUrl: pageUrl('en', `portfolio/${c.slug}`),
+  documentTitle:
+    lang === 'zh'
+      ? `${c.name}｜${siteContent.brandZh}`
+      : `${c.nameEn} — ${siteContent.brand}`,
 }));
 ---
 

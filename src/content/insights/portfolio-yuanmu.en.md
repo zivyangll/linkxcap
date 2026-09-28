@@ -1,36 +1,26 @@
 ---
-id: 'portfolio-yuanmu'
-route: 'portfolio-yuanmu'
-category: 'applications'
-date: '2026-05-26'
-source_url: 'https://www.linkxcap.com/zh/portfolio-yuanmu.html'
+id: "portfolio-yuanmu"
+route: "portfolio-yuanmu"
+category: "applications"
+date: "2026-05-26"
+source_url: "https://www.linkxcap.com/zh/portfolio-yuanmu.html"
 order: 0
-lang: 'en'
-title: 'Yuanmu: how can AI agents reshape machining operations?'
-summary: 'Exploring the opportunities where AI agents meet real manufacturing workflows.'
-list_title: 'Yuanmu: how can AI agents reshape machining operations?'
-list_summary: 'Exploring the opportunities where AI agents meet real manufacturing workflows.'
-source_name: 'Existing website (Chinese)'
+lang: "en"
+title: "Yuanmu: Making Production Scheduling More Adaptive"
+summary: "A look at how AI agents can help machining businesses plan and adjust production."
+list_title: "Yuanmu: Making Production Scheduling More Adaptive"
+list_summary: "A look at how AI agents can help machining businesses plan and adjust production."
+source_name: "Originally published by LinkX Capital"
 ---
 
-## A starting point
+## Scheduling changes every day
 
-Exploring the opportunities where AI agents meet real manufacturing workflows.
+Machining businesses often manage small batches, many product types, urgent orders and equipment constraints. A static schedule can become obsolete as orders or capacity change. Yuanmu starts with this recurring operational problem and builds an agent for production planning.
 
-The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+## Combine language understanding with optimization
 
-## From technology to application
+Natural-language interaction helps teams express business rules, bring in varied data and revise plans. Optimization algorithms balance capacity, process steps and delivery dates. Together, these tools aim to make schedules easier to create and adjust.
 
-New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+## Measure value in the factory
 
-> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
-
-Three questions can guide a closer reading:
-
-- **The problem**: which concrete difficulty does the product address?
-- **The experience**: how does the technology improve an existing workflow?
-- **The feedback**: what evidence helps the team assess its progress?
-
-## Following the story
-
-This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.
+The value of AI scheduling should be tested through equipment use, delivery performance and response to change. A plan that people can understand, modify and put to work is more useful than a theoretical optimum that cannot be carried out.

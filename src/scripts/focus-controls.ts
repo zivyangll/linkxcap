@@ -9,6 +9,7 @@ export function mountFocusControls(root: HTMLElement) {
   ];
   const motion = matchMedia(TOPOLOGY_MOTION);
   const touch = matchMedia(TOUCH_LAYOUT);
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let current = '';
   let pointer: HTMLElement | null = null;
   let keyboard: HTMLElement | null = null;
@@ -75,6 +76,12 @@ export function mountFocusControls(root: HTMLElement) {
         target.dataset.hovered = 'true';
         hold();
         select(id);
+        if (target.dataset.sector)
+          root.dispatchEvent(
+            new CustomEvent('focusfront', {
+              detail: { immediate: reduceMotion.matches },
+            }),
+          );
       });
       target.addEventListener('pointerleave', () => {
         if (pointer === target) pointer = null;
@@ -93,17 +100,21 @@ export function mountFocusControls(root: HTMLElement) {
       });
       if (target.dataset.sector)
         target.addEventListener('click', () => {
-          if (touch.matches) {
-            const resume =
-              root.dataset.focusPinned === 'true' && current === id;
-            root.dataset.focusPinned = String(!resume);
-            root.dataset.focusMode = resume ? 'auto' : 'paused';
-            pointer = keyboard = null;
-            clearTimeout(release);
-            root.dataset.focusHeld = 'false';
-          }
+          const resume = root.dataset.focusPinned === 'true' && current === id;
+          root.dataset.focusPinned = String(!resume);
+          root.dataset.focusMode = resume ? 'auto' : 'paused';
+          pointer = keyboard = null;
+          clearTimeout(release);
+          root.dataset.focusHeld = 'false';
           select(id);
           root.dispatchEvent(new Event('focushold'));
+          // Keep the document fixed. The WebGL scene owns the transition that
+          // brings the selected sector to the front and centre of its canvas.
+          root.dispatchEvent(
+            new CustomEvent('focusfront', {
+              detail: { immediate: reduceMotion.matches },
+            }),
+          );
         });
     });
   root.addEventListener('focusselect', (event) =>
@@ -118,7 +129,11 @@ export function mountFocusControls(root: HTMLElement) {
     root.dispatchEvent(new Event('focushold'));
   });
   select(stars[0]?.dataset.sector || '');
-  window.addEventListener('pagehide', () => clearTimeout(release), {
-    once: true,
-  });
+  window.addEventListener(
+    'pagehide',
+    () => {
+      clearTimeout(release);
+    },
+    { once: true },
+  );
 }

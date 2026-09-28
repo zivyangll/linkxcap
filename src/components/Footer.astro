@@ -3,6 +3,7 @@ import {
   pageUrl,
   ui,
   socials,
+  contactContent,
   siteContent,
   currentYear,
   type Lang,
@@ -11,21 +12,26 @@ interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+const [copyrightBefore, copyrightAfter] =
+  siteContent.footerCopyright[lang].split('{year}');
 ---
 
 <footer class="site-footer">
   <div class="footer-main">
-    <p>
-      Link-X Capital <time data-current-year>{currentYear}</time>. All rights
-      reserved.
-    </p>
+    <div>
+      <p>{siteContent.footerTagline[lang]}</p>
+      <p>
+        {copyrightBefore}
+        <time data-current-year>{currentYear}</time>
+        {copyrightAfter}
+      </p>
+    </div>
     <div class="footer-links">
       <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
       <a href={pageUrl(lang, 'legal')}>{ui[lang].legal}</a>
     </div>
   </div>
   <div class="footer-meta">
-    <span>{siteContent.companyLegalName[lang]}</span>
     <a
       href="https://beian.miit.gov.cn/"
       target="_blank"
@@ -34,6 +40,9 @@ const { lang } = Astro.props;
       {siteContent.recordNumber}
     </a>
     <div class="social-links">
+      <a href={pageUrl(lang, 'contact') + '#contact-details'}>
+        {contactContent.wechat[0].title[lang]}
+      </a>
       {socials.map((s) => (
         <a href={s.href} target="_blank" rel="noopener noreferrer">
           {lang === 'en' ? s.en || s.name : s.name}

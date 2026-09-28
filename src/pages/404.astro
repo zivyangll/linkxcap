@@ -5,8 +5,9 @@ import { pageUrl, siteContent } from '../lib/site';
 
 <SiteLayout lang="zh" title={siteContent.notFound.title.zh} page="index">
   <section class="not-found">
-    <p>{siteContent.notFound.eyebrow}</p>
-    <h1>404</h1>
+    <p>404</p>
+    <h1>{siteContent.notFound.title.zh}</h1>
+    <p lang="en">{siteContent.notFound.title.en}</p>
     <p>
       {siteContent.notFound.body.zh}
       <br />

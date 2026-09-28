@@ -45,7 +45,7 @@ const canonical = absolute(pageUrl(lang, page));
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light" />
     <meta name="theme-color" content="#fdfbf5" />
-    <title>{title} · {siteContent.brand}</title>
+    <title>{title}</title>
     <meta name="description" content={description} />
     {preview && <meta name="robots" content="noindex,follow" />}
     <link rel="canonical" href={canonical} />
@@ -60,7 +60,7 @@ const canonical = absolute(pageUrl(lang, page));
       hreflang="x-default"
       href={absolute(pageUrl('zh', page))}
     />
-    <meta property="og:title" content={`${title} · ${siteContent.brand}`} />
+    <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />

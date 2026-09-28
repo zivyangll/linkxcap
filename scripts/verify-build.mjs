@@ -35,7 +35,17 @@ for (const file of [
 }
 const htmlFiles = files.filter((f) => f.endsWith('.html'));
 const pages = htmlFiles.filter((f) => /^dist\/(zh|en)\//.test(f));
-assert.equal(pages.length, 70, 'Expected 35 pages per language');
+const insightFiles = (await fs.readdir('src/content/insights')).filter((file) =>
+  file.endsWith('.md'),
+);
+const expectedPages =
+  2 * (1 + 6 + content.companies.length + content.team.length) +
+  insightFiles.length;
+assert.equal(
+  pages.length,
+  expectedPages,
+  `Expected ${expectedPages / 2} pages per language`,
+);
 const failures = [];
 const contentAssetFiles = [
   content.site.og_image_file,

@@ -264,21 +264,20 @@ for (const width of [390, 768, 1440])
     await page.locator('[data-company-nav]').focus();
     await page.keyboard.press('End');
     await expect(
-      page.locator('[data-company-link=xingyun-ic]'),
+      page.locator('[data-company-link=zijing-xinjie]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.keyboard.press('Home');
-    await expect(page.locator('[data-company-link=zhipu-ai]')).toHaveAttribute(
-      'aria-current',
-      'page',
-    );
+    await expect(
+      page.locator('[data-company-link="6estates"]'),
+    ).toHaveAttribute('aria-current', 'page');
     await page.locator('[data-company-link=mosi]').click();
     if (width < 1280) {
       await page.locator('[data-menu-open]').click();
       await page.locator('#site-menu [data-language=en]').click();
     } else await page.locator('.language-switch [data-language=en]').click();
-    await expect(page.locator('h1')).toHaveText('Mosi');
+    await expect(page.locator('h1')).toHaveText('Moss Intelligence');
     await page.reload();
-    await expect(page.locator('h1')).toHaveText('Mosi');
+    await expect(page.locator('h1')).toHaveText('Moss Intelligence');
   });
 
 test('desktop company rail remains a single continuous blurred looping arc', async ({
@@ -289,8 +288,8 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
   const browser = page.locator('[data-company-browser]');
   const rail = page.locator('[data-company-nav]');
   await expect(browser).toHaveAttribute('data-rail-ready', 'true');
-  await expect(page.locator('[data-company-link]')).toHaveCount(19);
-  await expect(page.locator('[data-company-loop-link]')).toHaveCount(38);
+  await expect(page.locator('[data-company-link]')).toHaveCount(76);
+  await expect(page.locator('[data-company-loop-link]')).toHaveCount(152);
 
   const circleErrors = await page
     .locator('[data-company-index]')
@@ -326,16 +325,22 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
 
   await rail.focus();
   await page.keyboard.press('Home');
-  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
+  await expect(browser).toHaveAttribute('data-current-company', '6estates');
   await page.keyboard.press('ArrowUp');
-  await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
+  await expect(browser).toHaveAttribute(
+    'data-current-company',
+    'zijing-xinjie',
+  );
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
+  await expect(browser).toHaveAttribute('data-current-company', '6estates');
 
   await page.keyboard.press('End');
-  await expect(browser).toHaveAttribute('data-current-company', 'xingyun-ic');
+  await expect(browser).toHaveAttribute(
+    'data-current-company',
+    'zijing-xinjie',
+  );
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
+  await expect(browser).toHaveAttribute('data-current-company', '6estates');
   await expect
     .poll(() =>
       page.locator('[data-company-loop-link]').evaluateAll(
@@ -365,16 +370,17 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
   );
 });
 
-test('exactly three portraits swap to the corresponding in-card biography', async ({
+test('all six portraits swap to the corresponding in-card biography', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/team.html');
-  await expect(page.locator('[data-person]')).toHaveCount(3);
+  await expect(page.locator('[data-person]')).toHaveCount(6);
   const gaps: number[] = [];
-  for (const id of ['alex', 'elliot', 'wenjue']) {
+  for (const id of ['alex', 'elliott', 'leo', 'wenjue', 'chris', 'emily']) {
     const portrait = page.locator(`[data-person=${id}]`);
     const bio = page.locator(`[data-person-bio=${id}]`);
+    await portrait.scrollIntoViewIfNeeded();
     const portraitBox = (await portrait.boundingBox())!;
     await page.mouse.move(
       portraitBox.x + portraitBox.width / 2,
@@ -396,7 +402,7 @@ test('exactly three portraits swap to the corresponding in-card biography', asyn
   expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThan(1);
 });
 
-test('Fellow arc moves, window expands, and pending film stays explicitly marked', async ({
+test('Fellow arc moves, window expands, and the approved static message is shown', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -461,52 +467,14 @@ test('Fellow arc moves, window expands, and pending film stays explicitly marked
   expect(
     Math.abs(expandedVideo.x + expandedVideo.width / 2 - 720),
   ).toBeLessThan(1);
-  await expect(page.locator('.fellow-video-placeholder')).toHaveCount(0);
-  await expect(page.locator('[data-fellow-video] source')).toHaveAttribute(
-    'src',
-    '/linkxcap/assets/video_example.mp4',
+  await expect(page.locator('.fellow-video-placeholder')).toContainText(
+    '与创业者同行',
   );
-  await expect(page.locator('[data-fellow-video]')).toHaveAttribute(
-    'preload',
-    'none',
-  );
-  await expect(page.locator('[data-fellow-video]')).toHaveAttribute(
-    'muted',
-    '',
-  );
+  await expect(page.locator('[data-fellow-video]')).toHaveCount(0);
   await expect(page.locator('[data-fellow-media]')).toHaveAttribute(
     'data-media-expanded',
     'true',
   );
-  await expect
-    .poll(() =>
-      page
-        .locator('[data-fellow-video]')
-        .evaluate((element) => (element as HTMLVideoElement).currentTime),
-    )
-    .toBeGreaterThan(0.05);
-  const video = page.locator('[data-fellow-video]');
-  await video.click();
-  await expect
-    .poll(() =>
-      video.evaluate((element) => (element as HTMLVideoElement).paused),
-    )
-    .toBe(true);
-  await page.mouse.move(20, 150);
-  await video.hover();
-  await expect
-    .poll(() =>
-      video.evaluate((element) => (element as HTMLVideoElement).paused),
-    )
-    .toBe(false);
-  await page.evaluate((y) => scrollTo(0, y + innerHeight * 2.5), start);
-  await expect
-    .poll(() =>
-      page
-        .locator('[data-fellow-video]')
-        .evaluate((element) => (element as HTMLVideoElement).paused),
-    )
-    .toBe(true);
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({

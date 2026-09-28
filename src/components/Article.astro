@@ -20,13 +20,13 @@ const { Content, headings } = await render(article.body);
   </a>
   <header class="article-header">
     <p class="eyebrow">
-      {insightsContent.eyebrow} / {article.category.toUpperCase()}
+      {insightsContent.eyebrow[lang]} / {article.category.toUpperCase()}
     </p>
     <h1>{article.title}</h1>
     <p class="article-summary">{article.summary}</p>
     <p class="article-meta">
       <time datetime={article.date}>{article.date}</time> ·{' '}
-      {insightsContent.publisher}
+      {insightsContent.publisher[lang]}
     </p>
   </header>
   <div class="article-layout">

@@ -49,7 +49,7 @@
 }
 @layer base {
   :root {
-    --paper: #fcfbf5;
+    --paper: #fdfbf5;
     --paper-alt: #f8f6f2;
     --ink: #1d1d1d;
     --purple: #573c79;
@@ -994,7 +994,11 @@
   }
   .portfolio-page > .page-title {
     margin-left: var(--page-gutter);
-    margin-bottom: calc(65 * var(--u));
+    margin-bottom: calc(28 * var(--u));
+  }
+  .portfolio-page > .portfolio-intro {
+    margin-inline: var(--page-gutter);
+    margin-bottom: calc(35 * var(--u));
   }
   .portfolio-grid {
     margin-left: 9.427%;
@@ -1281,7 +1285,7 @@
   }
   .company-sector {
     font-size: calc(19.792 * var(--u));
-    letter-spacing: 0.65em;
+    letter-spacing: normal;
     margin-top: 12px;
     line-height: 1.5;
   }
@@ -1553,7 +1557,13 @@
     gap: calc(27 * var(--u));
     margin-top: calc(115 * var(--u));
     font-size: calc(24 * var(--u));
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+  }
+  .insight-filters::-webkit-scrollbar {
+    display: none;
   }
   .insight-filters button {
     opacity: 0.4;
@@ -1920,7 +1930,7 @@
       padding-block: 250px;
     }
     .company-sector {
-      letter-spacing: 0.3em;
+      letter-spacing: normal;
     }
     .research-intro,
     .about-copy {
@@ -2217,7 +2227,10 @@
       gap: 16px;
     }
     .portfolio-page > .page-title {
-      margin-bottom: 48px;
+      margin-bottom: 28px;
+    }
+    .portfolio-page > .portfolio-intro {
+      margin-bottom: 30px;
     }
     .company-caption h2 {
       font-size: 19px;
@@ -2780,7 +2793,10 @@
       font-size: 38px;
     }
     .portfolio-page > .page-title {
-      margin-bottom: 45px;
+      margin-bottom: 24px;
+    }
+    .portfolio-page > .portfolio-intro {
+      margin-bottom: 26px;
     }
     .portfolio-grid {
       width: calc(100% - 48px);
@@ -2866,7 +2882,7 @@
     }
     .company-sector {
       font-size: 13px;
-      letter-spacing: 0.15em;
+      letter-spacing: normal;
       margin-top: 16px;
     }
     .company-description {

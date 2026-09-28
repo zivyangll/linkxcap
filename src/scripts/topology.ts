@@ -22,6 +22,9 @@ type Anchor = {
 };
 const CYCLE_MS = 5200;
 const BRANCH_MS = 620;
+const FOCUS_DEPTH = 240;
+const FOCUS_BRANCH_RADIUS_X = 340;
+const FOCUS_BRANCH_RADIUS_Y = 270;
 
 export function mountTopology(root: HTMLElement) {
   const canvas = root.querySelector<HTMLCanvasElement>('.topology-canvas')!;
@@ -112,8 +115,13 @@ export function mountTopology(root: HTMLElement) {
     targetYaw = 0,
     targetPitch = 0,
     frontHoldUntil = 0;
+  let focused = false;
+  const homePosition = new Vector3();
+  const targetPosition = new Vector3();
   const projected = new Vector3();
   const endpoint = new Vector3();
+  const branchStart = new Vector3();
+  const branchEnd = new Vector3();
   const enabled = () => motion.matches && !lost && !disposed;
   const held = () =>
     root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
@@ -122,14 +130,68 @@ export function mountTopology(root: HTMLElement) {
       element.style.removeProperty('translate');
       label?.style.removeProperty('translate');
     });
-  const correctView = () => {
-    // Return to the closest canonical front view, avoiding a long reverse spin.
+  const updateFocusTarget = () => {
+    // Keep the constellation facing the viewer instead of turning its mostly
+    // planar layout edge-on. Pan around the selected sector and lift that node
+    // on the z-axis so it becomes the scene's foreground anchor.
     targetYaw = Math.round(yaw / (Math.PI * 2)) * Math.PI * 2;
     targetPitch = 0;
+    const frontZ = Math.max(active.origin.z, FOCUS_DEPTH);
+    const perspective = (camera.position.z - frontZ) / camera.position.z;
+    // The original hub coordinate is the visual centre of the right-hand 3D
+    // region. Preserve that projection while the selected node moves forward;
+    // the left-hand title and explanatory copy remain unobstructed.
+    targetPosition.set(
+      homePosition.x * perspective - active.origin.x,
+      homePosition.y * perspective - active.origin.y,
+      homePosition.z,
+    );
+  };
+  const renderPoint = (anchor: Anchor, target: Vector3) => {
+    target.copy(anchor.origin);
+    if (!focused) return target;
+    const frontZ = Math.max(active.origin.z, FOCUS_DEPTH);
+    if (anchor === active) target.z = frontZ;
+    else if (anchor.element.dataset.focusSector === active.sector && height) {
+      const index = companies.indexOf(anchor);
+      if (index >= 0) {
+        const angle = -Math.PI / 2 + (index * Math.PI * 2) / companies.length;
+        const visibleHeight =
+          2 *
+          Math.tan((camera.fov * Math.PI) / 360) *
+          (camera.position.z - frontZ);
+        const pixelsToWorld = visibleHeight / height;
+        const radiusX = Math.min(FOCUS_BRANCH_RADIUS_X, width * 0.22);
+        const radiusY = Math.min(FOCUS_BRANCH_RADIUS_Y, height * 0.32);
+        target.set(
+          active.origin.x + Math.cos(angle) * radiusX * pixelsToWorld,
+          active.origin.y - Math.sin(angle) * radiusY * pixelsToWorld,
+          frontZ,
+        );
+      }
+    }
+    return target;
+  };
+  const focusActive = (event?: Event) => {
+    focused = true;
+    updateFocusTarget();
     yawVelocity = pitchVelocity = 0;
-    correcting = true;
     cycle = 0;
+    const immediate = Boolean(
+      (event as CustomEvent<{ immediate?: boolean }> | undefined)?.detail
+        ?.immediate,
+    );
+    correcting = !immediate;
     root.dataset.cameraState = 'settling';
+    if (immediate) {
+      yaw = targetYaw;
+      pitch = targetPitch;
+      graph.rotation.set(pitch, yaw, 0);
+      graph.position.copy(targetPosition);
+      frontHoldUntil = performance.now() + 900;
+      root.dataset.cameraState = 'front';
+      draw();
+    }
     sync();
   };
 
@@ -140,6 +202,10 @@ export function mountTopology(root: HTMLElement) {
     companies = anchors.filter(
       (anchor) => anchor.element.dataset.focusSector === active.sector,
     );
+    companies.forEach((anchor, index) => {
+      const angle = -Math.PI / 2 + (index * Math.PI * 2) / companies.length;
+      anchor.element.dataset.labelSide = Math.cos(angle) < 0 ? 'left' : 'right';
+    });
     cycle = 0;
     growth = 0;
     // The hub stays subdued; only the selected sector's company rays brighten.
@@ -195,7 +261,8 @@ export function mountTopology(root: HTMLElement) {
       );
     };
     // Rotate around the graph's hub, not the centre of the whole page.
-    toWorld(hub.element, graph.position);
+    toWorld(hub.element, homePosition);
+    graph.position.copy(homePosition);
     anchors.forEach((anchor) => {
       anchor.x = touch.matches
         ? (Number(anchor.element.dataset.mx) * width) / 360
@@ -203,7 +270,7 @@ export function mountTopology(root: HTMLElement) {
       anchor.y = touch.matches
         ? (Number(anchor.element.dataset.my) * height) / 560
         : (Number(anchor.element.dataset.y) * width) / 1920;
-      toWorld(anchor.element, anchor.origin).sub(graph.position);
+      toWorld(anchor.element, anchor.origin).sub(homePosition);
     });
     const positions = baseGeometry.getAttribute('position');
     sectors.forEach((anchor, index) => {
@@ -216,6 +283,13 @@ export function mountTopology(root: HTMLElement) {
       );
     });
     positions.needsUpdate = true;
+    if (focused) {
+      updateFocusTarget();
+      yaw = targetYaw;
+      pitch = targetPitch;
+      graph.rotation.set(pitch, yaw, 0);
+      graph.position.copy(targetPosition);
+    }
     draw();
     sync();
   }
@@ -225,8 +299,7 @@ export function mountTopology(root: HTMLElement) {
     for (const anchor of anchors) {
       if (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
         continue;
-      projected
-        .copy(anchor.origin)
+      renderPoint(anchor, projected)
         .applyMatrix4(graph.matrixWorld)
         .project(camera);
       const finalX = ((projected.x + 1) * width) / 2;
@@ -237,36 +310,106 @@ export function mountTopology(root: HTMLElement) {
     }
     const bounds = stage.getBoundingClientRect();
     const labelInset = touch.matches ? 4 : 18;
-    for (const anchor of anchors) {
-      if (
-        !anchor.label ||
-        (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
-      )
-        continue;
-      anchor.label.style.removeProperty('translate');
-      const box = anchor.label.getBoundingClientRect();
-      const x =
-        Math.max(bounds.left + labelInset - box.left, 0) +
-        Math.min(bounds.right - labelInset - box.right, 0);
-      const y =
-        Math.max(bounds.top + labelInset - box.top, 0) +
-        Math.min(bounds.bottom - labelInset - box.bottom, 0);
-      if (x || y) anchor.label.style.translate = `${x}px ${y}px`;
+    const labels = anchors.filter(
+      (anchor) =>
+        anchor.label &&
+        (!anchor.element.dataset.focusSector ||
+          anchor.sector === active.sector),
+    );
+    labels.forEach((anchor) => anchor.label!.style.removeProperty('translate'));
+    type Rect = Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>;
+    const move = (box: Rect, x: number, y: number): Rect => ({
+      left: box.left + x,
+      right: box.right + x,
+      top: box.top + y,
+      bottom: box.bottom + y,
+    });
+    const gap = touch.matches ? 3 : 6;
+    const overlaps = (
+      a: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>,
+      b: Pick<DOMRect, 'left' | 'right' | 'top' | 'bottom'>,
+    ) =>
+      Math.min(a.right, b.right) > Math.max(a.left, b.left) - gap &&
+      Math.min(a.bottom, b.bottom) > Math.max(a.top, b.top) - gap;
+    const placements = labels
+      .map((anchor) => {
+        const box = anchor.label!.getBoundingClientRect();
+        const x =
+          Math.max(bounds.left + labelInset - box.left, 0) +
+          Math.min(bounds.right - labelInset - box.right, 0);
+        const y =
+          Math.max(bounds.top + labelInset - box.top, 0) +
+          Math.min(bounds.bottom - labelInset - box.bottom, 0);
+        return {
+          anchor,
+          box,
+          x,
+          y,
+          priority:
+            anchor === active ? 0 : anchor.element.dataset.sector ? 1 : 2,
+        };
+      })
+      .sort((a, b) => a.priority - b.priority || a.box.top - b.box.top);
+    const placed: Rect[] = [];
+    for (const placement of placements) {
+      const base = move(placement.box, placement.x, placement.y);
+      const minimum = bounds.top + labelInset - base.top;
+      const maximum = bounds.bottom - labelInset - base.bottom;
+      const candidates = [
+        0,
+        ...placed.flatMap((other) => [
+          other.bottom + gap - base.top,
+          other.top - gap - base.bottom,
+        ]),
+      ]
+        .filter((offset) => offset >= minimum && offset <= maximum)
+        .sort((a, b) => Math.abs(a) - Math.abs(b));
+      const offset =
+        candidates.find((candidate) => {
+          const candidateBox = move(base, 0, candidate);
+          return placed.every((other) => !overlaps(candidateBox, other));
+        }) || 0;
+      placement.y += offset;
+      const finalBox = move(placement.box, placement.x, placement.y);
+      placed.push(finalBox);
+      if (placement.x || placement.y)
+        placement.anchor.label!.style.translate = `${placement.x}px ${placement.y}px`;
     }
-    const positions = branchGeometry.getAttribute('position');
-    if (positions) {
-      const reveal = 1 - Math.pow(1 - growth, 3);
-      companies.forEach((anchor, index) => {
-        endpoint.copy(active.origin).lerp(anchor.origin, reveal);
-        positions.setXYZ(
+    const basePositions = baseGeometry.getAttribute('position');
+    if (basePositions) {
+      sectors.forEach((anchor, index) => {
+        basePositions.setXYZ(
           index * 2,
-          active.origin.x,
-          active.origin.y,
-          active.origin.z,
+          hub.origin.x,
+          hub.origin.y,
+          hub.origin.z,
         );
-        positions.setXYZ(index * 2 + 1, endpoint.x, endpoint.y, endpoint.z);
+        renderPoint(anchor, endpoint);
+        basePositions.setXYZ(index * 2 + 1, endpoint.x, endpoint.y, endpoint.z);
       });
-      positions.needsUpdate = true;
+      basePositions.needsUpdate = true;
+    }
+    const branchPositions = branchGeometry.getAttribute('position');
+    if (branchPositions) {
+      const reveal = 1 - Math.pow(1 - growth, 3);
+      renderPoint(active, branchStart);
+      companies.forEach((anchor, index) => {
+        renderPoint(anchor, branchEnd);
+        endpoint.copy(branchStart).lerp(branchEnd, reveal);
+        branchPositions.setXYZ(
+          index * 2,
+          branchStart.x,
+          branchStart.y,
+          branchStart.z,
+        );
+        branchPositions.setXYZ(
+          index * 2 + 1,
+          endpoint.x,
+          endpoint.y,
+          endpoint.z,
+        );
+      });
+      branchPositions.needsUpdate = true;
     }
     renderer.render(scene, camera);
     root.dataset.rotation = `${graph.rotation.x.toFixed(3)},${graph.rotation.y.toFixed(3)}`;
@@ -287,14 +430,17 @@ export function mountTopology(root: HTMLElement) {
         const correction = 1 - Math.pow(0.001, delta / 520);
         yaw += (targetYaw - yaw) * correction;
         pitch += (targetPitch - pitch) * correction;
+        graph.position.lerp(targetPosition, correction);
         graph.rotation.set(pitch, yaw, 0);
         if (
           Math.abs(targetYaw - yaw) < 0.001 &&
-          Math.abs(targetPitch - pitch) < 0.001
+          Math.abs(targetPitch - pitch) < 0.001 &&
+          graph.position.distanceTo(targetPosition) < 0.05
         ) {
           yaw = targetYaw;
           pitch = targetPitch;
           graph.rotation.set(pitch, yaw, 0);
+          graph.position.copy(targetPosition);
           correcting = false;
           frontHoldUntil = time + 900;
           root.dataset.cameraState = 'front';
@@ -404,16 +550,13 @@ export function mountTopology(root: HTMLElement) {
     root.dataset.dragged = 'true';
     if (root.hasPointerCapture(pointer)) root.releasePointerCapture(pointer);
     pointer = -1;
-    correctView();
-  };
-  const clickToCorrect = (event: MouseEvent) => {
-    if ((event.target as Element).closest('[data-sector]')) correctView();
+    focusActive();
   };
   root.addEventListener('pointerdown', beginDrag);
   root.addEventListener('pointermove', moveDrag);
   root.addEventListener('pointerup', endDrag);
   root.addEventListener('pointercancel', endDrag);
-  root.addEventListener('click', clickToCorrect);
+  root.addEventListener('focusfront', focusActive);
   root.addEventListener('focuschange', select);
   const visibility = new IntersectionObserver(
     ([entry]) => {
@@ -460,7 +603,7 @@ export function mountTopology(root: HTMLElement) {
     root.removeEventListener('pointermove', moveDrag);
     root.removeEventListener('pointerup', endDrag);
     root.removeEventListener('pointercancel', endDrag);
-    root.removeEventListener('click', clickToCorrect);
+    root.removeEventListener('focusfront', focusActive);
     baseGeometry.dispose();
     branchGeometry.dispose();
     baseMaterial.dispose();

@@ -33,7 +33,13 @@ export const currentYear = new Date().getFullYear();
 type AnyRecord = Record<string, any>;
 type Localized<T = string> = { zh: T; en: T };
 type PageName =
-  'index' | 'portfolio' | 'team' | 'insights' | 'contact' | 'legal';
+  | 'index'
+  | 'portfolio'
+  | 'team'
+  | 'insights'
+  | 'fellowship'
+  | 'contact'
+  | 'legal';
 type NavigationItem = { page: string; zh: string; en: string };
 type NavigationContent = {
   items: NavigationItem[];
@@ -45,34 +51,35 @@ type NavigationContent = {
   menuContactTitle: Localized;
   wechatLabel: Localized;
   menuTitle: string;
-  menuContactLink: string;
+  menuContactLink: Localized;
 };
 type HomeContent = {
   opening: {
-    chapter: string;
+    chapter: Localized;
     title: Localized<string[]>;
     body: Localized<string[]>;
   };
   hero: {
-    title: string[];
-    zhTitle: string[];
-    orbitEyebrow: string;
+    title: Localized<string[]>;
+    orbitEyebrow: Localized;
     orbitLabel: Localized;
   };
   about: {
-    eyebrow: string;
+    eyebrow: Localized;
     label: Localized;
     title: Localized<string[]>;
     description: Localized<string[]>;
   };
   research: {
-    title: string[];
-    stats: Array<{ value: string; label: string }>;
+    title: Localized<string[]>;
+    intro: Localized<string[]>;
+    stats: Array<{ value: string; label: Localized }>;
     dataNote: Localized;
   };
   focus: {
-    title: string[];
-    zhTitle: string;
+    title: Localized<string[]>;
+    auxiliaryTitle: Localized;
+    interactionHint: Localized;
     contactLink: Localized;
     aboutLink: Localized;
     ariaLabel: Localized;
@@ -80,14 +87,19 @@ type HomeContent = {
 };
 type PortfolioContent = {
   title: Localized & { figmaZhEnglish: string };
+  intro: Localized;
+  actionHint: Localized;
   scrollHint: Localized;
   navigatorLabel: Localized;
+};
+type FellowshipContent = {
+  title: Localized;
+  introduction: Localized;
 };
 type TeamContent = {
   title: Localized;
   intro: Localized;
-  eyebrow: string;
-  featured: Localized;
+  eyebrow: Localized;
   contactLink: Localized;
 };
 type InsightsContent = {
@@ -95,27 +107,28 @@ type InsightsContent = {
   intro: Localized;
   filterLabel: Localized;
   back: Localized;
-  eyebrow: string;
-  publisher: string;
+  eyebrow: Localized;
+  publisher: Localized;
 };
 type ContactContent = {
-  signalTitle: string;
+  signalTitle: Localized;
   signalSubtitle: Localized;
   joinCopy: Localized;
   joinDisplay: Localized<string[]>;
   definition: Localized;
   videoPlaceholder: Localized;
   joinTitle: Localized;
-  joinEyebrow: string;
-  contactLink: string;
-  detailsEyebrow: string;
+  joinEyebrow: Localized;
+  contactLink: Localized;
+  detailsEyebrow: Localized;
   detailsTitle: Localized;
+  emailLabel: Localized;
   copyEmail: Localized;
   findUs: Localized;
   wechat: Array<{ title: Localized; imageFile: string }>;
 };
 type LegalContent = {
-  eyebrow: string;
+  eyebrow: Localized;
   title: Localized;
   sections: Array<{ heading: Localized; body: Localized }>;
   existingSiteLink: Localized;
@@ -165,11 +178,30 @@ export const siteContent = {
   companyLegalName: pair(raw.site, 'company_legal_name'),
   recordNumber: raw.site.record_number,
   metaDescription: pair(raw.site, 'meta_description'),
+  footerTagline: pair(raw.site, 'footer_tagline'),
+  footerCopyright: pair(raw.site, 'footer_copyright'),
   ogImageUrl: contentAsset(raw.site.og_image_file),
   pageTitles: Object.fromEntries(
-    ['index', 'portfolio', 'team', 'insights', 'contact', 'legal'].map(
-      (page) => [page, pair(raw.site.page_titles, page)],
-    ),
+    [
+      'index',
+      'portfolio',
+      'team',
+      'insights',
+      'fellowship',
+      'contact',
+      'legal',
+    ].map((page) => [page, pair(raw.site.page_titles, page)]),
+  ) as Record<PageName, Localized>,
+  pageDescriptions: Object.fromEntries(
+    [
+      'index',
+      'portfolio',
+      'team',
+      'insights',
+      'fellowship',
+      'contact',
+      'legal',
+    ].map((page) => [page, pair(raw.site.page_descriptions, page)]),
   ) as Record<PageName, Localized>,
   redirectPage: {
     title: raw.site.redirect_page.title,
@@ -211,19 +243,7 @@ export const ui = {
 };
 
 const pagesRuntime = runtimeShape(raw.pages);
-export const homeContent = {
-  ...pagesRuntime.home,
-  hero: {
-    ...pagesRuntime.home.hero,
-    title: raw.pages.home.hero.title_en,
-    zhTitle: raw.pages.home.hero.title_cn,
-  },
-  focus: {
-    ...pagesRuntime.home.focus,
-    title: raw.pages.home.focus.title_en,
-    zhTitle: raw.pages.home.focus.title_cn,
-  },
-} as HomeContent;
+export const homeContent = pagesRuntime.home as HomeContent;
 export const portfolioContent = {
   ...pagesRuntime.portfolio,
   title: {
@@ -234,6 +254,7 @@ export const portfolioContent = {
 } as PortfolioContent;
 export const teamContent = pagesRuntime.team as TeamContent;
 export const insightsContent = pagesRuntime.insights as InsightsContent;
+export const fellowshipContent = pagesRuntime.fellowship as FellowshipContent;
 export const contactContent = pagesRuntime.contact as ContactContent;
 export const legalContent = pagesRuntime.legal as LegalContent;
 
@@ -254,6 +275,7 @@ export const team = (raw.team as AnyRecord[]).map((person) => ({
   name: person.name_cn,
   en: person.name_en,
   role: { zh: person.role_cn, en: person.role_en },
+  summary: { zh: person.summary_cn, en: person.summary_en },
   imageUrl: contentAsset(person.image_file),
   bio: { zh: person.bio_cn, en: person.bio_en },
 }));
@@ -358,6 +380,10 @@ export const pageTitle = (
   lang: Lang,
   page: keyof typeof siteContent.pageTitles,
 ) => siteContent.pageTitles[page][lang];
+export const pageDescription = (
+  lang: Lang,
+  page: keyof typeof siteContent.pageDescriptions,
+) => siteContent.pageDescriptions[page][lang];
 
 export const fellowMedia = {
   videoUrl: contentAsset(raw.media.fellow.video_file as string),

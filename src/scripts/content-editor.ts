@@ -30,6 +30,11 @@ const groups = [
     paths: [['pages', 'insights'], ['insights']],
   },
   {
+    id: 'fellowship',
+    title: '星图计划',
+    paths: [['pages', 'fellowship']],
+  },
+  {
     id: 'contact',
     title: '联系方式和媒体',
     paths: [['pages', 'contact'], ['media']],
@@ -46,6 +51,7 @@ const labels: Record<string, string> = {
   companies: '公司资料',
   team: '团队成员',
   insights: '洞察内容',
+  fellowship: '星图计划页',
   media: '媒体配置',
   wechat: '微信公众号二维码',
   home: '首页',
@@ -107,6 +113,7 @@ const sectionNotes: Record<string, string> = {
   team: '成员照片只填写文件名；路由 slug 决定 team-<slug>.html；内部结构 ID 已隐藏并由系统维护',
   'pages.insights':
     '洞察列表页和文章详情页的公共文案；文章内容在 src/content/insights/*.md 中维护',
+  'pages.fellowship': '星图计划独立页面的中英文标题与介绍',
   insights:
     '文章 Markdown 的 category 必须填写下方某个筛选项的结构 ID；all 仅表示“全部文章”，不能作为文章分类',
   'pages.contact':

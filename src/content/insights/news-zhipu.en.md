@@ -1,36 +1,26 @@
 ---
-id: 'news-zhipu'
-route: 'news-zhipu'
-category: 'portfolio'
-date: '2026-01-08'
-source_url: 'https://www.linkxcap.com/zh/news-zhipu.html'
+id: "news-zhipu"
+route: "news-zhipu"
+category: "foundation"
+date: "2026-01-08"
+source_url: "https://www.linkxcap.com/zh/news-zhipu.html"
 order: 4
-lang: 'en'
-title: 'Z.AI in Hong Kong: a milestone on the journey'
-summary: 'Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.'
-list_title: 'Z.AI in Hong Kong: a milestone on the journey'
-list_summary: 'Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.'
-source_name: 'Existing website (Chinese)'
+lang: "en"
+title: "Z.AI Lists in Hong Kong"
+summary: "Z.AI's HKEX listing marks a new stage for the GLM model family and its products."
+list_title: "Z.AI Lists in Hong Kong"
+list_summary: "Z.AI's HKEX listing marks a new stage for the GLM model family and its products."
+source_name: "Originally published by LinkX Capital"
 ---
 
-## A starting point
+## From research to a product platform
 
-Following portfolio milestones and the continuing evolution of the foundation-model ecosystem.
+Z.AI listed on the Hong Kong Stock Exchange Main Board on 8 January 2026 under stock code 02513.HK. With roots in Tsinghua University research, the company develops the GLM family of models and services for developers and enterprises.
 
-The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+## Expanding model applications
 
-## From technology to application
+Its work spans model research, APIs, enterprise deployment and agent applications. The listing is a milestone for Z.AI and a public-market reference point for China's foundation-model sector.
 
-New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+## A long-term partnership
 
-> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
-
-Three questions can guide a closer reading:
-
-- **The problem**: which concrete difficulty does the product address?
-- **The experience**: how does the technology improve an existing workflow?
-- **The feedback**: what evidence helps the team assess its progress?
-
-## Following the story
-
-This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.
+LinkX Capital continues to work with portfolio founders as they connect technical capability with useful products and navigate new stages of growth.

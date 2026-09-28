@@ -5,7 +5,7 @@ const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const range = (value: number, start: number, end: number) =>
   clamp((value - start) / (end - start));
 const smooth = (value: number) => value * value * (3 - 2 * value);
-export const PHILOSOPHY_ARC = { start: 0.035, end: 0.54 };
+export const PHILOSOPHY_ARC = { start: 0.06, end: 0.54 };
 
 const lerp = (from: number, to: number, progress: number) =>
   from + (to - from) * progress;
@@ -110,12 +110,12 @@ export function mountPhilosophyMotion(
     const point = {
       x: arcPoint.x - 322 * u * pan,
       y:
-        p < 0.035
-          ? start.y * range(p, 0, 0.035)
+        p < PHILOSOPHY_ARC.start
+          ? start.y * range(p, 0, PHILOSOPHY_ARC.start)
           : arcPoint.y + 50 * u * drop + 104 * u * pan + aboutOffset,
     };
     const phase =
-      p < 0.035
+      p < PHILOSOPHY_ARC.start
         ? 'lead-in'
         : p < 0.54
           ? 'arc'

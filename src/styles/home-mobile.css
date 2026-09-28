@@ -1,39 +1,3 @@
-/* H5 only. Desktop geometry and choreography deliberately stay in their
-   existing files. Intrinsic heights keep short screens / enlarged text usable. */
-@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-  .home-story {
-    --story-node-label-size: clamp(18px, 1.05vw, 23px);
-  }
-
-  .home-story :is(.chapter, .hero .orbit-label, .about .about-label) {
-    font-size: var(--story-node-label-size);
-    line-height: 1.3;
-  }
-
-  .home-story .chapter {
-    right: calc(100% - 439 * var(--u));
-    left: auto;
-    width: max(calc(169 * var(--u)), 110px);
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .home-story .hero .orbit-label {
-    width: max(calc(125 * var(--u)), 108px);
-  }
-
-  .home-story .hero .orbit-label :is(em, span) {
-    white-space: nowrap;
-  }
-
-  .home-story .about .about-label {
-    right: calc(100% - 610 * var(--u));
-    left: auto;
-    width: max(calc(155 * var(--u)), 135px);
-    white-space: nowrap;
-  }
-}
-
 @media (max-width: 1023px), (hover: none), (pointer: coarse) {
   .home-story {
     --mobile-rail: max(24px, env(safe-area-inset-left));
@@ -285,6 +249,33 @@
     width: auto;
     margin-top: 12px;
     font-size: 28px;
+  }
+
+  body[data-lang='en'] .home-story .opening-title {
+    font-size: clamp(36px, 9.5vw, 56px);
+  }
+
+  body[data-lang='en'] .home-story .hero-title {
+    font-size: clamp(26px, 6.6vw, 42px);
+  }
+
+  body[data-lang='en'] .home-story .about-title {
+    font-size: clamp(27px, 7.2vw, 44px);
+  }
+
+  body[data-lang='en'] .home-story .research h2 {
+    font-size: clamp(28px, 7.2vw, 44px);
+  }
+
+  body[data-lang='en'] .home-story .focus-title {
+    font-size: clamp(36px, 9.2vw, 54px);
+  }
+
+  body[data-lang='en'] .home-story .focus-title > span {
+    max-width: 32ch;
+    font-size: clamp(20px, 5.4vw, 26px);
+    line-height: 1.2;
+    letter-spacing: -0.035em;
   }
 
   .home-story .constellation {

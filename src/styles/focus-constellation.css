@@ -81,6 +81,9 @@
 }
 
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .home-story .focus {
+    min-height: max(calc(1080 * var(--u)), calc(50svh + 777 * var(--u)));
+  }
   .home-story .focus .focus-panels {
     left: calc(106 * var(--u));
     top: calc(700 * var(--u));
@@ -107,6 +110,9 @@
     background: transparent;
     border-radius: 50%;
     z-index: 2;
+  }
+  .home-story .focus .sector-star.is-active {
+    z-index: 4;
   }
   .home-story .focus .sector-star .star-glyph {
     width: 44px;

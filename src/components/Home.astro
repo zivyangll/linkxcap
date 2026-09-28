@@ -51,7 +51,7 @@ const { lang } = Astro.props;
       <i class="diamond"></i>
       <img src={asset('3297', 'imgVector30')} width="2" height="590" alt="" />
     </div>
-    <span class="chapter">{homeContent.opening.chapter}</span>
+    <span class="chapter">{homeContent.opening.chapter[lang]}</span>
     <h1 id="opening-title" class="opening-title" data-reveal>
       {homeContent.opening.title[lang].map((line, index) => (
         <>
@@ -98,26 +98,16 @@ const { lang } = Astro.props;
         />
       </div>
       <h2 id="hero-title" class="hero-title" data-reveal>
-        {homeContent.hero.title.map((line, index) => (
+        {homeContent.hero.title[lang].map((line, index) => (
           <>
             {index > 0 && <br />}
             {line}
           </>
         ))}
       </h2>
-      {lang === 'zh' && (
-        <p class="hero-zh" data-reveal>
-          {homeContent.hero.zhTitle.map((line, index) => (
-            <>
-              {index > 0 && <br />}
-              {line}
-            </>
-          ))}
-        </p>
-      )}
       <a class="orbit-label" href="#about">
         <i class="diamond" aria-hidden="true"></i>
-        <em>{homeContent.hero.orbitEyebrow}</em>
+        <em>{homeContent.hero.orbitEyebrow[lang]}</em>
         <span>{homeContent.hero.orbitLabel[lang]}</span>
       </a>
     </section>
@@ -163,7 +153,7 @@ const { lang } = Astro.props;
         <i class="diamond"></i>
       </div>
       <div class="about-label">
-        {homeContent.about.eyebrow}
+        {homeContent.about.eyebrow[lang]}
         <br />
         {homeContent.about.label[lang]}
       </div>
@@ -203,12 +193,12 @@ const { lang } = Astro.props;
       />
     </div>
     <h2 id="research-title" data-reveal>
-      {homeContent.research.title[0]}
+      {homeContent.research.title[lang][0]}
       <br />
-      <span>{homeContent.research.title[1]}</span>
+      <span>{homeContent.research.title[lang][1]}</span>
     </h2>
     <p class="research-intro" data-reveal>
-      {homeContent.about.description[lang].map((line) => (
+      {homeContent.research.intro[lang].map((line) => (
         <span class="intro-line">{line}</span>
       ))}
     </p>
@@ -216,7 +206,7 @@ const { lang } = Astro.props;
       {homeContent.research.stats.map(({ value, label }) => (
         <div>
           <strong>{value}</strong>
-          <span>{label}</span>
+          <span>{label[lang]}</span>
         </div>
       ))}
       <p class="data-note">{homeContent.research.dataNote[lang]}</p>
@@ -238,10 +228,10 @@ const { lang } = Astro.props;
       aria-hidden="true"
     ></div>
     <h2 id="focus-title" class="focus-title">
-      {homeContent.focus.title[0]}
+      {homeContent.focus.title[lang][0]}
       <br />
-      {homeContent.focus.title[1]}
-      {lang === 'zh' && <span>{homeContent.focus.zhTitle}</span>}
+      {homeContent.focus.title[lang][1]}
+      <span>{homeContent.focus.auxiliaryTitle[lang]}</span>
     </h2>
     <div class="focus-panels">
       {sectors.map((s, i) => (

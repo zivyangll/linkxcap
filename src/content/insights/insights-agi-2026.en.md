@@ -1,36 +1,26 @@
 ---
-id: 'insights-agi-2026'
-route: 'insights-agi-2026'
-category: 'panorama'
-date: '2026-01-04'
-source_url: 'https://www.linkxcap.com/zh/insights-agi-2026.html'
+id: "insights-agi-2026"
+route: "insights-agi-2026"
+category: "foundation"
+date: "2026-01-04"
+source_url: "https://www.linkxcap.com/zh/insights-agi-2026.html"
 order: 3
-lang: 'en'
-title: 'What should we build before AGI arrives?'
-summary: 'Amid rapid technological change, finding real problems worth pursuing over the long term.'
-list_title: 'What should we build before AGI arrives?'
-list_summary: 'Amid rapid technological change, finding real problems worth pursuing over the long term.'
-source_name: 'Existing website (Chinese)'
+lang: "en"
+title: "What Should We Build Before AGI Arrives?"
+summary: "A view of model progress, agents and the practical work ahead while the path to AGI remains open."
+list_title: "What Should We Build Before AGI Arrives?"
+list_summary: "A view of model progress, agents and the practical work ahead while the path to AGI remains open."
+source_name: "Originally published by LinkX Capital"
 ---
 
-## A starting point
+## Keep advancing model capability
 
-Amid rapid technological change, finding real problems worth pursuing over the long term.
+Scale, training data and computational efficiency still shape what AI systems can do. Reasoning, multimodal learning and new training methods are moving quickly, but the technical path remains open. Researchers need problems that produce measurable capability gains and reward sustained iteration.
 
-The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+## Put existing capability to work
 
-## From technology to application
+Strong benchmarks do not automatically translate into reliable work. Agents must understand goals, use tools, respond to feedback and adapt across settings. Better training environments, evaluation methods and real-world data can help close that gap.
 
-New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+## Build around genuine user needs
 
-> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
-
-Three questions can guide a closer reading:
-
-- **The problem**: which concrete difficulty does the product address?
-- **The experience**: how does the technology improve an existing workflow?
-- **The feedback**: what evidence helps the team assess its progress?
-
-## Following the story
-
-This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.
+Application teams should start with specific work and turn model capability into dependable products. Healthcare, research, manufacturing and physical systems each impose different constraints. Deep knowledge of the setting, a useful feedback loop and the ability to adapt as models improve matter more than a passing demonstration.

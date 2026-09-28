@@ -1,7 +1,12 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import Home from '../../components/Home.astro';
-import { languages, pageTitle, type Lang } from '../../lib/site';
+import {
+  languages,
+  pageDescription,
+  pageTitle,
+  type Lang,
+} from '../../lib/site';
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { lang } }));
 }
@@ -9,6 +14,12 @@ const lang = Astro.params.lang as Lang;
 const title = pageTitle(lang, 'index');
 ---
 
-<SiteLayout lang={lang} page="index" title={title} bodyClass="philosophy-page">
+<SiteLayout
+  lang={lang}
+  page="index"
+  title={title}
+  description={pageDescription(lang, 'index')}
+  bodyClass="philosophy-page"
+>
   <Home lang={lang} />
 </SiteLayout>

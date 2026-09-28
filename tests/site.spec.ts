@@ -7,6 +7,7 @@ const paths = [
   'team',
   'team-alex',
   'insights',
+  'fellowship',
   'portfolio-yuanmu',
   'contact',
   'legal',
@@ -85,11 +86,11 @@ test('footer, menu and insights use the current runtime year', async ({
 test('filters, language state and original article link', async ({ page }) => {
   await page.goto('zh/insights.html');
   await expect(page.locator('.insight-row:visible')).toHaveCount(6);
-  await page.locator('[data-filter=models]').click();
-  await expect(page.locator('.insight-row:visible')).toHaveCount(1);
+  await page.locator('[data-filter=foundation]').click();
+  await expect(page.locator('.insight-row:visible')).toHaveCount(3);
   await page.locator('.language-switch [data-language=en]').click();
-  await expect(page).toHaveURL(/en\/insights.html\?category=models/);
-  await expect(page.locator('.insight-row:visible')).toHaveCount(1);
+  await expect(page).toHaveURL(/en\/insights.html\?category=foundation/);
+  await expect(page.locator('.insight-row:visible')).toHaveCount(3);
   await page.locator('.insight-row:visible h2 a').first().click();
   await expect(page.locator('.article-actions a')).toHaveAttribute(
     'href',
@@ -196,7 +197,7 @@ test('core content and navigation remain available without JavaScript', async ({
   await expect(page.locator('.opening-copy')).toContainText('通用智能');
   await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
   await page.locator('.noscript-nav a[href$="/zh/portfolio.html"]').click();
-  await expect(page.locator('[data-company-card]')).toHaveCount(19);
+  await expect(page.locator('[data-company-card]')).toHaveCount(76);
   await context.close();
 });
 test('English mobile copy follows the multiline heading', async ({ page }) => {

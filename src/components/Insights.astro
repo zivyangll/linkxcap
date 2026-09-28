@@ -7,6 +7,7 @@ import {
   insightsContent,
   content,
   currentYear,
+  siteContent,
   type Lang,
 } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
@@ -27,6 +28,8 @@ const displayArticles = articles.map((article) => {
   };
 });
 const orbitDuration = 72;
+const [copyrightBefore, copyrightAfter] =
+  siteContent.footerCopyright[lang].split('{year}');
 const orbitDots = Array.from({ length: 32 }, (_, index) => {
   const angle = -Math.PI / 2 + (index / 32) * Math.PI * 2;
   const radius = 49.35;
@@ -113,8 +116,9 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     })}
   </div>
   <p class="insights-copyright">
-    Link-X Capital <time data-current-year>{currentYear}</time>. All rights
-    reserved.
+    {copyrightBefore}
+    <time data-current-year>{currentYear}</time>
+    {copyrightAfter}
   </p>
   <div class="empty-state" data-empty hidden>
     <p>{ui[lang].noResults}</p>

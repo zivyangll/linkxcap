@@ -1,0 +1,14 @@
+---
+import { fellowshipContent, type Lang } from '../lib/site';
+import PageTitle from './PageTitle.astro';
+const { lang } = Astro.props as { lang: Lang };
+---
+
+<article class="legal-page prose fellowship-page">
+  <PageTitle
+    zh={fellowshipContent.title.zh}
+    en={fellowshipContent.title.en}
+    lang={lang}
+  />
+  <p>{fellowshipContent.introduction[lang]}</p>
+</article>

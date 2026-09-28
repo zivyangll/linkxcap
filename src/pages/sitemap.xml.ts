@@ -10,6 +10,7 @@ export const GET: APIRoute = async ({ site }) => {
     'portfolio',
     'team',
     'insights',
+    'fellowship',
     'contact',
     'legal',
     ...companies.map((c) => `portfolio/${c.slug}`),

@@ -4,7 +4,7 @@ const { lang } = Astro.props as { lang: Lang };
 ---
 
 <article class="legal-page prose">
-  <p class="eyebrow">{legalContent.eyebrow}</p>
+  <p class="eyebrow">{legalContent.eyebrow[lang]}</p>
   <h1>{legalContent.title[lang]}</h1>
   {legalContent.sections.map((section, index) => (
     <>
@@ -14,20 +14,23 @@ const { lang } = Astro.props as { lang: Lang };
         {index === legalContent.sections.length - 1 && (
           <>
             {' '}
-            <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>。
+            <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
+            {lang === 'zh' ? '。' : '.'}
           </>
         )}
       </p>
     </>
   ))}
-  <a
-    class="text-link"
-    href={legalContent.existingSiteUrl.replace('{lang}', lang)}
-    target="_blank"
-    rel="noopener noreferrer"
-  >
-    {legalContent.existingSiteLink[lang]} ↗
-  </a>
+  {legalContent.existingSiteUrl && (
+    <a
+      class="text-link"
+      href={legalContent.existingSiteUrl.replace('{lang}', lang)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {legalContent.existingSiteLink[lang]} ↗
+    </a>
+  )}
   <h2 id="fonts">{legalContent.fontsHeading[lang]}</h2>
   <p>{legalContent.fontsBody[lang]}</p>
   <p>

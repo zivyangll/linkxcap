@@ -3,7 +3,7 @@ import { team, teamContent, pageUrl, pick, ui, type Lang } from '../lib/site';
 import PageTitle from './PageTitle.astro';
 import '../styles/team-review.css';
 const { lang } = Astro.props as { lang: Lang };
-const members = team.slice(0, 3);
+const members = team;
 ---
 
 <section class="team-review" data-team-review data-node-id="2002:4567">
@@ -57,10 +57,8 @@ const members = team.slice(0, 3);
               <p class="member-role">
                 {person.role[lang]} / {person.role[lang === 'zh' ? 'en' : 'zh']}
               </p>
+              <p class="member-summary">{person.summary[lang]}</p>
               <p class="member-copy">{person.bio[lang]}</p>
-            </div>
-            <div class="team-bio-featured">
-              <p>{teamContent.featured[lang]}</p>
             </div>
           </div>
           <noscript>

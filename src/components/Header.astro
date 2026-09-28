@@ -26,18 +26,22 @@ const active =
       ? 'team'
       : current === 'index' || current === 'contact' || current === 'legal'
         ? current
-        : 'insights';
+        : current === 'fellowship'
+          ? ''
+          : 'insights';
+const socialByUrl = (fragment: string) =>
+  socials.find((social) => social.href.includes(fragment))!;
 const menuSocials = [
-  { ...socials[0], key: '57' },
-  { ...socials[2], key: '55' },
   {
-    name: navigationContent.wechatLabel.zh,
-    en: navigationContent.wechatLabel.en,
+    name: contactContent.wechat[0].title.zh,
+    en: contactContent.wechat[0].title.en,
     key: '54',
     href: pageUrl(lang, 'contact') + '#contact-details',
   },
-  { ...socials[3], key: '56' },
-  { ...socials[1], key: '58' },
+  { ...socialByUrl('xhslink.com'), key: '55' },
+  { ...socialByUrl('douyin.com'), key: '56' },
+  { ...socialByUrl('x.com'), key: '57' },
+  { ...socialByUrl('linkedin.com'), key: '58' },
 ];
 ---
 
@@ -72,9 +76,9 @@ const menuSocials = [
       <a
         href={pageUrl(lang, item.page)}
         aria-current={active === item.page ? 'page' : undefined}
-        aria-label={lang === 'zh' ? `${item.en} · ${item.zh}` : item.en}
+        aria-label={lang === 'zh' ? item.zh : item.en}
       >
-        {item.en}
+        {lang === 'zh' ? item.zh : item.en}
       </a>
     ))}
   </nav>
@@ -91,7 +95,7 @@ const menuSocials = [
 </header>
 <dialog id="site-menu" class="site-menu" aria-label={ui[lang].menu}>
   <div class="menu-top">
-    <span>{navigationContent.menuTitle}</span>
+    <span>{ui[lang].menu}</span>
     <button data-menu-close aria-label={ui[lang].close} class="menu-close">
       <img src={asset('3191', 'imgGroup382')} width="22" height="22" alt="" />
     </button>
@@ -103,8 +107,8 @@ const menuSocials = [
         aria-current={active === item.page ? 'page' : undefined}
       >
         <i class="menu-current diamond" aria-hidden="true"></i>
-        <span>{item.en}</span>
-        {lang === 'zh' && <small>{item.zh}</small>}
+        <span>{lang === 'zh' ? item.zh : item.en}</span>
+        {lang === 'zh' && <small lang="en">{item.en}</small>}
         <Arrow />
       </a>
     ))}
@@ -125,7 +129,7 @@ const menuSocials = [
       {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
     </div>
     <a class="line-link" href={pageUrl(lang, 'contact')}>
-      {navigationContent.menuContactLink}
+      {navigationContent.menuContactLink[lang]}
       <Arrow />
     </a>
   </div>

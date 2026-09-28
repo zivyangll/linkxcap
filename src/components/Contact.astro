@@ -49,34 +49,37 @@ const media = {
       />
     ))}
   </div>
-  <img
-    class="next-title-outline"
-    src={asset('1617', 'imgTheNextSignal')}
-    width="761"
-    height="116"
-    alt=""
-    aria-hidden="true"
-  />
+  {lang === 'zh' ? (
+    <span
+      class="next-title-outline next-title-outline--text"
+      aria-hidden="true"
+    >
+      {contactContent.signalTitle[lang]}
+    </span>
+  ) : (
+    <img
+      class="next-title-outline"
+      src={asset('1617', 'imgTheNextSignal')}
+      width="761"
+      height="116"
+      alt=""
+      aria-hidden="true"
+    />
+  )}
   <h1 id="next-title" class="next-title-fill">
-    {contactContent.signalTitle}
+    {contactContent.signalTitle[lang]}
   </h1>
   {lang === 'zh' ? (
     <>
-      <img
+      <p
         class="next-zh next-zh-outline next-subtitle-outline"
-        src={asset('1617', 'img')}
-        width="584"
-        height="95"
-        alt={contactContent.signalSubtitle.zh}
-      />
-      <img
-        class="next-zh next-zh-fill next-subtitle-fill"
-        src={asset('1692', 'img')}
-        width="584"
-        height="95"
-        alt=""
         aria-hidden="true"
-      />
+      >
+        {contactContent.signalSubtitle.zh}
+      </p>
+      <p class="next-zh next-zh-fill next-subtitle-fill">
+        {contactContent.signalSubtitle.zh}
+      </p>
     </>
   ) : (
     <>
@@ -131,7 +134,7 @@ const media = {
     aria-hidden="true"
   />
   <div class="fellow-media-title">
-    <h2>{contactContent.signalTitle}</h2>
+    <h2>{contactContent.signalTitle[lang]}</h2>
     <p>{contactContent.signalSubtitle[lang]}</p>
   </div>
   <div class="fellow-video-shell" data-video-shell>
@@ -191,7 +194,7 @@ const media = {
   </div>
   <div class="contact-invitation">
     <h2>
-      {contactContent.joinEyebrow}
+      {contactContent.joinEyebrow[lang]}
       {lang === 'zh' && <span>{contactContent.joinTitle.zh}</span>}
     </h2>
     <div class="contact-copy">
@@ -206,15 +209,16 @@ const media = {
       {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
     </div>
     <a class="line-link" href="#contact-details">
-      {contactContent.contactLink}
+      {contactContent.contactLink[lang]}
       <Arrow />
     </a>
   </div>
 </section>
 <section id="contact-details" class="contact-details">
   <div>
-    <p class="eyebrow">{contactContent.detailsEyebrow}</p>
+    <p class="eyebrow">{contactContent.detailsEyebrow[lang]}</p>
     <h2>{contactContent.detailsTitle[lang]}</h2>
+    <p>{contactContent.emailLabel[lang]}</p>
     <a class="contact-email" href={`mailto:${siteContent.email}`}>
       {siteContent.email}
       <Arrow />
@@ -225,12 +229,6 @@ const media = {
   </div>
   <div class="contact-socials">
     <h3>{contactContent.findUs[lang]}</h3>
-    {socials.map((s) => (
-      <a href={s.href} target="_blank" rel="noopener noreferrer">
-        {lang === 'en' ? s.en || s.name : s.name}
-        <Arrow />
-      </a>
-    ))}
     {contactContent.wechat.map((item) => (
       <details>
         <summary>{item.title[lang]}</summary>
@@ -244,6 +242,12 @@ const media = {
           alt={`${item.title[lang]}${lang === 'zh' ? '二维码' : ' QR code'}`}
         />
       </details>
+    ))}
+    {socials.map((s) => (
+      <a href={s.href} target="_blank" rel="noopener noreferrer">
+        {lang === 'en' ? s.en || s.name : s.name}
+        <Arrow />
+      </a>
     ))}
   </div>
 </section>

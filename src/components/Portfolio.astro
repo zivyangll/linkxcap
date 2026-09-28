@@ -22,6 +22,7 @@ const { lang } = Astro.props as { lang: Lang };
     }
     lang={lang}
   />
+  <p class="portfolio-intro">{portfolioContent.intro[lang]}</p>
   <div class="portfolio-grid">
     {companies.map((company) => (
       <a
@@ -42,10 +43,11 @@ const { lang } = Astro.props as { lang: Lang };
           <p>
             {lang === 'zh'
               ? sectors.find((s) => s.id === company.sector)?.zh
-              : company.descEn}
+              : sectors.find((s) => s.id === company.sector)?.en}
           </p>
         </div>
       </a>
     ))}
   </div>
+  <p class="portfolio-action-hint">{portfolioContent.actionHint[lang]}</p>
 </div>

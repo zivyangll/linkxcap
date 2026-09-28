@@ -1,36 +1,26 @@
 ---
-id: 'news-agm-2025'
-route: 'news-agm-2025'
-category: 'panorama'
-date: '2025-11-21'
-source_url: 'https://www.linkxcap.com/zh/news-agm-2025.html'
+id: "news-agm-2025"
+route: "news-agm-2025"
+category: "applications"
+date: "2025-11-21"
+source_url: "https://www.linkxcap.com/zh/news-agm-2025.html"
 order: 5
-lang: 'en'
-title: 'From model breakthroughs to industry: the AI landscape and outlook'
-summary: 'Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.'
-list_title: 'From model breakthroughs to industry: the AI landscape and outlook'
-list_summary: 'Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.'
-source_name: 'Existing website (Chinese)'
+lang: "en"
+title: "From Model Breakthroughs to Industry Adoption"
+summary: "LinkX's annual meeting explored models, agents and AI adoption across industries."
+list_title: "From Model Breakthroughs to Industry Adoption"
+list_summary: "LinkX's annual meeting explored models, agents and AI adoption across industries."
+source_name: "Originally published by LinkX Capital"
 ---
 
-## A starting point
+## Research is expanding product possibilities
 
-Connecting perspectives from technology, industry and entrepreneurship across the AI ecosystem.
+LinkX Capital held its annual meeting in Wuhan in November 2025. Researchers, founders and industry leaders discussed advances in reasoning, multimodal generation, AI coding and agents. These capabilities create new product opportunities while raising the bar for reliability, cost and delivery.
 
-The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+## Adoption begins with a real workflow
 
-## From technology to application
+Healthcare, education, content production and manufacturing are testing AI in different ways. Useful products often begin with one well-understood workflow, then account for data, users, accountability and organizational change before expanding. Capability becomes lasting value only through real use.
 
-New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+## Connect research and business
 
-> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
-
-Three questions can guide a closer reading:
-
-- **The problem**: which concrete difficulty does the product address?
-- **The experience**: how does the technology improve an existing workflow?
-- **The feedback**: what evidence helps the team assess its progress?
-
-## Following the story
-
-This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.
+LinkX works to connect technical research with founders, talent and customers. The meeting reinforced a simple test for progress: beyond a compelling demo, does the technology solve a concrete problem?

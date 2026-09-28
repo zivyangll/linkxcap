@@ -1,36 +1,26 @@
 ---
-id: 'insights-zhang-bo'
-route: 'insights-zhang-bo'
-category: 'models'
-date: '2026-01-12'
-source_url: 'https://www.linkxcap.com/zh/insights-zhang-bo.html'
+id: "insights-zhang-bo"
+route: "insights-zhang-bo"
+category: "foundation"
+date: "2026-01-12"
+source_url: "https://www.linkxcap.com/zh/insights-zhang-bo.html"
 order: 2
-lang: 'en'
-title: 'Reflections on AGI Next and the future of intelligence'
-summary: 'Returning to foundational questions about intelligence and the connection between research and industry.'
-list_title: 'Reflections on AGI Next and the future of intelligence'
-list_summary: 'Returning to foundational questions about intelligence and the connection between research and industry.'
-source_name: 'Existing website (Chinese)'
+lang: "en"
+title: "Professor Zhang Bo on AI Capability and Responsibility"
+summary: "A summary of the AGI-Next discussion on language-model limits, agents and governance."
+list_title: "Professor Zhang Bo on AI Capability and Responsibility"
+list_summary: "A summary of the AGI-Next discussion on language-model limits, agents and governance."
+source_name: "Originally published by LinkX Capital"
 ---
 
-## A starting point
+## From language generation to action
 
-Returning to foundational questions about intelligence and the connection between research and industry.
+At the AGI-Next summit in January 2026, Professor Zhang Bo discussed what language models can and cannot yet do. Producing fluent text is a major advance, but questions of reference, causality, context and closed-loop behavior remain. The next stage connects language capability with verifiable reasoning, planning and action.
 
-The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+## Make progress testable
 
-## From technology to application
+Broad claims about general intelligence are less useful than capabilities that can be observed and evaluated: multimodal understanding, online adaptation, sustained task execution, reflection and transfer between tasks. Clearer measures can guide research and help users judge performance in real settings.
 
-New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+## Build systems people can govern
 
-> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
-
-Three questions can guide a closer reading:
-
-- **The problem**: which concrete difficulty does the product address?
-- **The experience**: how does the technology improve an existing workflow?
-- **The feedback**: what evidence helps the team assess its progress?
-
-## Following the story
-
-This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.
+Professor Zhang also framed AI entrepreneurship as a responsibility to make knowledge and capability broadly useful. Reusable tools need accompanying work on safety, accountability and governance as they enter daily life and business.

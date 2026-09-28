@@ -1,36 +1,26 @@
 ---
-id: 'portfolio-pole-ctv'
-route: 'portfolio-pole-ctv'
-category: 'applications'
-date: '2026-03-18'
-source_url: 'https://www.linkxcap.com/zh/portfolio-pole-ctv.html'
+id: "portfolio-pole-ctv"
+route: "portfolio-pole-ctv"
+category: "applications"
+date: "2026-03-18"
+source_url: "https://www.linkxcap.com/zh/portfolio-pole-ctv.html"
 order: 1
-lang: 'en'
-title: 'Polo Interactive: where is AI-powered entertainment heading?'
-summary: 'From content creation to interactive experiences, exploring new possibilities for AI in entertainment.'
-list_title: 'Polo Interactive: where is AI-powered entertainment heading?'
-list_summary: 'From content creation to interactive experiences, exploring new possibilities for AI in entertainment.'
-source_name: 'Existing website (Chinese)'
+lang: "en"
+title: "Polo Interactive on AI Entertainment"
+summary: "How AI and human creators can work together across production and interactive experiences."
+list_title: "Polo Interactive on AI Entertainment"
+list_summary: "How AI and human creators can work together across production and interactive experiences."
+source_name: "Originally published by LinkX Capital"
 ---
 
-## A starting point
+## Better tools reveal new production challenges
 
-From content creation to interactive experiences, exploring new possibilities for AI in entertainment.
+Generative AI now spans text, images, video and audio. Commercial content still needs consistent characters, coherent narratives, editable assets and clear rights. In an earlier LinkX article, Polo Interactive CTO Xu Jinghui described how the team approaches these challenges.
 
-The following text demonstrates the reading rhythm, table of contents, paragraphs and quotations on an article page. It does not express an official position of Link-X Capital or any company mentioned. Approved copy and translations will replace it.
+## Keep creators in charge
 
-## From technology to application
+Human creators set the concept, aesthetic and direction of a work. AI can support repetitive production and rapid iteration. This division helps technology serve the story while preserving original design and reusable digital assets.
 
-New capabilities are tested in specific settings. Understanding how a team identifies a need, learns from feedback and improves a product provides a useful starting point for exploring innovation.
+## Toward interactive experiences
 
-> This passage demonstrates quotation styling. An approved quotation and attribution are still required; these words are not attributed to any person.
-
-Three questions can guide a closer reading:
-
-- **The problem**: which concrete difficulty does the product address?
-- **The experience**: how does the technology improve an existing workflow?
-- **The feedback**: what evidence helps the team assess its progress?
-
-## Following the story
-
-This is a demonstration article pending editorial review. Approved text, dates, images and references will be published at this same address. The link to the existing original is retained below.
+When generation meets real-time interaction, audiences can participate in the worlds they explore. The opportunity extends beyond faster production to trustworthy spaces where creators and users can make things together.

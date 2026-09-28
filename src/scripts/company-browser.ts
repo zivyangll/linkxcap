@@ -11,6 +11,7 @@ type CompanyRecord = {
   url: string;
   zhUrl: string;
   enUrl: string;
+  documentTitle: string;
 };
 const root = document.querySelector<HTMLElement>('[data-company-browser]');
 if (root) {
@@ -107,7 +108,7 @@ if (root) {
     });
     if (updateUrl)
       history.replaceState({ company: company.slug }, '', company.url);
-    document.title = `${company.title} · Link-X Capital`;
+    document.title = company.documentTitle;
     document
       .querySelectorAll<HTMLAnchorElement>('[data-language]')
       .forEach(

@@ -6,6 +6,7 @@ import CompanyDetail from '../../components/CompanyDetail.astro';
 import Team from '../../components/Team.astro';
 import Profile from '../../components/Profile.astro';
 import Insights from '../../components/Insights.astro';
+import Fellowship from '../../components/Fellowship.astro';
 import Article from '../../components/Article.astro';
 import Contact from '../../components/Contact.astro';
 import Legal from '../../components/Legal.astro';
@@ -15,7 +16,9 @@ import {
   team,
   insightFilters,
   insightArticleFromData,
+  pageDescription,
   pageTitle,
+  siteContent,
   type Lang,
   type Company,
   type InsightArticle,
@@ -74,10 +77,12 @@ export async function getStaticPaths() {
       `Insight zh/en pairs must use the same route and category: ${inconsistentPairs.join(', ')}`,
     );
   return languages.flatMap((lang) => [
-    ...['portfolio', 'team', 'insights', 'contact', 'legal'].map((page) => ({
-      params: { lang, page },
-      props: { kind: page },
-    })),
+    ...['portfolio', 'team', 'insights', 'fellowship', 'contact', 'legal'].map(
+      (page) => ({
+        params: { lang, page },
+        props: { kind: page },
+      }),
+    ),
     ...companies.map((company) => ({
       params: { lang, page: `portfolio/${company.slug}` },
       props: { kind: 'company', company },
@@ -103,7 +108,7 @@ interface Props {
   article?: InsightArticle & { body: CollectionEntry<'insights'> };
 }
 const { kind, company, person, article } = Astro.props;
-const title = company
+const contentTitle = company
   ? lang === 'zh'
     ? company.name
     : company.nameEn
@@ -114,13 +119,29 @@ const title = company
     : article
       ? article.title
       : pageTitle(lang, kind as Parameters<typeof pageTitle>[1]);
+const title =
+  company || person || article
+    ? lang === 'zh'
+      ? `${contentTitle}｜${siteContent.brandZh}`
+      : `${contentTitle} — ${siteContent.brand}`
+    : contentTitle;
+const description = article
+  ? article.summary
+  : company
+    ? lang === 'zh'
+      ? company.detail
+      : company.detailEn
+    : pageDescription(
+        lang,
+        (person ? 'team' : kind) as Parameters<typeof pageDescription>[1],
+      );
 ---
 
 <SiteLayout
   lang={lang}
   page={page}
   title={title}
-  description={article?.summary}
+  description={description}
   minimal={kind === 'company'}
   footer={!['portfolio', 'company', 'team', 'insights'].includes(kind)}
   bodyClass={
@@ -134,6 +155,7 @@ const title = company
   {kind === 'team' && <Team lang={lang} />}
   {person && <Profile lang={lang} person={person} />}
   {kind === 'insights' && <Insights lang={lang} />}
+  {kind === 'fellowship' && <Fellowship lang={lang} />}
   {article && <Article lang={lang} article={article} />}
   {kind === 'contact' && <Contact lang={lang} />}
   {kind === 'legal' && <Legal lang={lang} />}

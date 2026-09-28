@@ -197,7 +197,7 @@ body .team-review {
     font-size: max(10px, calc(14 * var(--u)));
     line-height: 1.5;
     letter-spacing: -0.05em;
-    text-align: right;
+    text-align: left;
   }
 
   .team-review .team-explorer {
@@ -325,6 +325,33 @@ body .team-review {
 
   .team-review .team-bio-featured {
     gap: calc(40 * var(--u));
+  }
+
+  .team-review .team-portraits {
+    grid-template-columns: repeat(3, 1fr);
+    height: auto;
+  }
+
+  .team-review .team-member {
+    border-bottom: 1px solid rgb(29 29 29 / 20%);
+    overflow: hidden;
+  }
+
+  .team-review .team-member:nth-child(n) .member-portrait img {
+    left: 8%;
+    top: 5%;
+    width: 84%;
+    height: 84%;
+  }
+
+  .team-review .team-member:first-child .member-caption {
+    left: calc(50 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(n) .team-bio {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
   }
 }
 
