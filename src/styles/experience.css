@@ -123,21 +123,17 @@
   @keyframes signal-outline {
     from {
       opacity: 1;
-      filter: blur(0);
     }
     to {
       opacity: 0;
-      filter: blur(1px);
     }
   }
   @keyframes signal-fill {
     from {
       opacity: 0;
-      filter: blur(4px);
     }
     to {
       opacity: 1;
-      filter: blur(0);
     }
   }
 }

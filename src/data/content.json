@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 15,
+  "schemaVersion": 16,
   "site": {
     "brand_cn": "星连资本",
     "brand_en": "LinkX Capital",
@@ -313,8 +313,6 @@
       "signal_title_en": "The Next Signal",
       "signal_subtitle_cn": "与先看见未来的人同行",
       "signal_subtitle_en": "Alongside those who see what comes next",
-      "join_copy_cn": "如果你正在探索一个世界尚未命名的未来，我们希望在信号初现时就与你相遇。",
-      "join_copy_en": "If you are exploring a future the world has yet to name, we would like to meet you while the signal is still faint.",
       "join_display_cn": [
         "如果你正在探索一个世界尚未命名的未来，",
         "我们希望在信号初现时就与你相遇。"

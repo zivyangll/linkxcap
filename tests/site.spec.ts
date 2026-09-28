@@ -160,19 +160,19 @@ test('phone Fellow sections use a non-overlapping natural flow', async ({
     const media = box('.fellow-media-section');
     const title = box('.fellow-media-title');
     const video = box('[data-video-shell]');
-    const caption = box('.fellow-media-caption');
     return {
       introBottom: intro.bottom,
       mediaTop: media.top,
+      mediaBottom: media.bottom,
       titleBottom: title.bottom,
       videoTop: video.top,
       videoBottom: video.bottom,
-      captionTop: caption.top,
     };
   });
   expect(boxes.mediaTop).toBeCloseTo(boxes.introBottom, 0);
   expect(boxes.titleBottom).toBeLessThan(boxes.videoTop);
-  expect(boxes.videoBottom).toBeLessThan(boxes.captionTop);
+  expect(boxes.videoBottom).toBeLessThan(boxes.mediaBottom);
+  await expect(page.locator('.fellow-media-caption')).toHaveCount(0);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 test('focus controls and reduced motion', async ({ page }) => {

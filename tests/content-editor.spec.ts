@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 const hash = 'a4f9c2e71b6d4830c5a8e2f94d7b136c';
 const editorPath = `${hash}.html`;
 const validPath = `${editorPath}?debug=true`;
-const storageKey = `linkx-content-editor:127.0.0.1:schema-15`;
+const storageKey = `linkx-content-editor:127.0.0.1:schema-16`;
 
 test('invalid and duplicate debug parameters never initialize the editor', async ({
   page,
@@ -374,7 +374,7 @@ test('export uses the latest fields and can round-trip through import', async ({
   for await (const chunk of stream) chunks.push(Buffer.from(chunk));
   const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
   expect(exported.site.brand_cn).toBe('导出即时内容');
-  expect(exported.schemaVersion).toBe(15);
+  expect(exported.schemaVersion).toBe(16);
   expect(exported.site).not.toHaveProperty('copyright_cn');
   expect(exported.navigation).not.toHaveProperty('menu_footer');
   expect(exported.pages.home.focus).not.toHaveProperty('investment_year');
@@ -475,7 +475,7 @@ for (const version of [9, 10, 11, 12, 13])
       resume_cn: '旧开启',
       resume_en: 'Old resume',
     });
-    const previousKey = storageKey.replace('schema-15', `schema-${version}`);
+    const previousKey = storageKey.replace('schema-16', `schema-${version}`);
     await page.evaluate(
       ({ previousKey, storageKey, legacy }) => {
         localStorage.removeItem(storageKey);
@@ -505,7 +505,7 @@ for (const version of [9, 10, 11, 12, 13])
     const chunks: Buffer[] = [];
     for await (const chunk of stream!) chunks.push(Buffer.from(chunk));
     const exported = JSON.parse(Buffer.concat(chunks).toString('utf8'));
-    expect(exported.schemaVersion).toBe(15);
+    expect(exported.schemaVersion).toBe(16);
     expect(exported.companies[0].investment_year).toBe('2024');
     expect(exported.pages.home.focus).not.toHaveProperty('investment_year');
     expect(exported.site).not.toHaveProperty('copyright_cn');

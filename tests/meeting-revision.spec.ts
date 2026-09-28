@@ -421,6 +421,7 @@ test('Fellow arc moves, window expands, and the approved static message is shown
   await expect(
     page.locator('.signal-guides--context .signal-guide-v'),
   ).toHaveCount(4);
+  await expect(page.locator('.fellow-context')).toHaveCSS('opacity', '0');
   await page.evaluate(() => scrollTo(0, innerHeight * 0.45));
   await expect
     .poll(() =>
@@ -435,10 +436,9 @@ test('Fellow arc moves, window expands, and the approved static message is shown
   const context = page.locator('.fellow-context');
   const marker = context.locator('.fellow-context-marker');
   await expect(marker).toHaveCount(1);
+  await expect(context.locator('p')).toHaveCount(0);
   const contextBox = (await context.boundingBox())!;
   const markerBox = (await marker.boundingBox())!;
-  const lastLineBox = (await context.locator('p').last().boundingBox())!;
-  expect(markerBox.y).toBeGreaterThan(lastLineBox.y + lastLineBox.height);
   expect(
     Math.abs(
       markerBox.x + markerBox.width / 2 - (contextBox.x + contextBox.width / 2),
@@ -477,7 +477,7 @@ test('Fellow arc moves, window expands, and the approved static message is shown
   );
 });
 
-test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({
+test('English Fellow subtitle changes from outline to fill without flashing removed copy', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -485,6 +485,8 @@ test('English Fellow subtitle changes from outline to fill without overlapping i
   await page.goto('en/contact.html');
   const outline = page.locator('.next-en-outline');
   const fill = page.locator('.next-en-fill');
+  await expect(page.locator('.fellow-context p')).toHaveCount(0);
+  await expect(page.locator('.fellow-media-caption')).toHaveCount(0);
   await expect(outline).toHaveCSS('color', 'rgba(0, 0, 0, 0)');
   await expect(fill).toHaveCSS('opacity', '1');
   expect(await page.evaluate(() => scrollY)).toBe(0);
