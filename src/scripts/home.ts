@@ -83,11 +83,10 @@ export function initHome() {
       if (index === 3) {
         timeline.fromTo(
           '.research-stats > div',
-          { opacity: 0, y: 36, clipPath: 'inset(100% 0 0)' },
+          { opacity: 0, y: 36 },
           {
             opacity: 1,
             y: 0,
-            clipPath: 'inset(0% 0 0)',
             stagger: 0.09,
             duration: 0.22,
           },
