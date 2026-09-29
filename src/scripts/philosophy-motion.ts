@@ -78,6 +78,7 @@ export function mountPhilosophyMotion(
         : 1 - leftStarFadeProgress * leftStarFadeProgress;
     const aboutOffset = 100 * u * smooth(range(p, 0.49, 0.58));
     const heroOpacity = 1 - smooth(range(p, 0.4, 0.55));
+    const heroCopyOpacity = smooth(range(p, 0.4, 0.48)) * heroOpacity;
     const titleOpacity = smooth(range(p, 0.54, 0.64));
     const start = { x: 467.485 * u, y: 99.485 * u };
     const circle = { x: 1640 * u, y: 37 * u };
@@ -126,9 +127,15 @@ export function mountPhilosophyMotion(
               : 'details';
     stage.dataset.motionPhase = phase;
     stage.dataset.motionProgress = p.toFixed(4);
+    stage.dataset.guideProgress = range(p, 0.49, 0.54).toFixed(3);
+    stage.dataset.ringProgress = smooth(range(p, 0.82, 0.94)).toFixed(3);
     canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
     canvas.dataset.leftStarPoint = `${(start.x + camera.x).toFixed(2)},${leftStarY.toFixed(2)}`;
     canvas.dataset.leftStarOpacity = leftStarOpacity.toFixed(3);
+    canvas.dataset.leftStarColor = '#c9c9c9';
+    canvas.dataset.markerShape = 'diamond';
+    canvas.dataset.guideStyle = 'gradient-dashed';
+    canvas.dataset.guideDash = '3,8';
     hero.dataset.scrollProgress = arc.toFixed(3);
     about.dataset.scrollProgress = range(p, 0.54, 1).toFixed(3);
 
@@ -136,7 +143,7 @@ export function mountPhilosophyMotion(
     setPose(about, 0, 0, 1);
     hero.inert = heroOpacity < 0.01;
     about.inert = titleOpacity < 0.01;
-    heroCopy.forEach((el) => setPose(el, camera.x, camera.y, 1));
+    heroCopy.forEach((el) => setPose(el, camera.x, camera.y, heroCopyOpacity));
     // The label follows the same point; its original diamond is hidden.
     const nodeLabelGap = Math.max(28 * u, 20);
     orbitLabel.style.left = `${point.x - orbitLabelWidth - nodeLabelGap}px`;
@@ -157,13 +164,15 @@ export function mountPhilosophyMotion(
     const aboutLabelLeft = 610 * u - aboutLabelWidth;
     // CSS caps its desktop design unit above 1920px, while this canvas keeps
     // scaling with the stage. Keep the animated label in canvas coordinates.
+    const aboutLabelTop = point.y - 24 * u;
     aboutLabel.style.left = `${aboutLabelLeft}px`;
+    aboutLabel.style.top = `${aboutLabelTop}px`;
     aboutLabel.style.right = 'auto';
     setPose(
       aboutLabel,
       lerp(point.x - aboutLabelWidth - nodeLabelGap, aboutLabelLeft, pan) -
         aboutLabelLeft,
-      lerp(point.y - 26 * u, 616 * u, pan) - 616 * u,
+      0,
       titleOpacity,
     );
     setPose(copy, 100 * u * (1 - detail), 0, detail);
@@ -173,8 +182,8 @@ export function mountPhilosophyMotion(
     const stroke = (opacity: number, drawPath: () => void, sparse = false) => {
       ctx.globalAlpha = opacity;
       ctx.strokeStyle = '#573c79';
-      ctx.lineWidth = Math.max(0.65, u);
-      ctx.setLineDash(sparse ? [4 * u, 9 * u] : [2 * u, 3 * u]);
+      ctx.lineWidth = Math.max(0.75, 0.9 * u);
+      ctx.setLineDash(sparse ? [3 * u, 8 * u] : [2 * u, 4 * u]);
       ctx.beginPath();
       drawPath();
       ctx.stroke();
@@ -226,7 +235,8 @@ export function mountPhilosophyMotion(
     }
     ctx.setLineDash([]);
     ctx.globalAlpha = rays;
-    ctx.strokeStyle = '#1d1d1d';
+    ctx.strokeStyle = 'rgba(29,29,29,.72)';
+    ctx.lineWidth = Math.max(0.75, 0.9 * u);
     ctx.beginPath();
     ctx.arc(point.x, point.y, 22 * u, 0, Math.PI * 2);
     ctx.stroke();
@@ -241,7 +251,7 @@ export function mountPhilosophyMotion(
     };
     // At the fork, the left point is fully solid. It holds for exactly 100px
     // of scroll, then completes its fade over a fixed 400px scroll distance.
-    diamond(start.x + camera.x, leftStarY, '#090909', leftStarOpacity);
+    diamond(start.x + camera.x, leftStarY, '#c9c9c9', leftStarOpacity);
     // Once the About Us node has entered the composition, keep it visible
     // through the end of the pinned chapter.
     diamond(point.x, point.y, '#090909', 1);
@@ -336,6 +346,12 @@ export function mountPhilosophyMotion(
     hero.inert = about.inert = false;
     delete stage.dataset.motionPhase;
     delete stage.dataset.motionProgress;
+    delete stage.dataset.guideProgress;
+    delete stage.dataset.ringProgress;
+    delete canvas.dataset.leftStarColor;
+    delete canvas.dataset.markerShape;
+    delete canvas.dataset.guideStyle;
+    delete canvas.dataset.guideDash;
     ctx.clearRect(0, 0, width, height);
   };
 }

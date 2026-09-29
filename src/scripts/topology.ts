@@ -25,6 +25,14 @@ const BRANCH_MS = 620;
 const FOCUS_DEPTH = 240;
 const FOCUS_BRANCH_RADIUS_X = 340;
 const FOCUS_BRANCH_RADIUS_Y = 270;
+const branchPose = (index: number, count: number) => ({
+  angle:
+    -Math.PI / 2 +
+    (index * Math.PI * 2) / count +
+    Math.sin((index + 1) * 1.87) * 0.14,
+  radiusX: 0.72 + ((index * 37) % 7) / 10,
+  radiusY: 0.7 + ((index * 53) % 9) / 14,
+});
 
 export function mountTopology(root: HTMLElement) {
   const canvas = root.querySelector<HTMLCanvasElement>('.topology-canvas')!;
@@ -155,7 +163,11 @@ export function mountTopology(root: HTMLElement) {
     else if (anchor.element.dataset.focusSector === active.sector && height) {
       const index = companies.indexOf(anchor);
       if (index >= 0) {
-        const angle = -Math.PI / 2 + (index * Math.PI * 2) / companies.length;
+        const {
+          angle,
+          radiusX: spreadX,
+          radiusY: spreadY,
+        } = branchPose(index, companies.length);
         const visibleHeight =
           2 *
           Math.tan((camera.fov * Math.PI) / 360) *
@@ -164,8 +176,8 @@ export function mountTopology(root: HTMLElement) {
         const radiusX = Math.min(FOCUS_BRANCH_RADIUS_X, width * 0.22);
         const radiusY = Math.min(FOCUS_BRANCH_RADIUS_Y, height * 0.32);
         target.set(
-          active.origin.x + Math.cos(angle) * radiusX * pixelsToWorld,
-          active.origin.y - Math.sin(angle) * radiusY * pixelsToWorld,
+          active.origin.x + Math.cos(angle) * radiusX * spreadX * pixelsToWorld,
+          active.origin.y - Math.sin(angle) * radiusY * spreadY * pixelsToWorld,
           frontZ,
         );
       }
@@ -203,7 +215,7 @@ export function mountTopology(root: HTMLElement) {
       (anchor) => anchor.element.dataset.focusSector === active.sector,
     );
     companies.forEach((anchor, index) => {
-      const angle = -Math.PI / 2 + (index * Math.PI * 2) / companies.length;
+      const { angle } = branchPose(index, companies.length);
       anchor.element.dataset.labelSide = Math.cos(angle) < 0 ? 'left' : 'right';
     });
     cycle = 0;

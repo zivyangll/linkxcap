@@ -56,11 +56,23 @@ export function focusBranch(
   const preset = branches[sector] || [];
   let point = preset[index];
   if (count > preset.length || !point) {
-    // Keep newly added companies within the graph, without touching copy on the left.
-    const angle = -Math.PI / 2 + (index * Math.PI * 2) / count;
+    // Larger sectors must not collapse into an even radial fan. A deterministic
+    // angular jitter plus several distance bands creates the authored mix of
+    // short/long branches and dense/sparse pockets while retaining all nodes.
+    const seed = [...sector].reduce(
+      (sum, character) => sum + character.charCodeAt(0),
+      0,
+    );
+    const angle =
+      -Math.PI +
+      (index * Math.PI * 2) / count +
+      Math.sin((index + seed) * 1.73) * 0.15;
+    const radiusX = 250 + ((index * 73 + seed) % 190);
+    const radiusY = 175 + ((index * 47 + seed) % 175);
+    const centreX = Math.max(1050, Math.min(1500, parent.x));
     point = [
-      Math.max(880, Math.min(1750, parent.x + Math.cos(angle) * 260)),
-      Math.max(120, Math.min(970, parent.y + Math.sin(angle) * 230)),
+      Math.max(820, Math.min(1810, centreX + Math.cos(angle) * radiusX)),
+      Math.max(100, Math.min(990, parent.y + Math.sin(angle) * radiusY)),
     ];
   }
   return {

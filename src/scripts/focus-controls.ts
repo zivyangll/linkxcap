@@ -84,8 +84,18 @@ export function mountFocusControls(root: HTMLElement) {
           );
       });
       target.addEventListener('pointerleave', () => {
-        if (pointer === target) pointer = null;
         delete target.dataset.hovered;
+        // Bringing a hovered sector to the foreground moves the element away
+        // from the stationary cursor. Keep that intentional hover selection
+        // held; the delegated pointermove below releases it only after the
+        // person actually moves into the scene background.
+        if (
+          pointer === target &&
+          target.dataset.sector &&
+          ['settling', 'front'].includes(root.dataset.cameraState || '')
+        )
+          return;
+        if (pointer === target) pointer = null;
         hold();
       });
       target.addEventListener('focus', () => {
@@ -117,6 +127,18 @@ export function mountFocusControls(root: HTMLElement) {
           );
         });
     });
+  const releaseBackgroundHover = (event: PointerEvent) => {
+    if (
+      !pointer ||
+      touch.matches ||
+      event.pointerType !== 'mouse' ||
+      (event.target as Element).closest('[data-sector],[data-focus-sector]')
+    )
+      return;
+    pointer = null;
+    hold();
+  };
+  root.addEventListener('pointermove', releaseBackgroundHover);
   root.addEventListener('focusselect', (event) =>
     select((event as CustomEvent<string>).detail),
   );
@@ -133,6 +155,7 @@ export function mountFocusControls(root: HTMLElement) {
     'pagehide',
     () => {
       clearTimeout(release);
+      root.removeEventListener('pointermove', releaseBackgroundHover);
     },
     { once: true },
   );

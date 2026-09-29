@@ -497,3 +497,131 @@ body .team-review .team-bio::-webkit-scrollbar {
     }
   }
 }
+
+/* 2026-09-29 visual-review acceptance pass. */
+@media (min-width: 1024px) {
+  .site-menu .menu-contact h2 {
+    margin-bottom: calc(28 * var(--u));
+    font-size: max(18px, calc(21 * var(--u)));
+    line-height: 1.25;
+    opacity: 0.68;
+  }
+  .site-menu .menu-contact p {
+    font-size: max(14px, calc(16 * var(--u)));
+    line-height: 1.45;
+    opacity: 0.62;
+  }
+  .site-menu .menu-contact p[lang='en'] {
+    font-size: max(13px, calc(14 * var(--u)));
+  }
+  .site-menu .menu-contact .line-link {
+    font-size: max(15px, calc(18 * var(--u)));
+  }
+  .site-menu .menu-language {
+    font-size: max(13px, calc(15 * var(--u)));
+  }
+  .home-story .opening-copy {
+    font-weight: 500;
+  }
+  .home-story .chapter {
+    font-size: calc(15.615 * var(--u));
+  }
+  .home-story.has-philosophy-motion .about-title {
+    top: calc(540 * var(--u));
+  }
+  .home-story.has-philosophy-motion .about-copy {
+    top: calc(790 * var(--u));
+  }
+
+  body.portfolio-view .language-switch {
+    font-size: max(12px, calc(13 * var(--u)));
+    line-height: 1.35;
+  }
+  .portfolio-page {
+    position: relative;
+  }
+  .portfolio-page > .portfolio-intro {
+    margin-bottom: calc(18 * var(--u));
+  }
+  .portfolio-filters {
+    position: static;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: calc(13 * var(--u));
+    margin: 0 9.427% calc(34 * var(--u));
+    color: rgb(29 29 29 / 24%);
+    font-size: max(11px, calc(14 * var(--u)));
+    line-height: 1.45;
+    white-space: nowrap;
+  }
+  .portfolio-filters button {
+    color: inherit;
+    transition: color 180ms ease;
+  }
+  .portfolio-filters button:is(:hover, :focus-visible),
+  .portfolio-filters button[aria-pressed='true'] {
+    color: var(--ink);
+  }
+  .portfolio-filters button:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 4px;
+  }
+  .portfolio-card[hidden] {
+    display: none;
+  }
+  .portfolio-page .portfolio-card .company-logo,
+  .portfolio-page .portfolio-card:is(:hover, :focus-visible) .company-logo {
+    left: 50%;
+    top: 50%;
+    width: 44%;
+    height: 44%;
+    transform: translate(-50%, -50%);
+  }
+  .portfolio-page .portfolio-card:is(:hover, :focus-visible) .company-logo {
+    transform: translate(-50%, -76%) scale(0.9);
+  }
+}
+
+@media (max-width: 1023px) {
+  .portfolio-filters {
+    display: flex;
+    gap: 9px;
+    margin: 20px var(--page-gutter) 28px;
+    overflow-x: auto;
+    color: rgb(29 29 29 / 30%);
+    font: 12px/1.5 var(--sans);
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+  .portfolio-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .portfolio-filters button {
+    color: inherit;
+  }
+  .portfolio-filters button[aria-pressed='true'] {
+    color: var(--ink);
+  }
+  .portfolio-card[hidden] {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .company-browser .company-navigator a[aria-current] .rail-marker img {
+    animation: company-node-breathe 3.6s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes company-node-breathe {
+    0%,
+    100% {
+      opacity: 0.82;
+      transform: scale(0.97);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.045);
+    }
+  }
+}

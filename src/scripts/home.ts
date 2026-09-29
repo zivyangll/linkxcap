@@ -94,9 +94,14 @@ export function initHome() {
         );
         timeline.fromTo(
           '.research-marker',
-          { x: () => -innerWidth * 0.35, rotation: -90 },
-          { x: 0, rotation: 0, duration: 0.7, ease: 'power2.out' },
-          0,
+          { opacity: 0, scale: 0.92, transformOrigin: 'center' },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.28,
+            ease: 'power1.out',
+          },
+          0.18,
         );
       }
     });
