@@ -25,10 +25,11 @@ export function mountPhilosophyMotion(
   const hero = stage.querySelector<HTMLElement>('.hero')!;
   const about = stage.querySelector<HTMLElement>('.about')!;
   const heroCopy = Array.from(
-    stage.querySelectorAll<HTMLElement>('.hero-title,.hero-zh'),
+    stage.querySelectorAll<HTMLElement>('.hero-title'),
   );
   const orbitLabel = stage.querySelector<HTMLElement>('.orbit-label')!;
   const aboutLabel = stage.querySelector<HTMLElement>('.about-label')!;
+  const aboutTitle = stage.querySelector<HTMLElement>('.about-title')!;
   const titleLines = Array.from(
     stage.querySelectorAll<HTMLElement>('.about-title span'),
   );
@@ -67,19 +68,22 @@ export function mountPhilosophyMotion(
     const arc = smooth(range(p, PHILOSOPHY_ARC.start, PHILOSOPHY_ARC.end));
     const drop = smooth(range(p, 0.54, 0.68));
     const pan = smooth(range(p, 0.69, 0.88));
-    const detail = smooth(range(p, 0.82, 0.96));
-    const sequenceDistance = Math.max(innerHeight * 2.6, 1);
-    const leftStarFadeStart = PHILOSOPHY_ARC.start + 100 / sequenceDistance;
-    const leftStarFadeEnd = leftStarFadeStart + 400 / sequenceDistance;
-    const leftStarFadeProgress = range(p, leftStarFadeStart, leftStarFadeEnd);
-    const leftStarOpacity =
-      p < PHILOSOPHY_ARC.start
-        ? 0
-        : 1 - leftStarFadeProgress * leftStarFadeProgress;
+    const detail = smooth(range(p, 0.8, 0.92));
+    // Finish the lateral move first, then preserve a readable hold before
+    // the next scroll segment starts the vertical chapter handoff.
+    const horizontalHandoff = smooth(range(p, 0.86, 0.92));
+    const verticalHandoff = smooth(range(p, 0.96, 1));
+    const branchActivation = smooth(range(p, 0.54, 0.7));
+    const railActivation = smooth(range(p, 0.08, 0.68));
+    const rayActivation = smooth(range(p, 0.82, 0.94));
     const aboutOffset = 100 * u * smooth(range(p, 0.49, 0.58));
-    const heroOpacity = 1 - smooth(range(p, 0.4, 0.55));
-    const heroCopyOpacity = smooth(range(p, 0.4, 0.48)) * heroOpacity;
-    const titleOpacity = smooth(range(p, 0.54, 0.64));
+    // Partnering is its own authored screen. It holds after entering, follows
+    // the active point to the right, then clears before the About screen.
+    const heroExit = smooth(range(p, 0.54, 0.7));
+    const heroOpacity = 1 - heroExit;
+    const heroCopyEntrance = smooth(range(p, 0, PHILOSOPHY_ARC.start));
+    const heroCopyOpacity = heroCopyEntrance * heroOpacity;
+    const titleOpacity = smooth(range(p, 0.7, 0.8));
     const start = { x: 467.485 * u, y: 99.485 * u };
     const circle = { x: 1640 * u, y: 37 * u };
     const radius = Math.hypot(start.x - circle.x, start.y - circle.y);
@@ -102,19 +106,39 @@ export function mountPhilosophyMotion(
       x: arcPoint.x - local.x - 322 * u * pan,
       y: arcPoint.y - local.y - 151 * u * pan,
     };
-    const leftStarY = lerp(
-      start.y,
-      height,
-      smooth(range(p, PHILOSOPHY_ARC.start, PHILOSOPHY_ARC.end)),
-    );
-    const center = { x: circle.x + camera.x, y: circle.y + camera.y };
-    const point = {
+    const baseCenter = { x: circle.x + camera.x, y: circle.y + camera.y };
+    const pointBeforeHandoff = {
       x: arcPoint.x - 322 * u * pan,
       y:
         p < PHILOSOPHY_ARC.start
           ? start.y * range(p, 0, PHILOSOPHY_ARC.start)
           : arcPoint.y + 50 * u * drop + 104 * u * pan + aboutOffset,
     };
+    // The next chapter's axis is authored at x=324u. The handoff is strictly
+    // two-stage: first the entire junction moves left, then the active marker
+    // drops vertically without any remaining horizontal drift.
+    const researchAxisX = 324 * u;
+    const junctionX = lerp(
+      pointBeforeHandoff.x,
+      researchAxisX,
+      horizontalHandoff,
+    );
+    const junctionY = pointBeforeHandoff.y;
+    const point = {
+      x: junctionX,
+      y: lerp(junctionY, height, verticalHandoff),
+    };
+    const compositionOffsetX = junctionX - pointBeforeHandoff.x;
+    const center = {
+      x: baseCenter.x + compositionOffsetX,
+      y: baseCenter.y,
+    };
+    const nodeColor = '#573c79';
+    // The research chapter owns the destination marker. Retire this canvas'
+    // marker at the instant it reaches the bottom handoff so it cannot be
+    // clipped into a half-diamond and ride upward when the pin releases.
+    const nodeOpacity = 1 - smooth(range(p, 0.99, 1));
+    const hasTravellingNode = verticalHandoff > 0 && nodeOpacity > 0;
     const phase =
       p < PHILOSOPHY_ARC.start
         ? 'lead-in'
@@ -129,13 +153,24 @@ export function mountPhilosophyMotion(
     stage.dataset.motionProgress = p.toFixed(4);
     stage.dataset.guideProgress = range(p, 0.49, 0.54).toFixed(3);
     stage.dataset.ringProgress = smooth(range(p, 0.82, 0.94)).toFixed(3);
+    stage.dataset.researchHandoff = verticalHandoff.toFixed(3);
+    stage.dataset.horizontalHandoff = horizontalHandoff.toFixed(3);
     canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
-    canvas.dataset.leftStarPoint = `${(start.x + camera.x).toFixed(2)},${leftStarY.toFixed(2)}`;
-    canvas.dataset.leftStarOpacity = leftStarOpacity.toFixed(3);
-    canvas.dataset.leftStarColor = '#c9c9c9';
+    canvas.dataset.junctionPoint = `${junctionX.toFixed(2)},${junctionY.toFixed(2)}`;
     canvas.dataset.markerShape = 'diamond';
+    canvas.dataset.markerCount = hasTravellingNode ? '2' : '1';
     canvas.dataset.guideStyle = 'gradient-dashed';
     canvas.dataset.guideDash = '3,8';
+    canvas.dataset.trailBaseColor = '#c9c9c9';
+    canvas.dataset.trailActiveColor = '#573c79';
+    canvas.dataset.trailProgress = arc.toFixed(3);
+    canvas.dataset.nodeActivation = '1.000';
+    canvas.dataset.nodeOpacity = nodeOpacity.toFixed(3);
+    canvas.dataset.nodeColor = nodeColor;
+    canvas.dataset.branchMarkerOpacity = '0.000';
+    canvas.dataset.branchActivation = branchActivation.toFixed(3);
+    canvas.dataset.railActivation = railActivation.toFixed(3);
+    canvas.dataset.rayActivation = rayActivation.toFixed(3);
     hero.dataset.scrollProgress = arc.toFixed(3);
     about.dataset.scrollProgress = range(p, 0.54, 1).toFixed(3);
 
@@ -143,45 +178,57 @@ export function mountPhilosophyMotion(
     setPose(about, 0, 0, 1);
     hero.inert = heroOpacity < 0.01;
     about.inert = titleOpacity < 0.01;
-    heroCopy.forEach((el) => setPose(el, camera.x, camera.y, heroCopyOpacity));
+    // The locale-specific chapter heading follows the same rightward motion
+    // as the active node. Its extra exit drift keeps the copy attached to the
+    // route before both make room for the third screen.
+    const heroFollowX = arcPoint.x - start.x + 72 * u * heroExit;
+    heroCopy.forEach((el) => {
+      setPose(
+        el,
+        heroFollowX,
+        18 * u * (1 - heroCopyEntrance),
+        heroCopyOpacity,
+      );
+      el.style.filter = `blur(${((1 - heroCopyEntrance) * 10).toFixed(2)}px)`;
+    });
     // The label follows the same point; its original diamond is hidden.
     const nodeLabelGap = Math.max(28 * u, 20);
     orbitLabel.style.left = `${point.x - orbitLabelWidth - nodeLabelGap}px`;
     orbitLabel.style.top = `${point.y + 10 * u}px`;
-    // Let the travelling marker leave the composition instead of vanishing
-    // when the pinned stage hands off to the next chapter.
-    setPose(orbitLabel, 0, 0, 1 - smooth(range(p, 0.86, 0.97)));
+    // The introductory label belongs to the top junction. Fade it before the
+    // headline follows the moving node so the two text blocks never cross.
+    setPose(orbitLabel, 0, 0, 1 - smooth(range(p, 0.18, 0.36)));
     titleLines.forEach((el, index) => {
       setPose(
         el,
-        (index === 0 ? 109 : -52) * u * (1 - pan),
+        (index === 0 ? 109 : -52) * u * (1 - pan) + compositionOffsetX,
         -32 * u * (1 - drop),
         titleOpacity,
       );
       el.style.filter = `blur(${((1 - titleOpacity) * 14).toFixed(2)}px)`;
       el.style.letterSpacing = `${((1 - titleOpacity) * 0.09).toFixed(4)}em`;
     });
-    const aboutLabelLeft = 610 * u - aboutLabelWidth;
-    // CSS caps its desktop design unit above 1920px, while this canvas keeps
-    // scaling with the stage. Keep the animated label in canvas coordinates.
-    const aboutLabelTop = point.y - 24 * u;
+    // The label and node share one anchor throughout the move. A fixed gap
+    // prevents the label from crossing the ring while the node changes axes.
+    const aboutLabelLeft = junctionX - aboutLabelWidth - nodeLabelGap;
+    const aboutLabelTop = junctionY - 24 * u;
     aboutLabel.style.left = `${aboutLabelLeft}px`;
     aboutLabel.style.top = `${aboutLabelTop}px`;
     aboutLabel.style.right = 'auto';
-    setPose(
-      aboutLabel,
-      lerp(point.x - aboutLabelWidth - nodeLabelGap, aboutLabelLeft, pan) -
-        aboutLabelLeft,
-      0,
-      titleOpacity,
-    );
-    setPose(copy, 100 * u * (1 - detail), 0, detail);
-    copy.style.filter = `blur(${((1 - detail) * 8).toFixed(2)}px)`;
+    setPose(aboutLabel, 0, 0, titleOpacity);
+    const copyOpacity = detail;
+    setPose(copy, 100 * u * (1 - detail) + compositionOffsetX, 0, copyOpacity);
+    copy.style.filter = `blur(${((1 - copyOpacity) * 8).toFixed(2)}px)`;
 
     ctx.clearRect(0, 0, width, height);
-    const stroke = (opacity: number, drawPath: () => void, sparse = false) => {
+    const stroke = (
+      opacity: number,
+      drawPath: () => void,
+      sparse = false,
+      color = '#573c79',
+    ) => {
       ctx.globalAlpha = opacity;
-      ctx.strokeStyle = '#573c79';
+      ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(0.75, 0.9 * u);
       ctx.setLineDash(sparse ? [3 * u, 8 * u] : [2 * u, 4 * u]);
       ctx.beginPath();
@@ -190,55 +237,80 @@ export function mountPhilosophyMotion(
     };
     // Frame 510: faint vertical guide; the circle begins exactly at its dot.
     stroke(
-      0.22 * heroOpacity,
+      0.58 * heroOpacity,
       () => {
         ctx.moveTo(start.x + camera.x, 0);
         ctx.lineTo(start.x + camera.x, height);
       },
       true,
+      '#c9c9c9',
     );
-    // Keep the authored guide visible ahead of the point as in Frame 510.
-    // This also preserves visual context while the headline leaves the stage.
-    stroke(0.28, () =>
-      ctx.arc(center.x, center.y, radius, startAngle, 0, true),
+    // The complete arc is visible as a pale route from the beginning. As the
+    // node advances, redraw the travelled arc in the active purple so the
+    // right-hand side does not remain uniformly pale.
+    stroke(
+      0.58 * heroOpacity,
+      () => ctx.arc(center.x, center.y, radius, startAngle, 0, true),
+      false,
+      '#c9c9c9',
     );
-    // Frame 514: the vertical guide grows top-to-bottom, then the very same
-    // point continues below the arc. There is never a second moving dot.
+    if (arc > 0) {
+      stroke(0.96 * heroOpacity, () =>
+        ctx.arc(center.x, center.y, radius, startAngle, angle, true),
+      );
+    }
+    // Frame 514: the full rail begins pale. The travelled section above the
+    // descending node activates to the final purple.
     const guide = range(p, 0.49, 0.54);
-    stroke(0.28, () => {
+    stroke(
+      0.55,
+      () => {
+        ctx.moveTo(point.x, 0);
+        ctx.lineTo(point.x, height);
+      },
+      true,
+      '#c9c9c9',
+    );
+    stroke(0.94 * railActivation, () => {
       ctx.moveTo(point.x, 0);
       ctx.lineTo(point.x, p < 0.54 ? point.y * guide : point.y);
     });
-    const tangent = smooth(range(p, 0.48, 0.54)) * (1 - pan);
+    const tangent =
+      smooth(range(p, 0.48, 0.54)) * (1 - smooth(range(p, 0.96, 1)) * 0.35);
     stroke(
-      0.18 * tangent,
+      0.88 * tangent,
       () => {
         ctx.moveTo(0, 300 * u);
         ctx.lineTo(width, 300 * u);
       },
       true,
     );
+    // Once the node reaches the junction, activate the untouched right-hand
+    // branch as well. Curve, horizontal and vertical rails then share the
+    // same finished colour.
+    stroke(0.9 * branchActivation, () =>
+      ctx.arc(center.x, center.y, radius, startAngle, 0, true),
+    );
     // Frame 515: two diagonal rays plus the existing vertical ray, fading
     // toward the top. The circle and copy leave with the stage afterward.
-    const rays = smooth(range(p, 0.82, 0.94));
-    const gradient = ctx.createLinearGradient(0, 0, 0, point.y);
-    gradient.addColorStop(0, 'rgba(29,29,29,0)');
-    gradient.addColorStop(1, 'rgba(29,29,29,0.4)');
-    ctx.globalAlpha = rays;
-    ctx.strokeStyle = gradient;
+    // The three outgoing rails (left ray, vertical rail, right ray) finish in
+    // one solid active colour. A gradient here made the upper portions look
+    // permanently disabled even after the node had arrived.
+    ctx.globalAlpha = rayActivation;
+    ctx.strokeStyle = '#573c79';
     ctx.setLineDash([3 * u, 4 * u]);
     for (const direction of [-1, 1]) {
       ctx.beginPath();
-      ctx.moveTo(point.x, point.y);
-      ctx.lineTo(point.x + direction * 655 * u, point.y - 539 * u);
+      ctx.moveTo(junctionX, junctionY);
+      ctx.lineTo(junctionX + direction * 655 * u, junctionY - 539 * u);
       ctx.stroke();
     }
     ctx.setLineDash([]);
-    ctx.globalAlpha = rays;
+    ctx.globalAlpha = rayActivation;
     ctx.strokeStyle = 'rgba(29,29,29,.72)';
     ctx.lineWidth = Math.max(0.75, 0.9 * u);
     ctx.beginPath();
-    ctx.arc(point.x, point.y, 22 * u, 0, Math.PI * 2);
+    ctx.arc(junctionX, junctionY, 22 * u, 0, Math.PI * 2);
     ctx.stroke();
     const diamond = (x: number, y: number, color: string, opacity: number) => {
       ctx.save();
@@ -249,12 +321,13 @@ export function mountPhilosophyMotion(
       ctx.fillRect(-6 * u, -6 * u, 12 * u, 12 * u);
       ctx.restore();
     };
-    // At the fork, the left point is fully solid. It holds for exactly 100px
-    // of scroll, then completes its fade over a fixed 400px scroll distance.
-    diamond(start.x + camera.x, leftStarY, '#c9c9c9', leftStarOpacity);
-    // Once the About Us node has entered the composition, keep it visible
-    // through the end of the pinned chapter.
-    diamond(point.x, point.y, '#090909', 1);
+    // Once the handoff begins, the junction keeps its original marker and a
+    // second marker travels down the vertical rail. The removed grey fork
+    // marker is never restored.
+    if (verticalHandoff > 0) {
+      diamond(junctionX, junctionY, nodeColor, 1);
+    }
+    diamond(point.x, point.y, nodeColor, nodeOpacity);
     ctx.globalAlpha = 1;
   }
   function resize() {
@@ -273,7 +346,7 @@ export function mountPhilosophyMotion(
     id: 'philosophy-stage-pin',
     trigger: stage,
     start: 'top top',
-    end: () => `+=${innerHeight * 2.6}`,
+    end: () => `+=${innerHeight * 3.2}`,
     pin: true,
     anticipatePin: 1,
     invalidateOnRefresh: true,
@@ -287,7 +360,9 @@ export function mountPhilosophyMotion(
       trigger: stage,
       start: 'top top',
       end: () => pin.end,
-      scrub: 0.22,
+      // Direct scroll ownership prevents a trailing marker from remaining in
+      // the viewport after the pin releases and appearing to rise with page.
+      scrub: true,
       invalidateOnRefresh: true,
       onRefresh: resize,
       onUpdate: (self) => {
@@ -299,13 +374,34 @@ export function mountPhilosophyMotion(
       },
     },
   });
+  // Do not hide the About copy inside the pinned scene. Let it travel upward
+  // naturally after the pin releases, then fade only across the final 200px
+  // before the title reaches the top edge of the viewport.
+  const aboutExitAnimation = gsap.fromTo(
+    about,
+    { opacity: 1 },
+    {
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        id: 'philosophy-about-exit',
+        start: () => pin.end + Math.max(0, aboutTitle.offsetTop - 200),
+        end: () => pin.end + Math.max(200, aboutTitle.offsetTop),
+        scrub: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          about.inert = self.progress > 0.99;
+        },
+      },
+    },
+  );
   const observer = new ResizeObserver(resize);
   observer.observe(stage);
   // #about now lives inside the pinned stage; target its readable state,
   // not the absolute section's (shared) top edge.
   const goToAbout = () =>
     window.scrollTo({
-      top: pin.start + (pin.end - pin.start) * 0.97,
+      top: pin.start + (pin.end - pin.start) * 0.94,
       behavior: 'smooth',
     });
   const navigate = (event: MouseEvent) => {
@@ -336,6 +432,8 @@ export function mountPhilosophyMotion(
     observer.disconnect();
     animation.scrollTrigger?.kill();
     animation.kill();
+    aboutExitAnimation.scrollTrigger?.kill();
+    aboutExitAnimation.kill();
     pin.kill();
     onHandoff(false);
     home.classList.remove('has-philosophy-motion');
@@ -348,10 +446,20 @@ export function mountPhilosophyMotion(
     delete stage.dataset.motionProgress;
     delete stage.dataset.guideProgress;
     delete stage.dataset.ringProgress;
-    delete canvas.dataset.leftStarColor;
+    delete stage.dataset.researchHandoff;
+    delete stage.dataset.horizontalHandoff;
+    delete canvas.dataset.markerCount;
+    delete canvas.dataset.junctionPoint;
     delete canvas.dataset.markerShape;
     delete canvas.dataset.guideStyle;
     delete canvas.dataset.guideDash;
+    delete canvas.dataset.nodeActivation;
+    delete canvas.dataset.nodeOpacity;
+    delete canvas.dataset.nodeColor;
+    delete canvas.dataset.branchMarkerOpacity;
+    delete canvas.dataset.branchActivation;
+    delete canvas.dataset.railActivation;
+    delete canvas.dataset.rayActivation;
     ctx.clearRect(0, 0, width, height);
   };
 }

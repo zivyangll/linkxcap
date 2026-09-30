@@ -141,22 +141,37 @@ function createScrollTrail(
     value = progress;
     if (!ctx) return;
     ctx.clearRect(0, 0, width, height);
+
+    const dashUnit = Math.max(0.75, width / 1920);
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4 * dashUnit, 4 * dashUnit]);
+
+    // The whole route exists from the first frame as a quiet guide. The
+    // travelling node then "activates" the section it has already crossed.
+    // Drawing both states on the same canvas prevents the static Figma asset
+    // from making the untouched part look active too early.
+    const origin = point(0);
+    const end = point(1);
+    ctx.beginPath();
+    ctx.moveTo(origin.x, origin.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.strokeStyle = 'rgba(87,60,121,.18)';
+    ctx.stroke();
+
     ctx.beginPath();
     for (let i = 0; i <= 100; i++) {
       const p = point((progress * i) / 100);
       i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y);
     }
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, 'rgba(87,60,121,.95)');
-    gradient.addColorStop(1, 'rgba(140,138,158,.58)');
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = 1;
-    const dashUnit = Math.max(0.75, width / 1920);
-    ctx.setLineDash([4 * dashUnit, 4 * dashUnit]);
+    ctx.strokeStyle = 'rgba(87,60,121,.95)';
     ctx.stroke();
     ctx.setLineDash([]);
     const p = point(progress);
     canvas.dataset.point = `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+    canvas.dataset.trailProgress = progress.toFixed(3);
+    canvas.dataset.trailBaseColor = 'rgba(87,60,121,.18)';
+    canvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
+    canvas.dataset.nodeColor = '#573c79';
     if (!shouldDrawPoint()) return;
     ctx.save();
     ctx.translate(p.x, p.y);

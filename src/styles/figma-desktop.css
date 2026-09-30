@@ -126,6 +126,14 @@
       width: calc(617 * var(--u));
       line-height: calc(39.625 * var(--u));
     }
+    /* Reduce the title-to-copy whitespace by roughly one third while keeping
+       the authored copy measure and line breaks intact in each locale. */
+    body[data-lang='zh'] .opening-copy {
+      left: calc(1040 * var(--u));
+    }
+    body[data-lang='en'] .opening-copy {
+      left: calc(1011 * var(--u));
+    }
     .chapter {
       left: calc(345 * var(--u));
       top: calc(473 * var(--u));

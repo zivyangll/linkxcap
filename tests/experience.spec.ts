@@ -22,7 +22,33 @@ test('opening fades and resolves blur without scrolling', async ({ page }) => {
   expect(await page.evaluate(() => scrollY)).toBe(0);
 });
 
-test('opening stops at AGI, the arc settles on About Us before the full copy, and later chapters snap at 75 percent', async ({
+test('opening copy sits one-third closer to the title in both locales', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1920, height: 1080 });
+  const originalGaps = { zh: 325.953125, en: 414.109375 };
+  for (const locale of ['zh', 'en'] as const) {
+    await page.goto(`${locale}/index.html`);
+    await page.evaluate(() => document.fonts.ready);
+    const geometry = await page.evaluate(() => {
+      const title = document
+        .querySelector('.opening-title')!
+        .getBoundingClientRect();
+      const copy = document
+        .querySelector('.opening-copy')!
+        .getBoundingClientRect();
+      return {
+        gap: copy.left - title.right,
+        copyWidth: copy.width,
+      };
+    });
+    expect(geometry.gap / originalGaps[locale]).toBeGreaterThan(0.62);
+    expect(geometry.gap / originalGaps[locale]).toBeLessThan(0.7);
+    expect(geometry.copyWidth).toBeCloseTo(617, 0);
+  }
+});
+
+test('opening, Partnering, and About settle at equal-speed authored stops', async ({
   page,
 }) => {
   await page.goto('zh/index.html');
@@ -46,12 +72,14 @@ test('opening stops at AGI, the arc settles on About Us before the full copy, an
   await page.waitForTimeout(400);
   await expect(home).not.toHaveAttribute('data-snapping', 'true');
   const travelled = Number(
-    await page.locator('.hero').getAttribute('data-scroll-progress'),
+    await page
+      .locator('[data-philosophy-stage]')
+      .getAttribute('data-motion-progress'),
   );
-  expect(travelled).toBeGreaterThan(0.25);
-  expect(travelled).toBeLessThan(1 / 3);
+  expect(travelled).toBeGreaterThan(0.5);
+  expect(travelled).toBeLessThan(0.8);
   await page.mouse.wheel(0, 45);
-  await expect(home).toHaveAttribute('data-arc-snap-active', 'true');
+  await expect(home).not.toHaveAttribute('data-arc-snap-active', 'true');
   await expect
     .poll(() => page.evaluate(() => scrollY), { timeout: 7000 })
     .toBeCloseTo(stops[2], -1);
@@ -63,18 +91,44 @@ test('opening stops at AGI, the arc settles on About Us before the full copy, an
           .getAttribute('data-motion-progress'),
       ),
     )
-    .toBeCloseTo(0.58, 2);
+    .toBeCloseTo(0.8, 2);
   await expect(page.locator('.about-label')).toBeVisible();
-  await expect(page.locator('.about-title span').first()).not.toHaveCSS(
+  await expect(page.locator('.about-title span').first()).toHaveCSS(
     'filter',
     'blur(0px)',
   );
-  for (let i = 2; i < stops.length - 1; i++) {
+  await page.mouse.wheel(0, (stops[3] - stops[2]) * 0.6);
+  await page.waitForTimeout(250);
+  expect(await page.evaluate(() => scrollY)).toBeLessThan(thresholds[2]);
+  await page.mouse.wheel(0, (stops[3] - stops[2]) * 0.3);
+  await expect
+    .poll(() => page.evaluate(() => scrollY), { timeout: 7000 })
+    .toBeCloseTo(stops[3], -1);
+  const held = await page
+    .locator('[data-philosophy-stage]')
+    .evaluate((stage) => {
+      const canvas = stage.querySelector('canvas')!;
+      return {
+        progress: Number((stage as HTMLElement).dataset.motionProgress),
+        branch: Number(canvas.dataset.branchMarkerOpacity),
+        point: canvas.dataset.point,
+        junction: canvas.dataset.junctionPoint,
+      };
+    });
+  expect(held.progress).toBeCloseTo(0.94, 2);
+  expect(held.branch).toBe(0);
+  expect(held.point).toBe(held.junction);
+  await expect(page.locator('.about-title span').first()).toHaveCSS(
+    'filter',
+    'blur(0px)',
+  );
+  await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+  for (let i = 3; i < stops.length - 1; i++) {
     await page.mouse.wheel(0, (stops[i + 1] - stops[i]) * 0.6);
     await page.waitForTimeout(250);
     await expect(home).not.toHaveAttribute('data-snapping', 'true');
     expect(await page.evaluate(() => scrollY)).toBeLessThan(thresholds[i]);
-    await page.mouse.wheel(0, (stops[i + 1] - stops[i]) * 0.18);
+    await page.mouse.wheel(0, (stops[i + 1] - stops[i]) * 0.3);
     await expect
       .poll(() => page.evaluate(() => scrollY), { timeout: 7000 })
       .toBeCloseTo(stops[i + 1], -1);
@@ -110,7 +164,7 @@ test('small gestures stay native and a pointer press interrupts an automatic tra
   await page.mouse.up();
 });
 
-test('continuous trackpad input cannot strand the opening point after one third of its orbit', async ({
+test('continuous trackpad input reaches Partnering and About without a fast arc jump', async ({
   page,
 }) => {
   await page.goto('zh/index.html');
@@ -119,16 +173,13 @@ test('continuous trackpad input cannot strand the opening point after one third 
   const stops = (await home.getAttribute('data-snap-stops'))!
     .split(',')
     .map(Number);
-  await page.evaluate((y) => scrollTo(0, y), stops[1]);
-  await page.waitForTimeout(80);
-  let triggered = false;
-  for (let index = 0; index < 48; index++) {
-    await page.mouse.wheel(0, 60);
-    triggered = (await home.getAttribute('data-arc-snap-active')) === 'true';
-    if (triggered) break;
-    await page.waitForTimeout(24);
-  }
-  expect(triggered).toBe(true);
+  await page.evaluate((y) => scrollTo(0, y), stops[1] + 2);
+  await expect
+    .poll(() => page.evaluate(() => scrollY))
+    .toBeCloseTo(stops[1] + 2, 0);
+  await page.mouse.wheel(0, (stops[2] - stops[1]) * 0.77);
+  await expect(home).not.toHaveAttribute('data-arc-snap-active', 'true');
+  await expect(home).toHaveAttribute('data-snapping', 'true');
   await expect
     .poll(() => page.evaluate(() => scrollY), { timeout: 7000 })
     .toBeCloseTo(stops[2], -1);
@@ -163,7 +214,7 @@ test('key text progressively resolves from blurred to sharp', async ({
     .toBeGreaterThan(1);
   await page.evaluate(
     (y) => scrollTo(0, y),
-    bounds.start + bounds.distance * 0.97,
+    bounds.start + bounds.distance * 0.94,
   );
   await page.waitForTimeout(80);
   await expect(line).toHaveCSS('filter', 'blur(0px)');

@@ -572,7 +572,7 @@
     transform: rotate(-50.58deg);
   }
   .about-rays .diamond {
-    background: var(--ink);
+    background: var(--purple);
     position: absolute;
     bottom: 0;
     left: calc(-6 * var(--u));
@@ -625,7 +625,7 @@
     position: absolute;
     top: 14.81%;
     left: calc(-6 * var(--u));
-    background: var(--ink);
+    background: var(--purple);
   }
   .research h2 {
     position: absolute;
@@ -2515,6 +2515,9 @@
     .hero-title {
       top: 100px;
     }
+    .hero-title--zh {
+      font-size: 45px;
+    }
     .hero-zh {
       top: 280px;
       font-size: 45px;
@@ -3243,6 +3246,9 @@
     }
     .hero-title {
       font-size: 30px;
+    }
+    .hero-title--zh {
+      font-size: 41px;
     }
     .hero-zh {
       font-size: 41px;

@@ -163,6 +163,9 @@ for (const width of [1440, 1920]) {
           pointY: point[1],
           titleY: title.getBoundingClientRect().y,
           titleOpacity: Number(getComputedStyle(title).opacity),
+          copyOpacity: Number(
+            getComputedStyle(el.querySelector('.about-copy')!).opacity,
+          ),
           top: el.getBoundingClientRect().top,
         };
       });
@@ -173,14 +176,14 @@ for (const width of [1440, 1920]) {
     await expect(page.locator('.orbit-label .diamond')).toBeHidden();
     await expect(page.locator('.about-rays')).toBeHidden();
     await expect(page.locator('.philosophy-stage-canvas')).toBeVisible();
-    let previous = await sample(0.54);
-    const entering = await sample(0.58);
+    let previous = await sample(0.7);
+    const entering = await sample(0.74);
     expect(entering.pointY).toBeGreaterThan(previous.pointY);
-    expect(entering.titleY).toBeGreaterThan(previous.titleY);
+    expect(entering.titleY).toBeGreaterThanOrEqual(previous.titleY);
     expect(entering.titleOpacity).toBeGreaterThan(0);
     expect(entering.titleOpacity).toBeLessThan(1);
     previous = entering;
-    for (const progress of [0.62, 0.68, 0.74, 0.84, 0.96]) {
+    for (const progress of [0.78, 0.82, 0.86]) {
       const next = await sample(progress);
       expect(Math.abs(next.top)).toBeLessThan(1);
       expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
@@ -190,19 +193,34 @@ for (const width of [1440, 1920]) {
       );
       previous = next;
     }
-    await expect
-      .poll(() =>
-        page
-          .locator('.about-copy')
-          .evaluate((el) => Number(getComputedStyle(el).opacity)),
-      )
-      .toBeGreaterThan(0.999);
+    // Once the composition reaches the left-hand axis it holds fully readable
+    // for a distinct scroll interval instead of fading during the move.
+    for (const progress of [0.9, 0.92, 0.94, 0.96]) {
+      const next = await sample(progress);
+      expect(Math.abs(next.top)).toBeLessThan(1);
+      expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
+      expect(next.titleY).toBeGreaterThanOrEqual(previous.titleY - 0.5);
+      expect(next.titleOpacity).toBeGreaterThan(0.99);
+      if (progress >= 0.92) expect(next.copyOpacity).toBeGreaterThan(0.99);
+      previous = next;
+    }
+    // The copy remains fully visible while the node completes its downward
+    // handoff. Fading belongs to the subsequent natural page exit.
+    for (const progress of [0.975, 0.99, 1]) {
+      const next = await sample(progress);
+      expect(Math.abs(next.top)).toBeLessThan(1);
+      expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
+      expect(next.titleY).toBeGreaterThanOrEqual(previous.titleY - 0.5);
+      expect(next.titleOpacity).toBeGreaterThan(0.99);
+      expect(next.copyOpacity).toBeGreaterThan(0.99);
+      previous = next;
+    }
     // Returning through the handoff reconstructs identical positions, rather
     // than depending on which of several triggers last wrote a transform.
-    const reversed = await sample(0.58);
+    const reversed = await sample(0.74);
     expect(reversed.pointY).toBeCloseTo(entering.pointY, 0);
     expect(reversed.titleY).toBeCloseTo(entering.titleY, 0);
-    await sample(0.96);
+    await sample(1);
     // Read stage and title in one browser frame; separate protocol round trips
     // can otherwise sample different positions during native smooth scrolling.
     const geometry = () =>
@@ -211,15 +229,40 @@ for (const width of [1440, 1920]) {
         copy: el.querySelector('.about-title')!.getBoundingClientRect().y,
       }));
     const beforeExit = await geometry();
-    const exitY = bounds.start + bounds.distance + 200;
-    await page.evaluate((y) => scrollTo(0, y), exitY);
-    await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(exitY, 0);
+    const titleOffset = await stage
+      .locator('.about-title')
+      .evaluate((el) => (el as HTMLElement).offsetTop);
+    const exitStart = bounds.start + bounds.distance + titleOffset - 200;
+    await page.evaluate((y) => scrollTo(0, y), exitStart);
+    await expect
+      .poll(() => page.evaluate(() => scrollY))
+      .toBeCloseTo(exitStart, 0);
+    await expect(page.locator('.about')).toHaveCSS('opacity', '1');
+    const startGeometry = await geometry();
+    expect(startGeometry.copy).toBeCloseTo(200, 0);
+
+    const exitMiddle = exitStart + 100;
+    await page.evaluate((y) => scrollTo(0, y), exitMiddle);
+    await expect
+      .poll(() => page.evaluate(() => scrollY))
+      .toBeCloseTo(exitMiddle, 0);
+    await expect
+      .poll(() =>
+        page
+          .locator('.about')
+          .evaluate((el) => Number(getComputedStyle(el).opacity)),
+      )
+      .toBeCloseTo(0.5, 1);
+
+    const exitEnd = exitStart + 200;
+    await page.evaluate((y) => scrollTo(0, y), exitEnd);
+    await expect
+      .poll(() => page.evaluate(() => scrollY))
+      .toBeCloseTo(exitEnd, 0);
+    await expect(page.locator('.about')).toHaveCSS('opacity', '0');
     const afterExit = await geometry();
-    expect(afterExit.stage).toBeLessThan(beforeExit.stage - 150);
-    expect(afterExit.copy - beforeExit.copy).toBeCloseTo(
-      afterExit.stage - beforeExit.stage,
-      0,
-    );
+    expect(afterExit.copy).toBeCloseTo(0, 0);
+    expect(afterExit.stage).toBeLessThan(beforeExit.stage - titleOffset + 1);
   });
 }
 

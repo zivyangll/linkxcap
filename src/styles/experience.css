@@ -541,19 +541,27 @@ body .team-review .team-bio::-webkit-scrollbar {
     position: relative;
   }
   .portfolio-page > .portfolio-intro {
-    margin-bottom: calc(18 * var(--u));
+    /* The filter now shares the title row, so keep the intended breathing
+       room below the introduction without reserving a second filter row. */
+    margin-bottom: calc(82 * var(--u));
   }
   .portfolio-filters {
-    position: static;
+    position: absolute;
+    top: calc(289 * var(--u));
+    right: 9.427%;
     display: flex;
     align-items: baseline;
     justify-content: flex-end;
     gap: calc(13 * var(--u));
-    margin: 0 9.427% calc(34 * var(--u));
+    margin: 0;
+    transform: translateY(-50%);
     color: rgb(29 29 29 / 24%);
     font-size: max(11px, calc(14 * var(--u)));
     line-height: 1.45;
     white-space: nowrap;
+  }
+  body[data-lang='en'] .portfolio-filters {
+    top: calc(225.35 * var(--u));
   }
   .portfolio-filters button {
     color: inherit;

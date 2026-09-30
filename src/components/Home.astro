@@ -97,7 +97,11 @@ const { lang } = Astro.props;
           alt=""
         />
       </div>
-      <h2 id="hero-title" class="hero-title" data-reveal>
+      <h2
+        id="hero-title"
+        class:list={['hero-title', { 'hero-title--zh': lang === 'zh' }]}
+        data-reveal
+      >
         {homeContent.hero.title[lang].map((line, index) => (
           <>
             {index > 0 && <br />}

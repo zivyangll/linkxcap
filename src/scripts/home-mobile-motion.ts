@@ -62,9 +62,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
 
       home.removeAttribute('data-mobile-static');
       home.classList.add('has-mobile-motion');
-      const heroCopy = [
-        ...hero.querySelectorAll<HTMLElement>('.hero-title,.hero-zh'),
-      ];
+      const heroCopy = [...hero.querySelectorAll<HTMLElement>('.hero-title')];
       const orbitLabel = hero.querySelector<HTMLElement>('.orbit-label')!;
       const progress = { value: 0 };
       const openingProgress = { value: 0 };
@@ -89,34 +87,42 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         context: CanvasRenderingContext2D,
         x: number,
         y: number,
+        color = '#573c79',
       ) => {
         context.save();
         context.translate(x, y);
         context.rotate(Math.PI / 4);
-        context.fillStyle = '#090909';
+        context.fillStyle = color;
         context.fillRect(-3.5, -3.5, 7, 7);
         context.restore();
       };
       const drawOpening = () => {
         openingCtx.clearRect(0, 0, width, openingHeight);
-        const y = lerp(
-          openingHeight * 0.3,
-          openingHeight,
-          openingProgress.value,
-        );
-        openingCtx.strokeStyle = 'rgba(87,60,121,.42)';
+        const startY = openingHeight * 0.3;
+        const y = lerp(startY, openingHeight, openingProgress.value);
         openingCtx.setLineDash([3, 5]);
         openingCtx.beginPath();
-        openingCtx.moveTo(rail, openingHeight * 0.3);
+        openingCtx.moveTo(rail, startY);
+        openingCtx.lineTo(rail, openingHeight);
+        openingCtx.strokeStyle = 'rgba(87,60,121,.18)';
+        openingCtx.stroke();
+        openingCtx.beginPath();
+        openingCtx.moveTo(rail, startY);
         openingCtx.lineTo(rail, y);
+        openingCtx.strokeStyle = 'rgba(87,60,121,.95)';
         openingCtx.stroke();
         diamond(openingCtx, rail, y);
+        openingCanvas.dataset.trailProgress = openingProgress.value.toFixed(3);
+        openingCanvas.dataset.trailBaseColor = 'rgba(87,60,121,.18)';
+        openingCanvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
       };
       const draw = () => {
         const p = progress.value;
         const arc = smooth(phase(p, 0.04, 0.5));
         const drop = smooth(phase(p, 0.5, 0.66));
         const pan = smooth(phase(p, 0.66, 0.86));
+        const handoff = smooth(phase(p, 0.92, 1));
+        const branchActivation = smooth(phase(p, 0.5, 0.7));
         const start = { x: rail, y: height * 0.16 };
         const circle = { x: width * 1.28, y: height * 0.1 };
         const radius = Math.hypot(start.x - circle.x, start.y - circle.y);
@@ -136,20 +142,26 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             (circle.y + Math.sin(angle) * radius) -
             height * 0.08 * pan,
         };
-        const point = {
+        const junction = {
           x: tracked.x - (width * 0.65 - rail) * pan,
+          y: tracked.y + height * (0.06 * drop + 0.19 * pan),
+        };
+        const point = {
+          x: junction.x,
           y:
             p < 0.04
               ? start.y * phase(p, 0, 0.04)
-              : tracked.y + height * (0.06 * drop + 0.19 * pan),
+              : lerp(junction.y, height, handoff),
         };
+        const nodeOpacity = 1 - smooth(phase(p, 0.99, 1));
+        const hasTravellingNode = handoff > 0 && nodeOpacity > 0;
         heroCopy.forEach((element) => {
-          element.style.translate = `${(camera.x * 0.32).toFixed(2)}px ${camera.y.toFixed(2)}px`;
+          element.style.translate = `${(tracked.x - start.x).toFixed(2)}px 0`;
         });
         orbitLabel.style.left = `${point.x + 14}px`;
         orbitLabel.style.top = `${point.y + 14}px`;
+        orbitLabel.style.opacity = String(1 - smooth(phase(p, 0.16, 0.34)));
         ctx.clearRect(0, 0, width, height);
-        ctx.strokeStyle = 'rgba(87,60,121,.3)';
         ctx.lineWidth = 1;
         ctx.setLineDash([2, 4]);
         ctx.beginPath();
@@ -161,30 +173,79 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           0,
           true,
         );
+        ctx.strokeStyle = 'rgba(87,60,121,.18)';
+        ctx.stroke();
+        if (arc > 0) {
+          ctx.beginPath();
+          ctx.arc(
+            circle.x + camera.x,
+            circle.y + camera.y,
+            radius,
+            startAngle,
+            angle,
+            true,
+          );
+          ctx.strokeStyle = 'rgba(87,60,121,.95)';
+          ctx.stroke();
+        }
+        if (branchActivation > 0) {
+          ctx.beginPath();
+          ctx.arc(
+            circle.x + camera.x,
+            circle.y + camera.y,
+            radius,
+            startAngle,
+            0,
+            true,
+          );
+          ctx.strokeStyle = `rgba(87,60,121,${0.9 * branchActivation})`;
+          ctx.stroke();
+        }
+        ctx.beginPath();
+        ctx.moveTo(point.x, 0);
+        ctx.lineTo(point.x, height);
+        ctx.strokeStyle = 'rgba(87,60,121,.18)';
         ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(point.x, 0);
         ctx.lineTo(point.x, point.y);
+        ctx.strokeStyle = `rgba(87,60,121,${0.94 * smooth(phase(p, 0.06, 0.68))})`;
         ctx.stroke();
         ctx.globalAlpha = smooth(phase(p, 0.76, 0.92));
+        ctx.strokeStyle = 'rgba(87,60,121,.92)';
         ctx.beginPath();
-        ctx.moveTo(point.x, point.y);
-        ctx.lineTo(point.x + width, point.y - height * 0.45);
+        ctx.moveTo(junction.x, junction.y);
+        ctx.lineTo(junction.x + width, junction.y - height * 0.45);
         ctx.stroke();
         ctx.setLineDash([]);
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 13, 0, Math.PI * 2);
+        ctx.arc(junction.x, junction.y, 13, 0, Math.PI * 2);
         ctx.stroke();
-        // Match desktop: the About Us node stays visible after it appears.
-        ctx.globalAlpha = 1;
-        diamond(ctx, point.x, point.y);
+        // Keep the original purple marker in the ring and create a second
+        // purple marker only for the downward handoff.
+        const nodeColor = '#573c79';
+        if (handoff > 0) {
+          ctx.globalAlpha = 1;
+          diamond(ctx, junction.x, junction.y, nodeColor);
+        }
+        ctx.globalAlpha = nodeOpacity;
+        diamond(ctx, point.x, point.y, nodeColor);
         ctx.globalAlpha = 1;
         stage.dataset.motionProgress = p.toFixed(4);
         stage.dataset.motionPhase =
           p < 0.5 ? 'arc' : p < 0.66 ? 'drop' : p < 0.86 ? 'pan' : 'details';
         canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
+        canvas.dataset.junctionPoint = `${junction.x.toFixed(2)},${junction.y.toFixed(2)}`;
+        canvas.dataset.markerCount = hasTravellingNode ? '2' : '1';
+        canvas.dataset.trailProgress = arc.toFixed(3);
+        canvas.dataset.trailBaseColor = 'rgba(87,60,121,.18)';
+        canvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
+        canvas.dataset.nodeActivation = '1.000';
+        canvas.dataset.nodeOpacity = nodeOpacity.toFixed(3);
+        canvas.dataset.nodeColor = nodeColor;
+        canvas.dataset.branchMarkerOpacity = '0.000';
         hero.inert = p > 0.5;
-        about.inert = p < 0.5;
+        about.inert = p < 0.68;
       };
       const resize = () => {
         width = stage.clientWidth;
@@ -222,7 +283,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
       // the only dot and every reveal; reverse scrolling is deterministic.
       const timeline = gsap.timeline({
         scrollTrigger: {
-          ...pinOptions(stage, 2.4),
+          ...pinOptions(stage, 3),
           id: 'mobile-philosophy',
           scrub: 0.28,
           onRefresh: resize,
@@ -234,16 +295,28 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           { value: 1, duration: 1, ease: 'none', onUpdate: draw },
           0,
         )
+        .fromTo(
+          heroCopy,
+          { opacity: 0, y: 24, filter: 'blur(8px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 0.08,
+            ease: 'power1.out',
+          },
+          0,
+        )
         .to(
           hero,
-          { opacity: 0, y: -32, duration: 0.17, ease: 'power1.inOut' },
-          0.34,
+          { opacity: 0, x: 32, duration: 0.18, ease: 'power1.inOut' },
+          0.48,
         )
         .fromTo(
           about.querySelector('.about-label'),
           { opacity: 0, y: 12 },
           { opacity: 1, y: 0, duration: 0.13 },
-          0.51,
+          0.68,
         )
         .fromTo(
           about.querySelectorAll('.about-title span'),
@@ -256,7 +329,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             stagger: 0.05,
             ease: 'power1.out',
           },
-          0.52,
+          0.7,
         )
         .fromTo(
           about.querySelector('.about-copy'),
@@ -268,7 +341,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             duration: 0.18,
             ease: 'power1.out',
           },
-          0.72,
+          0.82,
         )
         .to(
           about,
@@ -392,9 +465,16 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         );
         orbitLabel.style.removeProperty('left');
         orbitLabel.style.removeProperty('top');
+        orbitLabel.style.removeProperty('opacity');
         delete stage.dataset.motionProgress;
         delete stage.dataset.motionPhase;
         delete canvas.dataset.point;
+        delete canvas.dataset.junctionPoint;
+        delete canvas.dataset.markerCount;
+        delete canvas.dataset.nodeActivation;
+        delete canvas.dataset.nodeOpacity;
+        delete canvas.dataset.nodeColor;
+        delete canvas.dataset.branchMarkerOpacity;
         ctx.clearRect(0, 0, width, height);
         openingCtx.clearRect(0, 0, width, openingHeight);
       };

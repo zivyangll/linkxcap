@@ -2,27 +2,22 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PHILOSOPHY_ARC } from './philosophy-motion';
 
-// Native scrolling stays enabled until a chapter threshold is crossed. The
-// orbit's one-third hand-off is detected during scrolling so a trackpad does
-// not have to become idle before the remaining two thirds can complete.
+// Native scrolling stays enabled until a chapter threshold is crossed. Every
+// stop uses the same measured settle so no chapter suddenly accelerates past
+// the new intermediate Partnering screen.
 export function mountChapterSnap(home: HTMLElement) {
   let anchors: number[] = [];
   let timer = 0;
   let direction = 1;
   let armed = false;
   let firstThreshold = 0;
-  let arcThreshold = 0;
   let tween: gsap.core.Tween | undefined;
-  let completingArc = false;
-  let lastScrollY = scrollY;
   let previousBehavior = '';
   const finish = () => {
     if (home.dataset.snapping) {
       document.documentElement.style.scrollBehavior = previousBehavior;
       delete home.dataset.snapping;
     }
-    if (completingArc) delete home.dataset.arcSnapActive;
-    completingArc = false;
     tween = undefined;
     armed = false;
   };
@@ -31,29 +26,20 @@ export function mountChapterSnap(home: HTMLElement) {
     tween?.kill();
     finish();
   };
-  const startSnap = (
-    destination: number,
-    y: number,
-    arc = false,
-    quick = false,
-  ) => {
+  const startSnap = (destination: number, y: number) => {
     if (tween || Math.abs(destination - y) < 2) return;
     const position = { y };
-    completingArc = arc;
-    if (arc) home.dataset.arcSnapActive = 'true';
     previousBehavior = document.documentElement.style.scrollBehavior;
     document.documentElement.style.scrollBehavior = 'auto';
     home.dataset.snapping = 'true';
     const distance = Math.abs(destination - y);
     tween = gsap.to(position, {
       y: destination,
-      // Begin with the user's existing scroll direction, then decelerate into
-      // the chapter stop. The old in/out curve paused before accelerating,
-      // which made the hand-off feel like a sudden grab.
-      duration: quick
-        ? gsap.utils.clamp(0.24, 0.36, 0.18 + distance / 6000)
-        : gsap.utils.clamp(0.72, 1.35, 0.55 + distance / 1600),
-      ease: quick ? 'power2.out' : 'sine.out',
+      // Every chapter uses the same calm settling speed. There is no special
+      // accelerated orbit completion; the intermediate Partnering frame is a
+      // real reading stop controlled by the user's scroll gesture.
+      duration: gsap.utils.clamp(0.72, 1.35, 0.55 + distance / 1600),
+      ease: 'sine.out',
       lazy: false,
       onUpdate: () => window.scrollTo(0, position.y),
       onComplete: finish,
@@ -79,27 +65,20 @@ export function mountChapterSnap(home: HTMLElement) {
     let destination: number;
     if (direction > 0) {
       const threshold =
-        lowerIndex === 0
-          ? firstThreshold
-          : lowerIndex === 1
-            ? arcThreshold
-            : lower + (upper - lower) * 0.75;
+        lowerIndex === 0 ? firstThreshold : lower + (upper - lower) * 0.75;
       if (y < threshold) return;
-      // The opening point clears the copy and settles on the AGI chapter.
-      // The next gesture settles first at the About Us node, before its full copy.
+      // The opening point clears the copy and settles on the Partnering
+      // chapter. Each later gesture advances exactly one authored stop.
       destination = upper;
     } else {
       if ((upper - y) / (upper - lower) < 0.75) return;
       destination = lower;
     }
-    // The orbit has two authored stops: About Us first, then the final copy.
-    // Both settle quickly after the user's hand-off so the point lands with a
-    // deliberate snap instead of dragging through the remaining path.
-    startSnap(destination, y, false, direction > 0 && lowerIndex === 2);
+    startSnap(destination, y);
   };
   const navigate = (event: WheelEvent | KeyboardEvent) => {
-    // Once the orbit reaches one third, continued trackpad packets must not
-    // cancel the automatic completion that is already in progress.
+    // While a chapter is settling, additional trackpad packets do not start a
+    // competing transition.
     if (tween) return;
     cancel();
     if (document.querySelector('dialog[open]')) return;
@@ -135,8 +114,11 @@ export function mountChapterSnap(home: HTMLElement) {
         self.start,
         philosophy.start +
           (philosophy.end - philosophy.start) * PHILOSOPHY_ARC.start,
-        philosophy.start + (philosophy.end - philosophy.start) * 0.58,
-        philosophy.start + (philosophy.end - philosophy.start) * 0.97,
+        philosophy.start + (philosophy.end - philosophy.start) * 0.8,
+        // The About stop is the completed junction pose: copy fully sharp,
+        // active node centered in the ring, and no retired branch marker.
+        // The downward handoff only starts after the next scroll gesture.
+        philosophy.start + (philosophy.end - philosophy.start) * 0.94,
         research.start + (research.end - research.start) * 0.72,
         focus.getBoundingClientRect().top + scrollY,
       ].map((y) => Math.round(Math.max(self.start, Math.min(self.end, y))));
@@ -154,49 +136,18 @@ export function mountChapterSnap(home: HTMLElement) {
         openingTrigger.start +
           (openingTrigger.end - openingTrigger.start) * progress,
       );
-      // Invert the arc's smoothstep easing: hand off after one third of
-      // the actual orbit distance, then finish the remaining two thirds.
-      const oneThird = 0.5 - Math.sin(Math.asin(1 - 2 / 3) / 3);
-      const arcProgress =
-        PHILOSOPHY_ARC.start +
-        (PHILOSOPHY_ARC.end - PHILOSOPHY_ARC.start) * oneThird;
-      arcThreshold = Math.round(
-        philosophy.start + (philosophy.end - philosophy.start) * arcProgress,
-      );
-      lastScrollY = scrollY;
       home.dataset.snapStops = anchors.join(',');
       home.dataset.snapThresholds = anchors
         .slice(0, -1)
         .map((y, index) =>
           index === 0
             ? firstThreshold
-            : index === 1
-              ? arcThreshold
-              : Math.round(y + (anchors[index + 1] - y) * 0.75),
+            : Math.round(y + (anchors[index + 1] - y) * 0.75),
         )
         .join(',');
     },
   });
   const onScroll = () => {
-    const y = scrollY;
-    const movingDown = y > lastScrollY + 0.5;
-    lastScrollY = y;
-    if (
-      armed &&
-      direction > 0 &&
-      movingDown &&
-      !tween &&
-      anchors.length > 2 &&
-      y >= arcThreshold &&
-      y < anchors[2] - 2 &&
-      !document.querySelector('dialog[open]')
-    ) {
-      clearTimeout(timer);
-      armed = true;
-      direction = 1;
-      startSnap(anchors[2], y, true, true);
-      return;
-    }
     settle();
   };
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -214,6 +165,5 @@ export function mountChapterSnap(home: HTMLElement) {
     window.removeEventListener('blur', cancel);
     delete home.dataset.snapStops;
     delete home.dataset.snapThresholds;
-    delete home.dataset.arcSnapActive;
   };
 }

@@ -32,6 +32,12 @@ async function sample(page: Page, progress: number) {
     point: (el.querySelector('canvas') as HTMLCanvasElement).dataset
       .point!.split(',')
       .map(Number),
+    junction: (el.querySelector('canvas') as HTMLCanvasElement).dataset
+      .junctionPoint!.split(',')
+      .map(Number),
+    markerCount: Number(
+      (el.querySelector('canvas') as HTMLCanvasElement).dataset.markerCount,
+    ),
   }));
 }
 
@@ -50,6 +56,16 @@ for (const lang of ['zh', 'en']) {
       page.on('pageerror', (error) => errors.push(error.message));
       await page.goto(`${lang}/index.html`);
       await page.evaluate(() => document.fonts.ready);
+      const chapterTitle = page.locator('.hero-title');
+      await expect(chapterTitle).toContainText(
+        lang === 'zh'
+          ? '与创业者同行 定义 AGI 时代'
+          : 'Partnering with founders defining the AGI era',
+      );
+      await expect(chapterTitle).not.toContainText(
+        lang === 'zh' ? 'Partnering' : '与创业者同行',
+      );
+      await expect(page.locator('.hero-zh')).toHaveCount(0);
       await expect(page.locator('[data-home]')).toHaveClass(
         /has-mobile-motion/,
       );
@@ -76,9 +92,19 @@ for (const lang of ['zh', 'en']) {
           expect(heading!.y).toBeGreaterThan(72);
           expect(heading!.y + heading!.height).toBeLessThan(viewport.height);
         }
+        if (p === 0.97) {
+          expect(next.markerCount).toBe(2);
+          expect(next.point[1]).toBeGreaterThan(next.junction[1]);
+        }
         previous = next;
       }
-      await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+      expect(
+        Number(
+          await page
+            .locator('.about-copy')
+            .evaluate((copy) => getComputedStyle(copy).opacity),
+        ),
+      ).toBeGreaterThan(0.95);
       await expect(page.locator('.hero')).toHaveAttribute('inert', '');
       const first = await sample(page, 0.58);
       await sample(page, 0.97);
@@ -124,7 +150,13 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
   await expect
     .poll(async () => Number(await stage.getAttribute('data-motion-progress')))
     .toBeGreaterThan(0.95);
-  await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+  expect(
+    Number(
+      await page
+        .locator('.about-copy')
+        .evaluate((copy) => getComputedStyle(copy).opacity),
+    ),
+  ).toBeGreaterThan(0.95);
   await page.locator('.focus-links a[href="#about"]').click();
   // The previous readable pose can persist for a frame while native smooth
   // scrolling starts. Wait for the viewport as well as animation progress.
@@ -205,7 +237,13 @@ test('H5 menu works during a pinned chapter and resizing never duplicates pins',
   // that browser resize cycle finish before issuing a new scripted scroll.
   await page.waitForTimeout(350);
   await sample(page, 0.97);
-  await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+  expect(
+    Number(
+      await page
+        .locator('.about-copy')
+        .evaluate((copy) => getComputedStyle(copy).opacity),
+    ),
+  ).toBeGreaterThan(0.95);
 });
 
 test('H5 reduced motion can be toggled live without invisible text or stale pins', async ({

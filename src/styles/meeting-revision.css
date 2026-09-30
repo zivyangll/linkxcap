@@ -16,7 +16,10 @@
   display: none;
 }
 .home-story .about-rays .diamond {
-  background: #090909;
+  background: var(--purple);
+}
+.home-story .opening.has-scroll-trail .opening-track > img {
+  visibility: hidden;
 }
 @media (min-width: 1024px) {
   .has-philosophy-motion .philosophy-stage {

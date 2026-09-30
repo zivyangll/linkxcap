@@ -72,25 +72,29 @@ test('04 moving marker is a complete diamond without the legacy arrow', async ({
   await expect(page.locator('.orbit-label .diamond')).toBeHidden();
 });
 
-test('05 left travelling marker is light gray', async ({ page }) => {
+test('05 the orbit and lower junction share one travelling marker', async ({
+  page,
+}) => {
   await prepare(page);
   await setPhilosophyProgress(page, 0.3);
   await expect(page.locator('.philosophy-stage-canvas')).toHaveAttribute(
-    'data-left-star-color',
-    '#c9c9c9',
+    'data-marker-count',
+    '1',
+  );
+  await expect(page.locator('.philosophy-stage-canvas')).not.toHaveAttribute(
+    'data-left-star-point',
+    /.+/,
   );
 });
 
-test('06 Partnering appears only after the marker nears the lower field', async ({
+test('06 Partnering appears while the single marker enters chapter two', async ({
   page,
 }) => {
   await prepare(page);
   const stage = await setPhilosophyProgress(page, 0.45);
   const state = await stage.evaluate((element) => {
     const canvas = element.querySelector('canvas')!;
-    const [, y] = (canvas.dataset.leftStarPoint || '0,0')
-      .split(',')
-      .map(Number);
+    const [, y] = (canvas.dataset.point || '0,0').split(',').map(Number);
     return {
       ratio: y / element.getBoundingClientRect().height,
       opacity: Number(
@@ -98,7 +102,7 @@ test('06 Partnering appears only after the marker nears the lower field', async 
       ),
     };
   });
-  expect(state.ratio).toBeGreaterThan(0.72);
+  expect(state.ratio).toBeGreaterThan(0.15);
   expect(state.opacity).toBeGreaterThan(0.2);
 });
 
@@ -110,6 +114,141 @@ test('07 Partnering headline is exactly three lines', async ({ page }) => {
   await expect(page.locator('.hero-title')).toContainText(
     'defining the AGI era',
   );
+});
+
+test('07b Partnering chapter renders only the active language', async ({
+  page,
+}) => {
+  for (const { path, expected, excluded, breaks, zh } of [
+    {
+      path: 'en/index.html',
+      expected: 'Partnering with founders defining the AGI era',
+      excluded: '与创业者同行',
+      breaks: 2,
+      zh: false,
+    },
+    {
+      path: 'zh/index.html',
+      expected: '与创业者同行 定义 AGI 时代',
+      excluded: 'Partnering',
+      breaks: 1,
+      zh: true,
+    },
+  ]) {
+    await prepare(page, path);
+    const title = page.locator('.hero-title');
+    await expect(title).toContainText(expected);
+    await expect(title).not.toContainText(excluded);
+    await expect(title.locator('br')).toHaveCount(breaks);
+    await expect(title).toHaveClass(
+      zh ? 'hero-title hero-title--zh' : 'hero-title',
+    );
+    await expect(page.locator('.hero-zh')).toHaveCount(0);
+  }
+});
+
+test('07a route starts pale, activates behind the node, and keeps hero copy visible', async ({
+  page,
+}) => {
+  await prepare(page);
+  const openingTrail = page.locator('.opening .scroll-trail');
+  await expect(openingTrail).toHaveAttribute(
+    'data-trail-base-color',
+    'rgba(87,60,121,.18)',
+  );
+  await expect(openingTrail).toHaveAttribute(
+    'data-trail-active-color',
+    'rgba(87,60,121,.95)',
+  );
+  await expect(openingTrail).toHaveAttribute('data-node-color', '#573c79');
+  await expect(page.locator('.opening-track > img')).toBeHidden();
+
+  let stage = await setPhilosophyProgress(page, 0);
+  await expect(page.locator('.hero-title')).toHaveCSS('opacity', '0');
+
+  stage = await setPhilosophyProgress(page, 0.06);
+  expect(
+    Number(
+      await page
+        .locator('.hero-title')
+        .evaluate((title) => getComputedStyle(title).opacity),
+    ),
+  ).toBeGreaterThan(0.99);
+
+  stage = await setPhilosophyProgress(page, 0.55);
+  const stageTrail = stage.locator('.philosophy-stage-canvas');
+  await expect(stageTrail).toHaveAttribute('data-trail-base-color', '#c9c9c9');
+  await expect(stageTrail).toHaveAttribute(
+    'data-trail-active-color',
+    '#573c79',
+  );
+  expect(Number(await stageTrail.getAttribute('data-trail-progress'))).toBe(1);
+  expect(
+    Number(
+      await page
+        .locator('.hero-title')
+        .evaluate((title) => getComputedStyle(title).opacity),
+    ),
+  ).toBeGreaterThan(0.98);
+  const copyGeometry = await stage.evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    return [...element.querySelectorAll('.hero-title')].map((copy) => {
+      const rect = copy.getBoundingClientRect();
+      return {
+        horizontal: rect.right > box.left && rect.left < box.right,
+        vertical: rect.bottom > box.top && rect.top < box.bottom,
+      };
+    });
+  });
+  expect(copyGeometry).toEqual([{ horizontal: true, vertical: true }]);
+  await expect(page.locator('.orbit-label')).toContainText('Follow the stars');
+  await expect(page.locator('.orbit-label')).toContainText('The first light');
+
+  await setPhilosophyProgress(page, 0.8);
+  expect(
+    Number(
+      await page
+        .locator('.hero-title')
+        .evaluate((title) => getComputedStyle(title).opacity),
+    ),
+  ).toBeLessThan(0.01);
+});
+
+test('07c Partnering follows the node rightward and exits before screen three', async ({
+  page,
+}) => {
+  await prepare(page);
+  const sample = async (progress: number) => {
+    const stage = await setPhilosophyProgress(page, progress);
+    return stage.evaluate((element) => {
+      const title = element.querySelector('.hero-title')!;
+      const rect = title.getBoundingClientRect();
+      const [pointX] = (element.querySelector('canvas')!.dataset.point || '0,0')
+        .split(',')
+        .map(Number);
+      return {
+        left: rect.left,
+        nodeX: element.getBoundingClientRect().left + pointX,
+        opacity: Number(getComputedStyle(title).opacity),
+        orbitOpacity: Number(
+          getComputedStyle(element.querySelector('.orbit-label')!).opacity,
+        ),
+      };
+    });
+  };
+  const entered = await sample(0.06);
+  const travelled = await sample(0.5);
+  const exiting = await sample(0.68);
+  expect(travelled.left).toBeGreaterThan(entered.left + 50);
+  expect(travelled.left - travelled.nodeX).toBeGreaterThan(20);
+  expect(travelled.opacity).toBeGreaterThan(0.99);
+  expect(travelled.orbitOpacity).toBeLessThan(0.01);
+  expect(exiting.left).toBeGreaterThan(travelled.left);
+  expect(exiting.opacity).toBeLessThan(0.1);
+  const reversed = await sample(0.5);
+  expect(reversed.left).toBeCloseTo(travelled.left, 0);
+  expect(reversed.opacity).toBeCloseTo(travelled.opacity, 3);
+  expect(reversed.orbitOpacity).toBeCloseTo(travelled.orbitOpacity, 3);
 });
 
 test('08 institution headline is a centered two-line composition', async ({
@@ -218,11 +357,15 @@ test('13 line reaches the node before the outer ring appears', async ({
   expect(after.ring).toBeGreaterThan(0);
 });
 
-test('14 north-star label stays aligned to its diamond', async ({ page }) => {
+test('14 north-star label stays aligned to the fixed junction during the drop', async ({
+  page,
+}) => {
   await prepare(page);
   const stage = await setPhilosophyProgress(page, 0.96);
   const offset = await stage.evaluate((element) => {
-    const [, y] = (element.querySelector('canvas')!.dataset.point || '0,0')
+    const [, y] = (
+      element.querySelector('canvas')!.dataset.junctionPoint || '0,0'
+    )
       .split(',')
       .map(Number);
     const label = element
@@ -232,6 +375,128 @@ test('14 north-star label stays aligned to its diamond', async ({ page }) => {
     return Math.abs(box.top + y - (label.top + label.height / 2));
   });
   expect(offset).toBeLessThan(38);
+});
+
+test('14a node moves left first, then drops vertically to the research axis', async ({
+  page,
+}) => {
+  await prepare(page);
+  const sample = async (progress: number) => {
+    const stage = await setPhilosophyProgress(page, progress);
+    return stage.evaluate((element) => {
+      const canvas = element.querySelector('canvas')!;
+      const [pointX, pointY] = (canvas.dataset.point || '0,0')
+        .split(',')
+        .map(Number);
+      const [junctionX, junctionY] = (canvas.dataset.junctionPoint || '0,0')
+        .split(',')
+        .map(Number);
+      const stageBox = element.getBoundingClientRect();
+      const researchAxis = document
+        .querySelector('.research-axis')!
+        .getBoundingClientRect();
+      const label = element
+        .querySelector('.about-label')!
+        .getBoundingClientRect();
+      return {
+        vertical: Number((element as HTMLElement).dataset.researchHandoff),
+        horizontal: Number((element as HTMLElement).dataset.horizontalHandoff),
+        nodeOpacity: Number(canvas.dataset.nodeOpacity),
+        markerCount: Number(canvas.dataset.markerCount),
+        pointX: stageBox.left + pointX,
+        pointY,
+        junctionX: stageBox.left + junctionX,
+        junctionY,
+        stageHeight: stageBox.height,
+        researchX: researchAxis.left,
+        labelGap: stageBox.left + pointX - label.right,
+      };
+    });
+  };
+  const horizontal = await sample(0.94);
+  expect(horizontal.horizontal).toBe(1);
+  expect(horizontal.vertical).toBe(0);
+  expect(horizontal.markerCount).toBe(1);
+  expect(horizontal.pointX).toBeCloseTo(horizontal.junctionX, 0);
+  expect(horizontal.pointY).toBeCloseTo(horizontal.junctionY, 0);
+  expect(Math.abs(horizontal.pointX - horizontal.researchX)).toBeLessThan(2);
+
+  const dropping = await sample(0.97);
+  expect(dropping.pointX).toBeCloseTo(horizontal.pointX, 0);
+  expect(dropping.markerCount).toBe(2);
+  expect(dropping.junctionX).toBeCloseTo(horizontal.junctionX, 0);
+  expect(dropping.pointY).toBeGreaterThan(dropping.junctionY);
+
+  const complete = await sample(1);
+  expect(complete.vertical).toBe(1);
+  expect(complete.nodeOpacity).toBe(0);
+  expect(complete.markerCount).toBe(1);
+  expect(complete.pointX).toBeCloseTo(horizontal.pointX, 0);
+  expect(complete.pointY / complete.stageHeight).toBeGreaterThan(0.99);
+  expect(complete.labelGap).toBeGreaterThanOrEqual(18);
+});
+
+test('14b active node stays dark and no left fork marker is rendered', async ({
+  page,
+}) => {
+  await prepare(page);
+  let stage = await setPhilosophyProgress(page, 0.06);
+  const initial = await stage.locator('canvas').evaluate((canvas) => ({
+    node: Number(canvas.dataset.nodeActivation),
+    color: canvas.dataset.nodeColor,
+    branchMarker: Number(canvas.dataset.branchMarkerOpacity),
+  }));
+  expect(initial).toEqual({
+    node: 1,
+    color: '#573c79',
+    branchMarker: 0,
+  });
+
+  stage = await setPhilosophyProgress(page, 0.86);
+  const fork = await stage.locator('canvas').evaluate((canvas) => ({
+    node: Number(canvas.dataset.nodeActivation),
+    color: canvas.dataset.nodeColor,
+    branchMarker: Number(canvas.dataset.branchMarkerOpacity),
+    markerCount: Number(canvas.dataset.markerCount),
+    rail: Number(canvas.dataset.railActivation),
+    rays: Number(canvas.dataset.rayActivation),
+  }));
+  expect(fork.node).toBe(1);
+  expect(fork.color).toBe('#573c79');
+  expect(fork.branchMarker).toBe(0);
+  expect(fork.markerCount).toBe(1);
+  expect(fork.rail).toBe(1);
+  expect(fork.rays).toBeGreaterThan(0);
+
+  stage = await setPhilosophyProgress(page, 0.94);
+  const hold = await stage.locator('canvas').evaluate((canvas) => {
+    const [pointX, pointY] = (canvas.dataset.point || '0,0')
+      .split(',')
+      .map(Number);
+    const [junctionX, junctionY] = (canvas.dataset.junctionPoint || '0,0')
+      .split(',')
+      .map(Number);
+    return {
+      pointX,
+      pointY,
+      junctionX,
+      junctionY,
+      branchMarker: Number(canvas.dataset.branchMarkerOpacity),
+    };
+  });
+  expect(hold.branchMarker).toBe(0);
+  expect(hold.pointX).toBeCloseTo(hold.junctionX, 1);
+  expect(hold.pointY).toBeCloseTo(hold.junctionY, 1);
+  await expect(page.locator('.about-title span').first()).toHaveCSS(
+    'filter',
+    'blur(0px)',
+  );
+  await expect(page.locator('.about-copy')).toHaveCSS('opacity', '1');
+
+  const researchNodeColor = await page
+    .locator('.research-axis .diamond')
+    .evaluate((node) => getComputedStyle(node).backgroundColor);
+  expect(researchNodeColor).toBe('rgb(87, 60, 121)');
 });
 
 test('15 T-ONE frame appears in place without sliding from the left', async ({
@@ -351,6 +616,25 @@ test('19 portfolio category filters select and filter the grid', async ({
     }));
   expect(state.visible).toBeGreaterThan(0);
   expect(state.wrong).toBe(0);
+});
+
+test('19a portfolio filters share the Portfolio title row', async ({
+  page,
+}) => {
+  await prepare(page, 'zh/portfolio.html');
+  const centers = await page.evaluate(() => {
+    const title = document
+      .querySelector('.page-title span:nth-child(2)')!
+      .getBoundingClientRect();
+    const filters = document
+      .querySelector('.portfolio-filters')!
+      .getBoundingClientRect();
+    return {
+      title: (title.top + title.bottom) / 2,
+      filters: (filters.top + filters.bottom) / 2,
+    };
+  });
+  expect(Math.abs(centers.title - centers.filters)).toBeLessThan(2);
 });
 
 test('20 selected OPENMAIC node has a subtle looping breath', async ({
