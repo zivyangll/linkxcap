@@ -16,7 +16,8 @@ if (filters) {
       ),
     );
     cards.forEach((card) => {
-      card.hidden = sector !== 'all' && card.dataset.sector !== sector;
+      const memberships = (card.dataset.sectors || '').split(' ');
+      card.hidden = sector !== 'all' && !memberships.includes(sector);
     });
   };
 

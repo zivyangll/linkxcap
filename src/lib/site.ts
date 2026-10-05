@@ -331,6 +331,7 @@ const companySchema = z.looseObject({
   website: z.string().optional(),
   investmentYear: z.string(),
   sector: z.string(),
+  sectorIds: z.array(z.string()),
   logoUrl: z.string(),
 });
 const sourceCompanies = z.array(companySchema).parse(
@@ -346,6 +347,7 @@ const sourceCompanies = z.array(companySchema).parse(
     website: company.website_url || undefined,
     investmentYear: company.investment_year,
     sector: company.sector_id,
+    sectorIds: company.sector_ids,
     logoUrl: contentAsset(company.logo_file),
   })),
 );

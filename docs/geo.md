@@ -68,15 +68,16 @@ DeepSeek、Kimi、Grok等未确认项，后续根据官方资料与实际日志�
 
 品牌统一以当前配置的 `site.brand_cn` / `site.brand_en` 为准，即“星连资本 / LinkX Capital”。历史材料中的 Link-X Capital 等拼写，只有确认是同一机构的真实别名时才进入 `alternateName`，不改掉已审核的主品牌名。避免网站、公众号、公司投资组合和英文介绍各写一套名称。法定主体名与品牌名分开，不虚构法定英文名。
 
-五个方向按现有配置读取：
+六个方向按 V6 的行业标签配置读取；首页每家公司只使用行业标签 1，投资组合筛选使用全部标签：
 
 | 配置方向ID | 中文 | 英文 |
 | --- | --- | --- |
 | `foundation` | 基础模型与学习范式 | Foundation Models & Learning |
 | `infrastructure` | AI 基础设施 | AI Infrastructure |
-| `applications` | 智能体与原生应用 | Agents & AI-Native Applications |
-| `physical` | 物理智能 | Physical AI |
-| `frontiers` | AI for Science 与长期前沿 | AI for Science & Frontiers |
+| `chips` | 芯片 | Chips |
+| `applications` | AI 原生应用 | AI-Native Applications |
+| `physical` | 具身智能 | Embodied AI |
+| `frontiers` | 科学智能 | AI for Science |
 
 视觉标题可按现有审核文案展示，但关系使用同一配置ID。公司年份不能退回到版权年份、构建年份或统一“2026”。没有投资年份则不输出年份部分。
 
@@ -211,7 +212,7 @@ Sitemap: https://www.linkxcap.com/sitemap.xml
 | 类型 | 验证要求 |
 | --- | --- |
 | 全部可索引页面 | 名称、介绍、语言、年份和方向关系由实际配置正确生成 |
-| 首页3D区 | 五方向及相关公司有可访问静态链接；公司名/年份不能只有canvas或移动端被隐藏 |
+| 首页3D区 | 六方向及相关公司有可访问静态链接；公司名/年份不能只有canvas或移动端被隐藏 |
 | 公司详情 | 单独URL和客户端切换读取到同样的公司事实 |
 | 中英文 | 不遗漏一个语言；名字、年份、方向与来源对应 |
 | 响应式 | 代表宽度320/375/390/430、768/820、1024/1100、1366/1440/1920px，文字无遮挡、不出屏 |
@@ -236,7 +237,7 @@ GEO新增正文不能以机器人需求破坏现有设计。文案区通过正�
 | 编号 | 中文题 | 英文题 | 主要核验 |
 | --- | --- | --- | --- |
 | Q1 | 星连资本是什么机构？请给出官方来源。 | What is Link-X Capital? Please cite official sources. | 名称、定位、官网 |
-| Q2 | 星连资本关注哪些AI投资方向？ | Which AI investment areas does Link-X Capital focus on? | 五方向与事实一致 |
+| Q2 | 星连资本关注哪些AI投资方向？ | Which AI investment areas does Link-X Capital focus on? | 六方向与事实一致 |
 | Q3 | 哪里可以查看星连资本的投资组合？ | Where can I find Link-X Capital's portfolio? | 正确列表URL |
 | Q4 | 如何联系星连资本？ | How can I contact Link-X Capital? | 正式联系方式 |
 | Q5 | 星连资本官网有哪些最新洞察文章？请注明日期与来源。 | What recent insights are published on Link-X Capital's website? Include dates and sources. | 真文章与真日期 |
@@ -285,7 +286,7 @@ Google Search Console用于搜索观察；Bing AI Performance在账户可用时�
 | 优先级 | 待实现 | 交付/验证 |
 | --- | --- | --- |
 | P0 | SEO生产域名、静态HTML、公共URL清单、双语metadata/schema | 复用[SEO实现清单](seo.md#10-实施顺序) |
-| P0 | 五方向与公司/团队/文章静态关联，年份统一读取公司配置 | 中英文事实提取检查 |
+| P0 | 六方向与公司/团队/文章静态关联，年份统一读取公司配置 | 中英文事实提取检查 |
 | P0 | 搜索抓取规则与阿里云实际HTTP/WAF验证 | robots、日志、公开页读取 |
 | P1 | 已审核简介整理、可见问答、可选llms.txt | 无重复维护事实、无失效URL |
 | P1 | 平台测试记录、搜索/引用/点击分开统计 | 全矩阵记录已测与缺口 |

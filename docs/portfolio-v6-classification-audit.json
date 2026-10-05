@@ -1,0 +1,1025 @@
+{
+  "source": "docs/被投企业汇总_V6.csv",
+  "sourceSha256": "d420d3955c15e744ef799a07fe361a578bfc438266f018016d7d204711775ef0",
+  "sourceCount": 56,
+  "matchedCount": 51,
+  "scope": "Update existing companies only; do not add/remove companies or infer missing tags.",
+  "categories": [
+    {
+      "id": "foundation",
+      "zh": "基础模型与学习范式",
+      "en": "Foundation Models & Learning"
+    },
+    {
+      "id": "physical",
+      "zh": "具身智能",
+      "en": "Embodied AI"
+    },
+    {
+      "id": "applications",
+      "zh": "AI 原生应用",
+      "en": "AI-Native Applications"
+    },
+    {
+      "id": "frontiers",
+      "zh": "科学智能",
+      "en": "AI for Science"
+    },
+    {
+      "id": "infrastructure",
+      "zh": "AI 基础设施",
+      "en": "AI Infrastructure"
+    },
+    {
+      "id": "chips",
+      "zh": "芯片",
+      "en": "Chips"
+    }
+  ],
+  "records": [
+    {
+      "sourceId": "1",
+      "sourceName": "智谱",
+      "companyId": "zhipu-ai",
+      "siteName": "智谱",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "2",
+      "sourceName": "生数科技",
+      "companyId": "shengshu-technology",
+      "siteName": "生数科技",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "3",
+      "sourceName": "面壁智能",
+      "companyId": "modelbest",
+      "siteName": "面壁智能",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "4",
+      "sourceName": "智在无界",
+      "companyId": "beingbeyond",
+      "siteName": "智在无界",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "具身智能"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "5",
+      "sourceName": "模思智能",
+      "companyId": "mosi",
+      "siteName": "模思智能",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "6",
+      "sourceName": "幂级智能",
+      "companyId": "miji-intelligence",
+      "siteName": "幂级智能",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "具身智能"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "7",
+      "sourceName": "脸谱心智",
+      "companyId": "facemind",
+      "siteName": "脸谱心智",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "AI 原生应用"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "8",
+      "sourceName": "厘清智能",
+      "companyId": "lychee-ai",
+      "siteName": "厘清智能",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "具身智能"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "9",
+      "sourceName": "超衍智能",
+      "companyId": "chaoyan-intelligence",
+      "siteName": "超衍智能",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "科学智能"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "frontiers"
+      ]
+    },
+    {
+      "sourceId": "10",
+      "sourceName": "无限镜元",
+      "companyId": "mirros",
+      "siteName": "无限镜元",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "具身智能"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "11",
+      "sourceName": "万象智维",
+      "companyId": "omnimind",
+      "siteName": "万象智维",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施",
+        "AI 原生应用"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "12",
+      "sourceName": "奇点逃逸",
+      "companyId": "nexus",
+      "siteName": "奇点逃逸",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "AI 原生应用"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "13",
+      "sourceName": "元环智能",
+      "companyId": "yuanhuan-intelligence",
+      "siteName": "元环智能",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "14",
+      "sourceName": "聆芯智语",
+      "companyId": "lingxin-zhiyu",
+      "siteName": "聆芯智语",
+      "match": "exact-name",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "15",
+      "sourceName": "辉羲智能",
+      "companyId": "rhino",
+      "siteName": "辉羲智能",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片",
+        "具身智能"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "16",
+      "sourceName": "紫荆芯界",
+      "companyId": "zijing-xinjie",
+      "siteName": "紫荆芯界",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips"
+      ]
+    },
+    {
+      "sourceId": "17",
+      "sourceName": "新氦类脑",
+      "companyId": "neuhelium",
+      "siteName": "新氦类脑",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "18",
+      "sourceName": "谦合益邦",
+      "companyId": "agic-micro",
+      "siteName": "谦合益邦",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips"
+      ]
+    },
+    {
+      "sourceId": "19",
+      "sourceName": "北极雄芯",
+      "companyId": "beiji-xiongxin",
+      "siteName": "北极雄芯",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips"
+      ]
+    },
+    {
+      "sourceId": "20",
+      "sourceName": "芯生视界",
+      "companyId": "xinsheng-vision",
+      "siteName": "芯生视界",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips"
+      ]
+    },
+    {
+      "sourceId": "21",
+      "sourceName": "光联芯科",
+      "companyId": "guanglian-xinke",
+      "siteName": "光联芯科",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips"
+      ]
+    },
+    {
+      "sourceId": "22",
+      "sourceName": "元触万物",
+      "companyId": "yuanchu-wanwu",
+      "siteName": "元触万物",
+      "match": "exact-name",
+      "tag1": "芯片",
+      "tags": [
+        "芯片",
+        "具身智能"
+      ],
+      "sectorId": "chips",
+      "sectorIds": [
+        "chips",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "23",
+      "sourceName": "无问芯穹",
+      "companyId": "infinigence-ai",
+      "siteName": "无问芯穹",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "24",
+      "sourceName": "基流科技",
+      "companyId": "infrawaves",
+      "siteName": "基流科技",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "25",
+      "sourceName": "清程极智",
+      "companyId": "qingcheng-jizhi",
+      "siteName": "清程极智",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "26",
+      "sourceName": "硅基流动",
+      "companyId": "siliconflow",
+      "siteName": "硅基流动",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "27",
+      "sourceName": "行云",
+      "companyId": "xingyun-ic",
+      "siteName": "行云集成",
+      "match": "verified-description-alias",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施",
+        "芯片"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure",
+        "chips"
+      ]
+    },
+    {
+      "sourceId": "28",
+      "sourceName": "趋境科技",
+      "companyId": "approaching-ai",
+      "siteName": "趋境科技",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "29",
+      "sourceName": "厚笃科技",
+      "companyId": "houdu-technology",
+      "siteName": "厚笃科技",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "30",
+      "sourceName": "沐言",
+      "companyId": "muyan-zhiyu",
+      "siteName": "沐言智语",
+      "match": "verified-description-alias",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "31",
+      "sourceName": "像素绽放",
+      "companyId": "aippt",
+      "siteName": "AiPPT",
+      "match": "verified-description-alias",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "32",
+      "sourceName": "星脉智动",
+      "companyId": "xmax-ai",
+      "siteName": "Xmax.AI",
+      "match": "verified-description-alias",
+      "tag1": "基础模型与学习范式",
+      "tags": [
+        "基础模型与学习范式",
+        "AI 原生应用"
+      ],
+      "sectorId": "foundation",
+      "sectorIds": [
+        "foundation",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "33",
+      "sourceName": "瑞莱智慧",
+      "companyId": "realai",
+      "siteName": "瑞莱智慧",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用",
+        "AI 基础设施"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications",
+        "infrastructure"
+      ]
+    },
+    {
+      "sourceId": "34",
+      "sourceName": "元绎娱乐",
+      "companyId": "novaserene",
+      "siteName": "元绎娱乐",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "35",
+      "sourceName": "吾云创新",
+      "companyId": "zettlab",
+      "siteName": "吾云创新",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "36",
+      "sourceName": "紫荆智康",
+      "companyId": "tairex",
+      "siteName": "紫荆智康",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "37",
+      "sourceName": "圆木智能",
+      "companyId": "yuanmu-ai",
+      "siteName": "圆木智能",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "38",
+      "sourceName": "随弹科技",
+      "companyId": "suitan-technology",
+      "siteName": "随弹科技",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "40",
+      "sourceName": "方寸跃迁",
+      "companyId": "fangcun-leap",
+      "siteName": "方寸跃迁",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施",
+        "AI 原生应用"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "41",
+      "sourceName": "元序星核",
+      "companyId": "yuanxu-xinghe",
+      "siteName": "元序星核",
+      "match": "exact-name",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施",
+        "AI 原生应用"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "42",
+      "sourceName": "麦伽智能",
+      "companyId": "megatech-ai",
+      "siteName": "麦伽智能",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "43",
+      "sourceName": "麦麦科技",
+      "companyId": "maimais-technology",
+      "siteName": "麦麦科技",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用",
+        "科学智能"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications",
+        "frontiers"
+      ]
+    },
+    {
+      "sourceId": "46",
+      "sourceName": "元知进化",
+      "companyId": "openmaic",
+      "siteName": "元知进化",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "47",
+      "sourceName": "思演智能",
+      "companyId": "knevo",
+      "siteName": "思演智能",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "48",
+      "sourceName": "动易科技",
+      "companyId": "phybot",
+      "siteName": "动易科技",
+      "match": "exact-name",
+      "tag1": "具身智能",
+      "tags": [
+        "具身智能"
+      ],
+      "sectorId": "physical",
+      "sectorIds": [
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "49",
+      "sourceName": "阿米奥机器人",
+      "companyId": "amio-robotics",
+      "siteName": "阿米奥机器人",
+      "match": "exact-name",
+      "tag1": "具身智能",
+      "tags": [
+        "具身智能",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "physical",
+      "sectorIds": [
+        "physical",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "50",
+      "sourceName": "魔豆领科",
+      "companyId": "modalink",
+      "siteName": "ModaLink",
+      "match": "verified-description-alias",
+      "tag1": "AI 基础设施",
+      "tags": [
+        "AI 基础设施",
+        "具身智能"
+      ],
+      "sectorId": "infrastructure",
+      "sectorIds": [
+        "infrastructure",
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "51",
+      "sourceName": "求之科技",
+      "companyId": "discover-robotics",
+      "siteName": "求之科技",
+      "match": "exact-name",
+      "tag1": "具身智能",
+      "tags": [
+        "具身智能"
+      ],
+      "sectorId": "physical",
+      "sectorIds": [
+        "physical"
+      ]
+    },
+    {
+      "sourceId": "53",
+      "sourceName": "百奥几何",
+      "companyId": "biogeometry",
+      "siteName": "百奥几何",
+      "match": "exact-name",
+      "tag1": "科学智能",
+      "tags": [
+        "科学智能",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "frontiers",
+      "sectorIds": [
+        "frontiers",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "55",
+      "sourceName": "艾斐智药",
+      "companyId": "aipher",
+      "siteName": "艾斐智药",
+      "match": "exact-name",
+      "tag1": "科学智能",
+      "tags": [
+        "科学智能"
+      ],
+      "sectorId": "frontiers",
+      "sectorIds": [
+        "frontiers"
+      ]
+    },
+    {
+      "sourceId": "56",
+      "sourceName": "利太智药",
+      "companyId": "ligit",
+      "siteName": "利太智药",
+      "match": "exact-name",
+      "tag1": "科学智能",
+      "tags": [
+        "科学智能",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "frontiers",
+      "sectorIds": [
+        "frontiers",
+        "foundation"
+      ]
+    }
+  ],
+  "missing": [
+    {
+      "sourceId": "39",
+      "name": "群贤启智",
+      "nameEn": "Oscholar",
+      "sectorIds": [
+        "applications",
+        "frontiers"
+      ]
+    },
+    {
+      "sourceId": "44",
+      "name": "觅思汇智",
+      "nameEn": "MythLink",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "45",
+      "name": "九章智电",
+      "nameEn": "AlgoEnergy",
+      "sectorIds": [
+        "applications",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "52",
+      "name": "嘭咔智能",
+      "nameEn": "Pooka",
+      "sectorIds": [
+        "physical",
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "54",
+      "name": "无尽方舟",
+      "nameEn": "EonArk",
+      "sectorIds": [
+        "frontiers",
+        "foundation"
+      ]
+    }
+  ],
+  "unlisted": [
+    {
+      "companyId": "6estates",
+      "siteName": "6Estates",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "clipmindai",
+      "siteName": "智映光年",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "deepknown",
+      "siteName": "深知智新",
+      "preservedSectorId": "infrastructure"
+    },
+    {
+      "companyId": "dprotein",
+      "siteName": "深原质药",
+      "preservedSectorId": "frontiers"
+    },
+    {
+      "companyId": "infevo",
+      "siteName": "无界进化",
+      "preservedSectorId": "frontiers"
+    },
+    {
+      "companyId": "jiyi-bi",
+      "siteName": "集异璧",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "juexin-bio",
+      "siteName": "玦芯生物",
+      "preservedSectorId": "frontiers"
+    },
+    {
+      "companyId": "lingxin-ai",
+      "siteName": "聆心智能",
+      "preservedSectorId": "foundation"
+    },
+    {
+      "companyId": "nodesk-ai",
+      "siteName": "NoDesk AI",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "polo-interactive",
+      "siteName": "珀乐科技",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "powerlaw-ai",
+      "siteName": "幂律科技",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "qidian-lingzhi",
+      "siteName": "奇点灵智",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "qingyan-yi-hydrogen",
+      "siteName": "清研易氢",
+      "preservedSectorId": "frontiers"
+    },
+    {
+      "companyId": "qingyao-zhiyuan",
+      "siteName": "清曜智源",
+      "preservedSectorId": "infrastructure"
+    },
+    {
+      "companyId": "qingyuan",
+      "siteName": "清源智策",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "qisuanfa",
+      "siteName": "绮算法",
+      "preservedSectorId": "applications"
+    },
+    {
+      "companyId": "research-cosmos",
+      "siteName": "宇创万象",
+      "preservedSectorId": "frontiers"
+    },
+    {
+      "companyId": "saidc",
+      "siteName": "超智算",
+      "preservedSectorId": "infrastructure"
+    },
+    {
+      "companyId": "shendu-shikong-kronos",
+      "siteName": "深度时空",
+      "preservedSectorId": "foundation"
+    },
+    {
+      "companyId": "soulin",
+      "siteName": "Soulin",
+      "preservedSectorId": "physical"
+    },
+    {
+      "companyId": "tensorworld",
+      "siteName": "TensorWorld",
+      "preservedSectorId": "physical"
+    },
+    {
+      "companyId": "xiaoli-robotics",
+      "siteName": "小狸机器人",
+      "preservedSectorId": "physical"
+    },
+    {
+      "companyId": "yunqi-wuyin",
+      "siteName": "云起无垠",
+      "preservedSectorId": "infrastructure"
+    },
+    {
+      "companyId": "zetta-loop",
+      "siteName": "超级查理",
+      "preservedSectorId": "frontiers"
+    },
+    {
+      "companyId": "zhilan-medical",
+      "siteName": "智览医疗",
+      "preservedSectorId": "applications"
+    }
+  ]
+}

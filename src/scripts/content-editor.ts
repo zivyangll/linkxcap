@@ -97,7 +97,8 @@ const labels: Record<string, string> = {
   route: '页面路由',
   page: '页面标识',
   investment_year: '投资年份',
-  sector_id: '投资方向（星域节点）',
+  sector_id: '首页主分类（tag1）',
+  sector_ids: '投资组合筛选分类（可多选）',
 };
 
 const sectionNotes: Record<string, string> = {
@@ -108,7 +109,7 @@ const sectionNotes: Record<string, string> = {
     '首页五屏文案；数组中的每一项对应一个视觉换行，统计数据目前为待确认占位',
   'pages.portfolio': '投资组合列表及公司详情的固定界面文案',
   companies:
-    '公司 Logo 只填写文件名；投资年份显示在 Three.js 公司节点中，投资方向决定公司连接到哪个星域节点',
+    '首页只使用主分类（tag1）连接星域节点；投资组合列表使用全部筛选分类，同一公司可出现在多个分类中',
   'pages.team': '团队页面固定文案；姓名、职务和人物简介在团队成员中维护',
   team: '成员照片只填写文件名；路由 slug 决定 team-<slug>.html；内部结构 ID 已隐藏并由系统维护',
   'pages.insights':
@@ -392,6 +393,29 @@ function saveDraft() {
 
 function updateValue(path: Path, value: JsonValue) {
   setAtPath(current, path, value);
+  if (
+    path[0] === 'companies' &&
+    path[2] === 'sector_id' &&
+    typeof value === 'string'
+  ) {
+    const company = getAtPath(current, path.slice(0, 2));
+    if (isObject(company)) {
+      const previous = Array.isArray(company.sector_ids)
+        ? company.sector_ids
+        : [];
+      company.sector_ids = [value, ...previous.filter((id) => id !== value)];
+      document
+        .querySelectorAll<HTMLInputElement>(
+          `[data-config-path^="${path.slice(0, 2).join('.')}.sector_ids."]`,
+        )
+        .forEach((checkbox) => {
+          checkbox.checked =
+            company.sector_ids instanceof Array &&
+            company.sector_ids.includes(checkbox.value);
+          checkbox.disabled = checkbox.value === value;
+        });
+    }
+  }
   saveDraft();
   refreshRecordTabLabel(path);
 }
@@ -566,6 +590,7 @@ function createRecord(collection: string, records: JsonValue[]): JsonObject {
       website_url: '',
       investment_year: '',
       sector_id: firstSector,
+      sector_ids: [firstSector],
       logo_file: '',
     };
   }
@@ -773,6 +798,42 @@ function renderCollectionTabs(
 }
 
 function renderValue(value: JsonValue, key: string, path: Path): HTMLElement {
+  if (key === 'sector_ids' && Array.isArray(value)) {
+    const group = element('fieldset', 'object-group');
+    const legend = element('legend');
+    legend.textContent = readableLabel(key);
+    const note = element('small', 'title-note');
+    note.textContent = '（首页主分类始终选中；其他分类可多选）';
+    legend.append(note);
+    group.append(legend);
+    const company = getAtPath(current, path.slice(0, -1));
+    const sectors = Array.isArray(current.sectors) ? current.sectors : [];
+    sectors.forEach((sector) => {
+      if (!isObject(sector) || typeof sector.id !== 'string') return;
+      const label = element('label', 'boolean-field');
+      const input = element('input');
+      input.type = 'checkbox';
+      input.value = sector.id;
+      input.checked = value.includes(sector.id);
+      input.disabled = isObject(company) && company.sector_id === sector.id;
+      input.dataset.configPath = `${path.join('.')}.${sector.id}`;
+      input.addEventListener('change', () => {
+        const selected = getAtPath(current, path);
+        if (!Array.isArray(selected)) return;
+        updateValue(
+          path,
+          input.checked
+            ? [...selected, sector.id]
+            : selected.filter((id) => id !== sector.id),
+        );
+      });
+      const caption = element('span');
+      caption.textContent = `${sector.name_cn} / ${sector.name_en}`;
+      label.append(input, caption);
+      group.append(label);
+    });
+    return group;
+  }
   if (Array.isArray(value)) {
     if (editableCollections.has(key))
       return renderCollectionTabs(value, key, path);
@@ -934,7 +995,7 @@ function restoreDraft() {
   let legacy = false;
   try {
     serialized = localStorage.getItem(storageKey);
-    for (const version of [13, 12, 11, 10, 9]) {
+    for (const version of [17, 13, 12, 11, 10, 9]) {
       if (serialized) break;
       serialized = localStorage.getItem(
         storageKey.replace(
@@ -978,7 +1039,7 @@ function restoreDraft() {
     setStatus(
       validation.valid
         ? legacy
-          ? '已恢复并升级旧版本草稿：页脚年份改为自动生成，公司投资年份与星域方向改在公司配置中维护；旧草稿原件保留，首次修改后保存为新版本。'
+          ? '已恢复并升级旧版本草稿：首页使用主分类，投资组合支持多个筛选分类；旧草稿原件保留，首次修改后保存为新版本。'
           : '已恢复当前域名下的本地草稿。'
         : '已恢复本地草稿；其中仍有格式问题，请修正后再导出。',
       validation.valid ? 'saved' : 'error',

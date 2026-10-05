@@ -1,4 +1,4 @@
-export const CONTENT_SCHEMA_VERSION = 17;
+export const CONTENT_SCHEMA_VERSION = 18;
 export const MAX_CONTENT_FILE_BYTES = 2 * 1024 * 1024;
 
 export type ContentValidation = {
@@ -263,6 +263,25 @@ function validateRelations(config: Record<string, unknown>, errors: string[]) {
         errors.push(
           `content.companies[${index}].sector_id：未找到对应投资领域`,
         );
+      if (isObject(company)) {
+        const memberships = company.sector_ids;
+        if (
+          !Array.isArray(memberships) ||
+          memberships.length === 0 ||
+          memberships.some((id) => typeof id !== 'string' || !sectors.has(id))
+        )
+          errors.push(
+            `content.companies[${index}].sector_ids：请选择有效的列表筛选分类`,
+          );
+        else {
+          if (new Set(memberships).size !== memberships.length)
+            errors.push(`content.companies[${index}].sector_ids：分类不能重复`);
+          if (memberships[0] !== company.sector_id)
+            errors.push(
+              `content.companies[${index}].sector_ids：第一项必须是首页主分类`,
+            );
+        }
+      }
     });
 
   if (Array.isArray(config.team))
@@ -310,6 +329,18 @@ export function validateContentConfig(
 
 // Preserve older drafts/imports without merging defaults or overwriting storage.
 export function upgradeContentConfig(candidate: unknown): unknown {
+  if (isObject(candidate) && candidate.schemaVersion === 17)
+    return {
+      ...candidate,
+      schemaVersion: CONTENT_SCHEMA_VERSION,
+      companies: Array.isArray(candidate.companies)
+        ? candidate.companies.map((company) =>
+            isObject(company)
+              ? { ...company, sector_ids: [company.sector_id] }
+              : company,
+          )
+        : candidate.companies,
+    };
   if (
     !isObject(candidate) ||
     ![9, 10, 11, 12, 13].includes(candidate.schemaVersion as number) ||
@@ -402,6 +433,7 @@ export function upgradeContentConfig(candidate: unknown): unknown {
             typeof company.investment_year === 'string'
               ? company.investment_year
               : sharedInvestmentYear,
+          sector_ids: [company.sector_id],
         };
       })
     : candidate.companies;

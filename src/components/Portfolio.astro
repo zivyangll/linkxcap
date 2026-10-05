@@ -54,6 +54,7 @@ const { lang } = Astro.props as { lang: Lang };
         data-company-card
         data-slug={company.slug}
         data-sector={company.sector}
+        data-sectors={company.sectorIds.join(' ')}
       >
         <CompanyLogo company={company} />
         <span class="card-corners" aria-hidden="true"></span>

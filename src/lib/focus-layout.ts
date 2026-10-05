@@ -12,6 +12,7 @@ export const focusLayout: Record<string, FocusPoint> = {
   applications: { x: 1600, y: 460, z: -65, side: 'right' },
   physical: { x: 1000, y: 650, z: 15, side: 'left' },
   frontiers: { x: 1660, y: 325, z: -90, side: 'left' },
+  chips: { x: 1450, y: 190, z: 45, side: 'right' },
 };
 const branches: Record<string, number[][]> = {
   foundation: [
@@ -91,6 +92,7 @@ export const mobileFocusLayout: Record<string, FocusPoint> = {
   applications: { x: 290, y: 370, z: -30, side: 'left' },
   physical: { x: 70, y: 285, z: 8, side: 'right' },
   frontiers: { x: 290, y: 150, z: -45, side: 'left' },
+  chips: { x: 245, y: 60, z: 22, side: 'left' },
 };
 const mobileBranches: Record<string, number[][]> = {
   foundation: [

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 17,
+  "schemaVersion": 18,
   "site": {
     "brand_cn": "星连资本",
     "brand_en": "LinkX Capital",
@@ -203,11 +203,11 @@
         ],
         "description_cn": [
           "星连资本成立于 2021 年，是中国最早聚焦通用智能生态、最活跃的 AI 风险投资机构之一。",
-          "我们在研究与创业的早期阶段与团队同行，围绕五个相互连接的方向投资：基础模型与学习范式、AI 基础设施、智能体与原生应用、物理智能，以及 AI for Science 与长期前沿。"
+          "我们在研究与创业的早期阶段与团队同行，围绕六个相互连接的方向投资：基础模型与学习范式、AI 基础设施、芯片、AI 原生应用、具身智能，以及科学智能。"
         ],
         "description_en": [
           "Founded in 2021, LinkX Capital is among China’s earliest and most active venture investors focused on the emerging general intelligence ecosystem.",
-          "We work with researchers and founders from the earliest stages across five connected areas: Foundation Models & Learning, AI Infrastructure, Agents & AI-Native Applications, Physical AI, and AI for Science & Frontiers."
+          "We work with researchers and founders from the earliest stages across six connected areas: Foundation Models & Learning, AI Infrastructure, Chips, AI-Native Applications, Embodied AI, and AI for Science."
         ]
       },
       "research": {
@@ -461,6 +461,27 @@
       "description_en": "New model architectures and learning methods can expand what intelligence can do. Areas of interest include reasoning, multimodality, world models, continual learning and recursive learning."
     },
     {
+      "id": "physical",
+      "name_cn": "具身智能",
+      "name_en": "Embodied AI",
+      "description_cn": "关注机器人、具身世界模型、感知与智能终端，让 AI 能在物理环境中感知、决策和行动。",
+      "description_en": "Robotics, embodied world models, perception and intelligent devices bring AI into environments where it must sense, decide and act."
+    },
+    {
+      "id": "applications",
+      "name_cn": "AI 原生应用",
+      "name_en": "AI-Native Applications",
+      "description_cn": "支持能够理解任务、调用工具并从反馈中改进的智能体，以及围绕真实工作流程设计的 AI 原生产品。",
+      "description_en": "Agents that understand tasks, use tools and learn from feedback are opening new workflows. The focus is on products with clear user needs and repeated use."
+    },
+    {
+      "id": "frontiers",
+      "name_cn": "科学智能",
+      "name_en": "AI for Science",
+      "description_cn": "以 AI 推进生命科学、药物研发和科学发现，同时探索新的人机交互、能源与计算范式。",
+      "description_en": "AI is changing biology, drug discovery and the research process. New forms of human-computer interaction, energy and computing also merit long-term attention."
+    },
+    {
       "id": "infrastructure",
       "name_cn": "AI 基础设施",
       "name_en": "AI Infrastructure",
@@ -468,25 +489,11 @@
       "description_en": "Chips, compute networks, inference systems, data infrastructure and security determine how efficiently and reliably AI reaches users."
     },
     {
-      "id": "applications",
-      "name_cn": "智能体与原生应用",
-      "name_en": "Agents & AI-Native Applications",
-      "description_cn": "支持能够理解任务、调用工具并从反馈中改进的智能体，以及围绕真实工作流程设计的 AI 原生产品。",
-      "description_en": "Agents that understand tasks, use tools and learn from feedback are opening new workflows. The focus is on products with clear user needs and repeated use."
-    },
-    {
-      "id": "physical",
-      "name_cn": "物理智能",
-      "name_en": "Physical AI",
-      "description_cn": "关注机器人、具身世界模型、感知与智能终端，让 AI 能在物理环境中感知、决策和行动。",
-      "description_en": "Robotics, embodied world models, perception and intelligent devices bring AI into environments where it must sense, decide and act."
-    },
-    {
-      "id": "frontiers",
-      "name_cn": "AI for Science 与长期前沿",
-      "name_en": "AI for Science & Frontiers",
-      "description_cn": "以 AI 推进生命科学、药物研发和科学发现，同时探索新的人机交互、能源与计算范式。",
-      "description_en": "AI is changing biology, drug discovery and the research process. New forms of human-computer interaction, energy and computing also merit long-term attention."
+      "id": "chips",
+      "name_cn": "芯片",
+      "name_en": "Chips",
+      "description_cn": "",
+      "description_en": ""
     }
   ],
   "team": [
@@ -582,7 +589,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "agic-micro",
@@ -595,8 +605,11 @@
       "detail_en": "AIGC Micro spans the infrastructure stack from compute chips and accelerator cards to integrated AI systems. Its chip-to-cloud approach addresses different deployment needs through hardware and system design.",
       "website_url": "https://www.agicmicro.com/gywm/",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "agic-micro.webp"
+      "sector_id": "chips",
+      "logo_file": "agic-micro.webp",
+      "sector_ids": [
+        "chips"
+      ]
     },
     {
       "id": "aipher",
@@ -610,7 +623,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "aippt",
@@ -624,7 +640,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "amio-robotics",
@@ -638,7 +657,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "amio-robotics.webp"
+      "logo_file": "amio-robotics.webp",
+      "sector_ids": [
+        "physical",
+        "foundation"
+      ]
     },
     {
       "id": "approaching-ai",
@@ -652,7 +675,10 @@
       "website_url": "https://approaching-ai.com/introduction",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "approaching-ai.webp"
+      "logo_file": "approaching-ai.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "beiji-xiongxin",
@@ -665,8 +691,11 @@
       "detail_en": "Beiji Xiongxin combines chiplets, 3D integration and near-memory computing for AI inference, alongside automotive-grade heterogeneous SoCs. Its architecture work spans both data-center decoding and edge applications.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "chips",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "chips"
+      ]
     },
     {
       "id": "beingbeyond",
@@ -679,8 +708,12 @@
       "detail_en": "BeingBeyond trains its Being-H robotics models on human video and multimodal data, with a focus on dexterous manipulation. The company pairs model research with system-level solutions for humanoid robots.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "foundation",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "physical"
+      ]
     },
     {
       "id": "biogeometry",
@@ -694,7 +727,11 @@
       "website_url": "https://www.biogeom.com/about/",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "biogeometry.webp"
+      "logo_file": "biogeometry.webp",
+      "sector_ids": [
+        "frontiers",
+        "foundation"
+      ]
     },
     {
       "id": "chaoyan-intelligence",
@@ -708,7 +745,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "frontiers"
+      ]
     },
     {
       "id": "clipmindai",
@@ -722,7 +763,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "deepknown",
@@ -736,7 +780,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "discover-robotics",
@@ -750,7 +797,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "physical"
+      ]
     },
     {
       "id": "dprotein",
@@ -764,7 +814,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "facemind",
@@ -777,8 +830,12 @@
       "detail_en": "FaceMind develops on-device multimodal models and tests them in real-time products such as DieDieShe. Its AI commentary can respond to text, images and audio on a user’s screen, creating a more context-aware interaction.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "foundation",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "applications"
+      ]
     },
     {
       "id": "fangcun-leap",
@@ -792,7 +849,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure",
+        "applications"
+      ]
     },
     {
       "id": "shengshu-technology",
@@ -806,7 +867,10 @@
       "website_url": "https://www.shengshu.com/zh/about",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "guanglian-xinke",
@@ -819,8 +883,11 @@
       "detail_en": "Guanglian Xinke pursues chip-level optical interconnects through microring silicon photonics. Near-package optical engines and precise wavelength tuning are central to serving the growing data-transfer demands of AI clusters.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "chips",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "chips"
+      ]
     },
     {
       "id": "houdu-technology",
@@ -834,7 +901,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "rhino",
@@ -847,8 +917,12 @@
       "detail_en": "Huixi Technology brings chips, open toolchains and integrated computing platforms to intelligent vehicles, with related work in embodied robotics. The emphasis is on deployable compute for demanding perception and decision-making tasks.",
       "website_url": "https://www.rhino.auto/about",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "rhino.webp"
+      "sector_id": "chips",
+      "logo_file": "rhino.webp",
+      "sector_ids": [
+        "chips",
+        "physical"
+      ]
     },
     {
       "id": "infevo",
@@ -862,7 +936,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "infinigence-ai",
@@ -876,7 +953,10 @@
       "website_url": "https://cloud.infini-ai.com/platform/ai",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "infinigence-ai.webp"
+      "logo_file": "infinigence-ai.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "infrawaves",
@@ -890,7 +970,10 @@
       "website_url": "https://infrawaves.com/home",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "infrawaves.webp"
+      "logo_file": "infrawaves.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "jiyi-bi",
@@ -904,7 +987,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "juexin-bio",
@@ -918,7 +1004,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "knevo",
@@ -932,7 +1021,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "ligit",
@@ -946,7 +1038,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers",
+        "foundation"
+      ]
     },
     {
       "id": "lingxin-ai",
@@ -960,7 +1056,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "lingxin-zhiyu",
@@ -974,7 +1073,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "lychee-ai",
@@ -987,8 +1089,12 @@
       "detail_en": "Lychee.AI works on the infrastructure beneath physical AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "foundation",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "physical"
+      ]
     },
     {
       "id": "maimais-technology",
@@ -1002,7 +1108,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications",
+        "frontiers"
+      ]
     },
     {
       "id": "megatech-ai",
@@ -1016,7 +1126,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications",
+        "foundation"
+      ]
     },
     {
       "id": "miji-intelligence",
@@ -1029,8 +1143,12 @@
       "detail_en": "MIJI Intelligence combines world models with dense reinforcement learning for physical AI. The approach aims to generate useful training data and scale testing for autonomous driving and embodied systems.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "foundation",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "physical"
+      ]
     },
     {
       "id": "mirros",
@@ -1043,8 +1161,12 @@
       "detail_en": "Mirros models both the agent and its environment: actions change the world, and the resulting feedback updates the agent. This dual loop addresses scarce interaction data and the gap between simulated and real physical-AI training.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "foundation",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "physical"
+      ]
     },
     {
       "id": "modalink",
@@ -1058,7 +1180,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure",
+        "physical"
+      ]
     },
     {
       "id": "modelbest",
@@ -1072,7 +1198,10 @@
       "website_url": "https://modelbest.cn/",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "modelbest.webp"
+      "logo_file": "modelbest.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "mosi",
@@ -1086,7 +1215,10 @@
       "website_url": "https://home.mosi.cn",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "mosi.webp"
+      "logo_file": "mosi.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "muyan-zhiyu",
@@ -1100,7 +1232,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "neuhelium",
@@ -1113,8 +1248,12 @@
       "detail_en": "NeuHelium works on neuromorphic chips and on-chip intelligence, linking research with commercialization and application needs. As a Shanghai platform for this field, it supports both shared industry technologies and exploratory work.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "chips",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "chips",
+        "foundation"
+      ]
     },
     {
       "id": "nexus",
@@ -1128,7 +1267,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "applications"
+      ]
     },
     {
       "id": "nodesk-ai",
@@ -1142,7 +1285,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "novaserene",
@@ -1156,7 +1302,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "omnimind",
@@ -1169,8 +1318,12 @@
       "detail_en": "Omnimind pairs cloud-side planning with on-device execution so agents can carry out tasks on mobile devices. Its early use cases include mobility, shopping and gaming, where local responsiveness matters alongside more complex reasoning.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "infrastructure",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure",
+        "applications"
+      ]
     },
     {
       "id": "openmaic",
@@ -1184,7 +1337,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications",
+        "foundation"
+      ]
     },
     {
       "id": "phybot",
@@ -1198,7 +1355,10 @@
       "website_url": "https://www.phybot.tech/",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "phybot.webp"
+      "logo_file": "phybot.webp",
+      "sector_ids": [
+        "physical"
+      ]
     },
     {
       "id": "polo-interactive",
@@ -1212,7 +1372,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "polo-interactive.webp"
+      "logo_file": "polo-interactive.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "powerlaw-ai",
@@ -1226,7 +1389,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "qidian-lingzhi",
@@ -1240,7 +1406,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "qingcheng-jizhi",
@@ -1254,7 +1423,10 @@
       "website_url": "https://www.qc-ai.cn/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "qingcheng-jizhi.webp"
+      "logo_file": "qingcheng-jizhi.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "qingyan-yi-hydrogen",
@@ -1268,7 +1440,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "qingyao-zhiyuan",
@@ -1282,7 +1457,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "qingyuan",
@@ -1296,7 +1474,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "qisuanfa",
@@ -1310,7 +1491,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "realai",
@@ -1323,8 +1507,12 @@
       "detail_en": "RealAI pairs foundational AI capabilities with safety technology in platforms and industry solutions. Its applications span urban governance, finance, education, scientific research and intelligent vehicles, with attention to both usefulness and control.",
       "website_url": "https://www.realai.ai/about?scrollId=t19",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "realai.webp"
+      "sector_id": "applications",
+      "logo_file": "realai.webp",
+      "sector_ids": [
+        "applications",
+        "infrastructure"
+      ]
     },
     {
       "id": "research-cosmos",
@@ -1338,7 +1526,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "saidc",
@@ -1352,7 +1543,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "shendu-shikong-kronos",
@@ -1366,7 +1560,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "siliconflow",
@@ -1380,7 +1577,10 @@
       "website_url": "https://www.siliconflow.com/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "siliconflow.webp"
+      "logo_file": "siliconflow.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "soulin",
@@ -1394,7 +1594,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "physical"
+      ]
     },
     {
       "id": "suitan-technology",
@@ -1408,7 +1611,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "tairex",
@@ -1422,7 +1628,10 @@
       "website_url": "https://www.tairex.cn/gy",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "tairex.webp"
+      "logo_file": "tairex.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "tensorworld",
@@ -1436,7 +1645,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "physical"
+      ]
     },
     {
       "id": "xiaoli-robotics",
@@ -1450,7 +1662,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "physical"
+      ]
     },
     {
       "id": "xingyun-ic",
@@ -1464,7 +1679,11 @@
       "website_url": "https://xingyun.xin/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "xingyun-ic.webp"
+      "logo_file": "xingyun-ic.webp",
+      "sector_ids": [
+        "infrastructure",
+        "chips"
+      ]
     },
     {
       "id": "xinsheng-vision",
@@ -1477,8 +1696,11 @@
       "detail_en": "Xinsheng Vision is researching an implantable visual-cortex interface for vision restoration. Its proposed system combines camera input, encoding algorithms, a low-power chip and flexible electrodes to explore basic visual perception for people with severe vision loss.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "chips",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "chips"
+      ]
     },
     {
       "id": "xmax-ai",
@@ -1492,7 +1714,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation",
+        "applications"
+      ]
     },
     {
       "id": "yuanchu-wanwu",
@@ -1505,8 +1731,12 @@
       "detail_en": "Yuanchu Wanwu’s cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "chips",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "chips",
+        "physical"
+      ]
     },
     {
       "id": "yuanhuan-intelligence",
@@ -1520,7 +1750,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "yuanmu-ai",
@@ -1534,7 +1767,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "yuanxu-xinghe",
@@ -1548,7 +1784,11 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure",
+        "applications"
+      ]
     },
     {
       "id": "yunqi-wuyin",
@@ -1562,7 +1802,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "infrastructure"
+      ]
     },
     {
       "id": "zhipu-ai",
@@ -1576,7 +1819,10 @@
       "website_url": "https://www.zhipuai.cn/zh/about",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "zhipu-ai.webp"
+      "logo_file": "zhipu-ai.webp",
+      "sector_ids": [
+        "foundation"
+      ]
     },
     {
       "id": "zetta-loop",
@@ -1590,7 +1836,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
     },
     {
       "id": "zettlab",
@@ -1604,7 +1853,10 @@
       "website_url": "https://zettlab.com/",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "zettlab.webp"
+      "logo_file": "zettlab.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "zhilan-medical",
@@ -1618,7 +1870,10 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp"
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "applications"
+      ]
     },
     {
       "id": "zijing-xinjie",
@@ -1631,8 +1886,11 @@
       "detail_en": "Zijing Xinjie targets the bandwidth and latency bottlenecks of large-model inference. Its RISC-V-based chip work is directed at delivering efficient AI compute under tight performance and power constraints.",
       "website_url": "",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp"
+      "sector_id": "chips",
+      "logo_file": "shengshu-technology.webp",
+      "sector_ids": [
+        "chips"
+      ]
     }
   ],
   "insights": {
