@@ -149,6 +149,7 @@ export function mountTopology(root: HTMLElement) {
   const branchEnd = new Vector3();
   const enabled = () => motion.matches && !lost && !disposed;
   const safePoint = new Vector3();
+  const centreShift = new Vector3();
   const frontRotation = new Euler();
   // Shifts a graph position horizontally so the selected node, under the
   // given rotation, projects inside the desktop safe area. Projection is
@@ -167,6 +168,23 @@ export function mountTopology(root: HTMLElement) {
     const visibleWidth =
       2 * Math.tan((camera.fov * Math.PI) / 360) * depth * camera.aspect;
     position.x += ((clamped - x) * visibleWidth) / width;
+  };
+  // H5 keeps the selected sector at the hub, the centre of its canvas: the
+  // offset that moves the active node there under the given pose.
+  const centreTarget = new Vector3();
+  const centreOffset = (position: Vector3, rotation: Euler, out: Vector3) => {
+    out.set(0, 0, 0);
+    renderPoint(active, safePoint).applyEuler(rotation).add(position);
+    const depth = camera.position.z - safePoint.z;
+    if (depth <= 0) return out;
+    safePoint.project(camera);
+    centreTarget.copy(homePosition).project(camera);
+    const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * depth;
+    return out.set(
+      (centreTarget.x - safePoint.x) * halfHeight * camera.aspect,
+      (centreTarget.y - safePoint.y) * halfHeight,
+      0,
+    );
   };
   const held = () =>
     root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
@@ -418,12 +436,32 @@ export function mountTopology(root: HTMLElement) {
       ]
         .filter((offset) => offset >= minimum && offset <= maximum)
         .sort((a, b) => Math.abs(a) - Math.abs(b));
-      const offset =
-        candidates.find((candidate) => {
-          const candidateBox = move(base, 0, candidate);
-          return placed.every((other) => !overlaps(candidateBox, other));
-        }) || 0;
-      placement.y += offset;
+      const clear = (x: number, y: number) => {
+        const candidateBox = move(base, x, y);
+        return placed.every((other) => !overlaps(candidateBox, other));
+      };
+      let offsetX = 0;
+      let offsetY = candidates.find((candidate) => clear(0, candidate));
+      // A crowded branch can leave no free row; slide sideways as well.
+      if (offsetY === undefined) {
+        const left = bounds.left + labelInset - base.left;
+        const right = bounds.right - labelInset - base.right;
+        const sideways = [
+          0,
+          ...placed.flatMap((other) => [
+            other.right + gap - base.left,
+            other.left - gap - base.right,
+          ]),
+        ].filter((offset) => offset >= left && offset <= right);
+        const best = sideways
+          .flatMap((x) => [0, ...candidates].map((y) => ({ x, y })))
+          .sort((a, b) => Math.hypot(a.x, a.y) - Math.hypot(b.x, b.y))
+          .find(({ x, y }) => clear(x, y));
+        offsetX = best?.x || 0;
+        offsetY = best?.y || 0;
+      }
+      placement.x += offsetX;
+      placement.y += offsetY;
       const finalBox = move(placement.box, placement.x, placement.y);
       placed.push(finalBox);
       if (placement.x || placement.y)
@@ -521,6 +559,16 @@ export function mountTopology(root: HTMLElement) {
           yaw + Math.sin(orbit * 0.00018) * (touch.matches ? 0.25 : 0.58),
           0,
         );
+        // On H5 the graph orbits around the selected node, easing each newly
+        // cycled sector into the centre.
+        if (touch.matches)
+          graph.position.add(
+            centreOffset(
+              graph.position,
+              graph.rotation,
+              centreShift,
+            ).multiplyScalar(1 - Math.pow(0.001, delta / 900)),
+          );
         if (cycle >= CYCLE_MS) {
           const next = sectors[(sectors.indexOf(active) + 1) % sectors.length];
           root.dispatchEvent(
@@ -694,6 +742,9 @@ export function mountTopology(root: HTMLElement) {
   });
   select();
   size();
+  // A hover or click before this module loaded already chose the sector;
+  // bring it to the front now that the scene can respond.
+  if (held()) focusActive();
   window.addEventListener('pagehide', (event) => {
     if (event.persisted) {
       visible = false;

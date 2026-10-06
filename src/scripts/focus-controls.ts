@@ -114,6 +114,8 @@ export function mountFocusControls(root: HTMLElement) {
       if (target.dataset.sector)
         target.addEventListener('click', () => {
           const alreadyCurrent = current === id;
+          // H5 taps on the auto-cycled sector still bring it to the front.
+          const orbiting = touch.matches && root.dataset.focusMode === 'auto';
           const resume = root.dataset.focusPinned === 'true' && alreadyCurrent;
           root.dataset.focusPinned = String(!resume);
           root.dataset.focusMode = resume ? 'auto' : 'paused';
@@ -125,7 +127,7 @@ export function mountFocusControls(root: HTMLElement) {
           // Keep the document fixed. The WebGL scene owns the transition that
           // brings a newly selected sector to the front and centre of its
           // canvas; the current one stays where it was clicked.
-          if (!alreadyCurrent)
+          if (!alreadyCurrent || orbiting)
             root.dispatchEvent(
               new CustomEvent('focusfront', {
                 detail: { immediate: reduceMotion.matches },

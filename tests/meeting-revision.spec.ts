@@ -612,15 +612,15 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       box!.y + box!.height * 0.36,
       { steps: 8 },
     );
-    await page.mouse.up();
-    await expect(scene).toHaveAttribute('data-dragged', 'true');
-    await expect
-      .poll(() => scene.getAttribute('data-rotation'))
-      .not.toBe(rotation);
+    // Read the pose before release: afterwards it springs back to the front.
+    await expect(scene).toHaveAttribute('data-dragging', 'true');
+    expect(await scene.getAttribute('data-rotation')).not.toBe(rotation);
     const draggedRotation = (await scene.getAttribute('data-rotation'))!
       .split(',')
       .map(Number);
     expect(Math.max(...draggedRotation.map(Math.abs))).toBeGreaterThan(0.15);
+    await page.mouse.up();
+    await expect(scene).toHaveAttribute('data-dragged', 'true');
     await expect(scene).toHaveAttribute('data-camera-state', 'front', {
       timeout: 2500,
     });
@@ -635,7 +635,14 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       .toBeLessThan(0.01);
   }
   const star = page.locator('[data-sector=physical]');
-  await star.click();
+  const framesBeforeClick = await scene.getAttribute('data-render-frames');
+  // The orbiting node can slip from under a click computed a frame earlier.
+  await expect(async () => {
+    await star.click();
+    await expect(star).toHaveAttribute('aria-pressed', 'true', {
+      timeout: 1000,
+    });
+  }).toPass();
   await star.hover();
   if ((await scene.getAttribute('data-renderer')) === 'webgl') {
     await expect(star.locator('.star-glyph')).toHaveCSS('filter', 'none');
@@ -662,10 +669,11 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       'background-color',
       'rgb(255, 255, 255)',
     );
-    const value = await scene.getAttribute('data-render-frames');
+    // A click pins the sector; the scene redraws into that pose, then its
+    // render loop may rest until the next interaction.
     await expect
       .poll(() => scene.getAttribute('data-render-frames'))
-      .not.toBe(value);
+      .not.toBe(framesBeforeClick);
     await expect(page.locator('[data-motion-toggle]')).toHaveCount(0);
     await page.locator('.opening-title').scrollIntoViewIfNeeded();
     await expect(scene).toHaveAttribute('data-running', 'false');

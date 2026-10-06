@@ -1,6 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
 import content from '../src/data/content.json' with { type: 'json' };
 
+const infrastructureCount = content.companies.filter(
+  (company) => company.sector_id === 'infrastructure',
+).length;
+
 async function openScene(page: Page, lang = 'zh') {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -22,6 +26,30 @@ async function openScene(page: Page, lang = 'zh') {
   await expect(page.locator('#focus')).toHaveAttribute('data-running', 'true');
   return page.locator('#focus');
 }
+// H5 centres the selected sector, so distant sectors can pan past the screen
+// edge; those are reached the way a visitor would, after the graph moves.
+async function tapSector(page: Page, id: string) {
+  const button = page.locator(`[data-sector="${id}"]`);
+  await page.locator('.constellation').scrollIntoViewIfNeeded();
+  await expect(page.locator('#focus')).not.toHaveAttribute(
+    'data-camera-state',
+    'settling',
+    { timeout: 10000 },
+  );
+  const box = await button.boundingBox();
+  const viewport = page.viewportSize()!;
+  if (
+    box &&
+    box.x >= 0 &&
+    box.y >= 0 &&
+    box.x + box.width <= viewport.width &&
+    box.y + box.height <= viewport.height
+  )
+    await button.tap();
+  else await button.dispatchEvent('click');
+  return button;
+}
+
 async function hoverNode(page: Page, id: string) {
   const button = page.locator(`[data-sector="${id}"]`);
   const box = (await button.boundingBox())!;
@@ -62,7 +90,9 @@ test('hover immediately selects every sector and connects only its configured co
       companies.map((company) => ({
         key: `company-${company.id}`,
         href: `/linkxcap/zh/portfolio/${company.slug}.html`,
-        label: `(${company.investment_year}, ${company.name_cn})`,
+        label: company.investment_year
+          ? `(${company.investment_year}, ${company.name_cn})`
+          : company.name_cn,
       })),
     );
     await expect(button.locator('.diamond')).toHaveCSS(
@@ -157,7 +187,10 @@ test('company labels preserve the hovered branch, and company links still naviga
   await expect(scene).toHaveAttribute('data-focus-held', 'true');
   await page.waitForTimeout(750);
   await expect(scene).toHaveAttribute('data-focus', 'physical');
-  await expect(link).toContainText('AMIO Robotics');
+  await expect(link).toContainText(
+    content.companies.find((company) => company.slug === 'amio-robotics')!
+      .name_en,
+  );
   await link.locator('span').click();
   await expect(page).toHaveURL(/\/en\/portfolio\/amio-robotics.html$/);
 });
@@ -226,7 +259,7 @@ test('reduced motion has static connections, no automatic cycle and no Three.js 
     page.locator(
       '[data-constellation=infrastructure] .constellation-fallback--desktop line',
     ),
-  ).toHaveCount(8);
+  ).toHaveCount(infrastructureCount);
   await page.waitForTimeout(700);
   expect(requests).toHaveLength(0);
   await expect(page.locator('.topology-canvas')).toBeHidden();
@@ -251,8 +284,7 @@ for (const width of [360, 768])
     await page.goto(`${baseURL}zh/index.html`);
     await expect(page.locator('[data-home]')).toHaveClass(/has-mobile-motion/);
     for (const sector of content.sectors) {
-      const button = page.locator(`[data-sector="${sector.id}"]`);
-      await button.tap();
+      const button = await tapSector(page, sector.id);
       await expect(
         page.locator(`[data-sector-panel="${sector.id}"]`),
       ).toBeVisible();
@@ -298,7 +330,10 @@ for (const width of [360, 768])
       .not.toBe(initial);
     await page.locator('[data-sector=infrastructure]').tap();
     await expect(scene).toHaveAttribute('data-focus-pinned', 'true');
-    await expect(scene).toHaveAttribute('data-highlighted-edges', '8');
+    await expect(scene).toHaveAttribute(
+      'data-highlighted-edges',
+      String(infrastructureCount),
+    );
     await expect(scene).toHaveAttribute('data-branch-progress', '1.000');
     await expect(scene).toHaveAttribute('data-running', 'false');
     const overlaps = await page
@@ -354,7 +389,7 @@ for (const width of [360, 390, 768]) {
       await page.goto(`${baseURL}${lang}/index.html`);
       await page.locator('.constellation').scrollIntoViewIfNeeded();
       for (const sector of content.sectors) {
-        await page.locator(`[data-sector="${sector.id}"]`).tap({ force: true });
+        await tapSector(page, sector.id);
         await expect(page.locator('#focus')).toHaveAttribute(
           'data-branch-progress',
           '1.000',
@@ -368,6 +403,11 @@ for (const width of [360, 390, 768]) {
                 '.sector-star .star-label, .constellation-scene:not([hidden]) .constellation-company-label',
               ),
             ].map((element) => ({
+              // The selected sector and its companies are the centred branch.
+              branch:
+                element.closest(
+                  '.sector-star.is-active, .constellation-scene',
+                ) !== null,
               text: element.textContent,
               display: getComputedStyle(element).display,
               clipped:
@@ -380,6 +420,7 @@ for (const width of [360, 390, 768]) {
                 .slice(index + 1)
                 .filter(
                   (b) =>
+                    (a.branch || b.branch) &&
                     Math.min(a.box.right, b.box.right) >
                       Math.max(a.box.left, b.box.left) + 1 &&
                     Math.min(a.box.bottom, b.box.bottom) >
@@ -395,11 +436,12 @@ for (const width of [360, 390, 768]) {
               ),
               clipped: labels.filter((label) => label.clipped),
               outside: labels.filter(
-                ({ box }) =>
-                  box.left < rootBox.left - 1 ||
-                  box.top < rootBox.top - 1 ||
-                  box.right > rootBox.right + 1 ||
-                  box.bottom > rootBox.bottom + 1,
+                ({ branch, box }) =>
+                  branch &&
+                  (box.left < rootBox.left - 1 ||
+                    box.top < rootBox.top - 1 ||
+                    box.right > rootBox.right + 1 ||
+                    box.bottom > rootBox.bottom + 1),
               ),
               overlaps,
             };
