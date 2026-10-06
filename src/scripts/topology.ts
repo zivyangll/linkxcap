@@ -9,6 +9,7 @@ import {
   LineSegments,
   LineBasicMaterial,
   Vector3,
+  Euler,
 } from 'three';
 
 type Anchor = {
@@ -25,6 +26,9 @@ const BRANCH_MS = 620;
 const FOCUS_DEPTH = 240;
 const FOCUS_BRANCH_RADIUS_X = 340;
 const FOCUS_BRANCH_RADIUS_Y = 270;
+// On desktop the selected node stays inside the right two thirds of the
+// viewport, at least this far from either edge of that region.
+const SAFE_AREA_MARGIN = 200;
 const branchPose = (index: number, count: number) => ({
   angle:
     -Math.PI / 2 +
@@ -144,6 +148,26 @@ export function mountTopology(root: HTMLElement) {
   const branchStart = new Vector3();
   const branchEnd = new Vector3();
   const enabled = () => motion.matches && !lost && !disposed;
+  const safePoint = new Vector3();
+  const frontRotation = new Euler();
+  // Shifts a graph position horizontally so the selected node, under the
+  // given rotation, projects inside the desktop safe area. Projection is
+  // linear in world x at a fixed depth, so one correction is exact.
+  const keepActiveInSafeArea = (position: Vector3, rotation: Euler) => {
+    if (touch.matches || !width) return;
+    const left = stage.getBoundingClientRect().left;
+    const min = innerWidth / 3 + SAFE_AREA_MARGIN - left;
+    const max = innerWidth - SAFE_AREA_MARGIN - left;
+    if (min > max) return;
+    renderPoint(active, safePoint).applyEuler(rotation).add(position);
+    const depth = camera.position.z - safePoint.z;
+    const x = ((safePoint.clone().project(camera).x + 1) * width) / 2;
+    const clamped = Math.min(max, Math.max(min, x));
+    if (clamped === x || depth <= 0) return;
+    const visibleWidth =
+      2 * Math.tan((camera.fov * Math.PI) / 360) * depth * camera.aspect;
+    position.x += ((clamped - x) * visibleWidth) / width;
+  };
   const held = () =>
     root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
   const clearProjection = () =>
@@ -166,6 +190,10 @@ export function mountTopology(root: HTMLElement) {
       homePosition.x * perspective - active.origin.x,
       homePosition.y * perspective - active.origin.y,
       homePosition.z,
+    );
+    keepActiveInSafeArea(
+      targetPosition,
+      frontRotation.set(targetPitch, targetYaw, 0),
     );
   };
   const renderPoint = (anchor: Anchor, target: Vector3) => {
@@ -320,6 +348,7 @@ export function mountTopology(root: HTMLElement) {
   }
   function draw() {
     if (!enabled() || !width) return;
+    if (!dragging) keepActiveInSafeArea(graph.position, graph.rotation);
     graph.updateMatrixWorld(true);
     for (const anchor of anchors) {
       if (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
