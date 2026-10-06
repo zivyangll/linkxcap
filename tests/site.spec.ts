@@ -159,20 +159,20 @@ test('phone Fellow sections use a non-overlapping natural flow', async ({
     const intro = box('.fellow-intro');
     const media = box('.fellow-media-section');
     const title = box('.fellow-media-title');
-    const video = box('[data-video-shell]');
+    const portrait = box('.fellow-media-figure');
     const caption = box('.fellow-media-caption');
     return {
       introBottom: intro.bottom,
       mediaTop: media.top,
       titleBottom: title.bottom,
-      videoTop: video.top,
-      videoBottom: video.bottom,
+      portraitTop: portrait.top,
+      portraitBottom: portrait.bottom,
       captionTop: caption.top,
     };
   });
   expect(boxes.mediaTop).toBeCloseTo(boxes.introBottom, 0);
-  expect(boxes.titleBottom).toBeLessThan(boxes.videoTop);
-  expect(boxes.videoBottom).toBeLessThan(boxes.captionTop);
+  expect(boxes.titleBottom).toBeLessThan(boxes.portraitTop);
+  expect(boxes.portraitBottom).toBeLessThan(boxes.captionTop);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
 test('focus controls and reduced motion', async ({ page }) => {

@@ -142,36 +142,6 @@
   }
 }
 
-/* Normalize each portrait's visible drawing instead of its transparent canvas. */
-body .team-review .team-member:nth-child(n) .member-portrait img {
-  left: 50%;
-  top: var(--portrait-top, -4.0083%);
-  width: auto;
-  height: var(--portrait-height, 91.8598%);
-  transform: translateX(-50%);
-  object-fit: contain;
-}
-
-.member-portrait img[src$='team-alex.webp'] {
-  --portrait-height: 88.0935%;
-  --portrait-top: -4.3424%;
-}
-
-.member-portrait img[src$='team-elliot.webp'] {
-  --portrait-height: 94.0577%;
-  --portrait-top: -4.8446%;
-}
-
-.member-portrait img[src$='team-leo.webp'] {
-  --portrait-height: 91.8598%;
-  --portrait-top: -4.0083%;
-}
-
-.member-portrait img[src$='team-wenjue.webp'] {
-  --portrait-height: 84.6457%;
-  --portrait-top: -1.4258%;
-}
-
 @media (min-width: 1024px) {
   /* Every portfolio mark uses the same quiet bounding box. Logos in
      public/company are pre-trimmed, so no mark can dominate its card. */
@@ -217,22 +187,6 @@ body .team-review .team-bio::-webkit-scrollbar {
 .team-review .profile-toggle:focus-visible,
 .team-review .team-bio:focus-visible {
   outline: 2px solid var(--purple);
-  outline-offset: -4px;
-}
-.fellow-video-shell {
-  background: #151319;
-  isolation: isolate;
-}
-.fellow-video-shell video {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: transparent;
-  cursor: pointer;
-}
-.fellow-video-shell video:focus-visible {
-  outline: 2px solid #fff;
   outline-offset: -4px;
 }
 /* Avoid pale rectangular seams in decorative exports. */
@@ -413,9 +367,6 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   .fellow-intro .next-subtitle-fill {
     color: var(--ink);
-  }
-  .fellow-video-shell {
-    border: none;
   }
   .fellow-intro *,
   .portfolio-card *,

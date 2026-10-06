@@ -104,9 +104,11 @@
   "home-bg": {
     "paperTexture": "/assets/figma/c2722ee4e0c5981d.webp",
     "paperMask": "/assets/figma/095f933b8209d199.svg",
-    "focusNebula": "/assets/figma/ddad482f4d3061ca.webp",
     "focusMilkyWay": "/assets/figma/100125c50b47a8d2.webp",
     "focusStarsMp4": "/assets/figma/da27aa3b0897b578.mp4",
     "focusStarsPoster": "/assets/figma/07361c9eb86728c9.webp"
+  },
+  "fellow": {
+    "groupPortrait": "/assets/figma/c812b11cb1ebb196.webp"
   }
 }

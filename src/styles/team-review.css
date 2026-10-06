@@ -73,9 +73,10 @@ body .team-review {
 .team-review .member-portrait img {
   position: absolute;
   left: 8%;
-  top: 5%;
+  top: 3%;
   width: 84%;
-  height: 84%;
+  /* Ends above the name and role at the bottom of the card. */
+  height: 80%;
   object-fit: contain;
   object-position: center bottom;
   filter: none;
@@ -193,7 +194,7 @@ body .team-review {
 @media (min-width: 1024px) {
   body .team-review {
     min-height: calc(1080 * var(--u));
-    padding: calc(194 * var(--u)) 0 0;
+    padding: calc(194 * var(--u)) 0 calc(125 * var(--u));
   }
 
   .team-review .team-review-heading {
@@ -206,13 +207,32 @@ body .team-review {
   }
 
   .team-review .team-review-title {
+    position: relative;
     flex: 1 1 auto;
     min-width: 0;
-    padding-right: calc(60 * var(--u));
+    padding-right: calc(40 * var(--u));
+  }
+
+  /* Figma has no eyebrow: keep the copy's page name above the title so the
+     two title lines still start at y 194 and 257. */
+  .team-review .team-review-title .eyebrow {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 14 * var(--u));
+    margin: 0;
   }
 
   .team-review .team-review-title .page-title {
-    font-size: calc(48 * var(--u));
+    font-size: calc(52.25 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+    text-wrap: nowrap;
+  }
+
+  .team-review .team-review-title .page-title span + span,
+  .team-review .team-review-title .page-title span[lang='en'] {
+    margin-top: 0;
+    font-size: 1em;
   }
 
   .team-review .team-review-heading > p {
@@ -224,62 +244,96 @@ body .team-review {
     font-size: max(10px, calc(14 * var(--u)));
     line-height: 1.5;
     letter-spacing: -0.05em;
-    text-align: left;
+    text-align: right;
   }
 
   .team-review .team-explorer {
     margin: 0;
   }
 
+  /* Figma 255:181 (1920 × 1854): columns 680 / 560 / 680, lines at
+     y 392 and 1050, column rules from 392 to 1729, all black at 30%. */
   .team-review .team-portraits {
-    grid-template-columns: 35.4166667% 29.1666667% 35.4166666%;
-    height: calc(658 * var(--u));
+    grid-template-columns:
+      calc(680 * var(--u)) calc(560 * var(--u))
+      calc(680 * var(--u));
+    grid-template-rows: calc(658 * var(--u)) calc(678 * var(--u));
+    height: auto;
+    border-top-color: rgb(0 0 0 / 30%);
   }
 
   .team-review .team-member {
-    height: calc(658 * var(--u));
+    height: auto;
     border-bottom: 0;
     overflow: visible;
   }
 
-  .team-review .team-member:not(:last-child) {
-    border-right: 1px solid rgb(29 29 29 / 20%);
+  .team-review .team-member:nth-child(-n + 3) {
+    border-bottom: 1px solid rgb(0 0 0 / 30%);
   }
 
-  .team-review .member-portrait img {
+  .team-review .team-member:not(:nth-child(3n)) {
+    border-right: 1px solid rgb(0 0 0 / 30%);
+  }
+
+  /* Portraits are 407 × 509 at each slot's Figma offset from its cell. */
+  .team-review .team-member .member-portrait img {
     inset: auto;
+    left: var(--portrait-x);
+    top: var(--portrait-y);
+    width: calc(407 * var(--u));
+    height: calc(509 * var(--u));
     max-width: none;
+    object-fit: contain;
+    object-position: center;
   }
 
-  .team-review .team-member:nth-child(1) .member-portrait img {
-    left: calc(229 * var(--u));
-    top: calc(37 * var(--u));
-    width: calc(396.021 * var(--u));
-    height: calc(595 * var(--u));
+  .team-review .team-member:nth-child(1) {
+    --portrait-x: calc(224 * var(--u));
+    --portrait-y: calc(71 * var(--u));
   }
 
-  .team-review .team-member:nth-child(2) .member-portrait img {
-    left: calc(94 * var(--u));
-    top: calc(56 * var(--u));
-    width: calc(361 * var(--u));
-    height: calc(552 * var(--u));
+  .team-review .team-member:nth-child(2) {
+    --portrait-x: calc(76 * var(--u));
+    --portrait-y: calc(62 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(3) {
+    --portrait-x: calc(77 * var(--u));
+    --portrait-y: calc(56 * var(--u));
   }
 
   .team-review .team-member:nth-child(3) .member-portrait img {
-    left: calc(33 * var(--u));
-    top: calc(56 * var(--u));
-    width: calc(406.969 * var(--u));
-    height: calc(543 * var(--u));
+    width: calc(408 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(4) {
+    --portrait-x: calc(224 * var(--u));
+    --portrait-y: calc(69 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(5) {
+    --portrait-x: calc(76 * var(--u));
+    --portrait-y: calc(69 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(6) {
+    --portrait-x: calc(78 * var(--u));
+    --portrait-y: calc(69 * var(--u));
   }
 
   .team-review .member-caption {
     left: calc(50 * var(--u));
     bottom: auto;
-    top: calc(557 * var(--u));
+    top: calc(556 * var(--u));
   }
 
-  .team-review .team-member:first-child .member-caption {
+  .team-review .team-member:nth-child(3n + 1) .member-caption {
     left: calc(219 * var(--u));
+  }
+
+  .team-review .team-member:nth-child(n + 4) .member-caption {
+    top: calc(593 * var(--u));
   }
 
   .team-review .member-caption strong {
@@ -322,15 +376,6 @@ body .team-review {
       var(--paper-alt);
   }
 
-  .team-review .team-member:first-child .team-bio {
-    right: calc(20 * var(--u));
-  }
-
-  .team-review .team-member:nth-child(2) .team-bio,
-  .team-review .team-member:last-child .team-bio {
-    left: calc(20 * var(--u));
-  }
-
   .team-review .team-bio h2 {
     font-size: calc(40 * var(--u));
   }
@@ -359,31 +404,12 @@ body .team-review {
     gap: calc(40 * var(--u));
   }
 
-  .team-review .team-portraits {
-    grid-template-columns: repeat(3, 1fr);
-    height: auto;
-  }
-
-  .team-review .team-member {
-    border-bottom: 1px solid rgb(29 29 29 / 20%);
-    overflow: hidden;
-  }
-
-  .team-review .team-member:nth-child(n) .member-portrait img {
-    left: 8%;
-    top: 5%;
-    width: 84%;
-    height: 84%;
-  }
-
-  .team-review .team-member:first-child .member-caption {
-    left: calc(50 * var(--u));
-  }
-
+  /* The card keeps the same 20px inset in the wide and narrow columns. */
   .team-review .team-member:nth-child(n) .team-bio {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
+    left: calc(20 * var(--u));
+    right: calc(20 * var(--u));
+    width: auto;
+    transform: none;
   }
 }
 

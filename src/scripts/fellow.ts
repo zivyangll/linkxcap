@@ -3,17 +3,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { DESKTOP_MOTION } from './motion-policy';
 export function initFellow() {
   gsap.registerPlugin(ScrollTrigger);
-  const root = document.querySelector<HTMLElement>('[data-fellow-media]');
-  if (!root) return;
-  let expanded = false;
-  const setExpanded = (next: boolean) => {
-    if (expanded === next) return;
-    expanded = next;
-    root.dataset.mediaExpanded = String(next);
-    root.dispatchEvent(
-      new CustomEvent('fellowmediachange', { detail: { expanded: next } }),
-    );
-  };
+  if (!document.querySelector('[data-fellow-media]')) return;
   const media = gsap.matchMedia();
   media.add(DESKTOP_MOTION, () => {
     const intro = document.querySelector('.fellow-intro')!;
@@ -122,45 +112,6 @@ export function initFellow() {
         0.65,
       );
     }
-    const timeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: root,
-        start: desktop ? 'top top' : 'top 30%',
-        end: desktop ? '+=110%' : 'bottom 25%',
-        pin: desktop,
-        scrub: 0.4,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          root.dataset.mediaProgress = self.progress.toFixed(3);
-          setExpanded(self.progress >= 0.8);
-        },
-      },
-    });
-    timeline.to(
-      '.fellow-video-shell',
-      {
-        width: desktop ? '80.8854167%' : '100%',
-        top: desktop ? () => (root.clientWidth * 201) / 1920 : undefined,
-        height: desktop ? () => (root.clientWidth * 771) / 1920 : 'auto',
-        duration: 1,
-        ease: 'none',
-      },
-      0,
-    );
-    if (desktop)
-      timeline.to(
-        '.fellow-media-title',
-        { opacity: 0, y: -60, duration: 0.25 },
-        0.45,
-      );
-    if (desktop)
-      timeline.to('.fellow-media-orbit', { opacity: 0, duration: 0.35 }, 0.55);
-    timeline.fromTo(
-      '.fellow-media-caption',
-      { opacity: 0 },
-      { opacity: 1, duration: 0.2 },
-      0.8,
-    );
     const contactHero = document.querySelector<HTMLElement>('.contact-hero');
     if (contactHero) {
       const guides = [
@@ -187,9 +138,40 @@ export function initFellow() {
   window.addEventListener(
     'pagehide',
     () => {
-      setExpanded(false);
       media.revert();
     },
     { once: true },
   );
+}
+
+// Apple-style reveal on every device: the group portrait grows to its Figma
+// size while it scrolls up into view, and shrinks again when scrolling back.
+export function initFellowPortrait() {
+  gsap.registerPlugin(ScrollTrigger);
+  const figure = document.querySelector<HTMLElement>('.fellow-media-figure');
+  if (!figure) return;
+  const media = gsap.matchMedia();
+  media.add('(prefers-reduced-motion: no-preference)', () => {
+    gsap.fromTo(
+      figure,
+      { scale: 0.7 },
+      {
+        scale: 1,
+        ease: 'none',
+        transformOrigin: '50% 50%',
+        scrollTrigger: {
+          trigger: figure,
+          start: 'top bottom',
+          // Full size exactly when the screen matches the Figma frame.
+          endTrigger: figure.closest('[data-fellow-media]') || figure,
+          end: 'top top',
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+          // Measure after the pinned intro above, whose spacer moves this.
+          refreshPriority: -1,
+        },
+      },
+    );
+  });
+  window.addEventListener('pagehide', () => media.revert(), { once: true });
 }

@@ -75,8 +75,11 @@ export function mountFocusControls(root: HTMLElement) {
         pointer = target;
         target.dataset.hovered = 'true';
         hold();
+        // The current node only holds still under the cursor so it can be
+        // grabbed; re-posing it would slide it away from the pointer.
+        const alreadyCurrent = current === id;
         select(id);
-        if (target.dataset.sector)
+        if (target.dataset.sector && !alreadyCurrent)
           root.dispatchEvent(
             new CustomEvent('focusfront', {
               detail: { immediate: reduceMotion.matches },
@@ -110,7 +113,8 @@ export function mountFocusControls(root: HTMLElement) {
       });
       if (target.dataset.sector)
         target.addEventListener('click', () => {
-          const resume = root.dataset.focusPinned === 'true' && current === id;
+          const alreadyCurrent = current === id;
+          const resume = root.dataset.focusPinned === 'true' && alreadyCurrent;
           root.dataset.focusPinned = String(!resume);
           root.dataset.focusMode = resume ? 'auto' : 'paused';
           pointer = keyboard = null;
@@ -119,12 +123,14 @@ export function mountFocusControls(root: HTMLElement) {
           select(id);
           root.dispatchEvent(new Event('focushold'));
           // Keep the document fixed. The WebGL scene owns the transition that
-          // brings the selected sector to the front and centre of its canvas.
-          root.dispatchEvent(
-            new CustomEvent('focusfront', {
-              detail: { immediate: reduceMotion.matches },
-            }),
-          );
+          // brings a newly selected sector to the front and centre of its
+          // canvas; the current one stays where it was clicked.
+          if (!alreadyCurrent)
+            root.dispatchEvent(
+              new CustomEvent('focusfront', {
+                detail: { immediate: reduceMotion.matches },
+              }),
+            );
         });
     });
   const releaseBackgroundHover = (event: PointerEvent) => {

@@ -746,52 +746,20 @@
   line-height: 1.2;
   margin-top: calc(20 * var(--u));
 }
-.fellow-video-shell {
+.fellow-media-figure {
   position: absolute;
-  left: 50%;
-  top: calc(414 * var(--u));
-  transform: translateX(-50%);
-  width: 57.34375%;
-  height: calc(547 * var(--u));
-  background: #e4e2de;
-  border-radius: 2px;
-  overflow: hidden;
+  left: calc(310 * var(--u));
+  top: calc(461 * var(--u));
+  width: calc(1311 * var(--u));
+  height: calc(441 * var(--u));
+  margin: 0;
   z-index: 2;
 }
-.fellow-video-shell video {
+.fellow-media-figure img {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-.fellow-video-placeholder {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-}
-.fellow-video-placeholder > p {
-  position: absolute;
-  bottom: 24px;
-  color: #8a8383;
-  font: 12px var(--sans);
-  letter-spacing: 0.1em;
-}
-.fellow-play {
-  position: relative;
-  width: clamp(64px, 6.09375vw, 117px);
-  aspect-ratio: 1;
-}
-.fellow-play img:first-child {
-  width: 100%;
-  height: 100%;
-}
-.fellow-play img:last-child {
-  position: absolute;
-  left: 38.4%;
-  top: 30.77%;
-  width: 35%;
-  height: 39.3%;
+  object-fit: contain;
 }
 .fellow-media-caption {
   position: absolute;
@@ -936,10 +904,13 @@
     font-size: 32px;
     margin-top: 16px;
   }
-  .fellow-video-shell {
+  .fellow-media-figure {
+    left: 50%;
     top: 260px;
-    height: 330px;
-    width: 75%;
+    width: 82%;
+    height: auto;
+    aspect-ratio: 1311 / 441;
+    translate: -50% 0;
   }
   .fellow-media-section {
     height: 690px;
@@ -1113,11 +1084,13 @@
   .fellow-media-title p {
     font-size: 28px;
   }
-  .fellow-video-shell {
+  .fellow-media-figure {
+    left: 50%;
     top: 250px;
-    width: 82%;
+    width: 88%;
     height: auto;
-    aspect-ratio: 16/10;
+    aspect-ratio: 1311 / 441;
+    translate: -50% 0;
   }
   .fellow-media-caption {
     left: 8%;
@@ -1125,10 +1098,6 @@
     bottom: 60px;
     line-height: 1.7;
     font-size: 13px;
-  }
-  .fellow-video-placeholder > p {
-    font-size: 10px;
-    bottom: 16px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1737,15 +1706,15 @@
     font-size: clamp(27px, 8vw, 34px);
   }
 
-  .fellow-video-shell {
+  .fellow-media-figure {
     position: relative;
     inset: auto;
     order: 1;
-    width: 100% !important;
-    height: auto !important;
+    width: 100%;
+    height: auto;
     margin-top: 48px;
-    aspect-ratio: 16 / 10;
-    transform: none !important;
+    aspect-ratio: 1311 / 441;
+    translate: none;
   }
 
   .fellow-media-caption {

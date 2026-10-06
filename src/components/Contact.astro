@@ -5,15 +5,10 @@ import {
   socials,
   asset,
   contentAsset,
-  fellowMedia,
   type Lang,
 } from '../lib/site';
 import Arrow from './Arrow.astro';
 const { lang } = Astro.props as { lang: Lang };
-const media = {
-  src: fellowMedia.videoUrl,
-  poster: fellowMedia.posterUrl,
-};
 ---
 
 <section
@@ -123,44 +118,16 @@ const media = {
     <h2>{contactContent.signalTitle[lang]}</h2>
     <p>{contactContent.signalSubtitle[lang]}</p>
   </div>
-  <div class="fellow-video-shell" data-video-shell>
-    {media.src ? (
-      <video
-        data-fellow-video
-        playsinline
-        muted
-        loop
-        preload="none"
-        poster={media.poster || undefined}
-        tabindex="0"
-        role="button"
-        aria-label={
-          lang === 'zh' ? '点击暂停或播放视频' : 'Pause or play video'
-        }
-        aria-pressed="false"
-      >
-        <source src={media.src} type="video/mp4" />
-      </video>
-    ) : (
-      <div class="fellow-video-placeholder">
-        <span class="fellow-play" aria-hidden="true">
-          <img
-            src={asset('1811', 'imgEllipse16')}
-            width="117"
-            height="117"
-            alt=""
-          />
-          <img
-            src={asset('1811', 'imgRectangle636')}
-            width="41"
-            height="46"
-            alt=""
-          />
-        </span>
-        <p>{contactContent.videoPlaceholder[lang]}</p>
-      </div>
-    )}
-  </div>
+  <figure class="fellow-media-figure">
+    <img
+      src={asset('fellow', 'groupPortrait')}
+      width="2163"
+      height="727"
+      alt={contactContent.videoPlaceholder[lang]}
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
   <p class="fellow-media-caption">{contactContent.joinCopy[lang]}</p>
 </section>
 <section class="contact-hero" data-node-id="2002:2021">
@@ -239,9 +206,12 @@ const media = {
 </section>
 
 <script>
-  import { initInlineVideo } from '../scripts/inline-video';
   import { DESKTOP_MOTION } from '../scripts/motion-policy';
-  initInlineVideo();
+  import('../scripts/fellow')
+    .then((module) => module.initFellowPortrait())
+    .catch(() => {
+      /* The portrait simply stays at full size. */
+    });
   const desktop = matchMedia(DESKTOP_MOTION);
   let started = false;
   const start = () => {

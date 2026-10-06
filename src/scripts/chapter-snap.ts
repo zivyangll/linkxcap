@@ -150,7 +150,33 @@ export function mountChapterSnap(home: HTMLElement) {
   const onScroll = () => {
     settle();
   };
+  // While a chapter settles, the tween owns scrollY. Letting trackpad or key
+  // scrolling through would fight its per-frame scrollTo and visibly jitter.
+  const holdWhileSnapping = (event: WheelEvent | KeyboardEvent) => {
+    if (!tween || event.defaultPrevented) return;
+    if (event instanceof WheelEvent) {
+      if (!event.ctrlKey) event.preventDefault();
+      return;
+    }
+    if (
+      [
+        'ArrowDown',
+        'ArrowUp',
+        'PageDown',
+        'PageUp',
+        ' ',
+        'Home',
+        'End',
+      ].includes(event.key) &&
+      !(event.target as Element | null)?.closest(
+        'input, textarea, select, [contenteditable]',
+      )
+    )
+      event.preventDefault();
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('wheel', holdWhileSnapping, { passive: false });
+  window.addEventListener('keydown', holdWhileSnapping);
   window.addEventListener('wheel', navigate, { passive: true });
   window.addEventListener('keydown', navigate);
   window.addEventListener('pointerdown', cancel, { passive: true });
@@ -159,6 +185,8 @@ export function mountChapterSnap(home: HTMLElement) {
     cancel();
     measure.kill();
     window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('wheel', holdWhileSnapping);
+    window.removeEventListener('keydown', holdWhileSnapping);
     window.removeEventListener('wheel', navigate);
     window.removeEventListener('keydown', navigate);
     window.removeEventListener('pointerdown', cancel);

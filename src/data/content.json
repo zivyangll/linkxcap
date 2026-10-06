@@ -575,19 +575,6 @@
       "bio_en": "Elliott Wang served as Investment Director at Ceyuan Ventures and Managing Director at Hanfor Capital, building extensive experience in technology investing. He was previously a Director at Tencent and combines a background in telecommunications engineering with an MBA from Nanyang Technological University. He brings technical and commercial depth to assessing a venture's defensibility, product direction and market potential. His experience across investing and platform management informs how he evaluates strategic choices and capital needs as companies grow."
     },
     {
-      "id": "leo",
-      "slug": "leo",
-      "name_cn": "王晨",
-      "name_en": "Leo Wang",
-      "role_cn": "合伙人",
-      "role_en": "Partner",
-      "image_file": "team-leo.webp",
-      "summary_cn": "把战略判断带到实际增长与全球市场。",
-      "summary_en": "Connecting strategy with scale and global growth.",
-      "bio_cn": "王晨的职业经历横跨美团、快手与 SHAREit，涵盖战略、投资和全球化业务。他曾在美团从事战略与投资，负责快手投资发展工作，并担任 SHAREit 集团首席战略官。大型互联网平台与全球化业务的经历，使他熟悉企业从产品验证到规模增长所面临的关键选择。他尤其关注产品、资本与市场拓展如何协同，评估技术企业的增长路径与国际竞争力。",
-      "bio_en": "Leo Wang's career spans Meituan, Kuaishou and SHAREit, with experience across strategy, investment and global business. He worked in strategy and investment at Meituan, led investment development at Kuaishou and served as Chief Strategy Officer of SHAREit Group. These roles give him a practical understanding of the decisions companies face as they move from product validation to scale. He assesses how product strategy, capital and market expansion work together to build growth and international competitiveness."
-    },
-    {
       "id": "wenjue",
       "slug": "wenjue",
       "name_cn": "李文珏",
@@ -601,13 +588,26 @@
       "bio_en": "Wenjue Li served as Investment Director at Casstar and the Beijing Academy of Artificial Intelligence, bringing experience across technology investing and AI research institutions. Her close work with researchers and technical founders gives her insight into the transition from original research to company creation. She evaluates technical originality, founding teams and use cases to assess a discovery's commercial potential. With a particular focus on researcher-founders, she examines how technical advantages become products and support a company's long-term growth."
     },
     {
+      "id": "leo",
+      "slug": "leo",
+      "name_cn": "王晨",
+      "name_en": "Leo Wang",
+      "role_cn": "合伙人",
+      "role_en": "Partner",
+      "image_file": "team-leo.webp",
+      "summary_cn": "把战略判断带到实际增长与全球市场。",
+      "summary_en": "Connecting strategy with scale and global growth.",
+      "bio_cn": "王晨的职业经历横跨美团、快手与 SHAREit，涵盖战略、投资和全球化业务。他曾在美团从事战略与投资，负责快手投资发展工作，并担任 SHAREit 集团首席战略官。大型互联网平台与全球化业务的经历，使他熟悉企业从产品验证到规模增长所面临的关键选择。他尤其关注产品、资本与市场拓展如何协同，评估技术企业的增长路径与国际竞争力。",
+      "bio_en": "Leo Wang's career spans Meituan, Kuaishou and SHAREit, with experience across strategy, investment and global business. He worked in strategy and investment at Meituan, led investment development at Kuaishou and served as Chief Strategy Officer of SHAREit Group. These roles give him a practical understanding of the decisions companies face as they move from product validation to scale. He assesses how product strategy, capital and market expansion work together to build growth and international competitiveness."
+    },
+    {
       "id": "chris",
       "slug": "chris",
       "name_cn": "鲁亦纯",
       "name_en": "Chris Lu",
       "role_cn": "董事总经理",
       "role_en": "Managing Director",
-      "image_file": "team-leo.webp",
+      "image_file": "team-chris.webp",
       "summary_cn": "以严谨的投资判断，支持早期科技项目成长。",
       "summary_en": "A rigorous early-stage investor with hands-on incubation experience.",
       "bio_cn": "鲁亦纯曾在红点中国与红杉中国从事早期科技投资，具备研究、投资与项目孵化经验。她在伦敦大学学院完成数学与经济学本硕学业，将扎实的定量训练融入技术与商业判断。她以严谨的研究支持投资决策，并曾成功帮助早期项目完成孵化。她关注技术潜力、产品需求与团队执行力之间的关系，判断早期创新如何成长为具有持续竞争力的企业。",
@@ -620,7 +620,7 @@
       "name_en": "Emily Guan",
       "role_cn": "董事总经理",
       "role_en": "Managing Director",
-      "image_file": "team-leo.webp",
+      "image_file": "team-emily.webp",
       "summary_cn": "兼具工程背景与产业经验的科技投资人。",
       "summary_en": "A technology investor with an engineering background and industry experience.",
       "bio_cn": "关蕾兼具工程、产品与科技投资背景，教育经历涵盖电气工程及可再生能源。她曾在华锐风电与 ABB 从事产品相关工作，在新能源产业与全球工业企业积累了技术和产品经验。此后她加入红点创投中国基金，将产业一线的理解带入早期投资判断。她从技术实现、应用需求与商业化路径出发评估创业机会，尤其关注创新能否在真实场景中形成可靠产品并持续创造价值。",

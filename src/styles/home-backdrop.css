@@ -35,8 +35,8 @@
   object-fit: cover;
 }
 
-/* Focus: rotated nebula (color dodge) over the whole frame and the milky
-   way strip on the left (screen), both at 30%, plus the twinkling stars. */
+/* Focus: the milky way strip on the left (screen) at 30%, plus the twinkling
+   stars over the whole frame. */
 .focus-backdrop {
   position: absolute;
   inset: 0;
@@ -52,23 +52,15 @@
   opacity: 0.3;
 }
 
-.focus-backdrop :is(.focus-backdrop-nebula, .focus-backdrop-stars) {
+/* The designer's looping star clip keeps the rotated Figma frame; screen
+   drops its black ground so only the twinkling stars are added. */
+.focus-backdrop .focus-backdrop-stars {
   /* Figma bleed: x -58…1938, y -12…1111 on a 1920×1080 frame. */
   left: calc(-58 / 1920 * 100%);
   top: calc(-12 / 1080 * 100%);
   width: calc(1996 / 1920 * 100%);
   height: calc(1123 / 1080 * 100%);
   object-fit: cover;
-}
-
-.focus-backdrop-nebula {
-  mix-blend-mode: color-dodge;
-}
-
-/* The designer's looping star GIF shares the nebula's rotated frame; screen
-   drops its black ground so only the twinkling stars are added. */
-.focus-backdrop .focus-backdrop-stars {
-  opacity: 0.3;
   mix-blend-mode: screen;
 }
 

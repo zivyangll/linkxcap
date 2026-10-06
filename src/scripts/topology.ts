@@ -122,6 +122,12 @@ export function mountTopology(root: HTMLElement) {
     startY = 0,
     suppressClick = false;
   const NODE_DRAG_THRESHOLD = 4;
+  // While the selected node is the handle, the graph turns around that node:
+  // its world position stays fixed under the pointer for the whole drag.
+  let nodeDrag = false,
+    pinnedReturn = false;
+  const pivotWorld = new Vector3();
+  const pivotLocal = new Vector3();
   let yaw = 0,
     pitch = 0,
     yawVelocity = 0,
@@ -449,8 +455,13 @@ export function mountTopology(root: HTMLElement) {
         const correction = 1 - Math.pow(0.001, delta / 520);
         yaw += (targetYaw - yaw) * correction;
         pitch += (targetPitch - pitch) * correction;
-        graph.position.lerp(targetPosition, correction);
         graph.rotation.set(pitch, yaw, 0);
+        if (pinnedReturn) {
+          // After a node drag only the rotation springs back; the node stays
+          // exactly where it was released.
+          renderPoint(active, pivotLocal).applyEuler(graph.rotation);
+          graph.position.copy(pivotWorld).sub(pivotLocal);
+        } else graph.position.lerp(targetPosition, correction);
         if (
           Math.abs(targetYaw - yaw) < 0.001 &&
           Math.abs(targetPitch - pitch) < 0.001 &&
@@ -460,7 +471,7 @@ export function mountTopology(root: HTMLElement) {
           pitch = targetPitch;
           graph.rotation.set(pitch, yaw, 0);
           graph.position.copy(targetPosition);
-          correcting = false;
+          correcting = pinnedReturn = false;
           frontHoldUntil = time + 900;
           root.dataset.cameraState = 'front';
         }
@@ -567,6 +578,9 @@ export function mountTopology(root: HTMLElement) {
       startDrag(event);
       dragX = startX;
       dragY = startY;
+      nodeDrag = true;
+      graph.updateMatrixWorld();
+      renderPoint(active, pivotWorld).applyMatrix4(graph.matrixWorld);
     }
     if (!dragging || event.pointerId !== pointer) return;
     const dx = ((event.clientX - dragX) / width) * Math.PI * 1.2;
@@ -582,6 +596,10 @@ export function mountTopology(root: HTMLElement) {
       yaw + Math.sin(orbit * 0.00018) * (touch.matches ? 0.25 : 0.58),
       0,
     );
+    if (nodeDrag) {
+      renderPoint(active, pivotLocal).applyEuler(graph.rotation);
+      graph.position.copy(pivotWorld).sub(pivotLocal);
+    }
     draw();
   };
   const endDrag = (event: PointerEvent) => {
@@ -592,12 +610,20 @@ export function mountTopology(root: HTMLElement) {
     }
     if (!dragging || event.pointerId !== pointer) return;
     dragging = false;
+    const releasedNode = nodeDrag;
+    nodeDrag = false;
     cycle = 0;
     root.dataset.dragging = 'false';
     root.dataset.dragged = 'true';
     if (root.hasPointerCapture(pointer)) root.releasePointerCapture(pointer);
     pointer = -1;
     focusActive();
+    if (releasedNode) {
+      // The front pose has no rotation, so the pinned node's resting place is
+      // simply its released world position minus its local offset.
+      pinnedReturn = true;
+      targetPosition.copy(pivotWorld).sub(renderPoint(active, pivotLocal));
+    }
   };
   // Releasing a node drag must not also count as a click on that node.
   const swallowClick = (event: MouseEvent) => {

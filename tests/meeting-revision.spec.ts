@@ -445,7 +445,7 @@ test('all six portraits swap to the corresponding in-card biography', async ({
   expect(Math.max(...gaps) - Math.min(...gaps)).toBeLessThan(1);
 });
 
-test('Fellow arc moves, window expands, and the approved static message is shown', async ({
+test('Fellow arc moves and the group portrait replaces the video', async ({
   page,
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -489,37 +489,35 @@ test('Fellow arc moves, window expands, and the approved static message is shown
       markerBox.x + markerBox.width / 2 - (contextBox.x + contextBox.width / 2),
     ),
   ).toBeLessThan(1);
-  const initialVideo = (await page
-    .locator('[data-video-shell]')
-    .boundingBox())!;
-  const before = initialVideo.width;
-  expect(Math.abs(initialVideo.x + initialVideo.width / 2 - 720)).toBeLessThan(
-    1,
+  // Figma 251:96 replaces the video with a static group portrait.
+  await expect(page.locator('[data-fellow-video], video')).toHaveCount(0);
+  const portrait = page.locator('.fellow-media-figure img');
+  await expect(portrait).toHaveAttribute('alt', '让想法迈出下一步');
+  // Rest on the Figma frame: the portrait finishes its scroll-linked growth
+  // exactly when the section reaches the top of the viewport.
+  await page.evaluate(() =>
+    scrollTo(
+      0,
+      document.querySelector('[data-fellow-media]')!.getBoundingClientRect()
+        .top + scrollY,
+    ),
   );
-  const start = await page
-    .locator('[data-fellow-media]')
-    .evaluate((e) => e.getBoundingClientRect().top + scrollY);
-  await page.evaluate((y) => scrollTo(0, y + 900), start);
   await expect
-    .poll(
-      async () =>
-        (await page.locator('[data-video-shell]').boundingBox())!.width,
+    .poll(() =>
+      page
+        .locator('.fellow-media-figure')
+        .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a),
     )
-    .toBeGreaterThan(before + 200);
-  const expandedVideo = (await page
-    .locator('[data-video-shell]')
-    .boundingBox())!;
-  expect(
-    Math.abs(expandedVideo.x + expandedVideo.width / 2 - 720),
-  ).toBeLessThan(1);
-  await expect(page.locator('.fellow-video-placeholder')).toContainText(
-    '让想法迈出下一步',
-  );
-  await expect(page.locator('[data-fellow-video]')).toHaveCount(0);
-  await expect(page.locator('[data-fellow-media]')).toHaveAttribute(
-    'data-media-expanded',
-    'true',
-  );
+    .toBeCloseTo(1, 2);
+  await expect
+    .poll(() =>
+      portrait.evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  const figure = (await page.locator('.fellow-media-figure').boundingBox())!;
+  // Figma places it at x 310 of 1920 (slightly right of centre).
+  expect(Math.abs(figure.x - (310 * 1440) / 1920)).toBeLessThan(1);
+  expect(Math.abs(figure.width - (1311 * 1440) / 1920)).toBeLessThan(1);
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({
@@ -589,7 +587,15 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       'data-highlighted-node',
       'sector-foundation',
     );
-    await expect(scene).toHaveAttribute('data-highlighted-edges', '4');
+    // One highlighted edge per company configured for the sector.
+    await expect(scene).toHaveAttribute(
+      'data-highlighted-edges',
+      String(
+        await page
+          .locator('.constellation-company[data-focus-sector=foundation]')
+          .count(),
+      ),
+    );
     await expect(
       page.locator('[data-topology-anchor=company-zhipu-ai]').first(),
     ).toHaveAttribute('data-topology-state', 'connected');
@@ -638,11 +644,14 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       'data-highlighted-node',
       'sector-physical',
     );
+    const physicalCompanies = await page
+      .locator('.constellation-company[data-focus-sector=physical]')
+      .count();
     await expect
       .poll(async () =>
         Number(await scene.getAttribute('data-highlighted-edges')),
       )
-      .toBe(3);
+      .toBe(physicalCompanies);
     await expect(
       page.locator('[data-topology-anchor=sector-infrastructure]'),
     ).toHaveAttribute('data-topology-state', 'unrelated');

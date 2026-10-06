@@ -408,37 +408,24 @@ test('image loading holder settles and failed images show their label', async ({
   );
 });
 
-test('mobile video autoplays when visible and toggles on direct click', async ({
+test('mobile Fellow media is the static group portrait, not a video', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   const requests: string[] = [];
   page.on('request', (request) => {
-    if (request.url().endsWith('video_example.mp4'))
-      requests.push(request.url());
+    if (/\.(mp4|webm)$/.test(request.url())) requests.push(request.url());
   });
   await page.goto('zh/contact.html');
-  const video = page.locator('[data-fellow-video]');
-  await video.scrollIntoViewIfNeeded();
-  await expect(video.locator('source')).toHaveAttribute(
-    'src',
-    '/linkxcap/assets/video_example.mp4',
-  );
+  const portrait = page.locator('.fellow-media-figure img');
+  await portrait.scrollIntoViewIfNeeded();
   await expect
-    .poll(() => video.evaluate((el) => (el as HTMLVideoElement).currentTime))
-    .toBeGreaterThan(0.05);
-  await video.click();
-  await expect
-    .poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused))
-    .toBe(true);
-  await video.click();
-  await expect
-    .poll(() => video.evaluate((el) => (el as HTMLVideoElement).paused))
-    .toBe(false);
-  await expect(page.locator('dialog[open]')).toHaveCount(0);
-  await expect(video).toHaveAttribute('playsinline', '');
-  await expect(page.locator('[data-video-play]')).toHaveCount(0);
-  expect(requests.length).toBeGreaterThan(0);
+    .poll(() =>
+      portrait.evaluate((img) => (img as HTMLImageElement).naturalWidth),
+    )
+    .toBeGreaterThan(0);
+  await expect(page.locator('video')).toHaveCount(0);
+  expect(requests).toEqual([]);
 });
 
 for (const lang of ['zh', 'en'])
