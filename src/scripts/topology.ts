@@ -151,23 +151,31 @@ export function mountTopology(root: HTMLElement) {
   const safePoint = new Vector3();
   const centreShift = new Vector3();
   const frontRotation = new Euler();
-  // Shifts a graph position horizontally so the selected node, under the
-  // given rotation, projects inside the desktop safe area. Projection is
-  // linear in world x at a fixed depth, so one correction is exact.
+  // Shifts a graph position so the selected node, under the given rotation,
+  // projects inside the desktop safe area: the right two thirds of the
+  // window, 200px from either side, and 200px from the top and bottom of
+  // the stage's first screen. Projection is linear in world x and y at a
+  // fixed depth, so one correction is exact.
   const keepActiveInSafeArea = (position: Vector3, rotation: Euler) => {
-    if (touch.matches || !width) return;
+    if (touch.matches || !width || !height) return;
     const left = stage.getBoundingClientRect().left;
-    const min = innerWidth / 3 + SAFE_AREA_MARGIN - left;
-    const max = innerWidth - SAFE_AREA_MARGIN - left;
-    if (min > max) return;
+    const minX = innerWidth / 3 + SAFE_AREA_MARGIN - left;
+    const maxX = innerWidth - SAFE_AREA_MARGIN - left;
+    const minY = SAFE_AREA_MARGIN;
+    const maxY = Math.min(height, innerHeight) - SAFE_AREA_MARGIN;
     renderPoint(active, safePoint).applyEuler(rotation).add(position);
     const depth = camera.position.z - safePoint.z;
-    const x = ((safePoint.clone().project(camera).x + 1) * width) / 2;
-    const clamped = Math.min(max, Math.max(min, x));
-    if (clamped === x || depth <= 0) return;
-    const visibleWidth =
-      2 * Math.tan((camera.fov * Math.PI) / 360) * depth * camera.aspect;
-    position.x += ((clamped - x) * visibleWidth) / width;
+    if (depth <= 0) return;
+    safePoint.project(camera);
+    const x = ((safePoint.x + 1) * width) / 2;
+    const y = ((1 - safePoint.y) * height) / 2;
+    const dx = minX > maxX ? 0 : Math.min(maxX, Math.max(minX, x)) - x;
+    const dy = minY > maxY ? 0 : Math.min(maxY, Math.max(minY, y)) - y;
+    if (!dx && !dy) return;
+    const pixelsToWorld =
+      (2 * Math.tan((camera.fov * Math.PI) / 360) * depth) / height;
+    position.x += dx * pixelsToWorld;
+    position.y -= dy * pixelsToWorld;
   };
   // H5 keeps the selected sector at the hub, the centre of its canvas: the
   // offset that moves the active node there under the given pose.

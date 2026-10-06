@@ -625,12 +625,15 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       timeout: 2500,
     });
     await expect
-      .poll(async () =>
-        Math.max(
-          ...(await scene.getAttribute('data-rotation'))!
-            .split(',')
-            .map((value) => Math.abs(Number(value))),
-        ),
+      .poll(
+        async () =>
+          Math.max(
+            ...(await scene.getAttribute('data-rotation'))!
+              .split(',')
+              .map((value) => Math.abs(Number(value))),
+          ),
+        // The front pose holds for 0.9s before the orbit resumes.
+        { intervals: [50] },
       )
       .toBeLessThan(0.01);
   }
@@ -643,6 +646,8 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
       timeout: 1000,
     });
   }).toPass();
+  if ((await scene.getAttribute('data-renderer')) === 'webgl')
+    await expect(scene).toHaveAttribute('data-camera-state', 'front');
   await star.hover();
   if ((await scene.getAttribute('data-renderer')) === 'webgl') {
     await expect(star.locator('.star-glyph')).toHaveCSS('filter', 'none');

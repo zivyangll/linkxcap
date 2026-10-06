@@ -182,6 +182,8 @@ test('company labels preserve the hovered branch, and company links still naviga
 }) => {
   const scene = await openScene(page, 'en');
   await hoverNode(page, 'physical');
+  // Company links travel with the sector until it settles at the front.
+  await expect(scene).toHaveAttribute('data-camera-state', 'front');
   const link = page.locator('[data-constellation=physical] a').first();
   await link.locator('span').hover();
   await expect(scene).toHaveAttribute('data-focus-held', 'true');
