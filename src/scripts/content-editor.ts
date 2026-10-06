@@ -31,7 +31,7 @@ const groups = [
   },
   {
     id: 'fellowship',
-    title: '星图计划',
+    title: 'Fellowship',
     paths: [['pages', 'fellowship']],
   },
   {
@@ -51,7 +51,7 @@ const labels: Record<string, string> = {
   companies: '公司资料',
   team: '团队成员',
   insights: '洞察内容',
-  fellowship: '星图计划页',
+  fellowship: 'Fellowship 页',
   media: '媒体配置',
   wechat: '微信公众号二维码',
   home: '首页',
@@ -72,6 +72,13 @@ const labels: Record<string, string> = {
   description: '描述',
   detail: '详细介绍',
   intro: '介绍',
+  headline: '主标题',
+  footnote: '数据脚注',
+  join_label: '加入区眉题',
+  join_title: '加入区标题',
+  join_copy: '邀请文案',
+  cta: '联系链接文字',
+  interaction_hint: '星域交互提示',
   summary: '摘要',
   list_title: '列表标题',
   list_summary: '列表摘要',
@@ -79,12 +86,12 @@ const labels: Record<string, string> = {
   source_url: '原文链接',
   website_url: '官网链接',
   image_file: '图片文件名',
-  logo_file: 'Logo 文件名',
+  logo_file: 'Logo 文件名（public/company）',
   video_file: '视频文件名（MP4）',
   poster_file: '视频封面图片文件名',
   name: '名称',
   role: '职务',
-  bio: '人物简介',
+  bio: '人物简介（空行分段）',
   date: '日期',
   order: '排序',
   category: '分类',
@@ -106,7 +113,7 @@ const sectionNotes: Record<string, string> = {
     '控制主导航顺序和双语名称；移动菜单底部文字也在这里维护，页面标识与静态路由绑定',
   ui: '全站复用的按钮、交互状态和无障碍提示',
   'pages.home':
-    '首页五屏文案；数组中的每一项对应一个视觉换行，统计数据目前为待确认占位',
+    '首页五屏文案；标题数组每项一行，正文数组每项一段，开场正文中的空字符串表示段落间空行',
   'pages.portfolio': '投资组合列表及公司详情的固定界面文案',
   companies:
     '首页只使用主分类（tag1）连接星域节点；投资组合列表使用全部筛选分类，同一公司可出现在多个分类中',
@@ -114,7 +121,8 @@ const sectionNotes: Record<string, string> = {
   team: '成员照片只填写文件名；路由 slug 决定 team-<slug>.html；内部结构 ID 已隐藏并由系统维护',
   'pages.insights':
     '洞察列表页和文章详情页的公共文案；文章内容在 src/content/insights/*.md 中维护',
-  'pages.fellowship': '星图计划独立页面的中英文标题与介绍',
+  'pages.fellowship':
+    'Fellowship 页面的标题、正文与加入区；正文数组每项一段，**文字** 表示加粗',
   insights:
     '文章 Markdown 的 category 必须填写下方某个筛选项的结构 ID；all 仅表示“全部文章”，不能作为文章分类',
   'pages.contact':
@@ -161,7 +169,7 @@ const languageOf = (key: string) =>
   key.endsWith('_cn') ? '中文' : key.endsWith('_en') ? 'English' : '';
 const isLongText = (key: string, value: string) =>
   value.length > 90 ||
-  /(body|description|detail|summary|bio|intro|copy|notice)/.test(key);
+  /(body|description|detail|summary|bio|intro|copy|notice|footnote)/.test(key);
 const isReadonly = (key: string) => structuralFields.has(key);
 const editableCollections = new Set(['companies', 'team']);
 

@@ -17,6 +17,8 @@ export default defineConfig({
   build: { format: 'preserve', inlineStylesheets: 'never' },
   compressHTML: true,
   markdown: {
+    // English copy uses straight apostrophes; the CJK serif's curly quotes are full-width.
+    smartypants: false,
     processor: unified({ rehypePlugins: [[rehypeSanitize, markdownSchema]] }),
   },
   vite: { build: { assetsInlineLimit: 0 } },

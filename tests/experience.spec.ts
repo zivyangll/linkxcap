@@ -48,6 +48,30 @@ test('opening copy sits one-third closer to the title in both locales', async ({
   }
 });
 
+test('About copy fits its pinned desktop scene in both locales', async ({
+  page,
+}) => {
+  // The copy deck's three paragraphs are long; keep at least ~one line spare
+  // so later copy edits that would clip the last paragraph fail here.
+  for (const [width, height] of [
+    [1280, 720],
+    [1440, 900],
+    [1920, 1080],
+  ]) {
+    await page.setViewportSize({ width, height });
+    for (const locale of ['zh', 'en']) {
+      await page.goto(`${locale}/index.html`);
+      await page.evaluate(() => document.fonts.ready);
+      const spare = await page.evaluate(
+        () =>
+          document.querySelector('.about')!.getBoundingClientRect().bottom -
+          document.querySelector('.about-copy')!.getBoundingClientRect().bottom,
+      );
+      expect(spare, `${locale} ${width}x${height}`).toBeGreaterThan(20);
+    }
+  }
+});
+
 test('opening, Partnering, and About settle at equal-speed authored stops', async ({
   page,
 }) => {

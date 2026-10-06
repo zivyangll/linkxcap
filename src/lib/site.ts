@@ -18,6 +18,8 @@ export const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 export const url = (path = '') => base + path.replace(/^\//, '');
 export const contentAsset = (filename: string) =>
   filename ? url(`assets/${encodeURIComponent(filename)}`) : '';
+export const companyLogoAsset = (filename: string) =>
+  filename ? url(`company/${encodeURIComponent(filename)}`) : '';
 export const pageUrl = (lang: Lang, page = 'index') =>
   url(`${lang}/${page}.html`);
 export const pick = (lang: Lang, zh: string, en: string) =>
@@ -71,10 +73,11 @@ type HomeContent = {
     description: Localized<string[]>;
   };
   research: {
-    title: Localized<string[]>;
+    name: Localized;
+    title: Localized;
     intro: Localized<string[]>;
     stats: Array<{ value: string; label: Localized }>;
-    dataNote: Localized;
+    footnote: Localized;
   };
   focus: {
     title: Localized<string[]>;
@@ -94,17 +97,25 @@ type PortfolioContent = {
 };
 type FellowshipContent = {
   title: Localized;
-  introduction: Localized;
+  eyebrow: Localized;
+  headline: Localized;
+  description: Localized<string[]>;
+  joinLabel: Localized;
+  joinTitle: Localized;
+  joinCopy: Localized;
+  cta: Localized;
 };
 type TeamContent = {
   title: Localized;
-  intro: Localized;
+  headline: Localized;
+  intro: Localized<string[]>;
   eyebrow: Localized;
   contactLink: Localized;
 };
 type InsightsContent = {
   title: Localized;
-  intro: Localized;
+  headline: Localized;
+  intro: Localized<string[]>;
   filterLabel: Localized;
   back: Localized;
   eyebrow: Localized;
@@ -348,7 +359,7 @@ const sourceCompanies = z.array(companySchema).parse(
     investmentYear: company.investment_year,
     sector: company.sector_id,
     sectorIds: company.sector_ids,
-    logoUrl: contentAsset(company.logo_file),
+    logoUrl: companyLogoAsset(company.logo_file),
   })),
 );
 const logoMap: Record<string, string> = {

@@ -24,11 +24,9 @@ const active =
     ? 'portfolio'
     : current.startsWith('team')
       ? 'team'
-      : current === 'index' || current === 'contact' || current === 'legal'
+      : ['index', 'contact', 'legal', 'fellowship'].includes(current)
         ? current
-        : current === 'fellowship'
-          ? ''
-          : 'insights';
+        : 'insights';
 const socialByUrl = (fragment: string) =>
   socials.find((social) => social.href.includes(fragment))!;
 const menuSocials = [
@@ -101,17 +99,21 @@ const menuSocials = [
     </button>
   </div>
   <nav aria-label={navigationContent.menuNavLabel[lang]}>
-    {navigation.slice(0, 4).map((item) => (
-      <a
-        href={pageUrl(lang, item.page)}
-        aria-current={active === item.page ? 'page' : undefined}
-      >
-        <i class="menu-current diamond" aria-hidden="true"></i>
-        <span>{lang === 'zh' ? item.zh : item.en}</span>
-        {lang === 'zh' && <small lang="en">{item.en}</small>}
-        <Arrow />
-      </a>
-    ))}
+    {navigation
+      .filter((item) => item.page !== 'contact')
+      .map((item) => (
+        <a
+          href={pageUrl(lang, item.page)}
+          aria-current={active === item.page ? 'page' : undefined}
+        >
+          <i class="menu-current diamond" aria-hidden="true"></i>
+          <span>{lang === 'zh' ? item.zh : item.en}</span>
+          {lang === 'zh' && item.zh !== item.en && (
+            <small lang="en">{item.en}</small>
+          )}
+          <Arrow />
+        </a>
+      ))}
   </nav>
   <div class="menu-contact">
     <h2>

@@ -15,6 +15,16 @@ body .team-review {
   position: static;
 }
 
+.team-review .team-review-title .page-title {
+  font-size: clamp(28px, 7.6vw, 44px);
+  text-wrap: balance;
+}
+
+.team-review .team-review-title .page-title span[lang='en'] {
+  margin-top: 0.15em;
+  font-size: 0.6em;
+}
+
 .team-review .team-review-heading > p {
   max-width: 44rem;
   margin-top: 32px;
@@ -164,6 +174,12 @@ body .team-review {
   font-size: 15px;
 }
 
+.team-review .member-copy-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
 .team-review .team-bio-featured {
   display: flex;
   flex-direction: column;
@@ -189,7 +205,18 @@ body .team-review {
     align-items: flex-start;
   }
 
+  .team-review .team-review-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-right: calc(60 * var(--u));
+  }
+
+  .team-review .team-review-title .page-title {
+    font-size: calc(48 * var(--u));
+  }
+
   .team-review .team-review-heading > p {
+    flex: none;
     width: calc(673 * var(--u));
     max-width: none;
     margin: 0;
@@ -272,7 +299,8 @@ body .team-review {
     width: calc(520 * var(--u));
     max-width: none;
     padding: calc(44 * var(--u)) calc(30 * var(--u));
-    gap: calc(80 * var(--u));
+    gap: calc(48 * var(--u));
+    overflow-y: auto;
     transform: none;
     background:
       linear-gradient(#111, #111) left top / calc(36 * var(--u))
@@ -313,7 +341,11 @@ body .team-review {
   }
 
   .team-review .team-bio-summary {
-    gap: calc(40 * var(--u));
+    gap: calc(28 * var(--u));
+  }
+
+  body[data-lang='en'] .team-review .member-copy {
+    font-size: calc(16 * var(--u));
   }
 
   .team-review .member-role,

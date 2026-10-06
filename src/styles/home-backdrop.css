@@ -1,0 +1,96 @@
+/* Home backgrounds from Figma (Link-X_new 251:62–251:78 and 249:2).
+   Desktop keeps the 1920×1080 frame geometry through --u; touch layouts
+   scale the same artwork from each screen's height. */
+
+/* Light screens: paper texture in a 1231×1080 radial mask at the frame's
+   top-left, blended by luminosity at 15%. */
+.paper-texture {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 0;
+  width: calc(1231 * var(--u));
+  height: calc(1080 * var(--u));
+  pointer-events: none;
+  opacity: 0.15;
+  mix-blend-mode: luminosity;
+  -webkit-mask: var(--paper-mask) 0 0 / 100% 100% no-repeat;
+  mask: var(--paper-mask) 0 0 / 100% 100% no-repeat;
+}
+
+.paper-texture img {
+  position: absolute;
+  left: calc(-851 / 1231 * 100%);
+  top: calc(-359 / 1080 * 100%);
+  width: calc(2082 / 1231 * 100%);
+  height: calc(1831 / 1080 * 100%);
+  max-width: none;
+  object-fit: cover;
+}
+
+/* Focus: rotated nebula (color dodge) over the whole frame and the milky
+   way strip on the left (screen), both at 30%, plus the twinkling stars. */
+.focus-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+}
+
+.focus-backdrop :is(img, video) {
+  position: absolute;
+  max-width: none;
+  opacity: 0.3;
+}
+
+.focus-backdrop :is(.focus-backdrop-nebula, .focus-backdrop-stars) {
+  /* Figma bleed: x -58…1938, y -12…1111 on a 1920×1080 frame. */
+  left: calc(-58 / 1920 * 100%);
+  top: calc(-12 / 1080 * 100%);
+  width: calc(1996 / 1920 * 100%);
+  height: calc(1123 / 1080 * 100%);
+  object-fit: cover;
+}
+
+.focus-backdrop-nebula {
+  mix-blend-mode: color-dodge;
+}
+
+/* The designer's looping star GIF shares the nebula's rotated frame; screen
+   drops its black ground so only the twinkling stars are added. */
+.focus-backdrop .focus-backdrop-stars {
+  opacity: 1;
+  mix-blend-mode: screen;
+}
+
+.focus-backdrop-milky-way {
+  left: calc(-27 / 1080 * 100cqh);
+  top: calc(-13 / 1080 * 100cqh);
+  width: auto;
+  height: calc(1106 / 1080 * 100cqh);
+  aspect-ratio: 682 / 1106;
+  object-fit: cover;
+  mix-blend-mode: screen;
+}
+
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  /* The mask keeps the frame's proportions, follows the screen height and
+     centres its ellipse (x = 498 of 1231) on the narrow viewport. */
+  .paper-texture {
+    left: 50%;
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1231 / 1080;
+    translate: calc(-498 / 1231 * 100%) 0;
+  }
+
+  /* On a portrait screen the milky way stays a left-edge accent. */
+  .focus-backdrop-milky-way {
+    left: -2%;
+    top: -1%;
+    width: 60%;
+    height: auto;
+  }
+}

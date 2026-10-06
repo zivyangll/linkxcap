@@ -53,11 +53,10 @@ test('02 Open Signal body uses a stronger reading weight', async ({ page }) => {
   expect(weight).toBeGreaterThanOrEqual(500);
 });
 
-test('03 Open Signal title is exactly two lines', async ({ page }) => {
+test('03 First Light title is a single line', async ({ page }) => {
   await prepare(page);
-  await expect(page.locator('.opening-title br')).toHaveCount(1);
-  await expect(page.locator('.opening-title')).toContainText('Open');
-  await expect(page.locator('.opening-title')).toContainText('Signal');
+  await expect(page.locator('.opening-title br')).toHaveCount(0);
+  await expect(page.locator('.opening-title')).toHaveText('First Light');
 });
 
 test('04 moving marker is a complete diamond without the legacy arrow', async ({
@@ -106,31 +105,30 @@ test('06 Partnering appears while the single marker enters chapter two', async (
   expect(state.opacity).toBeGreaterThan(0.2);
 });
 
-test('07 Partnering headline is exactly three lines', async ({ page }) => {
+test('07 Backing the builders headline keeps two lines', async ({ page }) => {
   await prepare(page);
-  await expect(page.locator('.hero-title br')).toHaveCount(2);
-  await expect(page.locator('.hero-title')).toContainText('Partnering');
-  await expect(page.locator('.hero-title')).toContainText('with founders');
+  await expect(page.locator('.hero-title br')).toHaveCount(1);
   await expect(page.locator('.hero-title')).toContainText(
-    'defining the AGI era',
+    'Backing the builders',
+  );
+  await expect(page.locator('.hero-title')).toContainText(
+    'of the intelligence age',
   );
 });
 
-test('07b Partnering chapter renders only the active language', async ({
-  page,
-}) => {
+test('07b Hero chapter renders only the active language', async ({ page }) => {
   for (const { path, expected, excluded, breaks, zh } of [
     {
       path: 'en/index.html',
-      expected: 'Partnering with founders defining the AGI era',
-      excluded: '与创业者同行',
-      breaks: 2,
+      expected: 'Backing the builders of the intelligence age',
+      excluded: '投资真正的创造者',
+      breaks: 1,
       zh: false,
     },
     {
       path: 'zh/index.html',
-      expected: '与创业者同行 定义 AGI 时代',
-      excluded: 'Partnering',
+      expected: '投资真正的创造者 推动智能时代向前',
+      excluded: 'Backing',
       breaks: 1,
       zh: true,
     },
@@ -202,7 +200,7 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
   });
   expect(copyGeometry).toEqual([{ horizontal: true, vertical: true }]);
   await expect(page.locator('.orbit-label')).toContainText('Follow the stars');
-  await expect(page.locator('.orbit-label')).toContainText('The first light');
+  await expect(page.locator('.orbit-label')).toContainText('First Light');
 
   await setPhilosophyProgress(page, 0.8);
   expect(

@@ -7,20 +7,20 @@
     "company_legal_name_cn": "北京星连肇基私募基金管理有限责任公司",
     "company_legal_name_en": "LinkX Capital",
     "record_number": "京ICP备2022019276号-1",
-    "meta_description_cn": "星连资本是一家聚焦人工智能的早期投资机构，连接研究者、创业者与产业资源，支持模型、基础设施、智能体、生命科学和物理智能领域的创新。",
-    "meta_description_en": "LinkX Capital is an early-stage AI investor partnering with researchers and founders across models, infrastructure, agents, life sciences and physical AI.",
+    "meta_description_cn": "星连资本专注 AI 早期投资，覆盖基础模型与学习范式、芯片、AI 基础设施、AI 原生应用、具身智能、科学智能。",
+    "meta_description_en": "LinkX Capital invests early across foundation models and learning, chips, AI infrastructure, AI-native applications, embodied AI, and AI for Science.",
     "og_image_file": "og.jpg",
     "page_titles": {
-      "index_cn": "星连资本｜与定义 AGI 时代的创业者同行",
-      "index_en": "LinkX Capital — Partnering with Founders Defining the AGI Era",
+      "index_cn": "星连资本｜投资真正的创造者",
+      "index_en": "LinkX Capital | Backing the Builders of the Intelligence Age",
       "portfolio_cn": "投资组合｜星连资本",
       "portfolio_en": "Portfolio — LinkX Capital",
       "team_cn": "团队｜星连资本",
       "team_en": "Team — LinkX Capital",
       "insights_cn": "洞察与动态｜星连资本",
       "insights_en": "Insights & News — LinkX Capital",
-      "fellowship_cn": "星图计划｜星连资本",
-      "fellowship_en": "LinkX Constellation Fellowship — LinkX Capital",
+      "fellowship_cn": "Fellowship｜星连资本",
+      "fellowship_en": "LinkX Constellation Fellowship | LinkX Capital",
       "contact_cn": "联系我们｜星连资本",
       "contact_en": "Contact — LinkX Capital",
       "legal_cn": "法律声明｜星连资本",
@@ -41,21 +41,21 @@
       "back_en": "Back to home",
       "english_label": "English"
     },
-    "footer_tagline_cn": "与定义智能时代的创业者同行。",
-    "footer_tagline_en": "Partnering with founders defining the intelligence age.",
+    "footer_tagline_cn": "在共识之前，支持值得相信的方向。",
+    "footer_tagline_en": "Backing conviction before consensus.",
     "footer_copyright_cn": "© {year} 北京星连肇基私募基金管理有限责任公司。保留所有权利。",
     "footer_copyright_en": "© {year} LinkX Capital. All rights reserved.",
     "page_descriptions": {
-      "index_cn": "星连资本聚焦人工智能早期投资，与研究者和创业者共同推动技术进入真实世界。",
-      "index_en": "LinkX Capital partners with early-stage AI researchers and founders bringing new technology into the world.",
-      "portfolio_cn": "探索星连资本在模型、基础设施、智能体、物理智能和生命科学等领域的企业与近期项目。",
-      "portfolio_en": "Explore LinkX Capital's portfolio and recent projects across models, infrastructure, agents, physical AI and life sciences.",
+      "index_cn": "星连资本专注 AI 早期投资，覆盖基础模型与学习范式、芯片、AI 基础设施、AI 原生应用、具身智能、科学智能。",
+      "index_en": "LinkX Capital invests early across foundation models and learning, chips, AI infrastructure, AI-native applications, embodied AI, and AI for Science.",
+      "portfolio_cn": "探索星连资本在基础模型与学习范式、芯片、AI 基础设施、AI 原生应用、具身智能、科学智能等方向的企业与近期项目。",
+      "portfolio_en": "Explore LinkX Capital's portfolio and recent projects across foundation models and learning, chips, AI infrastructure, AI-native applications, embodied AI, and AI for Science.",
       "team_cn": "认识星连资本团队及其风险投资、科技企业与产业经验。",
       "team_en": "Meet the LinkX Capital team and its experience in venture investing, technology and industry.",
       "insights_cn": "阅读星连资本关于 AI 研究、创业、产业实践及被投企业的文章。",
       "insights_en": "Read LinkX Capital's perspectives and news on AI research, entrepreneurship, industry and portfolio companies.",
-      "fellowship_cn": "了解面向青年科学家、研究型创业者与技术领袖的星图计划。",
-      "fellowship_en": "Explore LinkX Constellation Fellowship for young scientists, researcher-founders and technology leaders.",
+      "fellowship_cn": "星连 Fellowship 计划为科研与创业人才提供资源支持，支持共同发现早期项目，并为入选 Young Pioneer 提供奖学金。",
+      "fellowship_en": "LinkX Constellation Fellowship supports research and entrepreneurship, connects Fellows with early-stage ventures, and funds scholarships for selected Young Pioneers.",
       "contact_cn": "与星连资本交流 AI 研究、创业和产业合作机会。",
       "contact_en": "Contact LinkX Capital about AI research, entrepreneurship and industry collaboration.",
       "legal_cn": "了解星连资本网站的信息说明、知识产权和联系渠道。",
@@ -85,6 +85,11 @@
         "label_en": "Insights & News"
       },
       {
+        "page": "fellowship",
+        "label_cn": "Fellowship",
+        "label_en": "Fellowship"
+      },
+      {
         "page": "contact",
         "label_cn": "联系我们",
         "label_en": "Contact"
@@ -97,8 +102,8 @@
     "menu_nav_label_cn": "菜单导航",
     "menu_nav_label_en": "Menu navigation",
     "menu_title": "Menu",
-    "menu_contact_title_cn": "与我们同行",
-    "menu_contact_title_en": "Build with us",
+    "menu_contact_title_cn": "与我们对话",
+    "menu_contact_title_en": "Talk to us",
     "language_names_cn": "中文",
     "language_names_en": "English",
     "language_short_cn": "中",
@@ -125,8 +130,8 @@
     "expand_en": "View profile",
     "back_cn": "返回",
     "back_en": "Back",
-    "website_cn": "企业官网",
-    "website_en": "Company website",
+    "website_cn": "访问官网",
+    "website_en": "Visit website",
     "original_cn": "阅读原文",
     "original_en": "Read original",
     "copy_cn": "复制链接",
@@ -161,71 +166,71 @@
           "远星初亮"
         ],
         "title_en": [
-          "Open",
-          "Signal"
+          "First Light"
         ],
         "body_cn": [
-          "每一次时代变革之初，总有少数人先于共识看见未来，如远星初亮。",
-          "星连资本将这些通用智能时代的定义者连接成星群，让远见辉映，照亮前路。"
+          "每一次技术浪潮，都始于共识之外。",
+          "总有少数人，在路径清晰之前，看见真正重要的可能。",
+          "",
+          "星连相信这些早期判断，也用长期资本支持它们成为现实。"
         ],
         "body_en": [
-          "As every new era begins to take shape, a rare few see the future before consensus takes hold — like distant stars emerging from the dark.",
-          "LinkX brings together the founders defining the intelligence age, aligning vision with capital to turn early signals into a map of what comes next."
+          "Every technology wave begins outside consensus.",
+          "A rare few see what matters before the path becomes obvious.",
+          "",
+          "LinkX backs these early convictions with long-term capital, helping them become real."
         ]
       },
       "hero": {
         "orbit_eyebrow_cn": "循星而行",
         "orbit_eyebrow_en": "Follow the stars",
         "orbit_label_cn": "远星初亮",
-        "orbit_label_en": "The first light",
+        "orbit_label_en": "First Light",
         "title_cn": [
-          "与创业者同行",
-          "定义 AGI 时代"
+          "投资真正的创造者",
+          "推动智能时代向前"
         ],
         "title_en": [
-          "Partnering",
-          "with founders",
-          "defining the AGI era"
+          "Backing the builders",
+          "of the intelligence age"
         ]
       },
       "about": {
         "eyebrow_cn": "星连所向",
         "eyebrow_en": "OUR NORTH STAR",
-        "label_cn": "那些先行者",
-        "label_en": "THE RARE FEW",
+        "label_cn": "始于本质",
+        "label_en": "FIRST PRINCIPLES",
         "title_cn": [
-          "支持前沿研究者，",
-          "与创业者并肩前行。"
+          "在共识之前看见方向，",
+          "在行业格局成形之前发现企业。"
         ],
         "title_en": [
-          "Backing researchers.",
-          "Building with founders."
+          "Ideas before consensus.",
+          "Companies before categories."
         ],
         "description_cn": [
-          "星连资本成立于 2021 年，是中国最早聚焦通用智能生态、最活跃的 AI 风险投资机构之一。",
-          "我们在研究与创业的早期阶段与团队同行，围绕六个相互连接的方向投资：基础模型与学习范式、AI 基础设施、芯片、AI 原生应用、具身智能，以及科学智能。"
+          "星连资本成立于 2021 年，专注人工智能与下一代智能技术的早期投资。在这一轮智能浪潮成为市场共识之前，我们就已对 AI 的长期潜力形成坚定判断，并持续投入研究与资本。我们重点支持研究型创业者（researcher-founders），相信深厚的科研积累与独到的技术洞察，能够成为独特产品和优秀公司的起点。",
+          "我们的投资覆盖六个方向：基础模型与学习范式、芯片、AI 基础设施、AI 原生应用、具身智能、科学智能。",
+          "我们在研究与创业的早期阶段就与团队建立联系，通过长期资本、孵化支持和产业资源，帮助研究成果转化为产品、走向市场。我们寻找能够拓展智能边界、重塑产业格局的下一代公司。"
         ],
         "description_en": [
-          "Founded in 2021, LinkX Capital is among China’s earliest and most active venture investors focused on the emerging general intelligence ecosystem.",
-          "We work with researchers and founders from the earliest stages across six connected areas: Foundation Models & Learning, AI Infrastructure, Chips, AI-Native Applications, Embodied AI, and AI for Science."
+          "Founded in 2021, LinkX Capital invests early in AI and the technologies shaping the next generation of intelligence. We built conviction in AI's long-term potential before the current wave gained broad market recognition, and have backed it with sustained research and investment. We support researcher-founders, believing that deep research expertise and distinctive technical insight can lay the foundations for differentiated products and exceptional companies.",
+          "Our investments span six areas: Foundation Models & Learning, Chips, AI Infrastructure, AI-Native Applications, Embodied AI, and AI for Science.",
+          "We work with teams from the early stages of research and company formation, combining long-term capital, incubation support and industry connections to help turn research into products and bring them to market. We look for the next generation of companies that expand the frontiers of intelligence and reshape industries."
         ]
       },
       "research": {
-        "title_cn": [
-          "华清普智 AI 孵化器，",
-          "让前沿研究走向创业。"
-        ],
-        "title_en": [
-          "T-ONE Innovation Lab.",
-          "Turning frontier research into companies."
-        ],
+        "name_cn": "星连 T-ONE 创新实验室",
+        "name_en": "LinkX T-ONE Innovation Lab",
+        "title_cn": "从研究突破，到公司诞生。",
+        "title_en": "From research breakthroughs to new companies.",
         "intro_cn": [
-          "依托与清华大学在 AI 孵化领域的独家合作，星连资本创立并运营华清普智 AI 孵化器（T-ONE Innovation Lab）。",
-          "我们连接青年科学家、创业者、产业伙伴与长期资本，帮助有潜力的科研成果完成从实验室到产品、从研究团队到创业公司的跨越。"
+          "依托与清华大学在 AI 创新孵化领域的长期合作，星连资本创立并运营星连 T-ONE 创新实验室。",
+          "这里连接青年科学家、研究团队、创业者、产业伙伴与长期资本，让优秀研究更早找到走向产品与创业的路径。"
         ],
         "intro_en": [
-          "Through our exclusive partnership with Tsinghua University on AI incubation, LinkX Capital established and operates T-ONE Innovation Lab, an AI incubator for young scientists and founders.",
-          "It connects research talent with industry partners and long-term capital, helping promising ideas move from the lab into products and new companies."
+          "Through its long-term collaboration with Tsinghua University in AI incubation, LinkX Capital established and operates LinkX T-ONE Innovation Lab.",
+          "The lab connects young scientists and research teams with founders, industry partners and long-term capital, helping promising research find a path to products and new companies."
         ],
         "stats": [
           {
@@ -245,12 +250,12 @@
           },
           {
             "value": "50+",
-            "label_cn": "科学家创业者",
-            "label_en": "Scientist founders"
+            "label_cn": "已投资的科学家创业者",
+            "label_en": "Scientist founders backed"
           }
         ],
-        "data_note_cn": "学生和教师数字描述清华相关 AI 人才网络的可触达规模，并非 T-ONE 实际入孵人数；30+ 为合作网络中的科学家创业者。300+ 场活动来自本轮提供的口径，上线前核对活动范围和统计时间。",
-        "data_note_en": "Student and faculty figures describe the reach of the Tsinghua-related AI talent network, not the number of T-ONE incubator participants. The 50+ figure refers to scientist founders in the partnership network. Confirm the scope and period of the 300+ events count before publication."
+        "footnote_cn": "学生和教师数字描述清华相关 AI 人才网络的可触达规模，并非星连 T-ONE 创新实验室的实际入孵人数；50+ 指星连已投资的科学家创业者。",
+        "footnote_en": "Student and faculty figures describe the reach of the Tsinghua-related AI talent network, rather than the number of participants in LinkX T-ONE Innovation Lab. The 50+ figure refers to scientist founders backed by LinkX Capital."
       },
       "focus": {
         "contact_link_cn": "联系我们",
@@ -260,15 +265,13 @@
         "aria_label_cn": "投资方向",
         "aria_label_en": "Investment focus",
         "title_cn": [
-          "我们关注的",
-          "创新方向"
+          "我们关注什么"
         ],
         "title_en": [
-          "Focus",
-          "Areas"
+          "What We Invest In"
         ],
-        "auxiliary_title_cn": "从基础能力到真实应用",
-        "auxiliary_title_en": "From foundational capabilities to real-world use",
+        "auxiliary_title_cn": "从智能本身，到被智能重新定义的世界。",
+        "auxiliary_title_en": "From intelligence itself to the systems it transforms.",
         "interaction_hint_cn": "选择一个方向，查看相关企业。",
         "interaction_hint_en": "Select a focus area to explore companies."
       }
@@ -277,8 +280,8 @@
       "title_cn": "投资组合",
       "title_en": "Portfolio",
       "title_artwork_cn": "Portfolio",
-      "intro_cn": "与定义智能时代的创业者同行，探索从基础研究到真实应用的企业与近期项目。",
-      "intro_en": "Meet the founders defining the intelligence age, from foundational research to real-world applications.",
+      "intro_cn": "与推动智能时代向前的创造者同行，探索从基础研究到真实应用的企业与近期项目。",
+      "intro_en": "Meet the builders of the intelligence age, from foundational research to real-world applications.",
       "scroll_hint_cn": "滚动探索 / 点击选择",
       "scroll_hint_en": "Scroll to explore / Select a company",
       "navigator_label_cn": "浏览其他企业与项目",
@@ -287,58 +290,75 @@
       "action_hint_en": ""
     },
     "team": {
-      "title_cn": "我们的团队",
-      "title_en": "OUR TEAM",
+      "title_cn": "团队",
+      "title_en": "Team",
       "eyebrow_cn": "我们的团队",
       "eyebrow_en": "OUR TEAM",
       "contact_link_cn": "联系我们",
       "contact_link_en": "Contact us",
-      "intro_cn": "星连团队汇集长期从事早期科技投资的投资人，以及具有工程、产品和平台战略经验的成员。团队经历横跨红点、策源、红杉等投资机构与 Google、腾讯、美团、快手等科技企业。依托 T-ONE AI 孵化器及研究者、产业伙伴网络，我们能在企业成立早期理解技术与团队，和创业者一起将技术优势转化为清晰的产品方向，并连接人才与产业资源。",
-      "intro_en": "LinkX brings together experienced technology investors and teammates with backgrounds in engineering, product leadership and platform strategy. Their paths span venture firms including Redpoint, Ceyuan and Sequoia, and technology companies including Google, Tencent, Meituan and Kuaishou. Through T-ONE Innovation Lab and a wider network of researchers and industry partners, the team meets founders early, works alongside them to turn technical strengths into a clear product direction, and connects them with talent and industry resources."
+      "intro_cn": [
+        "星连团队来自科技投资、产品、工程与平台战略的一线。不同的职业路径，让我们能够同时理解技术本身、产品形成的过程，以及一家年轻公司成长所需要的资本与资源。",
+        "我们相信，早期投资的关键，是在答案尚未清晰时，判断什么值得长期相信。"
+      ],
+      "intro_en": [
+        "The LinkX team brings together experience across venture investing, product, engineering and platform strategy.",
+        "Those different paths shape how we evaluate technology, understand how products take form, and support young companies as they grow. Early-stage investing requires judgment about what is worth believing in before the answers are obvious."
+      ],
+      "headline_cn": "不同经历，同一种判断。",
+      "headline_en": "Different paths. Shared conviction."
     },
     "insights": {
       "title_cn": "洞察与动态",
       "title_en": "Insights & News",
-      "intro_cn": "星连资本的内部研究团队持续追踪前沿模型的能力演进、最受关注的 AI 产品及其真实使用场景，以高频研究、亲自体验产品和一线创业者交流形成及时判断。研究贯穿我们的投资工作：帮助我们在共识形成前识别重要技术变化，也让判断接受产品和用户的检验。这里分享我们的观察、方法与被投企业实践，努力成为真正懂研究、也懂创业的 researcher-investors。",
-      "intro_en": "LinkX’s in-house research team tracks advances in frontier models and the AI products attracting real users. Frequent research, hands-on product testing and direct conversations with founders sharpen our view of what is changing now. Research runs through our investing: it helps us recognize technical shifts before consensus and test them against product adoption. We share those findings with founders and the AI community, aiming to be researcher-investors who understand both research and company building.",
+      "intro_cn": [
+        "技术变化得越快，判断越需要被反复验证。",
+        "星连的内部研究团队持续跟踪模型能力、产品形态与真实使用的变化，通过研究、产品测试和与一线团队交流，理解哪些变化只是短暂噪音，哪些可能真正改变行业。",
+        "这里记录我们的研究、观察与实践。"
+      ],
+      "intro_en": [
+        "The faster technology moves, the more conviction needs to be tested.",
+        "LinkX's in-house research team follows changes in model capability, product behavior and real-world adoption through research, hands-on testing and direct conversations with teams in the field.",
+        "This is where we share what we are learning, questioning and watching closely."
+      ],
       "filter_label_cn": "筛选文章",
       "filter_label_en": "Filter stories",
       "back_cn": "返回洞察与动态",
       "back_en": "Back to Insights & News",
       "eyebrow_cn": "洞察",
-      "eyebrow_en": "INSIGHT",
+      "eyebrow_en": "INSIGHTS",
       "publisher_cn": "星连资本",
-      "publisher_en": "LinkX Capital"
+      "publisher_en": "LinkX Capital",
+      "headline_cn": "以研究检验判断。",
+      "headline_en": "Conviction, Tested."
     },
     "contact": {
-      "signal_title_cn": "下一个信号",
-      "signal_title_en": "The Next Signal",
-      "signal_subtitle_cn": "与先看见未来的人同行",
-      "signal_subtitle_en": "Alongside those who see what comes next",
-      "join_copy_cn": "如果你正在探索一个世界尚未命名的未来，我们希望在信号初现时就与你相遇。",
-      "join_copy_en": "If you are exploring a future the world has yet to name, we would like to meet you while the signal is still faint.",
+      "signal_title_cn": "从一次对话开始",
+      "signal_title_en": "Start a Conversation",
+      "signal_subtitle_cn": "研究、创业与新的可能",
+      "signal_subtitle_en": "Research, ventures and new possibilities",
+      "join_copy_cn": "如果你正在研究一个重要问题、创造一家新公司，或看见一个尚未成为共识的方向，我们很想认识你。",
+      "join_copy_en": "If you are working on an important question, building something new, or seeing a direction before it becomes obvious, we would like to hear from you.",
       "join_display_cn": [
-        "如果你正在探索一个世界尚未命名的未来，",
-        "我们希望在信号初现时就与你相遇。"
+        "如果你正在研究一个重要问题、创造一家新公司，",
+        "或看见一个尚未成为共识的方向，我们很想认识你。"
       ],
       "join_display_en": [
-        "If you are exploring a future the world has yet to name,",
-        "we would like to meet you while the signal is still faint."
+        "If you are working on an important question, building something new, or seeing a direction before it becomes obvious, we would like to hear from you."
       ],
-      "definition_cn": "与远见同行，与定义者同行。",
-      "definition_en": "Alongside vision. Alongside those who make it real.",
-      "video_placeholder_cn": "与创业者同行",
-      "video_placeholder_en": "Alongside founders",
-      "join_title_cn": "开始对话",
-      "join_title_en": "Start a Conversation",
+      "definition_cn": "重要的事，往往始于一次相遇。",
+      "definition_en": "Important things often begin with a conversation.",
+      "video_placeholder_cn": "让想法迈出下一步",
+      "video_placeholder_en": "Take the next step with an idea",
+      "join_title_cn": "把想法告诉我们",
+      "join_title_en": "Tell us what you are working on",
       "join_eyebrow_cn": "与我们对话",
       "join_eyebrow_en": "CONNECT WITH US",
       "contact_link_cn": "联系我们",
       "contact_link_en": "Contact us",
-      "details_eyebrow_cn": "与我们同行",
-      "details_eyebrow_en": "BUILD WITH US",
-      "details_title_cn": "连接下一个信号",
-      "details_title_en": "Connect with the Next Signal",
+      "details_eyebrow_cn": "与我们对话",
+      "details_eyebrow_en": "CONNECT WITH US",
+      "details_title_cn": "认识彼此",
+      "details_title_en": "Let's talk",
       "email_label_cn": "电子邮箱",
       "email_label_en": "Email",
       "copy_email_cn": "复制邮箱",
@@ -347,9 +367,14 @@
       "find_us_en": "Find us",
       "wechat": [
         {
-          "title_cn": "星连资本官媒",
-          "title_en": "LinkX Capital Official WeChat",
+          "title_cn": "星连资本微信公众号",
+          "title_en": "LinkX Capital on WeChat",
           "image_file": "wechat-linkx-capital.png"
+        },
+        {
+          "title_cn": "星连 T-ONE 创新实验室微信公众号",
+          "title_en": "LinkX T-ONE Innovation Lab on WeChat",
+          "image_file": "wechat-tone-innovation-lab.png"
         }
       ]
     },
@@ -424,23 +449,39 @@
       "font_notice_path": "licenses/FONT-NOTICE.md"
     },
     "fellowship": {
-      "title_cn": "星图计划",
+      "title_cn": "星连 Fellowship 计划",
       "title_en": "LinkX Constellation Fellowship",
-      "introduction_cn": "星图计划是星连资本发起的长期同行计划，面向全球青年科学家、研究型创业者、技术领袖，以及善于发现前沿方向与人才的同行者。我们希望更早遇见独立提问、持续验证，让研究走出论文、走进现实的人。Fellow 将加入研究者、创业者与产业伙伴网络，参与闭门研讨，获得算力与模型资源支持；也可与星连共同发现、支持潜力项目，让前沿判断转化为推动创新的资本力量。创业项目可依进展对接孵化与早期投资支持。计划无需全职参与，也鼓励 Fellow 推荐更早期的 Young Pioneer。让远见彼此辉映，让重要探索不再孤立发生。",
-      "introduction_en": "LinkX Constellation Fellowship is a long-term community for young scientists, researcher-founders and technology leaders around the world, as well as people who recognize important ideas and the talent behind them. We seek those who ask original questions about the next generation of intelligence, pursue answers with persistence, and bring research beyond papers into the real world. Fellows join a close-knit network of researchers, founders and industry partners for private discussions and access to compute and model resources. They can also work with LinkX to discover and support promising early-stage ventures, turning frontier insight into capital that helps new ideas grow. Those considering a company can explore incubation and early investment support as their work develops. The program does not require full-time participation, and Fellows may recommend emerging talent for the Young Pioneer track. We bring exceptional minds and long-term capital together around ideas that could shape what comes next."
+      "eyebrow_cn": "FELLOWSHIP",
+      "eyebrow_en": "FELLOWSHIP",
+      "headline_cn": "让远见彼此相连",
+      "headline_en": "A Constellation of Minds",
+      "description_cn": [
+        "**LinkX Fellowship Programme** 是星连资本面向全球青年科学家、研究型创业者、技术领袖与前沿探索者发起的 Fellowship Network。",
+        "我们希望更早遇见那些独立提问、持续验证，并努力让研究从论文走向现实的人。",
+        "Fellow 将进入由研究者、创业者与产业伙伴组成的长期网络，参与闭门研讨，并获得算力、模型及产业资源支持。Fellow 也可以与星连共同发现和支持优秀的早期项目，让对技术、趋势与人才的前沿认知转化为真实的资本判断，并**分享由优秀判断所创造的长期价值**。",
+        "对于进入创业阶段的 Fellow，星连将根据项目进展提供孵化、产业资源及早期投资支持。",
+        "Fellowship 无需全职参与。我们也鼓励 Fellow 发现并推荐更年轻、更早期的 **Young Pioneer**；入选者将获得星连提供的**奖学金及研究资源支持**，帮助他们更自由地探索真正重要的问题。",
+        "**让远见彼此辉映，让重要的探索不再孤立发生。**"
+      ],
+      "description_en": [
+        "**LinkX Constellation Fellowship** is a global fellowship for young scientists, researcher-founders, technology leaders, and those with a distinctive ability to recognize important ideas and exceptional talent early.",
+        "We look for people who ask original questions about the future of intelligence, pursue answers with persistence, and push research beyond papers into the real world.",
+        "Fellows join a close network of researchers, founders, and industry partners, with access to private discussions, compute, model resources, and broader ecosystem support. They can also work with LinkX to identify and support promising early-stage ventures, turning frontier insight into real investment decisions and **sharing in the long-term value created by exceptional judgment**.",
+        "For Fellows exploring entrepreneurship, LinkX can provide incubation support, strategic resources, and early-stage investment as their work develops.",
+        "The Fellowship does not require full-time participation. Fellows are also encouraged to identify and recommend emerging talent for the **Young Pioneer** track. Selected Young Pioneers will receive **scholarship funding and research support** from LinkX, giving them greater freedom to pursue ambitious and important questions.",
+        "**Important ideas should not have to grow alone.**"
+      ],
+      "join_label_cn": "与星连同行",
+      "join_label_en": "CONNECT WITH LINKX",
+      "join_title_cn": "加入 Fellowship",
+      "join_title_en": "Join the Fellowship",
+      "join_copy_cn": "如果你正在探索智能的未来，或发现值得支持的研究与人才，我们期待认识你。",
+      "join_copy_en": "If you are exploring the future of intelligence or recognizing promising research and talent early, we would like to hear from you.",
+      "cta_cn": "联系我们",
+      "cta_en": "Contact us"
     }
   },
   "socials": [
-    {
-      "name_cn": "小红书（华清普智 AI 孵化器）",
-      "name_en": "T-ONE Innovation Lab on Xiaohongshu",
-      "url": "https://xhslink.com/m/UjLFumWxau"
-    },
-    {
-      "name_cn": "抖音",
-      "name_en": "Douyin",
-      "url": "https://www.douyin.com/user/MS4wLjABAAAAHYtbwIVUi113kSYUweZGc-tFiJGG1WPk8Jgldgk9Fhw"
-    },
     {
       "name_cn": "X",
       "name_en": "X",
@@ -450,6 +491,16 @@
       "name_cn": "LinkedIn",
       "name_en": "LinkedIn",
       "url": "https://www.linkedin.com/company/link-x-%E6%98%9F%E8%BF%9E%E8%B5%84%E6%9C%AC/"
+    },
+    {
+      "name_cn": "小红书",
+      "name_en": "Xiaohongshu",
+      "url": "https://xhslink.com/m/UjLFumWxau"
+    },
+    {
+      "name_cn": "抖音",
+      "name_en": "Douyin",
+      "url": "https://www.douyin.com/user/MS4wLjABAAAAHYtbwIVUi113kSYUweZGc-tFiJGG1WPk8Jgldgk9Fhw"
     }
   ],
   "sectors": [
@@ -457,43 +508,43 @@
       "id": "foundation",
       "name_cn": "基础模型与学习范式",
       "name_en": "Foundation Models & Learning",
-      "description_cn": "关注推动模型能力跃迁的架构与训练方法，包括推理、多模态、世界模型、持续学习与递归学习。",
-      "description_en": "New model architectures and learning methods can expand what intelligence can do. Areas of interest include reasoning, multimodality, world models, continual learning and recursive learning."
-    },
-    {
-      "id": "physical",
-      "name_cn": "具身智能",
-      "name_en": "Embodied AI",
-      "description_cn": "关注机器人、具身世界模型、感知与智能终端，让 AI 能在物理环境中感知、决策和行动。",
-      "description_en": "Robotics, embodied world models, perception and intelligent devices bring AI into environments where it must sense, decide and act."
-    },
-    {
-      "id": "applications",
-      "name_cn": "AI 原生应用",
-      "name_en": "AI-Native Applications",
-      "description_cn": "支持能够理解任务、调用工具并从反馈中改进的智能体，以及围绕真实工作流程设计的 AI 原生产品。",
-      "description_en": "Agents that understand tasks, use tools and learn from feedback are opening new workflows. The focus is on products with clear user needs and repeated use."
-    },
-    {
-      "id": "frontiers",
-      "name_cn": "科学智能",
-      "name_en": "AI for Science",
-      "description_cn": "以 AI 推进生命科学、药物研发和科学发现，同时探索新的人机交互、能源与计算范式。",
-      "description_en": "AI is changing biology, drug discovery and the research process. New forms of human-computer interaction, energy and computing also merit long-term attention."
-    },
-    {
-      "id": "infrastructure",
-      "name_cn": "AI 基础设施",
-      "name_en": "AI Infrastructure",
-      "description_cn": "覆盖芯片、算力网络、推理、数据与安全，让模型能力更高效、更可靠地进入实际使用。",
-      "description_en": "Chips, compute networks, inference systems, data infrastructure and security determine how efficiently and reliably AI reaches users."
+      "description_cn": "关注推动模型能力跃迁的架构与学习方法，包括推理、多模态、世界模型、持续学习与自进化。",
+      "description_en": "We explore architectures and learning methods that expand model capability, including reasoning, multimodality, world models, continual learning and self-improvement."
     },
     {
       "id": "chips",
       "name_cn": "芯片",
       "name_en": "Chips",
-      "description_cn": "",
-      "description_en": ""
+      "description_cn": "关注支撑 AI 训练、推理与端侧智能的芯片及关键技术，包括计算架构、存储与互连、先进封装和软硬件协同。",
+      "description_en": "We focus on chips and enabling technologies for AI training, inference and on-device intelligence, including compute architectures, memory and interconnects, advanced packaging, and hardware-software co-design."
+    },
+    {
+      "id": "infrastructure",
+      "name_cn": "AI 基础设施",
+      "name_en": "AI Infrastructure",
+      "description_cn": "覆盖算力网络、模型训练与推理系统、数据平台和安全，让 AI 更高效、更可靠地进入实际使用。",
+      "description_en": "Compute networks, training and inference systems, data platforms and security make AI more efficient, reliable and usable at scale."
+    },
+    {
+      "id": "applications",
+      "name_cn": "AI 原生应用",
+      "name_en": "AI-Native Applications",
+      "description_cn": "支持围绕真实需求与工作流程设计的 AI 原生产品，包括能够理解任务、调用工具并从反馈中改进的智能体，以及面向企业与个人的新应用。",
+      "description_en": "We back AI-native products built around real user needs and workflows, from agents that understand tasks, use tools and improve through feedback to new applications for businesses and consumers."
+    },
+    {
+      "id": "physical",
+      "name_cn": "具身智能",
+      "name_en": "Embodied AI",
+      "description_cn": "关注机器人、具身模型、感知与控制系统，以及智能终端，让 AI 在物理环境中感知、决策和行动。",
+      "description_en": "We explore robotics, embodied models, perception and control systems, and intelligent devices that enable AI to sense, decide and act in the physical world."
+    },
+    {
+      "id": "frontiers",
+      "name_cn": "科学智能",
+      "name_en": "AI for Science",
+      "description_cn": "以 AI 推进生命科学、药物研发、材料与能源研究，连接计算设计、实验验证与科学发现，探索新的科研方法与工具。",
+      "description_en": "We support AI for biology, drug discovery, materials and energy research, connecting computational design with experimental validation to develop new methods and tools for scientific discovery."
     }
   ],
   "team": [
@@ -506,9 +557,9 @@
       "role_en": "Managing Partner",
       "image_file": "team-alex.webp",
       "summary_cn": "从产品一线看技术，也从投资视角看团队。",
-      "summary_en": "A product-builder’s eye for technology and founders.",
-      "bio_cn": "张鸣晨在清华大学自动化系完成本科与硕士学业，职业经历横跨 Google、腾讯与红点创投，并曾担任红点创投合伙人。产品、平台和投资三种视角，让他尤其关注一项技术怎样走进用户生活、成长为长久的企业。",
-      "bio_en": "Alex Zhang studied Automation at Tsinghua University through his master’s degree. His path spans Google, Tencent, where he was a Product Director, and Redpoint Ventures, where he was a Partner. He brings product, platform and investor perspectives to the question of how breakthrough technology becomes a lasting company."
+      "summary_en": "A product-builder's eye for technology and founders.",
+      "bio_cn": "张鸣晨在清华大学自动化系完成本科与硕士学业。他曾就职于 Google 和腾讯，并担任腾讯产品总监；进入投资领域后，先后任职于策源创投与红点创投，曾任红点创投合伙人。\n\n他长期活跃于清华校友圈，与科研人员、技术人才和创业者保持密切交流。产品、平台与投资的经历，让他能够从技术实现、用户需求和企业成长三个层面理解早期机会。他尤其关注研究型创业者如何将原创成果转化为产品，并建立有长期竞争力的公司。",
+      "bio_en": "Alex Zhang holds bachelor's and master's degrees in Automation from Tsinghua University. His early career included Google and a Product Director role at Tencent. He went on to work at Ceyuan Ventures before joining Redpoint Ventures, where he was a Partner.\n\nActive in the Tsinghua alumni community, Alex maintains close ties with researchers, technical talent and founders. His experience across product, platforms and venture investing shapes how he assesses early opportunities, from technical execution and user needs to company growth. He is particularly interested in how researcher-founders turn original work into products and build companies with lasting competitive strengths."
     },
     {
       "id": "elliott",
@@ -520,8 +571,8 @@
       "image_file": "team-elliot.webp",
       "summary_cn": "资深科技投资人，兼具工程与大型平台经验。",
       "summary_en": "An experienced technology investor with engineering and platform fluency.",
-      "bio_cn": "王璞曾任策源创投投资总监、Hanfor Capital 董事总经理，在科技投资领域积累了长期的一线判断经验。此前他在腾讯担任总监，拥有通信工程背景及南洋理工大学 MBA 学位。投资、平台与工程三种视角，使他能够同时审视技术壁垒、产品路径和企业成长所需的资本支持。",
-      "bio_en": "Elliott Wang spent years investing in technology companies, first as Investment Director at Ceyuan Ventures and later as Managing Director at Hanfor Capital. Earlier, he was a Director at Tencent. Training in telecommunications engineering and an MBA from Nanyang Technological University add technical and commercial depth to his investment judgment."
+      "bio_cn": "王璞曾任策源创投投资总监、Hanfor Capital 董事总经理，长期深耕科技投资。此前他在腾讯担任总监，具备大型科技平台的管理经验，拥有通信工程背景及南洋理工大学 MBA 学位。他将工程理解与商业判断结合，评估早期项目的技术壁垒、产品路径与市场潜力。从投资到平台管理的经历，使他能够理解企业在不同成长阶段的关键选择与资本需求。",
+      "bio_en": "Elliott Wang served as Investment Director at Ceyuan Ventures and Managing Director at Hanfor Capital, building extensive experience in technology investing. He was previously a Director at Tencent and combines a background in telecommunications engineering with an MBA from Nanyang Technological University. He brings technical and commercial depth to assessing a venture's defensibility, product direction and market potential. His experience across investing and platform management informs how he evaluates strategic choices and capital needs as companies grow."
     },
     {
       "id": "leo",
@@ -533,8 +584,8 @@
       "image_file": "team-leo.webp",
       "summary_cn": "把战略判断带到实际增长与全球市场。",
       "summary_en": "Connecting strategy with scale and global growth.",
-      "bio_cn": "王晨曾在美团从事战略与投资，负责快手投资发展工作，并担任 SHAREit 集团首席战略官。他熟悉科技企业在不同增长阶段的选择，关注产品、资本与全球化之间如何形成合力。",
-      "bio_en": "Leo Wang’s career has taken him from strategy and investment at Meituan to investment development at Kuaishou and the Chief Strategy Officer role at SHAREit Group. He looks at how product choices, capital and global expansion come together as a company scales."
+      "bio_cn": "王晨的职业经历横跨美团、快手与 SHAREit，涵盖战略、投资和全球化业务。他曾在美团从事战略与投资，负责快手投资发展工作，并担任 SHAREit 集团首席战略官。大型互联网平台与全球化业务的经历，使他熟悉企业从产品验证到规模增长所面临的关键选择。他尤其关注产品、资本与市场拓展如何协同，评估技术企业的增长路径与国际竞争力。",
+      "bio_en": "Leo Wang's career spans Meituan, Kuaishou and SHAREit, with experience across strategy, investment and global business. He worked in strategy and investment at Meituan, led investment development at Kuaishou and served as Chief Strategy Officer of SHAREit Group. These roles give him a practical understanding of the decisions companies face as they move from product validation to scale. He assesses how product strategy, capital and market expansion work together to build growth and international competitiveness."
     },
     {
       "id": "wenjue",
@@ -546,8 +597,8 @@
       "image_file": "team-wenjue.webp",
       "summary_cn": "在研究突破与创业实践之间搭桥。",
       "summary_en": "A bridge between scientific discovery and company creation.",
-      "bio_cn": "李文珏曾任中科创星及北京智源人工智能研究院投资总监，长期接触科研团队与技术创业者。她尤其关注原创成果离开实验室之后，如何找到合适的创始团队、应用场景与成长路径。",
-      "bio_en": "Wenjue Li was an Investment Director at Casstar and the Beijing Academy of Artificial Intelligence. Her work with researchers and technical founders informs how she assesses the team, use case and path that can carry original research beyond the lab."
+      "bio_cn": "李文珏曾任中科创星及北京智源人工智能研究院投资总监，具备科技投资与 AI 科研机构的双重经历。她长期与科研团队和技术创业者交流，熟悉原创成果从实验室走向创业实践的关键环节。她从技术原创性、创始团队与应用场景出发，判断研究成果进入产业的潜力。她尤其关注研究型创业者，重点评估技术优势如何形成产品，以及支撑公司长期成长的商业路径。",
+      "bio_en": "Wenjue Li served as Investment Director at Casstar and the Beijing Academy of Artificial Intelligence, bringing experience across technology investing and AI research institutions. Her close work with researchers and technical founders gives her insight into the transition from original research to company creation. She evaluates technical originality, founding teams and use cases to assess a discovery's commercial potential. With a particular focus on researcher-founders, she examines how technical advantages become products and support a company's long-term growth."
     },
     {
       "id": "chris",
@@ -559,8 +610,8 @@
       "image_file": "team-leo.webp",
       "summary_cn": "以严谨的投资判断，支持早期科技项目成长。",
       "summary_en": "A rigorous early-stage investor with hands-on incubation experience.",
-      "bio_cn": "鲁亦纯曾在红点中国和红杉中国从事早期科技投资，在伦敦大学学院完成数学与经济学本硕学业。她以严谨的研究与投资判断支持创业团队，曾成功帮助早期项目完成孵化，关注技术潜力如何成长为可持续的企业。",
-      "bio_en": "Chris Lu worked on early-stage technology investments at Redpoint China and Sequoia China and holds bachelor’s and master’s degrees in Mathematics and Economics from University College London. Her rigorous, research-led approach has helped incubate early-stage companies and informs how she evaluates their path to sustainable growth."
+      "bio_cn": "鲁亦纯曾在红点中国与红杉中国从事早期科技投资，具备研究、投资与项目孵化经验。她在伦敦大学学院完成数学与经济学本硕学业，将扎实的定量训练融入技术与商业判断。她以严谨的研究支持投资决策，并曾成功帮助早期项目完成孵化。她关注技术潜力、产品需求与团队执行力之间的关系，判断早期创新如何成长为具有持续竞争力的企业。",
+      "bio_en": "Chris Lu worked on early-stage technology investments at Redpoint China and Sequoia China, with experience across research, investing and incubation. She holds bachelor's and master's degrees in Mathematics and Economics from University College London, bringing quantitative discipline to technical and commercial analysis. Her research-led investment approach has helped incubate early-stage companies. She assesses the relationship between technical potential, product demand and team execution to understand how early innovation can become a durable, competitive business."
     },
     {
       "id": "emily",
@@ -570,10 +621,10 @@
       "role_cn": "董事总经理",
       "role_en": "Managing Director",
       "image_file": "team-leo.webp",
-      "summary_cn": "从工程与产品现场走向科技投资。",
-      "summary_en": "From engineering and product work to venture investing.",
-      "bio_cn": "关蕾的教育背景涵盖电气工程与可再生能源。她曾在华锐风电与 ABB 从事产品相关工作，之后加入红点创投中国基金。这样的经历使她能够从技术实现、产品需求和企业成长三个层面理解创业者面对的问题。",
-      "bio_en": "Emily Guan studied electrical engineering and renewable energy. Product roles at Huarui Wind Power and ABB came before her investment work at Redpoint Ventures China Fund. She brings an engineer’s attention to implementation together with a close view of product needs and company growth."
+      "summary_cn": "兼具工程背景与产业经验的科技投资人。",
+      "summary_en": "A technology investor with an engineering background and industry experience.",
+      "bio_cn": "关蕾兼具工程、产品与科技投资背景，教育经历涵盖电气工程及可再生能源。她曾在华锐风电与 ABB 从事产品相关工作，在新能源产业与全球工业企业积累了技术和产品经验。此后她加入红点创投中国基金，将产业一线的理解带入早期投资判断。她从技术实现、应用需求与商业化路径出发评估创业机会，尤其关注创新能否在真实场景中形成可靠产品并持续创造价值。",
+      "bio_en": "Emily Guan brings experience across engineering, product development and technology investing, with an academic background in electrical engineering and renewable energy. Product roles at Huarui Wind Power and ABB gave her direct exposure to renewable energy and global industrial businesses. She later joined Redpoint Ventures China Fund, bringing that industry perspective to early-stage investing. She evaluates technical execution, application needs and commercialization, with a focus on whether innovation can become a reliable product and create lasting value in real-world settings."
     }
   ],
   "companies": [
@@ -623,7 +674,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "aipher.webp",
       "sector_ids": [
         "frontiers"
       ]
@@ -640,7 +691,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "aippt.webp",
       "sector_ids": [
         "applications"
       ]
@@ -657,7 +708,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "amio-robotics.webp",
+      "logo_file": "amio-robotics.svg",
       "sector_ids": [
         "physical",
         "foundation"
@@ -675,7 +726,7 @@
       "website_url": "https://approaching-ai.com/introduction",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "approaching-ai.webp",
+      "logo_file": "approaching-ai.svg",
       "sector_ids": [
         "infrastructure"
       ]
@@ -692,7 +743,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "chips",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "beiji-xiongxin.webp",
       "sector_ids": [
         "chips"
       ]
@@ -709,7 +760,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "beingbeyond.webp",
       "sector_ids": [
         "foundation",
         "physical"
@@ -727,7 +778,7 @@
       "website_url": "https://www.biogeom.com/about/",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "biogeometry.webp",
+      "logo_file": "biogeometry.svg",
       "sector_ids": [
         "frontiers",
         "foundation"
@@ -745,7 +796,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "chaoyan-intelligence.svg",
       "sector_ids": [
         "foundation",
         "frontiers"
@@ -797,7 +848,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "discover-robotics.svg",
       "sector_ids": [
         "physical"
       ]
@@ -825,13 +876,13 @@
       "name_cn": "脸谱心智",
       "name_en": "FaceMind",
       "description_cn": "脸谱心智开发端侧多模态模型，并以“叠叠社”等实时 AI 弹幕产品探索交互方式。系统可理解屏幕上的文字、图像与声音，生成与当前内容相关的回应。",
-      "description_en": "FaceMind develops on-device multimodal models and tests them in real-time products such as DieDieShe. Its AI commentary can respond to text, images and audio on a user’s screen, creating a more context-aware interaction.",
+      "description_en": "FaceMind develops on-device multimodal models and tests them in real-time products such as DieDieShe. Its AI commentary can respond to text, images and audio on a user's screen, creating a more context-aware interaction.",
       "detail_cn": "脸谱心智开发端侧多模态模型，并以“叠叠社”等实时 AI 弹幕产品探索交互方式。系统可理解屏幕上的文字、图像与声音，生成与当前内容相关的回应。",
-      "detail_en": "FaceMind develops on-device multimodal models and tests them in real-time products such as DieDieShe. Its AI commentary can respond to text, images and audio on a user’s screen, creating a more context-aware interaction.",
+      "detail_en": "FaceMind develops on-device multimodal models and tests them in real-time products such as DieDieShe. Its AI commentary can respond to text, images and audio on a user's screen, creating a more context-aware interaction.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "facemind.webp",
       "sector_ids": [
         "foundation",
         "applications"
@@ -849,7 +900,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "fangcun-leap.webp",
       "sector_ids": [
         "infrastructure",
         "applications"
@@ -860,10 +911,10 @@
       "slug": "shengshu-technology",
       "name_cn": "生数科技",
       "name_en": "GensPi（Vidu）",
-      "description_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期物理智能方向。",
-      "description_en": "GensPi brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and physical AI.",
-      "detail_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期物理智能方向。",
-      "detail_en": "GensPi brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and physical AI.",
+      "description_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期具身智能方向。",
+      "description_en": "GensPi brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and embodied AI.",
+      "detail_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期具身智能方向。",
+      "detail_en": "GensPi brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and embodied AI.",
       "website_url": "https://www.shengshu.com/zh/about",
       "investment_year": "",
       "sector_id": "foundation",
@@ -884,7 +935,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "chips",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "guanglian-xinke.svg",
       "sector_ids": [
         "chips"
       ]
@@ -901,7 +952,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "houdu-technology.svg",
       "sector_ids": [
         "infrastructure"
       ]
@@ -930,9 +981,9 @@
       "name_cn": "无界进化",
       "name_en": "INFevo",
       "description_cn": "无界进化以 OCOO 虚拟细胞模型研究细胞状态，以及药物和基因扰动后的动态变化。模型预测与实验反馈相结合，为靶点发现和药物研发提供计算工具。",
-      "description_en": "INFevo’s OCOO virtual-cell model studies cell states and their response to drug or genetic perturbations. Linking predictions with experiments could give target discovery and drug research a more iterative computational workflow.",
+      "description_en": "INFevo's OCOO virtual-cell model studies cell states and their response to drug or genetic perturbations. Linking predictions with experiments could give target discovery and drug research a more iterative computational workflow.",
       "detail_cn": "无界进化以 OCOO 虚拟细胞模型研究细胞状态，以及药物和基因扰动后的动态变化。模型预测与实验反馈相结合，为靶点发现和药物研发提供计算工具。",
-      "detail_en": "INFevo’s OCOO virtual-cell model studies cell states and their response to drug or genetic perturbations. Linking predictions with experiments could give target discovery and drug research a more iterative computational workflow.",
+      "detail_en": "INFevo's OCOO virtual-cell model studies cell states and their response to drug or genetic perturbations. Linking predictions with experiments could give target discovery and drug research a more iterative computational workflow.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
@@ -970,7 +1021,7 @@
       "website_url": "https://infrawaves.com/home",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "infrawaves.webp",
+      "logo_file": "infrawaves.svg",
       "sector_ids": [
         "infrastructure"
       ]
@@ -981,9 +1032,9 @@
       "name_cn": "集异璧",
       "name_en": "Jiyi Bi",
       "description_cn": "集异璧的内容分析平台识别视频、图像、文本和语音，并提供多语言文档及语音识别能力。它帮助企业处理分散在不同媒介中的信息，服务复杂资料分析与工业场景。",
-      "description_en": "Jiyi Bi’s content-analysis platform works across video, images, text and audio, with multilingual recognition for documents and speech. It helps organizations make sense of information spread across formats and supports industrial use cases.",
+      "description_en": "Jiyi Bi's content-analysis platform works across video, images, text and audio, with multilingual recognition for documents and speech. It helps organizations make sense of information spread across formats and supports industrial use cases.",
       "detail_cn": "集异璧的内容分析平台识别视频、图像、文本和语音，并提供多语言文档及语音识别能力。它帮助企业处理分散在不同媒介中的信息，服务复杂资料分析与工业场景。",
-      "detail_en": "Jiyi Bi’s content-analysis platform works across video, images, text and audio, with multilingual recognition for documents and speech. It helps organizations make sense of information spread across formats and supports industrial use cases.",
+      "detail_en": "Jiyi Bi's content-analysis platform works across video, images, text and audio, with multilingual recognition for documents and speech. It helps organizations make sense of information spread across formats and supports industrial use cases.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
@@ -1021,7 +1072,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "knevo.svg",
       "sector_ids": [
         "applications"
       ]
@@ -1038,7 +1089,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "frontiers",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "ligit.webp",
       "sector_ids": [
         "frontiers",
         "foundation"
@@ -1073,7 +1124,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "lingxin-zhiyu.svg",
       "sector_ids": [
         "foundation"
       ]
@@ -1083,14 +1134,14 @@
       "slug": "lychee-ai",
       "name_cn": "厘清智能",
       "name_en": "Lychee.AI",
-      "description_cn": "厘清智能不以机器人本体为核心，而是提供物理智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
-      "description_en": "Lychee.AI works on the infrastructure beneath physical AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
-      "detail_cn": "厘清智能不以机器人本体为核心，而是提供物理智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
-      "detail_en": "Lychee.AI works on the infrastructure beneath physical AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
+      "description_cn": "厘清智能不以机器人本体为核心，而是提供具身智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
+      "description_en": "Lychee.AI works on the infrastructure beneath embodied AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
+      "detail_cn": "厘清智能不以机器人本体为核心，而是提供具身智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
+      "detail_en": "Lychee.AI works on the infrastructure beneath embodied AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "lychee-ai.svg",
       "sector_ids": [
         "foundation",
         "physical"
@@ -1108,7 +1159,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "maimais-technology.webp",
       "sector_ids": [
         "applications",
         "frontiers"
@@ -1126,7 +1177,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "megatech-ai.webp",
       "sector_ids": [
         "applications",
         "foundation"
@@ -1137,14 +1188,14 @@
       "slug": "miji-intelligence",
       "name_cn": "幂级智能",
       "name_en": "MIJI Intelligence",
-      "description_cn": "幂级智能以世界模型和密集强化学习研究物理智能，使自动驾驶与具身系统能够生成高价值训练数据，并更有效地进行测试和训练。",
-      "description_en": "MIJI Intelligence combines world models with dense reinforcement learning for physical AI. The approach aims to generate useful training data and scale testing for autonomous driving and embodied systems.",
-      "detail_cn": "幂级智能以世界模型和密集强化学习研究物理智能，使自动驾驶与具身系统能够生成高价值训练数据，并更有效地进行测试和训练。",
-      "detail_en": "MIJI Intelligence combines world models with dense reinforcement learning for physical AI. The approach aims to generate useful training data and scale testing for autonomous driving and embodied systems.",
+      "description_cn": "幂级智能以世界模型和密集强化学习研究具身智能，使自动驾驶与具身系统能够生成高价值训练数据，并更有效地进行测试和训练。",
+      "description_en": "MIJI Intelligence combines world models with dense reinforcement learning for embodied AI. The approach aims to generate useful training data and scale testing for autonomous driving and embodied systems.",
+      "detail_cn": "幂级智能以世界模型和密集强化学习研究具身智能，使自动驾驶与具身系统能够生成高价值训练数据，并更有效地进行测试和训练。",
+      "detail_en": "MIJI Intelligence combines world models with dense reinforcement learning for embodied AI. The approach aims to generate useful training data and scale testing for autonomous driving and embodied systems.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "miji-intelligence.svg",
       "sector_ids": [
         "foundation",
         "physical"
@@ -1162,7 +1213,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "mirros.svg",
       "sector_ids": [
         "foundation",
         "physical"
@@ -1174,13 +1225,13 @@
       "name_cn": "ModaLink",
       "name_en": "ModaLink",
       "description_cn": "ModaLink 以自研 F3 通用数据格式为基础，为具身智能、自动驾驶与世界模型提供全生命周期数据平台。平台覆盖摄取、存储、质量处理、检索与高吞吐加载，解决多模态数据难以对齐和利用的问题。",
-      "description_en": "ModaLink’s F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
+      "description_en": "ModaLink's F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
       "detail_cn": "ModaLink 以自研 F3 通用数据格式为基础，为具身智能、自动驾驶与世界模型提供全生命周期数据平台。平台覆盖摄取、存储、质量处理、检索与高吞吐加载，解决多模态数据难以对齐和利用的问题。",
-      "detail_en": "ModaLink’s F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
+      "detail_en": "ModaLink's F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "modalink.webp",
       "sector_ids": [
         "infrastructure",
         "physical"
@@ -1192,9 +1243,9 @@
       "name_cn": "面壁智能",
       "name_en": "ModelBest",
       "description_cn": "面壁智能以 MiniCPM 系列高效语言及多模态模型推动端侧 AI。相对庞大的云端模型，其重点是在资源受限设备上提供可实际部署的模型能力。",
-      "description_en": "ModelBest’s MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
+      "description_en": "ModelBest's MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
       "detail_cn": "面壁智能以 MiniCPM 系列高效语言及多模态模型推动端侧 AI。相对庞大的云端模型，其重点是在资源受限设备上提供可实际部署的模型能力。",
-      "detail_en": "ModelBest’s MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
+      "detail_en": "ModelBest's MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
       "website_url": "https://modelbest.cn/",
       "investment_year": "",
       "sector_id": "foundation",
@@ -1215,7 +1266,7 @@
       "website_url": "https://home.mosi.cn",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "mosi.webp",
+      "logo_file": "mosi.svg",
       "sector_ids": [
         "foundation"
       ]
@@ -1232,7 +1283,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "muyan-zhiyu.svg",
       "sector_ids": [
         "applications"
       ]
@@ -1249,7 +1300,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "chips",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "neuhelium.webp",
       "sector_ids": [
         "chips",
         "foundation"
@@ -1267,7 +1318,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "nexus.svg",
       "sector_ids": [
         "foundation",
         "applications"
@@ -1279,9 +1330,9 @@
       "name_cn": "NoDesk AI",
       "name_en": "NoDesk AI",
       "description_cn": "NoDesk AI 的 DeskClaw 是可操作浏览器与本地文件的桌面智能体，并能通过 Skills、MCP 扩展能力。公司还围绕营销流程开发智能体，从市场洞察延伸到内容与分发。",
-      "description_en": "NoDesk AI’s DeskClaw can act through a browser and local files, with Skills and MCP extending its desktop capabilities. Related marketing agents connect market insight with content creation and distribution workflows.",
+      "description_en": "NoDesk AI's DeskClaw can act through a browser and local files, with Skills and MCP extending its desktop capabilities. Related marketing agents connect market insight with content creation and distribution workflows.",
       "detail_cn": "NoDesk AI 的 DeskClaw 是可操作浏览器与本地文件的桌面智能体，并能通过 Skills、MCP 扩展能力。公司还围绕营销流程开发智能体，从市场洞察延伸到内容与分发。",
-      "detail_en": "NoDesk AI’s DeskClaw can act through a browser and local files, with Skills and MCP extending its desktop capabilities. Related marketing agents connect market insight with content creation and distribution workflows.",
+      "detail_en": "NoDesk AI's DeskClaw can act through a browser and local files, with Skills and MCP extending its desktop capabilities. Related marketing agents connect market insight with content creation and distribution workflows.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
@@ -1302,7 +1353,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "novaserene.webp",
       "sector_ids": [
         "applications"
       ]
@@ -1319,7 +1370,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "omnimind.svg",
       "sector_ids": [
         "infrastructure",
         "applications"
@@ -1337,7 +1388,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "openmaic.svg",
       "sector_ids": [
         "applications",
         "foundation"
@@ -1355,7 +1406,7 @@
       "website_url": "https://www.phybot.tech/",
       "investment_year": "",
       "sector_id": "physical",
-      "logo_file": "phybot.webp",
+      "logo_file": "phybot.svg",
       "sector_ids": [
         "physical"
       ]
@@ -1423,7 +1474,7 @@
       "website_url": "https://www.qc-ai.cn/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "qingcheng-jizhi.webp",
+      "logo_file": "qingcheng-jizhi.svg",
       "sector_ids": [
         "infrastructure"
       ]
@@ -1508,7 +1559,7 @@
       "website_url": "https://www.realai.ai/about?scrollId=t19",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "realai.webp",
+      "logo_file": "realai.svg",
       "sector_ids": [
         "applications",
         "infrastructure"
@@ -1554,9 +1605,9 @@
       "name_cn": "深度时空",
       "name_en": "Shendu Shikong*（Kronos）",
       "description_cn": "深度时空以开源 Kronos 模型研究金融价量时间序列，将大规模市场数据预训练用于行情理解和后续任务。其方向把金融建模从单任务算法推进到可复用的基础模型。",
-      "description_en": "Shendu Shikong’s open-source Kronos model applies pretraining to financial price-and-volume time series. It seeks a reusable foundation for market-data tasks rather than a separate model for each narrow problem.",
+      "description_en": "Shendu Shikong's open-source Kronos model applies pretraining to financial price-and-volume time series. It seeks a reusable foundation for market-data tasks rather than a separate model for each narrow problem.",
       "detail_cn": "深度时空以开源 Kronos 模型研究金融价量时间序列，将大规模市场数据预训练用于行情理解和后续任务。其方向把金融建模从单任务算法推进到可复用的基础模型。",
-      "detail_en": "Shendu Shikong’s open-source Kronos model applies pretraining to financial price-and-volume time series. It seeks a reusable foundation for market-data tasks rather than a separate model for each narrow problem.",
+      "detail_en": "Shendu Shikong's open-source Kronos model applies pretraining to financial price-and-volume time series. It seeks a reusable foundation for market-data tasks rather than a separate model for each narrow problem.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
@@ -1571,13 +1622,13 @@
       "name_cn": "硅基流动",
       "name_en": "SiliconFlow",
       "description_cn": "硅基流动的 SiliconCloud 提供模型云服务，SiliconLLM 聚焦推理引擎，OneDiff 加速图像及视频生成。三类产品覆盖模型访问、部署与性能优化。",
-      "description_en": "SiliconFlow’s stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
+      "description_en": "SiliconFlow's stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
       "detail_cn": "硅基流动的 SiliconCloud 提供模型云服务，SiliconLLM 聚焦推理引擎，OneDiff 加速图像及视频生成。三类产品覆盖模型访问、部署与性能优化。",
-      "detail_en": "SiliconFlow’s stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
+      "detail_en": "SiliconFlow's stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
       "website_url": "https://www.siliconflow.com/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "siliconflow.webp",
+      "logo_file": "siliconflow.svg",
       "sector_ids": [
         "infrastructure"
       ]
@@ -1611,7 +1662,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "suitan-technology.svg",
       "sector_ids": [
         "applications"
       ]
@@ -1622,13 +1673,13 @@
       "name_cn": "紫荆智康",
       "name_en": "Tairex",
       "description_cn": "紫荆智康源于清华大学智能产业研究院相关孵化，以大模型驱动的医疗智能体支持就医服务流程。其方向是让医疗信息与服务更易获得，并改善不同环节之间的衔接。",
-      "description_en": "Incubated through Tsinghua’s Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
+      "description_en": "Incubated through Tsinghua's Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
       "detail_cn": "紫荆智康源于清华大学智能产业研究院相关孵化，以大模型驱动的医疗智能体支持就医服务流程。其方向是让医疗信息与服务更易获得，并改善不同环节之间的衔接。",
-      "detail_en": "Incubated through Tsinghua’s Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
+      "detail_en": "Incubated through Tsinghua's Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
       "website_url": "https://www.tairex.cn/gy",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "tairex.webp",
+      "logo_file": "tairex.svg",
       "sector_ids": [
         "applications"
       ]
@@ -1656,9 +1707,9 @@
       "name_cn": "小狸机器人",
       "name_en": "Xiaoli Robotics",
       "description_cn": "小狸机器人聚焦配送“最后一百米”，以轮腿式机器人应对楼宇入口、路面和门前的复杂地形。视觉语言动作模型与操作能力的结合，目标是完成从入口到用户手中的交付。",
-      "description_en": "Xiaoli Robotics targets the final hundred meters of delivery with wheeled-legged robots able to navigate changing terrain. Vision-language-action models and manipulation capabilities aim to close the gap between a building entrance and the customer’s hands.",
+      "description_en": "Xiaoli Robotics targets the final hundred meters of delivery with wheeled-legged robots able to navigate changing terrain. Vision-language-action models and manipulation capabilities aim to close the gap between a building entrance and the customer's hands.",
       "detail_cn": "小狸机器人聚焦配送“最后一百米”，以轮腿式机器人应对楼宇入口、路面和门前的复杂地形。视觉语言动作模型与操作能力的结合，目标是完成从入口到用户手中的交付。",
-      "detail_en": "Xiaoli Robotics targets the final hundred meters of delivery with wheeled-legged robots able to navigate changing terrain. Vision-language-action models and manipulation capabilities aim to close the gap between a building entrance and the customer’s hands.",
+      "detail_en": "Xiaoli Robotics targets the final hundred meters of delivery with wheeled-legged robots able to navigate changing terrain. Vision-language-action models and manipulation capabilities aim to close the gap between a building entrance and the customer's hands.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "physical",
@@ -1679,7 +1730,7 @@
       "website_url": "https://xingyun.xin/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "xingyun-ic.webp",
+      "logo_file": "xingyun-ic.svg",
       "sector_ids": [
         "infrastructure",
         "chips"
@@ -1697,7 +1748,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "chips",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "xinsheng-vision.svg",
       "sector_ids": [
         "chips"
       ]
@@ -1708,13 +1759,13 @@
       "name_cn": "Xmax.AI",
       "name_en": "Xmax.AI",
       "description_cn": "Xmax.AI 以 XMAX X1 探索实时交互视频模型，让生成内容可随用户动作和场景变化即时响应。其技术面向虚实融合内容、沉浸式体验和新型终端交互。",
-      "description_en": "XMAX X1 is Xmax.AI’s real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
+      "description_en": "XMAX X1 is Xmax.AI's real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
       "detail_cn": "Xmax.AI 以 XMAX X1 探索实时交互视频模型，让生成内容可随用户动作和场景变化即时响应。其技术面向虚实融合内容、沉浸式体验和新型终端交互。",
-      "detail_en": "XMAX X1 is Xmax.AI’s real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
+      "detail_en": "XMAX X1 is Xmax.AI's real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "xmax-ai.svg",
       "sector_ids": [
         "foundation",
         "applications"
@@ -1726,13 +1777,13 @@
       "name_cn": "元触万物",
       "name_en": "Yuanchu Wanwu",
       "description_cn": "元触万物研发可贴附、可裁剪的柔性触觉皮肤，从手指扩展到整手及更大表面。其 TFT 有源矩阵路线让机器人获取高密度接触反馈，为精细操作提供新的感知数据。",
-      "description_en": "Yuanchu Wanwu’s cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
+      "description_en": "Yuanchu Wanwu's cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
       "detail_cn": "元触万物研发可贴附、可裁剪的柔性触觉皮肤，从手指扩展到整手及更大表面。其 TFT 有源矩阵路线让机器人获取高密度接触反馈，为精细操作提供新的感知数据。",
-      "detail_en": "Yuanchu Wanwu’s cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
+      "detail_en": "Yuanchu Wanwu's cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
       "website_url": "",
       "investment_year": "",
       "sector_id": "chips",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "yuanchu-wanwu.webp",
       "sector_ids": [
         "chips",
         "physical"
@@ -1750,7 +1801,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "yuanhuan-intelligence.svg",
       "sector_ids": [
         "foundation"
       ]
@@ -1767,7 +1818,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "yuanmu-ai.svg",
       "sector_ids": [
         "applications"
       ]
@@ -1784,7 +1835,7 @@
       "website_url": "",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "yuanxu-xinghe.svg",
       "sector_ids": [
         "infrastructure",
         "applications"
@@ -1819,7 +1870,7 @@
       "website_url": "https://www.zhipuai.cn/zh/about",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "zhipu-ai.webp",
+      "logo_file": "zhipu-ai.svg",
       "sector_ids": [
         "foundation"
       ]
@@ -1853,7 +1904,7 @@
       "website_url": "https://zettlab.com/",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "zettlab.webp",
+      "logo_file": "zettlab.svg",
       "sector_ids": [
         "applications"
       ]
@@ -1906,24 +1957,29 @@
         "label_en": "Foundation Models & Learning"
       },
       {
+        "id": "chips",
+        "label_cn": "芯片",
+        "label_en": "Chips"
+      },
+      {
         "id": "infrastructure",
         "label_cn": "AI 基础设施",
         "label_en": "AI Infrastructure"
       },
       {
         "id": "applications",
-        "label_cn": "智能体与原生应用",
-        "label_en": "Agents & AI-Native Applications"
+        "label_cn": "AI 原生应用",
+        "label_en": "AI-Native Applications"
       },
       {
         "id": "physical",
-        "label_cn": "物理智能",
-        "label_en": "Physical AI"
+        "label_cn": "具身智能",
+        "label_en": "Embodied AI"
       },
       {
         "id": "frontiers",
-        "label_cn": "AI for Science 与长期前沿",
-        "label_en": "AI for Science & Frontiers"
+        "label_cn": "科学智能",
+        "label_en": "AI for Science"
       }
     ]
   },

@@ -54,11 +54,16 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
       ))}
     </div>
   </div>
+  <p class="eyebrow insights-eyebrow">{insightsContent.eyebrow[lang]}</p>
   <h1 class="insights-title">
-    {insightsContent.title.en}
-    {lang === 'zh' && <span>{insightsContent.title.zh}</span>}
+    {insightsContent.headline[lang]}
+    {lang === 'zh' && <span lang="en">{insightsContent.headline.en}</span>}
   </h1>
-  <p class="insights-intro">{insightsContent.intro[lang]}</p>
+  <p class="insights-intro">
+    {insightsContent.intro[lang].map((paragraph) => (
+      <span class="intro-paragraph">{paragraph}</span>
+    ))}
+  </p>
   <div
     class="insight-filters"
     role="group"

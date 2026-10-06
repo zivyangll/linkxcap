@@ -8,12 +8,19 @@ const members = team;
 
 <section class="team-review" data-team-review data-node-id="2002:4567">
   <div class="team-review-heading">
-    <PageTitle
-      zh={teamContent.title.zh}
-      en={teamContent.title.en}
-      lang={lang}
-    />
-    <p>{teamContent.intro[lang]}</p>
+    <div class="team-review-title">
+      <p class="eyebrow">{teamContent.eyebrow[lang]}</p>
+      <PageTitle
+        zh={teamContent.headline.zh}
+        en={teamContent.headline.en}
+        lang={lang}
+      />
+    </div>
+    <p>
+      {teamContent.intro[lang].map((paragraph) => (
+        <span class="intro-paragraph">{paragraph}</span>
+      ))}
+    </p>
   </div>
   <div class="team-explorer">
     <div class="team-portraits">
@@ -58,7 +65,11 @@ const members = team;
                 {person.role[lang]} / {person.role[lang === 'zh' ? 'en' : 'zh']}
               </p>
               <p class="member-summary">{person.summary[lang]}</p>
-              <p class="member-copy">{person.bio[lang]}</p>
+              <div class="member-copy-group">
+                {person.bio[lang].split(/\n+/).map((paragraph: string) => (
+                  <p class="member-copy">{paragraph}</p>
+                ))}
+              </div>
             </div>
           </div>
           <noscript>

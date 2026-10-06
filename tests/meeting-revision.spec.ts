@@ -513,7 +513,7 @@ test('Fellow arc moves, window expands, and the approved static message is shown
     Math.abs(expandedVideo.x + expandedVideo.width / 2 - 720),
   ).toBeLessThan(1);
   await expect(page.locator('.fellow-video-placeholder')).toContainText(
-    '与创业者同行',
+    '让想法迈出下一步',
   );
   await expect(page.locator('[data-fellow-video]')).toHaveCount(0);
   await expect(page.locator('[data-fellow-media]')).toHaveAttribute(

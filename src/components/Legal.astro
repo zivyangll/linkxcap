@@ -1,6 +1,9 @@
 ---
 import { type Lang, legalContent, siteContent, url } from '../lib/site';
 const { lang } = Astro.props as { lang: Lang };
+const mail = siteContent.email;
+// Rendered in one expression so no whitespace appears before the full stop.
+const stop = lang === 'zh' ? '。' : '.';
 ---
 
 <article class="legal-page prose">
@@ -12,11 +15,7 @@ const { lang } = Astro.props as { lang: Lang };
       <p>
         {section.body[lang]}
         {index === legalContent.sections.length - 1 && (
-          <>
-            {' '}
-            <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
-            {lang === 'zh' ? '。' : '.'}
-          </>
+          <> {[<a href={`mailto:${mail}`}>{mail}</a>, stop]}</>
         )}
       </p>
     </>

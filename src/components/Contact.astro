@@ -49,23 +49,9 @@ const media = {
       />
     ))}
   </div>
-  {lang === 'zh' ? (
-    <span
-      class="next-title-outline next-title-outline--text"
-      aria-hidden="true"
-    >
-      {contactContent.signalTitle[lang]}
-    </span>
-  ) : (
-    <img
-      class="next-title-outline"
-      src={asset('1617', 'imgTheNextSignal')}
-      width="761"
-      height="116"
-      alt=""
-      aria-hidden="true"
-    />
-  )}
+  <span class="next-title-outline next-title-outline--text" aria-hidden="true">
+    {contactContent.signalTitle[lang]}
+  </span>
   <h1 id="next-title" class="next-title-fill">
     {contactContent.signalTitle[lang]}
   </h1>
@@ -195,7 +181,7 @@ const media = {
   <div class="contact-invitation">
     <h2>
       {contactContent.joinEyebrow[lang]}
-      {lang === 'zh' && <span>{contactContent.joinTitle.zh}</span>}
+      <span>{contactContent.joinTitle[lang]}</span>
     </h2>
     <div class="contact-copy">
       <p>

@@ -1294,9 +1294,36 @@
   backdrop-filter: none;
 }
 
-/* Figma's Chinese headings can stay large because they are compact. Keep the
-   same hierarchy for English while giving the longer copy its own measure. */
+/* The copy deck's headings are longer than the Figma placeholders. Keep the
+   hierarchy while giving the longer copy its own measure in both languages. */
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  /* About now carries three full paragraphs inside the pinned scene. */
+  .home-story .about-copy {
+    font-size: calc(18 * var(--u));
+    line-height: 1.5;
+  }
+
+  .home-story .about-copy .intro-paragraph + .intro-paragraph {
+    margin-top: 0.5em;
+  }
+
+  body[data-lang='en'] .home-story .about-copy {
+    width: 48%;
+    font-size: calc(17 * var(--u));
+  }
+
+  body[data-lang='zh'] .home-story .research h2 {
+    font-size: calc(50 * var(--u));
+    line-height: 1.2;
+  }
+
+  body[data-lang='zh'] .home-story .focus-title > span {
+    width: calc(520 * var(--u));
+    font-size: clamp(28px, calc(40 * var(--u)), 40px);
+    line-height: 1.3;
+    letter-spacing: -0.04em;
+  }
+
   body[data-lang='en'] .home-story .research h2 {
     width: calc(480 * var(--u));
     font-size: clamp(30px, calc(42 * var(--u)), 42px);

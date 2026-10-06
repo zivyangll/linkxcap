@@ -1,14 +1,59 @@
 ---
-import { fellowshipContent, type Lang } from '../lib/site';
-import PageTitle from './PageTitle.astro';
+import { fellowshipContent, pageUrl, type Lang } from '../lib/site';
+import Arrow from './Arrow.astro';
 const { lang } = Astro.props as { lang: Lang };
+// Paragraphs keep the copy deck's emphasis, written as **text** in content.json.
+const emphasis = (paragraph: string) =>
+  paragraph
+    .split('**')
+    .map((text, index) => ({ text, strong: index % 2 === 1 }));
 ---
 
 <article class="legal-page prose fellowship-page">
-  <PageTitle
-    zh={fellowshipContent.title.zh}
-    en={fellowshipContent.title.en}
-    lang={lang}
-  />
-  <p>{fellowshipContent.introduction[lang]}</p>
+  <p class="eyebrow">{fellowshipContent.eyebrow[lang]}</p>
+  <h1 class="page-title">
+    <span>{fellowshipContent.headline[lang]}</span>
+    {lang === 'zh' && <span lang="en">{fellowshipContent.headline.en}</span>}
+  </h1>
+  <p class="fellowship-name">{fellowshipContent.title[lang]}</p>
+  {fellowshipContent.description[lang].map((paragraph) => (
+    <p>
+      {emphasis(paragraph).map(({ text, strong }) =>
+        strong ? <strong>{text}</strong> : text,
+      )}
+    </p>
+  ))}
+  <section class="fellowship-join" aria-labelledby="fellowship-join-title">
+    <p class="eyebrow">{fellowshipContent.joinLabel[lang]}</p>
+    <h2 id="fellowship-join-title">{fellowshipContent.joinTitle[lang]}</h2>
+    <p>{fellowshipContent.joinCopy[lang]}</p>
+    <a class="line-link" href={pageUrl(lang, 'contact') + '#contact-details'}>
+      {fellowshipContent.cta[lang]}
+      <Arrow />
+    </a>
+  </section>
 </article>
+
+<style>
+  .fellowship-page .page-title {
+    margin: 20px 0 12px;
+  }
+  .fellowship-name {
+    margin-bottom: 40px;
+    opacity: 0.6;
+  }
+  .fellowship-join {
+    margin-top: 96px;
+    text-align: center;
+  }
+  .fellowship-join h2 {
+    margin: 12px 0 20px;
+  }
+  .fellowship-join > p:not(.eyebrow) {
+    max-width: 34em;
+    margin: 0 auto 40px;
+  }
+  .fellowship-join .line-link {
+    text-align: left;
+  }
+</style>

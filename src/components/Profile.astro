@@ -24,7 +24,9 @@ const { lang, person } = Astro.props as {
       {lang === 'zh' && <p class="profile-en">{person.en}</p>}
       <p>{person.role[lang]}</p>
       <div class="profile-copy">
-        <p>{person.bio[lang]}</p>
+        {person.bio[lang].split(/\n+/).map((paragraph: string) => (
+          <p>{paragraph}</p>
+        ))}
       </div>
       <a class="text-link" href={pageUrl(lang, 'contact')}>
         {teamContent.contactLink[lang]} ↗

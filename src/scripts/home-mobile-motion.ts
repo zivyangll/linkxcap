@@ -70,6 +70,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
       let width = 0,
         height = 0,
         openingHeight = 0,
+        aboutTitleTop = 0,
         rail = 24;
       const observers: ResizeObserver[] = [];
       // Oversized content first scrolls naturally, then holds at its bottom.
@@ -132,19 +133,26 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           x: lerp(start.x, width * 0.65, arc),
           y: lerp(start.y, height * 0.38, arc),
         };
+        // About settles the node on a right-hand rail mirroring the left one and
+        // lifts the arc above the title, so no line crosses the long copy. Both
+        // follow About when its excess copy pans up into the viewport.
+        const panShift = width * 0.65 - (width - rail);
+        const contentShift = Number(gsap.getProperty(about, 'y')) || 0;
+        const arcLift = Math.max(
+          height * 0.08,
+          height * 0.38 - (aboutTitleTop - 28),
+        );
         const camera = {
-          x:
-            tracked.x -
-            (circle.x + Math.cos(angle) * radius) -
-            (width * 0.65 - rail) * pan,
+          x: tracked.x - (circle.x + Math.cos(angle) * radius) - panShift * pan,
           y:
             tracked.y -
             (circle.y + Math.sin(angle) * radius) -
-            height * 0.08 * pan,
+            arcLift * pan +
+            contentShift,
         };
         const junction = {
-          x: tracked.x - (width * 0.65 - rail) * pan,
-          y: tracked.y + height * (0.06 * drop + 0.19 * pan),
+          x: tracked.x - panShift * pan,
+          y: tracked.y + height * (0.06 * drop + 0.19 * pan) + contentShift,
         };
         const point = {
           x: junction.x,
@@ -251,6 +259,10 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         width = stage.clientWidth;
         height = stage.clientHeight;
         openingHeight = opening.clientHeight;
+        aboutTitleTop =
+          about.querySelector('.about-title')!.getBoundingClientRect().top -
+          stage.getBoundingClientRect().top -
+          (Number(gsap.getProperty(about, 'y')) || 0);
         rail = parseFloat(getComputedStyle(opening).paddingLeft) - 24;
         const dpr = Math.min(devicePixelRatio || 1, 1.5);
         for (const [node, context, h] of [
@@ -351,6 +363,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             y: () => -Math.max(0, about.offsetHeight - stage.clientHeight),
             duration: 0.14,
             ease: 'power1.inOut',
+            onUpdate: draw,
           },
           0.82,
         );

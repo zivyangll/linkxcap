@@ -301,8 +301,15 @@
     font-size: 20px;
   }
   .site-menu nav .arrow {
+    grid-column: -2;
+    justify-self: end;
     width: 22px;
     height: 16px;
+  }
+  /* English items have no secondary label, so the name spans that column and
+     the arrow still lines up with the contact link's arrow on the right. */
+  .site-menu nav a > span:not(:has(+ small)) {
+    grid-column: 1 / -2;
   }
   .menu-contact h2 {
     font-size: 32px;
@@ -708,6 +715,14 @@
     top: 63.61%;
     width: 27%;
   }
+  .focus-hint {
+    position: absolute;
+    left: 5.52%;
+    top: 59%;
+    font: 12px/1.5 var(--sans);
+    letter-spacing: 0.06em;
+    opacity: 0.55;
+  }
   .focus-panel h3 {
     font-size: calc(23.862 * var(--u));
     line-height: 1.5;
@@ -1031,124 +1046,11 @@
   .company-logo img {
     width: 100%;
     height: 100%;
-    object-fit: fill;
+    object-fit: contain;
   }
   .portfolio-card .company-logo img {
     filter: grayscale(1);
     transition: filter 0.25s ease;
-  }
-  .logo-zhipu-ai {
-    opacity: 0.5;
-    width: 47%;
-    height: 43.5%;
-  }
-  .logo-zhipu-ai img {
-    position: absolute;
-    width: 387.76%;
-    height: 151.94%;
-    max-width: none;
-    left: -27.89%;
-    top: -19.38%;
-  }
-  .logo-shengshu-technology {
-    width: 37.33%;
-    height: 39.3%;
-  }
-  .logo-infrawaves {
-    width: 41.3%;
-    height: 50.53%;
-  }
-  .logo-biogeometry {
-    width: 46.7%;
-    height: 53.7%;
-  }
-  .logo-mosi {
-    width: 70%;
-    height: 73.3%;
-  }
-  .logo-amio-robotics {
-    opacity: 0.6;
-    width: 74.3%;
-    height: 56.8%;
-  }
-  .logo-amio-robotics img {
-    position: absolute;
-    width: 159.89%;
-    height: 100%;
-    max-width: none;
-    left: -25.33%;
-  }
-  .logo-realai {
-    width: 75.7%;
-    height: 27%;
-  }
-  .logo-agic-micro {
-    opacity: 0.6;
-    width: 52.7%;
-    height: 76.1%;
-  }
-  .logo-infinigence-ai {
-    width: 55%;
-    height: 56.8%;
-  }
-  .logo-rhino {
-    width: 49%;
-    height: 52.3%;
-  }
-  .logo-siliconflow {
-    width: 50%;
-    height: 26.7%;
-  }
-  .logo-polo-interactive {
-    opacity: 0.6;
-    width: 44%;
-    height: 46.3%;
-  }
-  .logo-phybot {
-    opacity: 0.6;
-    width: 61.7%;
-    height: 61.8%;
-  }
-  .logo-phybot img {
-    position: absolute;
-    width: 364.86%;
-    height: 132.62%;
-    max-width: none;
-    left: -25%;
-    top: -16.31%;
-  }
-  .logo-modelbest {
-    width: 52.3%;
-    height: 47.7%;
-  }
-  .logo-tairex {
-    width: 71.7%;
-    height: 77.9%;
-  }
-  .logo-zettlab {
-    opacity: 0.6;
-    width: 40%;
-    height: 42.1%;
-  }
-  .logo-zettlab img {
-    position: absolute;
-    max-width: none;
-    width: 606.06%;
-    height: 100%;
-    left: 0;
-    top: 0;
-  }
-  .logo-qingcheng-jizhi {
-    width: 62.3%;
-    height: 72.3%;
-  }
-  .logo-approaching-ai {
-    width: 56%;
-    height: 56.5%;
-  }
-  .logo-xingyun-ic {
-    width: 62%;
-    height: 53.7%;
   }
   .company-caption {
     position: absolute;
@@ -1777,7 +1679,7 @@
     margin-top: 4px;
   }
   .contact-copy {
-    width: calc(360 * var(--u));
+    width: calc(420 * var(--u));
     margin: calc(58 * var(--u)) auto calc(100 * var(--u));
     font-size: calc(16 * var(--u));
     line-height: 1.2;

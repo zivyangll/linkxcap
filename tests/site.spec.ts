@@ -65,7 +65,7 @@ test('mobile menu supports Escape and focus return', async ({ page }) => {
   await expect(opener).toBeFocused();
   await opener.click();
   await page.locator('#site-menu a[href$="/zh/team.html"]').click();
-  await expect(page.locator('main h1')).toContainText('团队');
+  await expect(page.locator('main h1')).toContainText('不同经历，同一种判断。');
 });
 test('footer, menu and insights use the current runtime year', async ({
   page,
@@ -194,7 +194,7 @@ test('core content and navigation remain available without JavaScript', async ({
   });
   const page = await context.newPage();
   await page.goto(`${baseURL}zh/index.html`);
-  await expect(page.locator('.opening-copy')).toContainText('通用智能');
+  await expect(page.locator('.opening-copy')).toContainText('共识之外');
   await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
   await page.locator('.noscript-nav a[href$="/zh/portfolio.html"]').click();
   await expect(page.locator('[data-company-card]')).toHaveCount(76);

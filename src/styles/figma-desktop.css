@@ -127,12 +127,10 @@
       line-height: calc(39.625 * var(--u));
     }
     /* Reduce the title-to-copy whitespace by roughly one third while keeping
-       the authored copy measure and line breaks intact in each locale. */
+       the authored copy measure and line breaks intact in each locale. The
+       English "First Light" title is wide enough to keep the authored left. */
     body[data-lang='zh'] .opening-copy {
       left: calc(1040 * var(--u));
-    }
-    body[data-lang='en'] .opening-copy {
-      left: calc(1011 * var(--u));
     }
     .chapter {
       left: calc(345 * var(--u));
@@ -754,6 +752,10 @@
       left: calc(101 * var(--u));
       top: calc(700 * var(--u));
     }
+    .focus-hint {
+      left: calc(106 * var(--u));
+      top: calc(630 * var(--u));
+    }
     .focus-panel h3 {
       color: #d8d6cf80;
     }
@@ -1349,7 +1351,7 @@
       transform: translate(-50%, -50%) rotate(180deg);
     }
     .contact-copy {
-      width: calc(360 * var(--u));
+      width: calc(420 * var(--u));
       margin: calc(58 * var(--u)) auto calc(100 * var(--u));
     }
     .contact-copy p[lang='en'] {

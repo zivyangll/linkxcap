@@ -14,6 +14,8 @@ import { pageUrl, siteContent } from '../lib/site';
       {siteContent.notFound.body.en}
     </p>
     <a href={pageUrl('zh')}>{siteContent.notFound.back.zh}</a>
-    <a href={pageUrl('en')}>{siteContent.notFound.english}</a>
+    <a href={pageUrl('en')} lang="en">
+      {siteContent.notFound.back.en}
+    </a>
   </section>
 </SiteLayout>

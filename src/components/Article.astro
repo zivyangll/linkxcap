@@ -4,6 +4,7 @@ import {
   pageUrl,
   ui,
   insightsContent,
+  insightFilters,
   type InsightArticle,
   type Lang,
 } from '../lib/site';
@@ -12,6 +13,7 @@ const { lang, article } = Astro.props as {
   article: InsightArticle & { body: CollectionEntry<'insights'> };
 };
 const { Content, headings } = await render(article.body);
+const category = insightFilters.find(({ id }) => id === article.category);
 ---
 
 <article class="article-page">
@@ -20,7 +22,8 @@ const { Content, headings } = await render(article.body);
   </a>
   <header class="article-header">
     <p class="eyebrow">
-      {insightsContent.eyebrow[lang]} / {article.category.toUpperCase()}
+      {insightsContent.eyebrow[lang]} /{' '}
+      {category ? category[lang] : article.category}
     </p>
     <h1>{article.title}</h1>
     <p class="article-summary">{article.summary}</p>

@@ -173,8 +173,8 @@ body .team-review .team-member:nth-child(n) .member-portrait img {
 }
 
 @media (min-width: 1024px) {
-  /* Every portfolio mark uses the same quiet bounding box. Source-specific
-     crop rules still apply inside it, but no mark can dominate its card. */
+  /* Every portfolio mark uses the same quiet bounding box. Logos in
+     public/company are pre-trimmed, so no mark can dominate its card. */
   .portfolio-page .portfolio-card .company-logo {
     left: 28%;
     top: 18%;
@@ -632,4 +632,18 @@ body .team-review .team-bio::-webkit-scrollbar {
       transform: scale(1.045);
     }
   }
+}
+
+/* Copy-deck paragraphs stay separate at every width, unlike .intro-line
+   which only breaks lines in the desktop composition. */
+.intro-paragraph {
+  display: block;
+}
+.intro-paragraph + .intro-paragraph {
+  margin-top: 0.75em;
+}
+
+/* Outline and fill copies share the class, so both layers wrap identically. */
+.fellow-intro :is(.next-zh, .next-en) {
+  text-wrap: balance;
 }

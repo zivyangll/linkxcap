@@ -50,10 +50,16 @@ const failures = [];
 const contentAssetFiles = [
   content.site.og_image_file,
   ...content.team.map((person) => person.image_file),
-  ...content.companies.map((company) => company.logo_file),
   content.media.fellow.poster_file,
   content.media.fellow.video_file,
 ].filter(Boolean);
+for (const filename of content.companies.map((c) => c.logo_file)) {
+  try {
+    await fs.access(path.join('dist/company', filename));
+  } catch {
+    failures.push(`content.json: missing public/company/${filename}`);
+  }
+}
 for (const filename of contentAssetFiles) {
   try {
     await fs.access(path.join('dist/assets', filename));

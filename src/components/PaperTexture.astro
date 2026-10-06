@@ -1,0 +1,25 @@
+---
+import { asset } from '../lib/site';
+interface Props {
+  eager?: boolean;
+}
+const { eager = false } = Astro.props;
+// Figma "Mask group" (251:62 and siblings): a 1231×1080 radial mask over a
+// paper texture, shared by every light home screen.
+---
+
+<div
+  class="paper-texture"
+  style={`--paper-mask:url(${asset('home-bg', 'paperMask')})`}
+  aria-hidden="true"
+>
+  <img
+    src={asset('home-bg', 'paperTexture')}
+    width="1024"
+    height="884"
+    alt=""
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+    fetchpriority="low"
+  />
+</div>

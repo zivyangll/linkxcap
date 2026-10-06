@@ -1,8 +1,10 @@
 ---
 import { asset, pageUrl, homeContent, sectors, type Lang } from '../lib/site';
 import FocusConstellation from './FocusConstellation.astro';
+import PaperTexture from './PaperTexture.astro';
 import '../styles/home-mobile.css';
 import '../styles/focus-constellation.css';
+import '../styles/home-backdrop.css';
 interface Props {
   lang: Lang;
 }
@@ -42,6 +44,7 @@ const { lang } = Astro.props;
     data-node-id="2002:3297"
     aria-labelledby="opening-title"
   >
+    <PaperTexture eager />
     <canvas
       class="scroll-trail"
       data-scroll-trail="opening"
@@ -62,15 +65,20 @@ const { lang } = Astro.props;
     </h1>
     <div class="opening-copy" data-reveal>
       <p>
-        {homeContent.opening.body[lang].map((line) => (
-          <>
-            {line} <br />
-          </>
-        ))}
+        {homeContent.opening.body[lang].map((line) =>
+          line ? (
+            <>
+              {line} <br />
+            </>
+          ) : (
+            <br />
+          ),
+        )}
       </p>
     </div>
   </section>
   <div class="philosophy-stage" data-philosophy-stage data-minimal-header>
+    <PaperTexture />
     <canvas class="philosophy-stage-canvas" aria-hidden="true"></canvas>
     <section
       class="story-scene hero"
@@ -167,8 +175,8 @@ const { lang } = Astro.props;
         ))}
       </h2>
       <p class="about-copy" data-reveal>
-        {homeContent.about.description[lang].map((line) => (
-          <span class="intro-line">{line}</span>
+        {homeContent.about.description[lang].map((paragraph) => (
+          <span class="intro-paragraph">{paragraph}</span>
         ))}
       </p>
     </section>
@@ -179,6 +187,7 @@ const { lang } = Astro.props;
     data-minimal-header
     aria-labelledby="research-title"
   >
+    <PaperTexture />
     <div class="research-axis" aria-hidden="true">
       <img
         class="research-axis-line"
@@ -197,13 +206,13 @@ const { lang } = Astro.props;
       />
     </div>
     <h2 id="research-title" data-reveal>
-      {homeContent.research.title[lang][0]}
+      {homeContent.research.name[lang]}
       <br />
-      <span>{homeContent.research.title[lang][1]}</span>
+      <span>{homeContent.research.title[lang]}</span>
     </h2>
     <p class="research-intro" data-reveal>
-      {homeContent.research.intro[lang].map((line) => (
-        <span class="intro-line">{line}</span>
+      {homeContent.research.intro[lang].map((paragraph) => (
+        <span class="intro-paragraph">{paragraph}</span>
       ))}
     </p>
     <div class="research-stats" data-reveal>
@@ -213,7 +222,7 @@ const { lang } = Astro.props;
           <span>{label[lang]}</span>
         </div>
       ))}
-      <p class="data-note">{homeContent.research.dataNote[lang]}</p>
+      <p class="data-note">{homeContent.research.footnote[lang]}</p>
     </div>
   </section>
   <section
@@ -226,17 +235,55 @@ const { lang } = Astro.props;
     data-topology-kind="home"
     aria-labelledby="focus-title"
   >
+    <div class="focus-backdrop" aria-hidden="true">
+      <img
+        class="focus-backdrop-nebula"
+        src={asset('home-bg', 'focusNebula')}
+        width="720"
+        height="405"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+      <img
+        class="focus-backdrop-milky-way"
+        src={asset('home-bg', 'focusMilkyWay')}
+        width="658"
+        height="1068"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+      <video
+        class="focus-backdrop-stars"
+        data-focus-stars
+        data-src={asset('home-bg', 'focusStarsMp4')}
+        poster={asset('home-bg', 'focusStarsPoster')}
+        width="1440"
+        height="810"
+        muted
+        loop
+        playsinline
+        preload="none"
+        disablepictureinpicture
+        tabindex="-1"
+      ></video>
+    </div>
     <div
       class="topology-drag-surface"
       data-topology-drag
       aria-hidden="true"
     ></div>
     <h2 id="focus-title" class="focus-title">
-      {homeContent.focus.title[lang][0]}
-      <br />
-      {homeContent.focus.title[lang][1]}
+      {homeContent.focus.title[lang].map((line, index) => (
+        <>
+          {index > 0 && <br />}
+          {line}
+        </>
+      ))}
       <span>{homeContent.focus.auxiliaryTitle[lang]}</span>
     </h2>
+    <p class="focus-hint">{homeContent.focus.interactionHint[lang]}</p>
     <div class="focus-panels">
       {sectors.map((s, i) => (
         <article
@@ -262,6 +309,10 @@ const { lang } = Astro.props;
     </nav>
   </section>
 </div>
+<script>
+  import { initFocusStars } from '../scripts/focus-stars';
+  initFocusStars();
+</script>
 <script>
   import { DESKTOP_MOTION, MOBILE_MOTION } from '../scripts/motion-policy';
   const desktop = matchMedia(DESKTOP_MOTION);
