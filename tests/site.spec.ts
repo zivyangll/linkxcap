@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import content from '../src/data/content.json' with { type: 'json' };
 const paths = [
   'index',
   'portfolio',
@@ -52,7 +53,7 @@ test('language switch keeps current company, and detail refresh works', async ({
   await page.locator('.language-switch [data-language=en]').click();
   await expect(page).toHaveURL(/en\/portfolio\/modelbest.html$/);
   await page.reload();
-  await expect(page.locator('main h1')).toContainText('ModelBest');
+  await expect(page.locator('main h1')).toContainText('MODELBEST');
 });
 test('mobile menu supports Escape and focus return', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 800 });
@@ -197,7 +198,9 @@ test('core content and navigation remain available without JavaScript', async ({
   await expect(page.locator('.opening-copy')).toContainText('共识之外');
   await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
   await page.locator('.noscript-nav a[href$="/zh/portfolio.html"]').click();
-  await expect(page.locator('[data-company-card]')).toHaveCount(76);
+  await expect(page.locator('[data-company-card]')).toHaveCount(
+    content.companies.length,
+  );
   await context.close();
 });
 test('English mobile copy follows the multiline heading', async ({ page }) => {

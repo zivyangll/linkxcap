@@ -2,6 +2,11 @@ import fs from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 
+// The V6 CSV is the portfolio of record: its 56 companies, names, detail copy,
+// websites and tags replace the site's list. Companies outside it are removed.
+// Copy keeps the site-wide terms of the copy deck (具身智能 / embodied AI,
+// straight apostrophes).
+
 const sourcePath = 'docs/被投企业汇总_V6.csv';
 const configPath = 'src/data/content.json';
 const mappingPath = 'docs/portfolio-v6-classification-audit.json';
@@ -59,8 +64,8 @@ const rows = parseCsv(source);
 const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
 const categoryIds = {
   基础模型与学习范式: 'foundation',
-  'AI 基础设施': 'infrastructure',
   芯片: 'chips',
+  'AI 基础设施': 'infrastructure',
   'AI 原生应用': 'applications',
   具身智能: 'physical',
   科学智能: 'frontiers',
@@ -74,6 +79,24 @@ const aliases = {
   星脉智动: 'xmax-ai',
   魔豆领科: 'modalink',
 };
+const deckTerms = (text) =>
+  text
+    .replace(/物理智能/g, '具身智能')
+    .replace(/\bPhysical AI\b/g, 'Embodied AI')
+    .replace(/\bphysical AI\b/g, 'embodied AI')
+    .replace(/[‘’]/g, "'")
+    .trim();
+// Website cells may carry a research note on a second line.
+const website = (cell) => {
+  const url = cell.split('\n')[0].trim();
+  return /^https?:\/\//.test(url) ? url : '';
+};
+const slugify = (name) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+const logos = await fs.readdir('public/company');
 const categories = new Map();
 const matched = new Set();
 const records = [];
@@ -127,6 +150,17 @@ for (const row of rows) {
       nameEn: row['项目名/英文'],
       sectorIds: tags,
     });
+    records.push({
+      sourceId: row['序号'],
+      sourceName: row['项目名/中文'],
+      companyId: slugify(row['项目名/英文']),
+      siteName: row['项目名/中文'],
+      match: 'added-from-source',
+      tag1: row['行业标签 1'],
+      tags: tags.map((id) => categories.get(id).zh),
+      sectorId: tags[0],
+      sectorIds: tags,
+    });
     continue;
   }
   if (!exact.length) {
@@ -137,7 +171,10 @@ for (const row of rows) {
       description.slice(row['项目名/中文'].length).trimStart() ===
         company.detail_cn.slice(company.name_cn.length).trimStart();
     assert.ok(
-      description === company.detail_cn || sameBody,
+      deckTerms(description) === deckTerms(company.detail_cn) ||
+        description === company.detail_cn ||
+        sameBody ||
+        company.name_cn === row['项目名/中文'],
       `Alias description no longer matches: ${row['项目名/中文']}`,
     );
   }
@@ -162,7 +199,7 @@ const report = {
   sourceCount: rows.length,
   matchedCount: records.length,
   scope:
-    'Update existing companies only; do not add/remove companies or infer missing tags.',
+    'The CSV is the portfolio of record: add its missing companies, remove unlisted ones, and take names, detail copy, websites and tags from it.',
   categories: [...categories.values()],
   records,
   missing,
@@ -177,22 +214,53 @@ const report = {
 
 if (process.argv.includes('--write')) {
   config.schemaVersion = 18;
-  config.sectors = [...categories.values()].map(({ id, zh, en }) => {
-    const previous = config.sectors.find((sector) => sector.id === id);
-    return {
-      id,
-      name_cn: zh,
-      name_en: en,
-      description_cn: previous?.description_cn || '',
-      description_en: previous?.description_en || '',
-    };
-  });
-  config.companies.forEach((company) => {
-    const record = records.find((record) => record.companyId === company.id);
-    company.sector_id = record?.sectorId || company.sector_id;
-    company.sector_ids = record?.sectorIds ||
-      company.sector_ids || [company.sector_id];
-  });
+  // Copy deck: the six directions keep this fixed order everywhere.
+  config.sectors = Object.values(categoryIds)
+    .map((id) => categories.get(id))
+    .map(({ id, zh, en }) => {
+      const previous = config.sectors.find((sector) => sector.id === id);
+      return {
+        id,
+        name_cn: zh,
+        name_en: en,
+        description_cn: previous?.description_cn || '',
+        description_en: previous?.description_en || '',
+      };
+    });
+  config.companies = rows
+    .map((row) => {
+      const record = records.find((record) => record.sourceId === row['序号']);
+      const previous = config.companies.find(
+        (company) => company.id === record.companyId,
+      );
+      const id = previous?.id || record.companyId;
+      const logo =
+        previous?.logo_file ||
+        logos.find((file) => file.replace(/\.\w+$/, '') === id) ||
+        '';
+      assert.ok(logo, `${id}: no logo file in public/company`);
+      const detailCn = deckTerms(row['中文详情文案']);
+      const detailEn = deckTerms(row['English detail copy']);
+      return {
+        id,
+        slug: previous?.slug || id,
+        name_cn: row['项目名/中文'].trim(),
+        // 紫荆芯界 has no English name in V6; keep the site's romanisation.
+        name_en: row['项目名/英文'].trim() || previous?.name_en || '',
+        description_cn: detailCn,
+        description_en: detailEn,
+        detail_cn: detailCn,
+        detail_en: detailEn,
+        website_url: website(row['官网']),
+        investment_year: previous?.investment_year || '',
+        sector_id: record.sectorId,
+        logo_file: logo,
+        sector_ids: record.sectorIds,
+      };
+    })
+    .sort((a, b) =>
+      a.name_en.localeCompare(b.name_en, 'en', { sensitivity: 'base' }),
+    );
   await fs.writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`);
   await fs.writeFile(mappingPath, `${JSON.stringify(report, null, 2)}\n`);
 } else {
@@ -212,9 +280,42 @@ if (process.argv.includes('--write')) {
     missing,
     'Audit missing-company list differs from current CSV',
   );
+  assert.equal(
+    config.companies.length,
+    rows.length,
+    'Site companies differ from the CSV',
+  );
   for (const record of records) {
     const company = config.companies.find(
       (company) => company.id === record.companyId,
+    );
+    assert.ok(company, `${record.companyId}: missing from the site`);
+    const row = rows.find((row) => row['序号'] === record.sourceId);
+    assert.equal(
+      company.name_cn,
+      row['项目名/中文'].trim(),
+      `${company.id}: name`,
+    );
+    if (row['项目名/英文'].trim())
+      assert.equal(
+        company.name_en,
+        row['项目名/英文'].trim(),
+        `${company.id}: English name`,
+      );
+    assert.equal(
+      company.detail_cn,
+      deckTerms(row['中文详情文案']),
+      `${company.id}: detail`,
+    );
+    assert.equal(
+      company.detail_en,
+      deckTerms(row['English detail copy']),
+      `${company.id}: English detail`,
+    );
+    assert.equal(
+      company.website_url,
+      website(row['官网']),
+      `${company.id}: website`,
     );
     assert.equal(company.sector_id, record.sectorId, `${company.id}: tag1`);
     assert.deepEqual(
@@ -223,6 +324,11 @@ if (process.argv.includes('--write')) {
       `${company.id}: tags 1–4`,
     );
   }
+  assert.deepEqual(
+    config.sectors.map((sector) => sector.id),
+    Object.values(categoryIds),
+    'Directions must keep the copy-deck order',
+  );
   for (const { id, zh, en } of categories.values()) {
     const sector = config.sectors.find((sector) => sector.id === id);
     assert.equal(sector?.name_cn, zh, `${id}: Chinese category`);

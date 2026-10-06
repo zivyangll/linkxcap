@@ -402,7 +402,7 @@ test('image loading holder settles and failed images show their label', async ({
   await expect(holder).toHaveAttribute('data-image-state', 'ready');
   await page.route('**/assets/team-elliot.webp', (route) => route.abort());
   await page.reload();
-  await expect(page.locator('[data-person=elliot]')).toHaveAttribute(
+  await expect(page.locator('[data-person=elliott]')).toHaveAttribute(
     'data-image-state',
     'error',
   );

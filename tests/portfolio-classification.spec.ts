@@ -126,23 +126,31 @@ test('editor saves multiple list categories while keeping a single homepage prim
     'ready',
   );
   await page.getByRole('tab', { name: '投资组合', exact: true }).click();
-  const primary = page.locator('[data-config-path="companies.0.sector_id"]');
+  // The first company gains another direction as an extra list tag, then
+  // makes it the homepage primary.
+  const index = 0;
+  const added = content.sectors.find(
+    (sector) => !content.companies[index].sector_ids.includes(sector.id),
+  )!.id;
+  const primary = page.locator(
+    `[data-config-path="companies.${index}.sector_id"]`,
+  );
   const extra = page.locator(
-    '[data-config-path="companies.0.sector_ids.chips"]',
+    `[data-config-path="companies.${index}.sector_ids.${added}"]`,
   );
   await extra.check();
   await expect(extra).toBeChecked();
-  await primary.selectOption('chips');
+  await primary.selectOption(added);
   await expect(extra).toBeDisabled();
   const saved = await page.evaluate(() =>
     JSON.parse(
       localStorage.getItem('linkx-content-editor:127.0.0.1:schema-18')!,
     ),
   );
-  expect(saved.companies[0].sector_id).toBe('chips');
-  expect(saved.companies[0].sector_ids).toEqual([
-    'chips',
-    content.companies[0].sector_id,
+  expect(saved.companies[index].sector_id).toBe(added);
+  expect(saved.companies[index].sector_ids).toEqual([
+    added,
+    ...content.companies[index].sector_ids,
   ]);
   expect(validateContentConfig(saved, content).valid).toBe(true);
 });

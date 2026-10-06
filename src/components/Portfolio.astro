@@ -49,7 +49,7 @@ const { lang } = Astro.props as { lang: Lang };
     {companies.map((company) => (
       <a
         href={pageUrl(lang, `portfolio/${company.slug}`)}
-        class="portfolio-card"
+        class:list={['portfolio-card', { 'is-missing-logo': !company.hasLogo }]}
         aria-label={lang === 'zh' ? company.name : company.nameEn}
         data-company-card
         data-slug={company.slug}

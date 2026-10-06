@@ -598,3 +598,8 @@ body .team-review .team-bio::-webkit-scrollbar {
 .fellow-intro :is(.next-zh, .next-en) {
   text-wrap: balance;
 }
+
+/* Content check: cards whose company has not supplied a logo yet. */
+.portfolio-page .portfolio-card.is-missing-logo {
+  background: #e5262a;
+}

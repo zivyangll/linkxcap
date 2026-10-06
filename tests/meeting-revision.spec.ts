@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import content from '../src/data/content.json' with { type: 'json' };
 
 test('philosophy top bar gains a scroll mask and only collapses on narrow screens', async ({
   page,
@@ -298,7 +299,7 @@ for (const width of [390, 768, 1440])
       'data-current-company',
       'mosi',
     );
-    await expect(page.locator('h1')).toHaveText('模思智能');
+    await expect(page.locator('[data-company-title]')).toHaveText('模思智能');
     await expect(page.locator('[data-company-website]')).toHaveAttribute(
       'href',
       /mosi/,
@@ -311,16 +312,16 @@ for (const width of [390, 768, 1440])
     ).toHaveAttribute('aria-current', 'page');
     await page.keyboard.press('Home');
     await expect(
-      page.locator('[data-company-link="6estates"]'),
+      page.locator('[data-company-link="agic-micro"]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.locator('[data-company-link=mosi]').click();
     if (width < 1280) {
       await page.locator('[data-menu-open]').click();
       await page.locator('#site-menu [data-language=en]').click();
     } else await page.locator('.language-switch [data-language=en]').click();
-    await expect(page.locator('h1')).toHaveText('Moss Intelligence');
+    await expect(page.locator('[data-company-title]')).toHaveText('Mosi');
     await page.reload();
-    await expect(page.locator('h1')).toHaveText('Moss Intelligence');
+    await expect(page.locator('[data-company-title]')).toHaveText('Mosi');
   });
 
 test('desktop company rail remains a single continuous blurred looping arc', async ({
@@ -331,8 +332,12 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
   const browser = page.locator('[data-company-browser]');
   const rail = page.locator('[data-company-nav]');
   await expect(browser).toHaveAttribute('data-rail-ready', 'true');
-  await expect(page.locator('[data-company-link]')).toHaveCount(76);
-  await expect(page.locator('[data-company-loop-link]')).toHaveCount(152);
+  await expect(page.locator('[data-company-link]')).toHaveCount(
+    content.companies.length,
+  );
+  await expect(page.locator('[data-company-loop-link]')).toHaveCount(
+    content.companies.length * 2,
+  );
 
   const circleErrors = await page
     .locator('[data-company-index]')
@@ -368,14 +373,14 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
 
   await rail.focus();
   await page.keyboard.press('Home');
-  await expect(browser).toHaveAttribute('data-current-company', '6estates');
+  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
   await page.keyboard.press('ArrowUp');
   await expect(browser).toHaveAttribute(
     'data-current-company',
     'zijing-xinjie',
   );
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', '6estates');
+  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
 
   await page.keyboard.press('End');
   await expect(browser).toHaveAttribute(
@@ -383,7 +388,7 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
     'zijing-xinjie',
   );
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', '6estates');
+  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
   await expect
     .poll(() =>
       page.locator('[data-company-loop-link]').evaluateAll(
@@ -703,7 +708,7 @@ test('portfolio hover illuminates original logo and selection opens its detail',
   await expect(corners).toHaveCSS('opacity', '1');
   expect(previous).not.toBe('none');
   await node.click();
-  await expect(page.locator('h1')).toHaveText('智谱AI');
+  await expect(page.locator('[data-company-title]')).toHaveText('智谱');
 });
 
 test('mobile company text stays within readable page margins', async ({

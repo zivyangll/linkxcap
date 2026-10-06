@@ -1,4 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
+import content from '../src/data/content.json' with { type: 'json' };
 
 const prepare = async (page: Page, path = 'en/index.html') => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -600,7 +601,10 @@ test('19 portfolio category filters select and filter the grid', async ({
   page,
 }) => {
   await prepare(page, 'en/portfolio.html');
-  await expect(page.locator('[data-portfolio-filter]')).toHaveCount(6);
+  // "All" plus one filter per investment direction.
+  await expect(page.locator('[data-portfolio-filter]')).toHaveCount(
+    content.sectors.length + 1,
+  );
   await page.locator('[data-portfolio-filter="applications"]').click();
   const state = await page
     .locator('[data-company-card]')
@@ -609,7 +613,9 @@ test('19 portfolio category filters select and filter the grid', async ({
       wrong: cards.filter(
         (card) =>
           !(card as HTMLElement).hidden &&
-          (card as HTMLElement).dataset.sector !== 'applications',
+          !(card as HTMLElement).dataset
+            .sectors!.split(' ')
+            .includes('applications'),
       ).length,
     }));
   expect(state.visible).toBeGreaterThan(0);

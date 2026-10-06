@@ -1718,6 +1718,13 @@
     font-size: 24px;
     margin-bottom: 30px;
   }
+  /* Section labels match the "Find us" heading in size and stroke weight. */
+  .contact-details .eyebrow,
+  .fellowship-join .eyebrow {
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+  }
   .contact-socials > a {
     display: flex;
     justify-content: space-between;

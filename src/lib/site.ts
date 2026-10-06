@@ -344,6 +344,7 @@ const companySchema = z.looseObject({
   sector: z.string(),
   sectorIds: z.array(z.string()),
   logoUrl: z.string(),
+  hasLogo: z.boolean(),
 });
 const sourceCompanies = z.array(companySchema).parse(
   (raw.companies as AnyRecord[]).map((company) => ({
@@ -360,6 +361,11 @@ const sourceCompanies = z.array(companySchema).parse(
     sector: company.sector_id,
     sectorIds: company.sector_ids,
     logoUrl: companyLogoAsset(company.logo_file),
+    // Each supplied logo is named after its company; the others still borrow
+    // a placeholder file.
+    hasLogo:
+      Boolean(company.logo_file) &&
+      company.logo_file.replace(/\.\w+$/, '') === company.slug,
   })),
 );
 const logoMap: Record<string, string> = {
@@ -372,7 +378,6 @@ const logoMap: Record<string, string> = {
   'infinigence-ai': 'imgImage127',
   'agic-micro': 'imgImage131',
   infrawaves: 'imgImage73',
-  'polo-interactive': 'imgImage143',
   tairex: 'imgImage142',
   biogeometry: 'imgImage74',
   phybot: 'imgImage130',

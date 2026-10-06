@@ -224,7 +224,9 @@ export function mountTopology(root: HTMLElement) {
   };
   const renderPoint = (anchor: Anchor, target: Vector3) => {
     target.copy(anchor.origin);
-    if (!focused) return target;
+    // H5 always centres the selected sector, so its companies fan out around
+    // it from the start rather than keeping the canvas-wide layout.
+    if (!focused && !touch.matches) return target;
     const frontZ = Math.max(active.origin.z, FOCUS_DEPTH);
     if (anchor === active) target.z = frontZ;
     else if (anchor.element.dataset.focusSector === active.sector && height) {

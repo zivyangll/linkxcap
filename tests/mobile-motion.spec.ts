@@ -57,13 +57,14 @@ for (const lang of ['zh', 'en']) {
       await page.goto(`${lang}/index.html`);
       await page.evaluate(() => document.fonts.ready);
       const chapterTitle = page.locator('.hero-title');
+      // Copy deck §2.2: the hero keeps its two lines.
       await expect(chapterTitle).toContainText(
         lang === 'zh'
-          ? '与创业者同行 定义 AGI 时代'
-          : 'Partnering with founders defining the AGI era',
+          ? '投资真正的创造者 推动智能时代向前'
+          : 'Backing the builders of the intelligence age',
       );
       await expect(chapterTitle).not.toContainText(
-        lang === 'zh' ? 'Partnering' : '与创业者同行',
+        lang === 'zh' ? 'Backing' : '投资真正的创造者',
       );
       await expect(page.locator('.hero-zh')).toHaveCount(0);
       await expect(page.locator('[data-home]')).toHaveClass(

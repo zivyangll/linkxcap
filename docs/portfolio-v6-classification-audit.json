@@ -2,8 +2,8 @@
   "source": "docs/被投企业汇总_V6.csv",
   "sourceSha256": "d420d3955c15e744ef799a07fe361a578bfc438266f018016d7d204711775ef0",
   "sourceCount": 56,
-  "matchedCount": 51,
-  "scope": "Update existing companies only; do not add/remove companies or infer missing tags.",
+  "matchedCount": 56,
+  "scope": "The CSV is the portfolio of record: add its missing companies, remove unlisted ones, and take names, detail copy, websites and tags from it.",
   "categories": [
     {
       "id": "foundation",
@@ -453,8 +453,8 @@
       "sourceId": "27",
       "sourceName": "行云",
       "companyId": "xingyun-ic",
-      "siteName": "行云集成",
-      "match": "verified-description-alias",
+      "siteName": "行云",
+      "match": "exact-name",
       "tag1": "AI 基础设施",
       "tags": [
         "AI 基础设施",
@@ -500,8 +500,8 @@
       "sourceId": "30",
       "sourceName": "沐言",
       "companyId": "muyan-zhiyu",
-      "siteName": "沐言智语",
-      "match": "verified-description-alias",
+      "siteName": "沐言",
+      "match": "exact-name",
       "tag1": "AI 原生应用",
       "tags": [
         "AI 原生应用"
@@ -515,8 +515,8 @@
       "sourceId": "31",
       "sourceName": "像素绽放",
       "companyId": "aippt",
-      "siteName": "AiPPT",
-      "match": "verified-description-alias",
+      "siteName": "像素绽放",
+      "match": "exact-name",
       "tag1": "AI 原生应用",
       "tags": [
         "AI 原生应用"
@@ -530,8 +530,8 @@
       "sourceId": "32",
       "sourceName": "星脉智动",
       "companyId": "xmax-ai",
-      "siteName": "Xmax.AI",
-      "match": "verified-description-alias",
+      "siteName": "星脉智动",
+      "match": "exact-name",
       "tag1": "基础模型与学习范式",
       "tags": [
         "基础模型与学习范式",
@@ -636,6 +636,23 @@
       ]
     },
     {
+      "sourceId": "39",
+      "sourceName": "群贤启智",
+      "companyId": "oscholar",
+      "siteName": "群贤启智",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用",
+        "科学智能"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications",
+        "frontiers"
+      ]
+    },
+    {
       "sourceId": "40",
       "sourceName": "方寸跃迁",
       "companyId": "fangcun-leap",
@@ -701,6 +718,38 @@
       "sectorIds": [
         "applications",
         "frontiers"
+      ]
+    },
+    {
+      "sourceId": "44",
+      "sourceName": "觅思汇智",
+      "companyId": "mythlink",
+      "siteName": "觅思汇智",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications"
+      ]
+    },
+    {
+      "sourceId": "45",
+      "sourceName": "九章智电",
+      "companyId": "algoenergy",
+      "siteName": "九章智电",
+      "match": "exact-name",
+      "tag1": "AI 原生应用",
+      "tags": [
+        "AI 原生应用",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "applications",
+      "sectorIds": [
+        "applications",
+        "foundation"
       ]
     },
     {
@@ -771,8 +820,8 @@
       "sourceId": "50",
       "sourceName": "魔豆领科",
       "companyId": "modalink",
-      "siteName": "ModaLink",
-      "match": "verified-description-alias",
+      "siteName": "魔豆领科",
+      "match": "exact-name",
       "tag1": "AI 基础设施",
       "tags": [
         "AI 基础设施",
@@ -800,10 +849,44 @@
       ]
     },
     {
+      "sourceId": "52",
+      "sourceName": "嘭咔智能",
+      "companyId": "pooka",
+      "siteName": "嘭咔智能",
+      "match": "exact-name",
+      "tag1": "具身智能",
+      "tags": [
+        "具身智能",
+        "AI 原生应用"
+      ],
+      "sectorId": "physical",
+      "sectorIds": [
+        "physical",
+        "applications"
+      ]
+    },
+    {
       "sourceId": "53",
       "sourceName": "百奥几何",
       "companyId": "biogeometry",
       "siteName": "百奥几何",
+      "match": "exact-name",
+      "tag1": "科学智能",
+      "tags": [
+        "科学智能",
+        "基础模型与学习范式"
+      ],
+      "sectorId": "frontiers",
+      "sectorIds": [
+        "frontiers",
+        "foundation"
+      ]
+    },
+    {
+      "sourceId": "54",
+      "sourceName": "无尽方舟",
+      "companyId": "eonark",
+      "siteName": "无尽方舟",
       "match": "exact-name",
       "tag1": "科学智能",
       "tags": [
@@ -849,177 +932,6 @@
       ]
     }
   ],
-  "missing": [
-    {
-      "sourceId": "39",
-      "name": "群贤启智",
-      "nameEn": "Oscholar",
-      "sectorIds": [
-        "applications",
-        "frontiers"
-      ]
-    },
-    {
-      "sourceId": "44",
-      "name": "觅思汇智",
-      "nameEn": "MythLink",
-      "sectorIds": [
-        "applications"
-      ]
-    },
-    {
-      "sourceId": "45",
-      "name": "九章智电",
-      "nameEn": "AlgoEnergy",
-      "sectorIds": [
-        "applications",
-        "foundation"
-      ]
-    },
-    {
-      "sourceId": "52",
-      "name": "嘭咔智能",
-      "nameEn": "Pooka",
-      "sectorIds": [
-        "physical",
-        "applications"
-      ]
-    },
-    {
-      "sourceId": "54",
-      "name": "无尽方舟",
-      "nameEn": "EonArk",
-      "sectorIds": [
-        "frontiers",
-        "foundation"
-      ]
-    }
-  ],
-  "unlisted": [
-    {
-      "companyId": "6estates",
-      "siteName": "6Estates",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "clipmindai",
-      "siteName": "智映光年",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "deepknown",
-      "siteName": "深知智新",
-      "preservedSectorId": "infrastructure"
-    },
-    {
-      "companyId": "dprotein",
-      "siteName": "深原质药",
-      "preservedSectorId": "frontiers"
-    },
-    {
-      "companyId": "infevo",
-      "siteName": "无界进化",
-      "preservedSectorId": "frontiers"
-    },
-    {
-      "companyId": "jiyi-bi",
-      "siteName": "集异璧",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "juexin-bio",
-      "siteName": "玦芯生物",
-      "preservedSectorId": "frontiers"
-    },
-    {
-      "companyId": "lingxin-ai",
-      "siteName": "聆心智能",
-      "preservedSectorId": "foundation"
-    },
-    {
-      "companyId": "nodesk-ai",
-      "siteName": "NoDesk AI",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "polo-interactive",
-      "siteName": "珀乐科技",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "powerlaw-ai",
-      "siteName": "幂律科技",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "qidian-lingzhi",
-      "siteName": "奇点灵智",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "qingyan-yi-hydrogen",
-      "siteName": "清研易氢",
-      "preservedSectorId": "frontiers"
-    },
-    {
-      "companyId": "qingyao-zhiyuan",
-      "siteName": "清曜智源",
-      "preservedSectorId": "infrastructure"
-    },
-    {
-      "companyId": "qingyuan",
-      "siteName": "清源智策",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "qisuanfa",
-      "siteName": "绮算法",
-      "preservedSectorId": "applications"
-    },
-    {
-      "companyId": "research-cosmos",
-      "siteName": "宇创万象",
-      "preservedSectorId": "frontiers"
-    },
-    {
-      "companyId": "saidc",
-      "siteName": "超智算",
-      "preservedSectorId": "infrastructure"
-    },
-    {
-      "companyId": "shendu-shikong-kronos",
-      "siteName": "深度时空",
-      "preservedSectorId": "foundation"
-    },
-    {
-      "companyId": "soulin",
-      "siteName": "Soulin",
-      "preservedSectorId": "physical"
-    },
-    {
-      "companyId": "tensorworld",
-      "siteName": "TensorWorld",
-      "preservedSectorId": "physical"
-    },
-    {
-      "companyId": "xiaoli-robotics",
-      "siteName": "小狸机器人",
-      "preservedSectorId": "physical"
-    },
-    {
-      "companyId": "yunqi-wuyin",
-      "siteName": "云起无垠",
-      "preservedSectorId": "infrastructure"
-    },
-    {
-      "companyId": "zetta-loop",
-      "siteName": "超级查理",
-      "preservedSectorId": "frontiers"
-    },
-    {
-      "companyId": "zhilan-medical",
-      "siteName": "智览医疗",
-      "preservedSectorId": "applications"
-    }
-  ]
+  "missing": [],
+  "unlisted": []
 }
