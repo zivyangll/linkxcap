@@ -115,6 +115,13 @@ export function mountTopology(root: HTMLElement) {
     pointer = -1,
     dragX = 0,
     dragY = 0;
+  // A press on the selected node becomes a drag only after it moves, so a
+  // plain click or tap on that node keeps its normal behaviour.
+  let pending = false,
+    startX = 0,
+    startY = 0,
+    suppressClick = false;
+  const NODE_DRAG_THRESHOLD = 4;
   let yaw = 0,
     pitch = 0,
     yawVelocity = 0,
@@ -515,19 +522,9 @@ export function mountTopology(root: HTMLElement) {
     root.dataset.running = String(running);
     if (running) frame = requestAnimationFrame(tick);
   }
-  const beginDrag = (event: PointerEvent) => {
-    const box = stage.getBoundingClientRect();
-    if (
-      !enabled() ||
-      touch.matches ||
-      event.button !== 0 ||
-      event.pointerType !== 'mouse' ||
-      (event.target as Element).closest('a,button') ||
-      event.clientX < box.left + width * 0.45
-    )
-      return;
-    event.preventDefault();
+  const startDrag = (event: PointerEvent) => {
     dragging = true;
+    pending = false;
     pointer = event.pointerId;
     dragX = event.clientX;
     dragY = event.clientY;
@@ -537,7 +534,40 @@ export function mountTopology(root: HTMLElement) {
     root.setPointerCapture(pointer);
     root.dataset.dragging = 'true';
   };
+  const beginDrag = (event: PointerEvent) => {
+    if (!enabled() || event.button !== 0) return;
+    const target = event.target as Element;
+    // The selected node can be grabbed with mouse, pen or touch.
+    if (target.closest('.sector-star.is-active')) {
+      pending = true;
+      pointer = event.pointerId;
+      startX = event.clientX;
+      startY = event.clientY;
+      return;
+    }
+    const box = stage.getBoundingClientRect();
+    if (
+      touch.matches ||
+      event.pointerType !== 'mouse' ||
+      target.closest('a,button') ||
+      event.clientX < box.left + width * 0.45
+    )
+      return;
+    event.preventDefault();
+    startDrag(event);
+  };
   const moveDrag = (event: PointerEvent) => {
+    if (pending && event.pointerId === pointer) {
+      if (
+        Math.hypot(event.clientX - startX, event.clientY - startY) <
+        NODE_DRAG_THRESHOLD
+      )
+        return;
+      suppressClick = true;
+      startDrag(event);
+      dragX = startX;
+      dragY = startY;
+    }
     if (!dragging || event.pointerId !== pointer) return;
     const dx = ((event.clientX - dragX) / width) * Math.PI * 1.2;
     const dy = ((event.clientY - dragY) / height) * Math.PI * 0.8;
@@ -555,6 +585,11 @@ export function mountTopology(root: HTMLElement) {
     draw();
   };
   const endDrag = (event: PointerEvent) => {
+    if (pending && event.pointerId === pointer) {
+      pending = false;
+      pointer = -1;
+      return;
+    }
     if (!dragging || event.pointerId !== pointer) return;
     dragging = false;
     cycle = 0;
@@ -564,6 +599,14 @@ export function mountTopology(root: HTMLElement) {
     pointer = -1;
     focusActive();
   };
+  // Releasing a node drag must not also count as a click on that node.
+  const swallowClick = (event: MouseEvent) => {
+    if (!suppressClick) return;
+    suppressClick = false;
+    event.preventDefault();
+    event.stopPropagation();
+  };
+  root.addEventListener('click', swallowClick, true);
   root.addEventListener('pointerdown', beginDrag);
   root.addEventListener('pointermove', moveDrag);
   root.addEventListener('pointerup', endDrag);
@@ -611,6 +654,7 @@ export function mountTopology(root: HTMLElement) {
     root.removeEventListener('focushold', sync);
     document.removeEventListener('visibilitychange', sync);
     root.removeEventListener('focuschange', select);
+    root.removeEventListener('click', swallowClick, true);
     root.removeEventListener('pointerdown', beginDrag);
     root.removeEventListener('pointermove', moveDrag);
     root.removeEventListener('pointerup', endDrag);

@@ -44,26 +44,87 @@
 .home-story .focus[data-renderer='webgl'] .constellation-fallback {
   visibility: hidden;
 }
-.home-story .focus .star-glyph::before {
-  content: none;
+/* Sector nodes follow Figma 100:3. Idle: a faint purple diamond inside four
+   chevrons. Current: the white diamond on a 51×51 tile with lilac corners. */
+.home-story .focus .sector-star {
+  --node-diamond: calc(8.693 * var(--u));
+  --node-tile: calc(51 * var(--u));
+  --node-arm: calc(9.57 * var(--u));
+  --node-stroke: max(1px, calc(1.6 * var(--u)));
 }
 .home-story .focus .star-glyph .diamond {
   display: block;
-  width: 7px;
-  height: 7px;
-  top: calc(50% - 3.5px);
-  left: calc(50% - 3.5px);
-  background: #8f7cce;
-  opacity: 0.72;
+  width: var(--node-diamond);
+  height: var(--node-diamond);
+  top: calc(50% - var(--node-diamond) / 2);
+  left: calc(50% - var(--node-diamond) / 2);
+  background: #7a5fff;
+  opacity: 0.3;
   transition:
     background-color 200ms,
-    scale 200ms,
     opacity 200ms;
 }
+.home-story .focus .star-chevrons {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(41 * var(--u));
+  height: calc(41 * var(--u));
+  translate: -50% -50%;
+  overflow: visible;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 0.5;
+  opacity: 0.4;
+  transition: opacity 200ms;
+}
+.home-story .focus .star-glyph::before,
+.home-story .focus .star-glyph::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--node-tile);
+  height: var(--node-tile);
+  translate: -50% -50%;
+  opacity: 0;
+  transition: opacity 200ms;
+  pointer-events: none;
+}
+.home-story .focus .star-glyph::before {
+  background: rgb(62 62 62 / 50%);
+}
+.home-story .focus .star-glyph::after {
+  --c: #b2a2ff;
+  background:
+    linear-gradient(var(--c), var(--c)) left top / var(--node-arm)
+      var(--node-stroke) no-repeat,
+    linear-gradient(var(--c), var(--c)) left top / var(--node-stroke)
+      var(--node-arm) no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / var(--node-arm)
+      var(--node-stroke) no-repeat,
+    linear-gradient(var(--c), var(--c)) right top / var(--node-stroke)
+      var(--node-arm) no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / var(--node-arm)
+      var(--node-stroke) no-repeat,
+    linear-gradient(var(--c), var(--c)) left bottom / var(--node-stroke)
+      var(--node-arm) no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / var(--node-arm)
+      var(--node-stroke) no-repeat,
+    linear-gradient(var(--c), var(--c)) right bottom / var(--node-stroke)
+      var(--node-arm) no-repeat;
+}
+.home-story .focus .sector-star.is-active .star-glyph::before,
+.home-story .focus .sector-star.is-active .star-glyph::after {
+  opacity: 1;
+}
+.home-story .focus .sector-star.is-active .star-chevrons {
+  opacity: 0;
+}
 .home-story .focus .sector-star.is-active .star-glyph .diamond {
+  --node-diamond: calc(12.037 * var(--u));
   background: #fff;
   opacity: 1;
-  scale: 1.5;
 }
 .home-story .focus .constellation-hub {
   position: absolute;
@@ -121,32 +182,28 @@
     filter: none;
   }
   .home-story .focus .sector-star .star-label {
+    --label-gap: calc(43 * var(--u));
     position: absolute;
     inset: auto;
     top: 50%;
-    left: calc(50% + 30 * var(--u));
+    left: calc(50% + var(--label-gap));
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0;
     width: max-content;
-    max-width: calc(248 * var(--u));
+    max-width: calc(300 * var(--u));
     margin: 0;
     text-align: left;
-    font: max(10px, calc(15 * var(--u))) / 1.35 var(--sans);
-    color: #77727e;
+    font: max(10px, calc(15.615 * var(--u))) / 1.41 var(--sans);
+    color: rgb(255 255 255 / 30%);
     white-space: normal;
     transition: color 240ms;
-    max-height: 4.1em;
-    overflow: hidden;
   }
   .home-story .focus .sector-star[data-label-side='left'] .star-label {
     left: auto;
-    right: calc(50% + 30 * var(--u));
+    right: calc(50% + var(--label-gap));
     text-align: right;
-  }
-  .home-story .focus .star-foundation .star-label {
-    top: calc(50% - 35 * var(--u));
   }
   /* The transparent bridge joins label and diamond hit areas. */
   .home-story .focus .star-label::before {
@@ -162,13 +219,22 @@
     letter-spacing: 0;
   }
   .home-story .focus .sector-star.is-active .star-label {
-    color: #b2a2ee;
-    font: max(12px, calc(21 * var(--u))) / 1.35 var(--serif);
-    max-width: calc(310 * var(--u));
+    --label-gap: calc(61.4 * var(--u));
+    color: #b2a2ff;
+    font: max(12px, calc(20 * var(--u))) / 1.5 var(--serif);
+    max-width: none;
+    white-space: nowrap;
+    /* Already selected: let nearby company links stay clickable. */
+    pointer-events: none;
   }
+  .home-story .focus .sector-star.is-active .star-label [lang='en'] {
+    letter-spacing: -0.05em;
+  }
+  /* English stays above Chinese on every node, the current one included. */
   .home-story .focus .sector-star.is-active .star-label [lang='zh'] {
-    order: -1;
-    letter-spacing: 0.22em;
+    margin-top: -0.3em;
+    font-weight: 700;
+    letter-spacing: 0.89em;
   }
   .home-story .focus .constellation-company {
     position: absolute;
@@ -313,10 +379,29 @@
     scale: 1;
     filter: none;
   }
+  /* Same node design at touch size: Figma proportions from a 7px diamond. */
+  .home-story .focus .sector-star {
+    --node-diamond: 7px;
+    --node-tile: 34px;
+    --node-arm: 6.5px;
+    --node-stroke: 1.2px;
+  }
+  .home-story .focus .sector-star.is-active .star-glyph .diamond {
+    --node-diamond: 9px;
+  }
+  .home-story .focus .star-chevrons {
+    width: 30px;
+    height: 30px;
+    stroke-width: 0.8;
+  }
+  body[data-lang='zh'] .home-story .focus .sector-star .star-label [lang='en'] {
+    display: none;
+  }
   .home-story .focus .sector-star .star-label {
+    --label-gap: 17px;
     position: absolute;
     top: 50%;
-    left: calc(50% + 13px);
+    left: calc(50% + var(--label-gap));
     margin: 0;
     transform: translateY(-50%);
     display: flex;
@@ -334,7 +419,7 @@
   }
   .home-story .focus .sector-star[data-mobile-side='left'] .star-label {
     left: auto;
-    right: calc(50% + 13px);
+    right: calc(50% + var(--label-gap));
     text-align: right;
   }
   .home-story .focus .sector-star .star-label span {
@@ -344,10 +429,8 @@
     letter-spacing: 0;
   }
   .home-story .focus .sector-star.is-active .star-label {
+    --label-gap: 21px;
     color: #ede6ff;
-  }
-  .home-story .focus .sector-star.is-active .star-label [lang='zh'] {
-    order: -1;
   }
   .home-story .focus .constellation-company {
     position: absolute;
@@ -394,4 +477,14 @@
   .home-story .focus .focus-panels {
     min-height: 190px;
   }
+}
+
+/* The selected node is a handle for turning the 3D constellation. */
+.home-story .focus[data-renderer='webgl'] .sector-star.is-active {
+  cursor: grab;
+  touch-action: none;
+}
+.home-story .focus[data-renderer='webgl'][data-dragging='true'],
+.home-story .focus[data-renderer='webgl'][data-dragging='true'] .sector-star {
+  cursor: grabbing;
 }

@@ -163,10 +163,14 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
         style={place(point.x, point.y, mobile)}
       >
         <span class="star-glyph" aria-hidden="true">
+          {/* Figma 100:71 — four 7.5×3.7 chevrons, tips 19.9 from centre. */}
+          <svg class="star-chevrons" viewBox="0 0 41 41">
+            <path d="M16.76 4.59 20.5.85l3.74 3.74M16.76 36.41l3.74 3.74 3.74-3.74M4.59 16.76.85 20.5l3.74 3.74M36.41 16.76l3.74 3.74-3.74 3.74" />
+          </svg>
           <i class="diamond"></i>
         </span>
         <span class="star-label">
-          {lang === 'en' && <span lang="en">{sector.en}</span>}
+          <span lang="en">{sector.en}</span>
           {lang === 'zh' && <span lang="zh">{sector.zh}</span>}
         </span>
       </button>

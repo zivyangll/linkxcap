@@ -3,12 +3,19 @@
    scale the same artwork from each screen's height. */
 
 /* Light screens: paper texture in a 1231×1080 radial mask at the frame's
-   top-left, blended by luminosity at 15%. */
+   top-left, blended by luminosity at 15%. The outer box only clips to the
+   screen; it has no z-index so the blend still reaches the paper colour. */
 .paper-texture {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.paper-texture-frame {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 0;
   width: calc(1231 * var(--u));
   height: calc(1080 * var(--u));
   pointer-events: none;
@@ -18,7 +25,7 @@
   mask: var(--paper-mask) 0 0 / 100% 100% no-repeat;
 }
 
-.paper-texture img {
+.paper-texture-frame img {
   position: absolute;
   left: calc(-851 / 1231 * 100%);
   top: calc(-359 / 1080 * 100%);
@@ -61,7 +68,7 @@
 /* The designer's looping star GIF shares the nebula's rotated frame; screen
    drops its black ground so only the twinkling stars are added. */
 .focus-backdrop .focus-backdrop-stars {
-  opacity: 1;
+  opacity: 0.3;
   mix-blend-mode: screen;
 }
 
@@ -78,7 +85,7 @@
 @media (max-width: 1023px), (hover: none), (pointer: coarse) {
   /* The mask keeps the frame's proportions, follows the screen height and
      centres its ellipse (x = 498 of 1231) on the narrow viewport. */
-  .paper-texture {
+  .paper-texture-frame {
     left: 50%;
     width: auto;
     height: 100%;

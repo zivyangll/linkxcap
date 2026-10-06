@@ -8,18 +8,19 @@ const { eager = false } = Astro.props;
 // paper texture, shared by every light home screen.
 ---
 
-<div
-  class="paper-texture"
-  style={`--paper-mask:url(${asset('home-bg', 'paperMask')})`}
-  aria-hidden="true"
->
-  <img
-    src={asset('home-bg', 'paperTexture')}
-    width="1024"
-    height="884"
-    alt=""
-    loading={eager ? 'eager' : 'lazy'}
-    decoding="async"
-    fetchpriority="low"
-  />
+<div class="paper-texture" aria-hidden="true">
+  <div
+    class="paper-texture-frame"
+    style={`--paper-mask:url(${asset('home-bg', 'paperMask')})`}
+  >
+    <img
+      src={asset('home-bg', 'paperTexture')}
+      width="1024"
+      height="884"
+      alt=""
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      fetchpriority="low"
+    />
+  </div>
 </div>
