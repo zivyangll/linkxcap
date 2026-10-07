@@ -1,8 +1,8 @@
 {
   "source": "docs/被投企业汇总_V6.csv",
-  "sourceSha256": "d420d3955c15e744ef799a07fe361a578bfc438266f018016d7d204711775ef0",
-  "sourceCount": 56,
-  "matchedCount": 56,
+  "sourceSha256": "5eb68fa0e34d5ea885ddb58ed68fab0207338fae4fc202edea037a3f89a71ca5",
+  "sourceCount": 55,
+  "matchedCount": 55,
   "scope": "The CSV is the portfolio of record: add its missing companies, remove unlisted ones, and take names, detail copy, websites and tags from it.",
   "categories": [
     {
@@ -278,21 +278,6 @@
       "sectorIds": [
         "chips",
         "physical"
-      ]
-    },
-    {
-      "sourceId": "16",
-      "sourceName": "紫荆芯界",
-      "companyId": "zijing-xinjie",
-      "siteName": "紫荆芯界",
-      "match": "exact-name",
-      "tag1": "芯片",
-      "tags": [
-        "芯片"
-      ],
-      "sectorId": "chips",
-      "sectorIds": [
-        "chips"
       ]
     },
     {

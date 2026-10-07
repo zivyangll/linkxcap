@@ -308,7 +308,7 @@ for (const width of [390, 768, 1440])
     await page.locator('[data-company-nav]').focus();
     await page.keyboard.press('End');
     await expect(
-      page.locator('[data-company-link=zijing-xinjie]'),
+      page.locator('[data-company-link=zettlab]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.keyboard.press('Home');
     await expect(
@@ -377,7 +377,7 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
   await page.keyboard.press('ArrowUp');
   await expect(browser).toHaveAttribute(
     'data-current-company',
-    'zijing-xinjie',
+    'zettlab',
   );
   await page.keyboard.press('ArrowDown');
   await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
@@ -385,7 +385,7 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
   await page.keyboard.press('End');
   await expect(browser).toHaveAttribute(
     'data-current-company',
-    'zijing-xinjie',
+    'zettlab',
   );
   await page.keyboard.press('ArrowDown');
   await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');

@@ -1589,23 +1589,6 @@
       "sector_ids": [
         "applications"
       ]
-    },
-    {
-      "id": "zijing-xinjie",
-      "slug": "zijing-xinjie",
-      "name_cn": "紫荆芯界",
-      "name_en": "Zijing Xinjie",
-      "description_cn": "紫荆芯界面向大模型推理设计芯片，重点解决内存带宽与时延瓶颈。其基于 RISC-V 的技术路线，旨在提升推理场景的计算效率与能耗表现。",
-      "description_en": "Zijing Xinjie targets the bandwidth and latency bottlenecks of large-model inference. Its RISC-V-based chip work is directed at delivering efficient AI compute under tight performance and power constraints.",
-      "detail_cn": "紫荆芯界面向大模型推理设计芯片，重点解决内存带宽与时延瓶颈。其基于 RISC-V 的技术路线，旨在提升推理场景的计算效率与能耗表现。",
-      "detail_en": "Zijing Xinjie targets the bandwidth and latency bottlenecks of large-model inference. Its RISC-V-based chip work is directed at delivering efficient AI compute under tight performance and power constraints.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "shengshu-technology.webp",
-      "sector_ids": [
-        "chips"
-      ]
     }
   ],
   "insights": {

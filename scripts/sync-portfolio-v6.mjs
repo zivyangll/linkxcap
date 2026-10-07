@@ -245,7 +245,6 @@ if (process.argv.includes('--write')) {
         id,
         slug: previous?.slug || id,
         name_cn: row['项目名/中文'].trim(),
-        // 紫荆芯界 has no English name in V6; keep the site's romanisation.
         name_en: row['项目名/英文'].trim() || previous?.name_en || '',
         description_cn: detailCn,
         description_en: detailEn,
