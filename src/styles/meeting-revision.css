@@ -1329,15 +1329,45 @@
   }
 
   .site-header .desktop-nav,
-  .site-header .language-switch,
-  .site-header.is-minimal .desktop-nav,
-  .site-header.is-minimal .language-switch {
+  .site-header .language-switch {
     display: flex;
   }
 
-  .site-header .menu-toggle,
-  .site-header.is-minimal .menu-toggle {
+  .site-header .menu-toggle {
     display: none;
+  }
+
+  /* Past the first screen the full navigation folds into the menu trigger. */
+  .site-header.is-minimal .desktop-nav,
+  .site-header.is-minimal .language-switch {
+    display: none;
+  }
+
+  .site-header.is-minimal .menu-toggle {
+    position: absolute;
+    left: auto;
+    right: calc(44 * var(--u));
+    top: 50%;
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-50%);
+  }
+
+  .site-header.is-minimal .menu-toggle span {
+    position: absolute;
+    left: 50%;
+    top: calc(50% - 4px);
+    width: 21px;
+    height: 1px;
+    margin: 0;
+    transform: translateX(-50%);
+  }
+
+  .site-header.is-minimal .menu-toggle span + span {
+    top: calc(50% + 4px);
   }
 }
 
@@ -1436,26 +1466,7 @@
     padding-left: max(24px, env(safe-area-inset-left));
   }
 
-  .site-footer {
-    padding-bottom: max(25px, env(safe-area-inset-bottom));
-  }
-
-  .footer-main {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .footer-links,
-  .footer-meta .social-links {
-    width: 100%;
-  }
-
-  .footer-links {
-    flex-flow: row wrap;
-  }
-
-  .footer-links a,
-  .footer-meta a,
+  .menu-legal-links a,
   .not-found a {
     display: inline-flex;
     min-height: 44px;

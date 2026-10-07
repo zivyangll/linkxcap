@@ -173,7 +173,7 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
     'data-trail-active-color',
     'rgba(87,60,121,.95)',
   );
-  await expect(openingTrail).toHaveAttribute('data-node-color', '#573c79');
+  await expect(openingTrail).toHaveAttribute('data-node-color', '#000');
   await expect(page.locator('.opening-track > img')).toBeHidden();
 
   let stage = await setPhilosophyProgress(page, 0);
@@ -425,7 +425,7 @@ test('14b active node stays dark and no left fork marker is rendered', async ({
   }));
   expect(initial).toEqual({
     node: 1,
-    color: '#573c79',
+    color: '#000',
     branchMarker: 0,
   });
 
@@ -439,7 +439,7 @@ test('14b active node stays dark and no left fork marker is rendered', async ({
     rays: Number(canvas.dataset.rayActivation),
   }));
   expect(fork.node).toBe(1);
-  expect(fork.color).toBe('#573c79');
+  expect(fork.color).toBe('#000');
   expect(fork.branchMarker).toBe(0);
   expect(fork.markerCount).toBe(1);
   expect(fork.rail).toBe(1);

@@ -334,6 +334,9 @@
     width: 20px;
     height: 15px;
   }
+  .menu-footer {
+    display: contents;
+  }
   .menu-language {
     display: flex;
     gap: 24px;
@@ -361,32 +364,32 @@
     height: 26px;
     object-fit: contain;
   }
-  .site-footer {
-    padding: 64px var(--page-gutter) 30px;
-    background: inherit;
-  }
-  .footer-main {
-    display: flex;
-    justify-content: space-between;
-    gap: 24px;
-    align-items: center;
-    font-size: 15px;
-    padding-bottom: 30px;
-  }
-  .footer-links {
-    display: flex;
-    gap: 28px;
-  }
-  .footer-meta {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 20px;
+  .menu-legal {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-top: 28px;
     font-size: 11px;
+    line-height: 1.5;
     opacity: 0.6;
   }
-  .footer-meta .social-links {
-    margin-left: auto;
+  .menu-legal p {
+    margin: 0;
+  }
+  .menu-legal-links {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 20px;
+  }
+  .menu-legal-links a {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+  }
+  .menu-legal-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
   .page-title {
     font-size: calc(52.25 * var(--u));
@@ -1445,22 +1448,6 @@
     pointer-events: none;
     opacity: 0.55;
   }
-  .insights-title {
-    font-size: calc(72.809 * var(--u));
-    letter-spacing: -0.05em;
-    line-height: 1.2;
-  }
-  .insights-title span {
-    display: block;
-    font-weight: 500;
-  }
-  .insights-intro {
-    margin-top: calc(30 * var(--u));
-    font-size: calc(17.904 * var(--u));
-    letter-spacing: -0.05em;
-    max-width: 650px;
-    line-height: 1.5;
-  }
   .insight-filters {
     display: flex;
     align-items: center;
@@ -2243,13 +2230,6 @@
     .team-bio .person-en {
       font-size: 23px;
     }
-    .insights-title {
-      font-size: 56px;
-    }
-    .insights-intro {
-      font-size: 17px;
-      margin-top: 25px;
-    }
     .insight-filters {
       font-size: 19px;
       margin-top: 65px;
@@ -2294,16 +2274,6 @@
     }
     .contact-email {
       font-size: 22px;
-    }
-    .footer-main {
-      align-items: flex-start;
-      flex-direction: column;
-    }
-    .footer-meta .social-links {
-      margin-left: 0;
-    }
-    .footer-meta {
-      gap: 14px;
     }
     .profile-page {
       padding-top: 130px;
@@ -2929,13 +2899,6 @@
     .insights-page {
       padding: 125px 24px 55px;
     }
-    .insights-title {
-      font-size: 42px;
-    }
-    .insights-intro {
-      font-size: 15px;
-      margin-top: 30px;
-    }
     .insight-filters {
       margin-top: 45px;
       font-size: 15px;
@@ -3082,26 +3045,6 @@
     }
     .contact-socials {
       margin-top: 70px;
-    }
-    .site-footer {
-      padding: 50px 24px 25px;
-    }
-    .footer-main {
-      font-size: 13px;
-      gap: 25px;
-    }
-    .footer-links {
-      flex-direction: column;
-      gap: 15px;
-    }
-    .footer-meta {
-      font-size: 10px;
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .footer-meta .social-links {
-      gap: 20px;
     }
     .site-menu nav a small {
       font-size: 15px;

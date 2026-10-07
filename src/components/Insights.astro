@@ -54,28 +54,22 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
       ))}
     </div>
   </div>
-  <h1 class="insights-title">
-    {insightsContent.headline[lang]}
-    {lang === 'zh' && <span lang="en">{insightsContent.headline.en}</span>}
-  </h1>
-  <p class="insights-intro">
-    {insightsContent.intro[lang].map((paragraph) => (
-      <span class="intro-paragraph">{paragraph}</span>
-    ))}
-  </p>
-  <div
-    class="insight-filters"
-    role="group"
-    aria-label={insightsContent.filterLabel[lang]}
-  >
-    {filters.map(({ id, zh, en }, i) => (
-      <>
-        {i > 0 && <span aria-hidden="true">/</span>}
-        <button data-filter={id} aria-pressed={id === 'all'}>
-          {lang === 'zh' ? zh : en}
-        </button>
-      </>
-    ))}
+  <div class="insights-heading">
+    <div class="insights-heading-title">
+      {lang === 'zh' && <span lang="en">{insightsContent.title.en}</span>}
+      <p>{insightsContent.title[lang]}</p>
+    </div>
+    <div class="insights-heading-copy">
+      <h1 class="insights-headline">
+        {insightsContent.headline[lang]}
+        {lang === 'zh' && <span lang="en">{insightsContent.headline.en}</span>}
+      </h1>
+      <p class="insights-intro">
+        {insightsContent.intro[lang].map((paragraph) => (
+          <span class="intro-paragraph">{paragraph}</span>
+        ))}
+      </p>
+    </div>
   </div>
   <div class="insight-list">
     {displayArticles.map(({ article, row }) => {
@@ -124,16 +118,90 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     <time data-current-year>{currentYear}</time>
     {copyrightAfter}
   </p>
-  <div class="empty-state" data-empty hidden>
-    <p>{ui[lang].noResults}</p>
-    <button data-filter-reset>{ui[lang].reset}</button>
-  </div>
 </section>
 
 <script>
   import '../scripts/insights-motion';
 </script>
 <style>
+  /* Heading follows the Team page: section name on the left, headline and
+     intro in a right-hand column (Figma 275:2828 / 275:3880). */
+  .insights-heading-title span {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+  .insights-heading-title p {
+    font-size: clamp(28px, 7.6vw, 44px);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .insights-headline {
+    margin-top: 32px;
+    font-size: clamp(20px, 5vw, 26px);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .insights-headline span {
+    display: block;
+  }
+  .insights-intro {
+    margin-top: 16px;
+    max-width: 44rem;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  @media (min-width: 1024px) {
+    .insights-heading {
+      position: relative;
+      height: calc(428 * var(--u));
+      margin: calc(-196 * var(--u)) calc(-198 * var(--u)) 0;
+    }
+    .insights-heading-title {
+      position: absolute;
+      left: calc(180 * var(--u));
+      top: calc(174 * var(--u));
+      display: flex;
+      flex-direction: column;
+      white-space: nowrap;
+    }
+    .insights-heading-title span {
+      margin-bottom: calc(11.92 * var(--u));
+      font-size: calc(20.901 * var(--u));
+      font-weight: 500;
+      letter-spacing: 0;
+      line-height: 1.2;
+    }
+    .insights-heading-title p {
+      font-size: calc(52.25 * var(--u));
+    }
+    .insights-heading-copy {
+      position: absolute;
+      left: calc(1200 * var(--u));
+      top: calc(222 * var(--u));
+      width: calc(575 * var(--u));
+    }
+    body[data-lang='en'] .insights-heading-copy {
+      left: calc(991 * var(--u));
+      top: calc(208 * var(--u));
+      width: calc(784 * var(--u));
+    }
+    .insights-headline {
+      margin: 0;
+      font-size: calc(30 * var(--u));
+      white-space: nowrap;
+    }
+    .insights-headline span {
+      display: none;
+    }
+    .insights-intro {
+      margin-top: calc(11 * var(--u));
+      max-width: none;
+      font-size: calc(14 * var(--u));
+      line-height: 1.5;
+      letter-spacing: -0.05em;
+    }
+  }
   .insights-orbit {
     aspect-ratio: 1;
     border-radius: 50%;

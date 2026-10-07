@@ -126,7 +126,7 @@ export function mountChapterSnap(home: HTMLElement) {
       const opening = home.querySelector<HTMLElement>('.opening')!;
       const copy = opening.querySelector<HTMLElement>('.opening-copy')!;
       const openingTrigger = ScrollTrigger.getById('chapter-1')!;
-      const trailStart = (opening.clientWidth * 485.5) / 1920;
+      const trailStart = 485.5 * Math.min(1, opening.clientWidth / 1920);
       const trailLength = opening.clientHeight - trailStart;
       const progress = gsap.utils.clamp(
         0.05,

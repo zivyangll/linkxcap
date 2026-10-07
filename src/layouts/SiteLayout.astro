@@ -1,7 +1,6 @@
 ---
 import { createHash } from 'node:crypto';
 import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
 import { url, pageUrl, preview, siteContent, ui, type Lang } from '../lib/site';
 import fonts from '../data/fonts.json';
 import '../styles/global.css';
@@ -15,7 +14,6 @@ interface Props {
   description?: string;
   minimal?: boolean;
   bodyClass?: string;
-  footer?: boolean;
 }
 const {
   lang,
@@ -24,7 +22,6 @@ const {
   description = siteContent.metaDescription[lang],
   minimal = false,
   bodyClass = '',
-  footer = true,
 } = Astro.props;
 // A changed subset map must not reuse fonts cached under the previous map.
 const fontVersion = createHash('sha256')
@@ -89,7 +86,6 @@ const canonical = absolute(pageUrl(lang, page));
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    {footer && <Footer lang={lang} />}
     <p class="sr-only" role="status" aria-live="polite" data-status></p>
     <script src="../scripts/site.ts"></script>
     <script src="../scripts/topology-loader.ts"></script>

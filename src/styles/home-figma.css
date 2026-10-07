@@ -104,6 +104,15 @@
 
   /* Frame 2: hero. Both locales share the rail; the arc, node colours and
      titles differ per frame. */
+  /* Every node on the route is black. */
+  body .home-story :is(.opening-track, .orbit-label) .diamond {
+    background: #000;
+  }
+  /* Only the half of the ring below its tangent point belongs to the route;
+     above it the ring would lean away from the rail as a second line. */
+  body .home-story .hero-orbit {
+    clip-path: inset(50% 0 0 0);
+  }
   body .home-story .hero-orbit {
     top: calc(-1156 * var(--u));
   }
@@ -243,12 +252,14 @@
   body .home-story .about-label br {
     display: none;
   }
+  /* Every line is centred on the node's axis (Figma x 959). */
   body .home-story .about-label-line {
     position: absolute;
+    left: calc(959 * var(--u));
     transform: translateX(-50%);
   }
-  /* The soft layer stays blurred; the sharp layer is revealed from the
-     middle outwards, so both ends resolve last (frame 3 mid-state). */
+  /* The soft layer stays blurred; the sharp layer is revealed from both ends
+     towards the middle, so the centre resolves last. */
   body .home-story .about-label-soft {
     display: block;
     filter: blur(10px);
@@ -259,36 +270,34 @@
     position: absolute;
     inset: 0;
     --reach: calc(var(--label-sharp, 0) * 50%);
-    -webkit-mask-image: linear-gradient(
-      to right,
-      transparent calc(50% - var(--reach) - 12%),
-      #000 calc(50% - var(--reach)),
-      #000 calc(50% + var(--reach)),
-      transparent calc(50% + var(--reach) + 12%)
-    );
-    mask-image: linear-gradient(
-      to right,
-      transparent calc(50% - var(--reach) - 12%),
-      #000 calc(50% - var(--reach)),
-      #000 calc(50% + var(--reach)),
-      transparent calc(50% + var(--reach) + 12%)
-    );
+    /* Two layers add up: one grows from the left edge, one from the right. */
+    -webkit-mask-image:
+      linear-gradient(
+        to right,
+        #000 calc(var(--reach) - 12%),
+        transparent var(--reach)
+      ),
+      linear-gradient(
+        to left,
+        #000 calc(var(--reach) - 12%),
+        transparent var(--reach)
+      );
+    mask-image:
+      linear-gradient(
+        to right,
+        #000 calc(var(--reach) - 12%),
+        transparent var(--reach)
+      ),
+      linear-gradient(
+        to left,
+        #000 calc(var(--reach) - 12%),
+        transparent var(--reach)
+      );
   }
-  body .home-story .about-label-line:first-child {
-    left: calc(880 * var(--u));
-    top: calc(610 * var(--u));
-  }
-  body .home-story .about-label-line:last-child {
-    left: calc(1037 * var(--u));
-    top: calc(708 * var(--u));
-    opacity: 0.4;
-  }
-  body[data-lang='en'] .home-story .about-label-line:first-child {
-    left: calc(828 * var(--u));
+  body .home-story .about-label-line:nth-of-type(1) {
     top: calc(582 * var(--u));
   }
-  body[data-lang='en'] .home-story .about-label-line:last-child {
-    left: calc(1138.5 * var(--u));
+  body .home-story .about-label-line:nth-of-type(2) {
     top: calc(680 * var(--u));
   }
 
@@ -556,38 +565,68 @@
     white-space: nowrap;
   }
 
-  /* The heading belongs to the selected node; the panel keeps the copy. */
+  /* Figma 262:168 — the selected node's intro sits on the left of the screen. */
   body .home-story[data-home] .focus .focus-panels,
-  body .home-story[data-home] .focus.has-selection .focus-panels {
-    left: calc(1347 * var(--u));
-    top: calc(637 * var(--u));
-    width: calc(261 * var(--u));
-    min-height: 0;
-  }
+  body .home-story[data-home] .focus.has-selection .focus-panels,
   body[data-lang='en'] .home-story[data-home] .focus .focus-panels,
   body[data-lang='en']
     .home-story[data-home]
     .focus.has-selection
     .focus-panels {
-    left: calc(1245 * var(--u));
-    top: calc(606 * var(--u));
+    left: calc(171 * var(--u));
+    top: calc(610 * var(--u));
+    width: calc(385 * var(--u));
+    min-height: 0;
   }
   body .home-story[data-home] .focus .focus-panel h3 {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
+    color: #d8d6cf;
+    opacity: 0.5;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='zh'] .home-story[data-home] .focus .focus-panel h3 span {
+    margin: 0;
+  }
+  body[data-lang='zh']
+    .home-story[data-home]
+    .focus
+    .focus-panel
+    h3
+    span:first-child {
+    font-size: calc(23.862 * var(--u));
+    font-weight: 700;
+    letter-spacing: 0.89em;
     white-space: nowrap;
+  }
+  body[data-lang='zh']
+    .home-story[data-home]
+    .focus
+    .focus-panel
+    h3
+    span:last-child {
+    font-size: calc(20 * var(--u));
+    font-weight: 400;
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='en'] .home-story[data-home] .focus .focus-panel h3 span {
+    margin: 0;
+    font-size: calc(24 * var(--u));
+    font-weight: 700;
+    letter-spacing: 0;
   }
   body .home-story[data-home] .focus .focus-panel p {
     width: auto;
-    margin: 0;
-    font-size: calc(16 * var(--u));
+    margin: calc(53.2 * var(--u)) 0 0;
+    font-size: calc(20 * var(--u));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
     color: #d8d6cf;
+    opacity: 0.5;
+  }
+  body[data-lang='en'] .home-story[data-home] .focus .focus-panel p {
+    margin-top: calc(16 * var(--u));
   }
 
   /* Sector nodes. */
@@ -630,14 +669,6 @@
     .focus
     .sector-star.is-active
     .star-label
-    [lang='zh']::before {
-    content: '/ ';
-  }
-  body
-    .home-story[data-home]
-    .focus
-    .sector-star.is-active
-    .star-label
     [lang='en'] {
     margin-left: calc(35 * var(--u));
     letter-spacing: -0.05em;
@@ -659,14 +690,6 @@
     [lang='en'] {
     margin-left: 0;
     letter-spacing: 0;
-  }
-  body[data-lang='en']
-    .home-story[data-home]
-    .focus
-    .sector-star.is-active
-    .star-label
-    [lang='en']::before {
-    content: '/ ';
   }
 
   /* Company dots: 4px squares with the label 8px away. */
@@ -696,4 +719,9 @@
     left: auto;
     right: calc(50% + 10 * var(--u));
   }
+}
+
+/* Node headings carry no leading slash. */
+.focus-panel h3 .focus-slash {
+  display: none;
 }

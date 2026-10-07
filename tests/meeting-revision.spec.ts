@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import content from '../src/data/content.json' with { type: 'json' };
 
-test('philosophy top bar gains a scroll mask and only collapses on narrow screens', async ({
+test('philosophy top bar gains a scroll mask and collapses to the menu button after the first screen', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -21,8 +21,9 @@ test('philosophy top bar gains a scroll mask and only collapses on narrow screen
 
   await page.evaluate(() => scrollTo(0, innerHeight * 3));
   await expect(header).toHaveClass(/is-minimal/);
-  await expect(page.locator('.desktop-nav')).toBeVisible();
-  await expect(page.locator('[data-menu-open]')).toBeHidden();
+  await expect(page.locator('.desktop-nav')).toBeHidden();
+  await expect(page.locator('.language-switch')).toBeHidden();
+  await expect(page.locator('[data-menu-open]')).toBeVisible();
 
   await page.setViewportSize({ width: 1100, height: 900 });
   await expect(page.locator('.desktop-nav')).toBeHidden();

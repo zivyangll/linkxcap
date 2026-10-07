@@ -196,10 +196,14 @@
         ]
       },
       "about": {
-        "eyebrow_cn": "星连所向",
-        "eyebrow_en": "OUR NORTH STAR",
-        "label_cn": "始于本质",
-        "label_en": "FIRST PRINCIPLES",
+        "label_cn": [
+          "OUR NORTH STAR, FIRST PRINCIPLES",
+          "星连所向，始于本质"
+        ],
+        "label_en": [
+          "OUR NORTH STAR",
+          "FIRST PRINCIPLES"
+        ],
         "title_cn": [
           "在共识之前看见方向，",
           "在行业格局成形之前发现企业。"
@@ -276,7 +280,7 @@
       "title_cn": "投资组合",
       "title_en": "Portfolio",
       "title_artwork_cn": "Portfolio",
-      "intro_cn": "与推动智能时代向前的创造者同行，探索从基础研究到真实应用的企业与近期项目。",
+      "intro_cn": "与推动智能时代向前的创造者同行，探索从基础研究到真实应用的企业。",
       "intro_en": "Meet the builders of the intelligence age, from foundational research to real-world applications.",
       "scroll_hint_cn": "滚动探索 / 点击选择",
       "scroll_hint_en": "Scroll to explore / Select a company",

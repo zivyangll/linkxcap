@@ -67,8 +67,7 @@ type HomeContent = {
     orbitLabel: Localized;
   };
   about: {
-    eyebrow: Localized;
-    label: Localized;
+    label: Localized<string[]>;
     title: Localized<string[]>;
     description: Localized<string[]>;
   };

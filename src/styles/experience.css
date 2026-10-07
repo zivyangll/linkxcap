@@ -171,11 +171,6 @@
   .contact-hero .line-link {
     font-size: max(12px, calc(15 * var(--u)));
   }
-  .footer-main,
-  .footer-links {
-    font-size: max(12px, calc(15 * var(--u)));
-  }
-  .footer-meta,
   .insights-copyright,
   .fellow-media-caption {
     font-size: max(11px, calc(13 * var(--u)));
@@ -590,9 +585,10 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body .portfolio-page > .portfolio-intro {
     position: absolute;
-    left: calc(1140 * var(--u));
+    right: calc(159 * var(--u));
     top: calc(211 * var(--u));
     margin: 0;
+    text-align: right;
     font-size: calc(30 * var(--u));
     font-weight: 600;
     line-height: 1.2;
@@ -600,7 +596,6 @@ body .team-review .team-bio::-webkit-scrollbar {
     color: #000;
   }
   body[data-lang='en'] .portfolio-page > .portfolio-intro {
-    left: calc(1216 * var(--u));
     top: calc(198 * var(--u));
     font-size: calc(20 * var(--u));
   }

@@ -18,6 +18,9 @@ type Anchor = {
   key: string;
   sector: string;
   origin: Vector3;
+  // Graph-local position that replaces `origin` while the node would
+  // otherwise project outside the visible area.
+  pin: Vector3 | null;
   x: number;
   y: number;
 };
@@ -70,6 +73,7 @@ export function mountTopology(root: HTMLElement) {
     key: element.dataset.topologyAnchor!,
     sector: element.dataset.sector || element.dataset.focusSector || '',
     origin: new Vector3(),
+    pin: null,
     x: 0,
     y: 0,
   }));
@@ -223,6 +227,7 @@ export function mountTopology(root: HTMLElement) {
     );
   };
   const renderPoint = (anchor: Anchor, target: Vector3) => {
+    if (anchor.pin) return target.copy(anchor.pin);
     target.copy(anchor.origin);
     // H5 always centres the selected sector, so its companies fan out around
     // it from the start rather than keeping the canvas-wide layout.
@@ -378,20 +383,63 @@ export function mountTopology(root: HTMLElement) {
     if (!enabled() || !width) return;
     if (!dragging) keepActiveInSafeArea(graph.position, graph.rotation);
     graph.updateMatrixWorld(true);
+    const bounds = stage.getBoundingClientRect();
+    const labelInset = touch.matches ? 4 : 18;
+    // The part of the stage the viewer can currently see. Branch nodes and
+    // labels stay inside it instead of spilling past the window edges.
+    const seen = {
+      left: Math.max(bounds.left, 0),
+      right: Math.min(bounds.right, innerWidth),
+      top: Math.max(bounds.top, 0),
+      bottom: Math.min(bounds.bottom, innerHeight),
+    };
+    const hasView =
+      seen.right - seen.left > 120 && seen.bottom - seen.top > 120;
+    const view = hasView ? seen : bounds;
     for (const anchor of anchors) {
       if (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
         continue;
+      const isBranch = !!anchor.element.dataset.focusSector;
+      anchor.pin = null;
       renderPoint(anchor, projected)
         .applyMatrix4(graph.matrixWorld)
         .project(camera);
-      const finalX = ((projected.x + 1) * width) / 2;
-      const finalY = ((1 - projected.y) * height) / 2;
+      let finalX = ((projected.x + 1) * width) / 2;
+      let finalY = ((1 - projected.y) * height) / 2;
+      if (isBranch && hasView) {
+        const labelWidth = anchor.label?.offsetWidth || 0;
+        const labelHeight = anchor.label?.offsetHeight || 0;
+        const side = anchor.element.dataset.labelSide;
+        const reach = labelWidth + (touch.matches ? 6 : 14);
+        const minX =
+          view.left - bounds.left + labelInset + (side === 'left' ? reach : 0);
+        const maxX =
+          view.right -
+          bounds.left -
+          labelInset -
+          (side === 'right' ? reach : 0);
+        const minY = view.top - bounds.top + labelInset + labelHeight / 2;
+        const maxY = view.bottom - bounds.top - labelInset - labelHeight / 2;
+        const clampedX =
+          minX > maxX ? finalX : Math.min(maxX, Math.max(minX, finalX));
+        const clampedY =
+          minY > maxY ? finalY : Math.min(maxY, Math.max(minY, finalY));
+        if (clampedX !== finalX || clampedY !== finalY) {
+          finalX = clampedX;
+          finalY = clampedY;
+          projected.set(
+            (finalX / width) * 2 - 1,
+            1 - (finalY / height) * 2,
+            projected.z,
+          );
+          projected.unproject(camera);
+          anchor.pin = graph.worldToLocal(projected).clone();
+        }
+      }
       const x = finalX - anchor.x;
       const y = finalY - anchor.y;
       anchor.element.style.translate = `${x.toFixed(2)}px ${y.toFixed(2)}px`;
     }
-    const bounds = stage.getBoundingClientRect();
-    const labelInset = touch.matches ? 4 : 18;
     const labels = anchors.filter(
       (anchor) =>
         anchor.label &&
@@ -417,11 +465,11 @@ export function mountTopology(root: HTMLElement) {
       .map((anchor) => {
         const box = anchor.label!.getBoundingClientRect();
         const x =
-          Math.max(bounds.left + labelInset - box.left, 0) +
-          Math.min(bounds.right - labelInset - box.right, 0);
+          Math.max(view.left + labelInset - box.left, 0) +
+          Math.min(view.right - labelInset - box.right, 0);
         const y =
-          Math.max(bounds.top + labelInset - box.top, 0) +
-          Math.min(bounds.bottom - labelInset - box.bottom, 0);
+          Math.max(view.top + labelInset - box.top, 0) +
+          Math.min(view.bottom - labelInset - box.bottom, 0);
         return {
           anchor,
           box,
@@ -435,8 +483,8 @@ export function mountTopology(root: HTMLElement) {
     const placed: Rect[] = [];
     for (const placement of placements) {
       const base = move(placement.box, placement.x, placement.y);
-      const minimum = bounds.top + labelInset - base.top;
-      const maximum = bounds.bottom - labelInset - base.bottom;
+      const minimum = view.top + labelInset - base.top;
+      const maximum = view.bottom - labelInset - base.bottom;
       const candidates = [
         0,
         ...placed.flatMap((other) => [
@@ -454,8 +502,8 @@ export function mountTopology(root: HTMLElement) {
       let offsetY = candidates.find((candidate) => clear(0, candidate));
       // A crowded branch can leave no free row; slide sideways as well.
       if (offsetY === undefined) {
-        const left = bounds.left + labelInset - base.left;
-        const right = bounds.right - labelInset - base.right;
+        const left = view.left + labelInset - base.left;
+        const right = view.right - labelInset - base.right;
         const sideways = [
           0,
           ...placed.flatMap((other) => [

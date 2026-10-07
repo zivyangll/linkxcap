@@ -291,6 +291,13 @@ test('desktop chapter label clears its diamond and the orbit label stays left of
           const labelBox = element
             .querySelector<HTMLElement>(labelSelector)!
             .getBoundingClientRect();
+          // Only a node level with the label can collide with it; one still
+          // above or already below the label is clear whatever its x.
+          if (
+            stageBox.top + point[1] < labelBox.top ||
+            stageBox.top + point[1] > labelBox.bottom
+          )
+            return Infinity;
           return stageBox.left + point[0] - labelBox.right;
         }, selector);
       };

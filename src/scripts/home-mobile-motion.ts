@@ -92,7 +92,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         context: CanvasRenderingContext2D,
         x: number,
         y: number,
-        color = '#573c79',
+        color = '#000',
       ) => {
         context.save();
         context.translate(x, y);
@@ -235,7 +235,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         ctx.stroke();
         // Keep the original purple marker in the ring and create a second
         // purple marker only for the downward handoff.
-        const nodeColor = '#573c79';
+        const nodeColor = '#000';
         if (handoff > 0) {
           ctx.globalAlpha = 1;
           diamond(ctx, junction.x, junction.y, nodeColor);

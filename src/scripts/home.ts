@@ -186,18 +186,20 @@ function createScrollTrail(
   let width = 0,
     height = 0,
     value = 0;
+  // Same scale as the CSS: --u stops growing at 1px past 1920px.
+  const unit = () => Math.min(1, width / 1920);
   const point = (t: number) => ({
     // The travelling node starts exactly on the static diamond (Figma centre
     // 467.485, 485.5) and ends where the rail ends at y 1080.
-    x: (width * 467.485) / 1920,
-    y: (width * 485.5) / 1920 + t * (height - (width * 485.5) / 1920),
+    x: 467.485 * unit(),
+    y: 485.5 * unit() + t * (height - 485.5 * unit()),
   });
   const draw = (progress: number) => {
     value = progress;
     if (!ctx) return;
     ctx.clearRect(0, 0, width, height);
 
-    const dashUnit = Math.max(0.75, width / 1920);
+    const dashUnit = Math.max(0.75, unit());
     ctx.lineWidth = 1;
     ctx.setLineDash([4 * dashUnit, 4 * dashUnit]);
 
@@ -211,12 +213,7 @@ function createScrollTrail(
     ctx.moveTo(origin.x, origin.y);
     ctx.lineTo(end.x, end.y);
     // Figma 272:791: the rail is #573C79 down to y 569 and fades to #8C8A9E.
-    const rail = ctx.createLinearGradient(
-      0,
-      (569 * width) / 1920,
-      0,
-      (1080 * width) / 1920,
-    );
+    const rail = ctx.createLinearGradient(0, 569 * unit(), 0, 1080 * unit());
     rail.addColorStop(0, '#573c79');
     rail.addColorStop(1, '#8c8a9e');
     ctx.strokeStyle = rail;
@@ -235,12 +232,12 @@ function createScrollTrail(
     canvas.dataset.trailProgress = progress.toFixed(3);
     canvas.dataset.trailBaseColor = 'linear-gradient(#573c79,#8c8a9e)';
     canvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
-    canvas.dataset.nodeColor = '#573c79';
+    canvas.dataset.nodeColor = '#000';
     if (!shouldDrawPoint()) return;
     ctx.save();
     ctx.translate(p.x, p.y);
     ctx.rotate(Math.PI / 4);
-    ctx.fillStyle = '#573c79';
+    ctx.fillStyle = '#000';
     ctx.shadowColor = 'rgba(90,90,90,.22)';
     ctx.shadowBlur = 10;
     ctx.fillRect(-4, -4, 8, 8);

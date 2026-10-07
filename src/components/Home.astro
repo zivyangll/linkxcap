@@ -230,19 +230,17 @@ const openingBody = homeContent.opening.body[lang]
         <i class="diamond"></i>
       </div>
       <div class="about-label">
-        {[homeContent.about.eyebrow[lang], homeContent.about.label[lang]].map(
-          (text, index) => (
-            <>
-              {index > 0 && <br />}
-              <span class="about-label-line">
-                <span class="about-label-soft">{text}</span>
-                <span class="about-label-sharp" aria-hidden="true">
-                  {text}
-                </span>
+        {homeContent.about.label[lang].map((text, index) => (
+          <>
+            {index > 0 && <br />}
+            <span class="about-label-line">
+              <span class="about-label-soft">{text}</span>
+              <span class="about-label-sharp" aria-hidden="true">
+                {text}
               </span>
-            </>
-          ),
-        )}
+            </span>
+          </>
+        ))}
       </div>
       <img
         class="about-arc"
@@ -400,7 +398,16 @@ const openingBody = homeContent.opening.body[lang]
           aria-labelledby={`sector-label-${s.id}`}
         >
           <h3 id={`sector-label-${s.id}`}>
-            {lang === 'zh' && <span>/ {s.zh}</span>}
+            {
+              lang === 'zh' && (
+                <span>
+                  <b class="focus-slash" aria-hidden="true">
+                    /{' '}
+                  </b>
+                  {s.zh}
+                </span>
+              )
+            }
             <span lang="en">{s.en}</span>
           </h3>
           <p>{s.desc[lang]}</p>

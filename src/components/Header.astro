@@ -27,6 +27,8 @@ const active =
       : ['index', 'contact', 'legal', 'fellowship'].includes(current)
         ? current
         : 'insights';
+const [copyrightBefore, copyrightAfter] =
+  siteContent.footerCopyright[lang].split('{year}');
 const socialByUrl = (fragment: string) =>
   socials.find((social) => social.href.includes(fragment))!;
 const menuSocials = [
@@ -115,66 +117,86 @@ const menuSocials = [
         </a>
       ))}
   </nav>
-  <div class="menu-contact">
-    <h2>
-      {navigationContent.menuContactTitle[lang]
-        .split('\n')
-        .map((line, index) => (
-          <>
-            {index > 0 && <br />}
-            {line}
-          </>
-        ))}
-    </h2>
-    <div class="menu-invitation">
-      <p>{contactContent.joinCopy[lang]}</p>
-      {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
+  <div class="menu-footer">
+    <div class="menu-contact">
+      <h2>
+        {navigationContent.menuContactTitle[lang]
+          .split('\n')
+          .map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))}
+      </h2>
+      <div class="menu-invitation">
+        <p>{contactContent.joinCopy[lang]}</p>
+        {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
+      </div>
+      <a class="line-link" href={pageUrl(lang, 'contact')}>
+        {navigationContent.menuContactLink[lang]}
+        <Arrow />
+      </a>
     </div>
-    <a class="line-link" href={pageUrl(lang, 'contact')}>
-      {navigationContent.menuContactLink[lang]}
-      <Arrow />
-    </a>
-  </div>
-  <div class="menu-language">
-    <a href={pageUrl('zh', current)} data-language="zh">
-      {navigationContent.languageNames.zh}
-    </a>
-    <a href={pageUrl('en', current)} data-language="en">
-      {navigationContent.languageNames.en}
-    </a>
-  </div>
-  <div class="menu-bottom">
-    <div class="social-links">
-      {menuSocials.map((s) => (
-        <a
-          class={`menu-social social-${s.key}`}
-          href={s.href}
-          aria-label={lang === 'en' ? s.en : s.name}
-          target={s.key === '54' ? undefined : '_blank'}
-          rel={s.key === '54' ? undefined : 'noopener noreferrer'}
-        >
-          <img
-            class="social-circle"
-            src={asset('3191', s.key === '58' ? 'imgGroup384' : 'imgEllipse7')}
-            width="28"
-            height="28"
-            alt=""
-          />
-          <span>
+    <div class="menu-language">
+      <a href={pageUrl('zh', current)} data-language="zh">
+        {navigationContent.languageNames.zh}
+      </a>
+      <a href={pageUrl('en', current)} data-language="en">
+        {navigationContent.languageNames.en}
+      </a>
+    </div>
+    <div class="menu-bottom">
+      <div class="social-links">
+        {menuSocials.map((s) => (
+          <a
+            class={`menu-social social-${s.key}`}
+            href={s.href}
+            aria-label={lang === 'en' ? s.en : s.name}
+            target={s.key === '54' ? undefined : '_blank'}
+            rel={s.key === '54' ? undefined : 'noopener noreferrer'}
+          >
             <img
-              src={asset('3191', 'imgImage' + s.key)}
+              class="social-circle"
+              src={asset(
+                '3191',
+                s.key === '58' ? 'imgGroup384' : 'imgEllipse7',
+              )}
+              width="28"
+              height="28"
               alt=""
-              width="20"
-              height="20"
             />
-          </span>
-        </a>
-      ))}
+            <span>
+              <img
+                src={asset('3191', 'imgImage' + s.key)}
+                alt=""
+                width="20"
+                height="20"
+              />
+            </span>
+          </a>
+        ))}
+      </div>
     </div>
-    <small>
-      <time data-current-year>{currentYear}</time>{' '}
-      {siteContent.companyLegalName[lang]}
-    </small>
+    <div class="menu-legal">
+      <p class="menu-tagline">{siteContent.footerTagline[lang]}</p>
+      <p class="menu-copyright">
+        {copyrightBefore}
+        <time data-current-year>{currentYear}</time>
+        {copyrightAfter}
+      </p>
+      <div class="menu-legal-links">
+        <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>
+        <a href={pageUrl(lang, 'legal')}>{ui[lang].legal}</a>
+        <a
+          href="https://beian.miit.gov.cn/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {siteContent.recordNumber}
+        </a>
+      </div>
+    </div>
   </div>
 </dialog>
 <noscript>

@@ -6,6 +6,9 @@ const range = (value: number, start: number, end: number) =>
   clamp((value - start) / (end - start));
 const smooth = (value: number) => value * value * (3 - 2 * value);
 export const PHILOSOPHY_ARC = { start: 0.06, end: 0.54 };
+// The opening's travelling node is an 8px square turned 45deg: 4px from its
+// centre to each side, regardless of viewport width.
+const OPENING_NODE_HALF_PX = 4;
 
 const lerp = (from: number, to: number, progress: number) =>
   from + (to - from) * progress;
@@ -22,6 +25,7 @@ export function mountPhilosophyMotion(
   const canvas = stage.querySelector<HTMLCanvasElement>('canvas')!;
   const ctx = canvas.getContext('2d');
   if (!ctx) return () => {};
+  const header = document.querySelector<HTMLElement>('.site-header');
   const hero = stage.querySelector<HTMLElement>('.hero')!;
   const about = stage.querySelector<HTMLElement>('.about')!;
   const heroCopy = Array.from(
@@ -69,13 +73,25 @@ export function mountPhilosophyMotion(
   //   frame 3  about label: node (959, 470.5), arc bottom and tangent y 359;
   //   frame 4  about title: the whole composition has risen by 284 and the
   //            node rests at (959, 186.5).
+  // The circle's left edge is the rail: it touches x = railEnd.x at y =
+  // circle.y with a vertical tangent, so rail and arc join without a corner.
   const R = 1173;
-  const circle = { x: 1640, y: zh ? 107 : 37 };
+  const railX0 = 467.485;
+  const circle = { x: railX0 + R, y: zh ? 107 : 37 };
   const startY = zh ? 185.485 : 122.485;
   const destination = zh
     ? { x: 765.485, y: 889.485 }
     : { x: 821.485, y: 877.485 };
-  const railEnd = { x: 467.485, y: zh ? 889.485 : 860.485 };
+  const railEnd = { x: railX0 };
+  // The one route the node follows: straight down the rail to the tangent
+  // point, then along the circle.
+  const onRoute = (y: number) => ({
+    x:
+      y <= circle.y
+        ? railEnd.x
+        : circle.x - Math.sqrt(R * R - (y - circle.y) ** 2),
+    y,
+  });
   const angleAt = (x: number, y: number) =>
     Math.atan2(y - circle.y, x - circle.x);
   const startX = circle.x - Math.sqrt(R * R - (startY - circle.y) ** 2);
@@ -86,19 +102,24 @@ export function mountPhilosophyMotion(
   function draw() {
     if (!ctx || !width || !height) return;
     const p = progress.value;
-    const u = width / 1920;
+    // Past 1920px the page stops scaling (CSS --u is capped at 1px) and the
+    // scene is centred in at most 2200px, so the canvas must do the same or
+    // its rail and arc drift away from the DOM's.
+    const u = Math.min(1, width / 1920);
+    const ox = Math.max(0, (width - 2200) / 2);
     const arc = smooth(range(p, PHILOSOPHY_ARC.start, PHILOSOPHY_ARC.end));
     const heroExit = smooth(range(p, 0.54, 0.66));
     const toFrame3 = smooth(range(p, 0.54, 0.72));
     const aboutIn = smooth(range(p, 0.6, 0.66));
     // The rail is already there when the node enters from the top.
     const railIn = smooth(range(p, 0.54, 0.58));
-    // Both ends of the label resolve last; it then holds until p 0.78.
-    const labelSharp = smooth(range(p, 0.64, 0.74));
+    // Both ends of the label resolve last; it then holds until p 0.74 and is
+    // gone before the title starts to appear, so the two never overlap.
+    const labelSharp = smooth(range(p, 0.62, 0.72));
     const rise = smooth(range(p, 0.78, 0.88));
-    const labelOut = smooth(range(p, 0.8, 0.87));
-    const titleOpacity = smooth(range(p, 0.79, 0.88));
-    const detail = smooth(range(p, 0.88, 0.93));
+    const labelOut = smooth(range(p, 0.74, 0.79));
+    const titleOpacity = smooth(range(p, 0.81, 0.87));
+    const detail = smooth(range(p, 0.87, 0.93));
     // Frame 4 is the last pose of the stage: the node stays where it is drawn
     // (no sideways trip to the research axis) and leaves with the page.
     const horizontalHandoff = 0;
@@ -117,10 +138,20 @@ export function mountPhilosophyMotion(
     const endAngle =
       Math.PI - Math.asin(Math.min(0.995, (bottomY - circle.y) / R));
     const angle = lerp(startAngle, endAngle, arc);
-    const heroNode = {
-      x: (circle.x + Math.cos(angle) * R) * u,
-      y: (circle.y + Math.sin(angle) * R) * u,
-    };
+    // Lead-in: the opening's node ends centred on the seam, where the page
+    // clips it to its upper half. The stage draws the matching lower half
+    // from its own top edge, so the two read as one diamond, which then slides
+    // down the rail to the start of the arc.
+    const lead = smooth(range(p, 0, PHILOSOPHY_ARC.start));
+    const leadPoint = onRoute(lerp(0, startY, lead));
+    const heroNode =
+      arc > 0
+        ? {
+            x: (circle.x + Math.cos(angle) * R) * u,
+            y: (circle.y + Math.sin(angle) * R) * u,
+          }
+        : { x: leadPoint.x * u, y: leadPoint.y * u };
+    const heroNodeSize = lerp(OPENING_NODE_HALF_PX / u, 6, lead);
     const frame3Node = {
       x: node3.x * u,
       y: lerp(-24 * u, node3.y * u, toFrame3) - RISE * u * rise,
@@ -132,7 +163,7 @@ export function mountPhilosophyMotion(
       x: junctionX,
       y: junctionY,
     };
-    const nodeColor = '#573c79';
+    const nodeColor = '#000';
     const nodeOpacity = 1 - smooth(range(p, 0.99, 1));
     const hasTravellingNode = verticalHandoff > 0 && nodeOpacity > 0;
     const phase =
@@ -151,8 +182,8 @@ export function mountPhilosophyMotion(
     stage.dataset.ringProgress = detail.toFixed(3);
     stage.dataset.researchHandoff = verticalHandoff.toFixed(3);
     stage.dataset.horizontalHandoff = horizontalHandoff.toFixed(3);
-    canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
-    canvas.dataset.junctionPoint = `${junctionX.toFixed(2)},${junctionY.toFixed(2)}`;
+    canvas.dataset.point = `${(point.x + ox).toFixed(2)},${point.y.toFixed(2)}`;
+    canvas.dataset.junctionPoint = `${(junctionX + ox).toFixed(2)},${junctionY.toFixed(2)}`;
     canvas.dataset.markerShape = 'diamond';
     canvas.dataset.markerCount = hasTravellingNode ? '2' : '1';
     canvas.dataset.guideStyle = 'gradient-dashed';
@@ -205,6 +236,8 @@ export function mountPhilosophyMotion(
     copy.style.filter = `blur(${((1 - detail) * 8).toFixed(2)}px)`;
 
     ctx.clearRect(0, 0, width, height);
+    ctx.save();
+    ctx.translate(ox, 0);
     const stroke = (
       opacity: number,
       drawPath: () => void,
@@ -219,13 +252,16 @@ export function mountPhilosophyMotion(
       drawPath();
       ctx.stroke();
     };
-    // Frame 2: the pale rail, the full circle and the travelled purple arc.
+    // Frame 2: the pale route (rail, then the circle from its tangent point
+    // to where the node sets off) and the travelled purple arc. It is one
+    // path, so the dashes run on across the join.
     const railX = railEnd.x * u;
     stroke(
       0.58 * heroOpacity,
       () => {
-        ctx.moveTo(railX, (zh ? 70 : 0) * u);
-        ctx.lineTo(railX, height);
+        ctx.moveTo(railX, 0);
+        ctx.lineTo(railX, circle.y * u);
+        ctx.arc(circle.x * u, circle.y * u, R * u, Math.PI, startAngle, true);
       },
       [3, 8],
       '#c9c9c9',
@@ -253,7 +289,6 @@ export function mountPhilosophyMotion(
       ctx.fillRect(-size * u, -size * u, 2 * size * u, 2 * size * u);
       ctx.restore();
     };
-    diamond(railEnd.x * u, railEnd.y * u, '#c9c9c9', 0.9 * heroOpacity);
     diamond(destination.x * u, destination.y * u, nodeColor, heroOpacity);
     // Frame 3 and 4: the rail from above, the tangent and the black node.
     if (railIn > 0) {
@@ -281,7 +316,7 @@ export function mountPhilosophyMotion(
         0.2 * aboutIn * (1 - rise),
         () => {
           const y = (359 - RISE * rise) * u;
-          ctx.moveTo(0, y);
+          ctx.moveTo(-ox, y);
           ctx.lineTo(width, y);
         },
         [4, 4],
@@ -289,17 +324,24 @@ export function mountPhilosophyMotion(
       );
     }
     // The marker that has travelled becomes the black node of frames 3 / 4;
-    // zh leaves frame 2 black, en purple, and both arrive purple at the arc.
+    // every node on the route is black.
     if (p < 0.54) {
-      const shade = zh ? Math.round(87 * arc) : 87;
-      const green = zh ? Math.round(60 * arc) : 60;
-      const blue = zh ? Math.round(121 * arc) : 121;
-      diamond(heroNode.x, heroNode.y, `rgb(${shade},${green},${blue})`, 1);
+      // The lead-in starts under the fixed header. A diamond half hidden by
+      // it reads as a stray triangle, so the node only fades in as it clears
+      // the header's lower edge.
+      const headerEdge =
+        (header?.getBoundingClientRect().bottom ?? 0) -
+        stage.getBoundingClientRect().top;
+      const clear = clamp(
+        (heroNode.y - headerEdge) / (heroNodeSize * u * Math.SQRT2),
+      );
+      diamond(heroNode.x, heroNode.y, '#000', clear, heroNodeSize);
     } else {
       if (verticalHandoff > 0) diamond(junctionX, junctionY, '#000', 1);
       diamond(point.x, point.y, '#000', nodeOpacity);
     }
     ctx.globalAlpha = 1;
+    ctx.restore();
   }
   function resize() {
     width = stage.clientWidth;
