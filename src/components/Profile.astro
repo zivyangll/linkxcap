@@ -1,5 +1,12 @@
 ---
-import { pageUrl, team, teamContent, ui, type Lang } from '../lib/site';
+import {
+  contactUrl,
+  pageUrl,
+  team,
+  teamContent,
+  ui,
+  type Lang,
+} from '../lib/site';
 const { lang, person } = Astro.props as {
   lang: Lang;
   person: (typeof team)[number];
@@ -28,7 +35,7 @@ const { lang, person } = Astro.props as {
           <p>{paragraph}</p>
         ))}
       </div>
-      <a class="text-link" href={pageUrl(lang, 'contact')}>
+      <a class="text-link" href={contactUrl(lang)}>
         {teamContent.contactLink[lang]} ↗
       </a>
     </div>

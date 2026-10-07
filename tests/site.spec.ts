@@ -10,7 +10,6 @@ const paths = [
   'insights',
   'fellowship',
   'portfolio-yuanmu',
-  'contact',
   'legal',
 ];
 for (const lang of ['zh', 'en']) {
@@ -152,7 +151,7 @@ test('phone Fellow sections use a non-overlapping natural flow', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto('zh/contact.html');
+  await page.goto('zh/fellowship.html');
   const boxes = await page.evaluate(() => {
     const box = (selector: string) =>
       document.querySelector(selector)!.getBoundingClientRect();

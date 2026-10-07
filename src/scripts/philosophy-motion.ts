@@ -9,6 +9,8 @@ export const PHILOSOPHY_ARC = { start: 0.06, end: 0.54 };
 // The opening's travelling node is an 8px square turned 45deg: 4px from its
 // centre to each side, regardless of viewport width.
 const OPENING_NODE_HALF_PX = 4;
+// The opening rail fades to this colour at the bottom of its screen.
+const OPENING_RAIL_END_COLOR = '#8c8a9e';
 
 const lerp = (from: number, to: number, progress: number) =>
   from + (to - from) * progress;
@@ -252,19 +254,28 @@ export function mountPhilosophyMotion(
       drawPath();
       ctx.stroke();
     };
-    // Frame 2: the pale route (rail, then the circle from its tangent point
-    // to where the node sets off) and the travelled purple arc. It is one
-    // path, so the dashes run on across the join.
+    // Frame 2: the pale circle from its tangent point to where the node sets
+    // off, then the travelled purple arc. The rail above the tangent point is
+    // drawn separately below.
     const railX = railEnd.x * u;
     stroke(
       0.58 * heroOpacity,
+      () =>
+        ctx.arc(circle.x * u, circle.y * u, R * u, Math.PI, startAngle, true),
+      [3, 8],
+      '#c9c9c9',
+    );
+    // The rail from the seam to the arc's tangent point continues the
+    // opening's line (same dash, same end colour); a pale one would all but
+    // vanish between the opening's rail and the orbit's dashes.
+    stroke(
+      heroOpacity,
       () => {
         ctx.moveTo(railX, 0);
         ctx.lineTo(railX, circle.y * u);
-        ctx.arc(circle.x * u, circle.y * u, R * u, Math.PI, startAngle, true);
       },
-      [3, 8],
-      '#c9c9c9',
+      [4, 4],
+      OPENING_RAIL_END_COLOR,
     );
     if (arc > 0) {
       stroke(
@@ -410,6 +421,16 @@ export function mountPhilosophyMotion(
   );
   const observer = new ResizeObserver(resize);
   observer.observe(stage);
+  // Until the pin starts nothing redraws on scroll, yet the lead-in node fades
+  // with its distance below the header. Without this the fade freezes at
+  // whatever it was when the stage was last scrolled back up, and the node
+  // stays invisible while the opening still draws its half.
+  const redrawWhileEntering = () => {
+    if (progress.value > 0) return;
+    if (stage.getBoundingClientRect().top > innerHeight) return;
+    draw();
+  };
+  window.addEventListener('scroll', redrawWhileEntering, { passive: true });
   // #about now lives inside the pinned stage; target its readable state,
   // not the absolute section's (shared) top edge.
   const goToAbout = () =>
@@ -441,6 +462,7 @@ export function mountPhilosophyMotion(
   });
   return () => {
     cancelAnimationFrame(initialNavigation);
+    window.removeEventListener('scroll', redrawWhileEntering);
     home.removeEventListener('click', navigate);
     observer.disconnect();
     animation.scrollTrigger?.kill();

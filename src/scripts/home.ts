@@ -183,6 +183,7 @@ function createScrollTrail(
   shouldDrawPoint: () => boolean = () => true,
 ) {
   const ctx = canvas.getContext('2d');
+  const header = document.querySelector<HTMLElement>('.site-header');
   let width = 0,
     height = 0,
     value = 0;
@@ -234,7 +235,22 @@ function createScrollTrail(
     canvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
     canvas.dataset.nodeColor = '#000';
     if (!shouldDrawPoint()) return;
+    // Under the fixed header the node fades the same way the stage's half does
+    // (see philosophy-motion), so the two halves of the seam diamond always
+    // appear and vanish together and never leave a lone triangle.
+    const clear = Math.max(
+      0,
+      Math.min(
+        1,
+        (canvas.getBoundingClientRect().top +
+          p.y -
+          (header?.getBoundingClientRect().bottom ?? 0)) /
+          (4 * Math.SQRT2),
+      ),
+    );
+    if (clear <= 0) return;
     ctx.save();
+    ctx.globalAlpha = clear;
     ctx.translate(p.x, p.y);
     ctx.rotate(Math.PI / 4);
     ctx.fillStyle = '#000';
@@ -254,10 +270,19 @@ function createScrollTrail(
     draw(value);
   });
   resize.observe(canvas);
+  // The node's fade depends on where the canvas sits under the header, which
+  // changes on every scroll even after the trail's own progress has finished.
+  const redrawNearHeader = () => {
+    const { top, bottom } = canvas.getBoundingClientRect();
+    if (bottom < 0 || top > innerHeight) return;
+    draw(value);
+  };
+  window.addEventListener('scroll', redrawNearHeader, { passive: true });
   return {
     draw,
     redraw: () => draw(value),
     destroy: () => {
+      window.removeEventListener('scroll', redrawNearHeader);
       resize.disconnect();
       ctx?.clearRect(0, 0, width, height);
     },

@@ -1,6 +1,8 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { DESKTOP_MOTION } from './motion-policy';
+// The group portrait keeps growing past its Figma size while scrolling.
+const PORTRAIT_MAX_SCALE = 1.6;
 export function initFellow() {
   gsap.registerPlugin(ScrollTrigger);
   if (!document.querySelector('[data-fellow-media]')) return;
@@ -61,7 +63,7 @@ export function initFellow() {
       scrollTrigger: {
         trigger: intro,
         start: 'top top',
-        end: desktop ? '+=80%' : 'bottom 40%',
+        end: desktop ? '+=130%' : 'bottom 40%',
         pin: desktop,
         scrub: 0.35,
         onUpdate: (self) => {
@@ -125,32 +127,17 @@ export function initFellow() {
         { opacity: 1, scale: 1, ease: 'none', duration: 0.4 },
         0.55,
       );
+      // Keep enlarging for the rest of the pinned scroll.
+      introTimeline.to(
+        '.fellow-intro-figure',
+        { scale: PORTRAIT_MAX_SCALE, ease: 'none', duration: 0.6 },
+        0.95,
+      );
       introTimeline.fromTo(
         '.fellow-context',
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.3 },
         0.65,
-      );
-    }
-    const contactHero = document.querySelector<HTMLElement>('.contact-hero');
-    if (contactHero) {
-      const guides = [
-        ...contactHero.querySelectorAll<HTMLElement>('.contact-guides img'),
-      ].sort((a, b) => a.offsetLeft - b.offsetLeft);
-      gsap.fromTo(
-        guides,
-        { clipPath: 'inset(0 0 100% 0)' },
-        {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 0.58,
-          stagger: 0.12,
-          ease: 'power1.out',
-          scrollTrigger: {
-            trigger: contactHero,
-            start: 'top 72%',
-            once: true,
-          },
-        },
       );
     }
     document.fonts.ready.then(() => ScrollTrigger.refresh());
@@ -172,26 +159,29 @@ export function initFellowPortrait() {
   if (!figure) return;
   const media = gsap.matchMedia();
   media.add('(prefers-reduced-motion: no-preference)', () => {
-    gsap.fromTo(
-      figure,
-      { scale: 0.7 },
-      {
-        scale: 1,
-        ease: 'none',
-        transformOrigin: '50% 50%',
-        scrollTrigger: {
-          trigger: figure,
-          start: 'top bottom',
-          // Full size exactly when the screen matches the Figma frame.
-          endTrigger: figure.closest('[data-fellow-media]') || figure,
-          end: 'top top',
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-          // Measure after the pinned intro above, whose spacer moves this.
-          refreshPriority: -1,
-        },
+    const section =
+      figure.closest<HTMLElement>('[data-fellow-media]') || figure;
+    const growth = gsap.timeline({
+      defaults: { ease: 'none' },
+      scrollTrigger: {
+        trigger: figure,
+        start: 'top bottom',
+        // Reaches full size exactly when the screen matches the Figma frame,
+        // then keeps enlarging as the section scrolls away.
+        endTrigger: section,
+        end: () => `top -${Math.round(innerHeight * 0.6)}`,
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+        // Measure after the pinned intro above, whose spacer moves this.
+        refreshPriority: -1,
       },
+    });
+    growth.fromTo(
+      figure,
+      { scale: 0.7, transformOrigin: '50% 50%' },
+      { scale: 1, duration: 1 },
     );
+    growth.to(figure, { scale: PORTRAIT_MAX_SCALE, duration: 0.6 });
   });
   window.addEventListener('pagehide', () => media.revert(), { once: true });
 }

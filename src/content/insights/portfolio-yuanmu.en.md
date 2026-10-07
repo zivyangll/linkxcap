@@ -6,54 +6,54 @@ date: "2026-05-26"
 source_url: "https://www.linkxcap.com/zh/portfolio-yuanmu.html"
 order: 0
 lang: "en"
-title: "圆木智能：AI 智能体如何重塑机加工生产管理？"
+title: "Yuanmu Intelligence: How Will AI Agents Reshape Machining Production Management?"
 summary: "A look at how AI agents can help machining businesses plan and adjust production."
-list_title: "圆木智能：AI 智能体如何重塑机加工生产管理？"
+list_title: "Yuanmu Intelligence: How AI Agents Reshape Machining Production Management?"
 list_summary: "A look at how AI agents can help machining businesses plan and adjust production."
 source_name: "Originally published by LinkX Capital"
 ---
 
-订单随意插队打乱全盘生产，交货时间一再往后顺延，重金购置的设备白白闲置浪费产能。这些排产痛点，让无数加工厂倍感头疼。如今 AI 排产智能体应运而生，不仅革新生产作业工具，更颠覆传统管理思路。圆木智能产品合伙人贺眈，围绕《AI智能体在制造业排产场景的应用》这一主题，从行业核心痛点、产品技术方案到AI在制造业的发展趋势，进行了全面而深入的分享。
+Rush orders keep upending the whole production plan, delivery dates slip again and again, and expensive equipment sits idle while capacity is wasted. These scheduling pain points trouble countless machining shops. Now AI scheduling agents have arrived, changing not only the tools used on the shop floor but also the way production is managed. He Dan, Product Partner at Yuanmu Intelligence, gave a comprehensive talk on "Applying AI Agents to Manufacturing Scheduling", covering the industry's core pain points, the product and technical approach, and where AI in manufacturing is heading.
 
-## 01 一个行业核心痛点：传统排产与APS软件的双重瓶颈
+## 01 A core industry pain point: the twin bottlenecks of traditional scheduling and APS software
 
-当前机加工行业的排产困境，是工厂自身业务特性与传统软件局限性共同作用的结果。从工厂端来看，三大痛点尤为突出。首先是<strong>排产复杂度高</strong>，行业普遍存在工序长、设备依赖度高、多品种小批量生产的特点，换产与插单情况十分频繁。其次是<strong>交付压力突出</strong>，客户普遍要求低库存甚至零库存，订单周期持续缩短，行业平均按期交付率仅能达到 60%-70%。同时还存在<strong>协同效率低下</strong>的问题，各部门缺乏全局统一计划，直接导致设备利用率不足，整体运营效率受到严重限制。
+Scheduling difficulties in the machining industry result from the factories' own operating characteristics combined with the limits of traditional software. On the factory side, three pain points stand out. First, **scheduling is highly complex**: long process chains, heavy reliance on equipment, and high-mix, low-volume production mean changeovers and rush-order insertions are very frequent. Second, **delivery pressure is intense**: customers generally demand low or even zero inventory and ever shorter order cycles, while the industry's average on-time delivery rate reaches only 60%-70%. Third, **collaboration is inefficient**: departments lack a single global plan, which leads directly to under-used equipment and seriously limits overall operating efficiency.
 
-而被寄予厚望的传统 APS 软件，同样存在难以克服的短板。这类软件数据门槛较高，需要提前准备大量标准化数据，中小型工厂往往难以满足相关要求，交付与维护成本也十分高昂。并且传统 APS 软件灵活性不足，高度依赖固定配置，对业务变化的适配能力较弱，无法应对工厂频繁的流程调整。此外其计算效率较低，生成完整排产计划需要数十分钟，难以满足中小工厂计划实时变动的需求。
+The traditional APS software that many have pinned their hopes on has shortcomings that are hard to overcome. It has a high data threshold, requiring large amounts of standardized data to be prepared in advance, which small and mid-sized factories often cannot meet, and its delivery and maintenance costs are high. It is also inflexible, relying heavily on fixed configuration, adapts poorly to business changes, and cannot cope with factories' frequent process adjustments. Its computation is slow as well: generating a complete schedule takes tens of minutes, which cannot keep up with the real-time plan changes small and mid-sized factories face.
 
-## 02 一条产品技术路线：大模型+优化算法，打造可落地的排产智能体
+## 02 A product and technical route: large models plus optimization algorithms for a scheduling agent that works in practice
 
-圆木智能提出了一个核心产品价值观：<strong>灵活可执行的计划，比完美但无法落地的计划更有价值。</strong>工厂最迫切的需求，不是理论上最优的排产方案，而是能够轻松生成、随时调整、切实可行的生产计划。基于这一理念，团队采用"大模型+优化算法"的双轮驱动技术路线：大模型提升对业务的理解能力与使用灵活性，降低用户门槛；优化算法解决大规模数据下的计算效率问题，保证排产的科学性。
+Yuanmu Intelligence put forward a core product value: **a flexible, executable plan is worth more than a perfect plan that cannot be carried out.** What factories need most urgently is not a theoretically optimal schedule, but a production plan that is easy to generate, adjustable at any time, and feasible in practice. Guided by this idea, the team follows a dual-engine route of "large model + optimization algorithm": the large model improves understanding of the business and flexibility of use, lowering the barrier for users; the optimization algorithm solves the computational efficiency problem under large-scale data and keeps the schedule sound.
 
-在此基础上，排产智能体形成了<strong>六大核心优势</strong>：
+On this basis, the scheduling agent offers **six core strengths**:
 
-- <strong>语义理解：</strong>精准识别生产排产场景专用术语，支持自然语言对话与文档解析
-- <strong>自然语言操作：</strong>替代传统软件复杂的参数配置，用户可直接用口语表达排程诉求
-- <strong>多步规划：</strong>自主生成多套排产方案并进行对比优化，辅助决策
-- <strong>可插拔Skill：</strong>支持低代码动态扩展功能，快速适配不同客户的个性化需求
-- <strong>记忆功能：</strong>记录客户特定规则与历史偏好，持续提升指令执行准确性
-- <strong>智能数据转化：</strong>自动解析异构数据，完成字段映射与规则推断，通过多轮对话解决歧义，大幅降低数据导入成本
+- **Semantic understanding:** accurately recognizes terminology specific to production scheduling, and supports natural-language conversation and document parsing
+- **Natural-language operation:** replaces the complicated parameter configuration of traditional software, so users can state scheduling requests in plain speech
+- **Multi-step planning:** autonomously generates multiple schedules, compares and optimizes them, and supports decision-making
+- **Pluggable Skills:** supports low-code dynamic extension of functions, quickly adapting to different customers' individual needs
+- **Memory:** records customer-specific rules and historical preferences, continuously improving the accuracy of instruction execution
+- **Intelligent data conversion:** automatically parses heterogeneous data, completes field mapping and rule inference, and resolves ambiguity through multi-turn dialogue, greatly reducing the cost of data import
 
-在实际应用中，智能体可完成生产报工、数据转换、智能排程、数据分析等全流程工作，为用户提供一站式排产解决方案。
+In practice, the agent can handle the full workflow of production reporting, data conversion, intelligent scheduling and data analysis, giving users a one-stop scheduling solution.
 
-## 03 一个可量化的价值：从效率提升到全局优化
+## 03 A quantifiable value: from efficiency gains to global optimization
 
-AI排产的价值，最终体现在可量化的效率与效益提升上。贺眈老师指出，AI 智能体主要从三个维度为工厂创造价值：
+The value of AI scheduling ultimately shows up in measurable gains in efficiency and returns. Mr. He pointed out that AI agents create value for factories along three dimensions:
 
-- <strong>提升设备利用率：</strong>在工单、工序、设备数量多的复杂场景中，这一优势表现得尤为显著
-- <strong>提高交付达成率：</strong>基于全局视角优化排产，平衡各环节资源
-- <strong>增强响应能力：</strong>秒级完成插单与计划变更，提供透明的全局生产视图，支撑跨部门协同与预测
+- **Higher equipment utilization:** the advantage is especially pronounced in complex settings with many work orders, processes and machines
+- **Higher on-time delivery:** scheduling is optimized from a global view, balancing resources across every stage
+- **Stronger responsiveness:** rush orders and plan changes are handled within seconds, with a transparent global view of production that supports cross-department collaboration and forecasting
 
-## 04 一个行业发展趋势：从辅助工具到AI原生组织
+## 04 An industry trend: from assistive tool to AI-native organization
 
-关于AI在制造业的发展阶段，贺眈老师给出了清晰的判断：目前AI是PMC的24小时在线专业助理，主要解决人类不擅长的大规模计算与复杂规划问题，核心角色是辅助而非替代。展望未来，AI在制造业的发展将沿着三个方向推进：
+On the stages of AI in manufacturing, Mr. He offered a clear view: today AI is a 24-hour professional assistant to the production and material control (PMC) team, mainly solving the large-scale computation and complex planning that humans are not good at, and its core role is to assist rather than replace. Looking ahead, AI in manufacturing will advance in three directions:
 
-- <strong>AI主导运营：</strong>未来工厂日常排产与运营将由AI主导，人类仅负责处理异常情况
-- <strong>AI原生组织：</strong>最终工厂各核心环节都将部署AI智能体，形成可自主迭代优化的AI原生体系
-- <strong>全场景串联：</strong>从生产计划延伸至研发、供应链等更多场景，实现多智能体协同，打通企业全流程
+- **AI-led operations:** day-to-day scheduling and operations will be led by AI in the future factory, with humans handling only exceptions
+- **AI-native organization:** eventually, AI agents will be deployed across every core function of the factory, forming an AI-native system that can iterate and optimize itself
+- **Full-scenario connection:** from production planning to R&D, supply chain and more, enabling multi-agent collaboration that connects the whole enterprise process
 
-贺眈老师预判，未来3-5年制造业AI将迎来关键拐点，政策扶持、技术进步与市场需求三大因素将共同驱动行业变革。随着智能体渗透率提升，不同智能体之间将形成连接，沉淀企业核心知识与能力，推动行业整体智能化升级。
+Mr. He predicts that manufacturing AI will reach a key inflection point within the next 3-5 years, with policy support, technological progress and market demand jointly driving change in the industry. As agent penetration rises, different agents will connect with one another, accumulating the enterprise's core knowledge and capabilities and pushing the whole industry toward greater intelligence.
 
-## 05 结语
+## 05 Conclusion
 
-AI在制造业的落地，从来不是技术的单点突破，而是算法能力、产品思维与行业理解的深度融合。圆木智能从生产计划这一高频、核心、可验证的场景切入，用"大模型+优化算法"的技术路线，为制造业智能化转型提供了可落地的实践样本。随着技术的不断成熟与行业需求的持续释放，AI智能体将逐步渗透到制造业的各个环节，最终推动工厂向AI原生组织演进。
+Bringing AI into manufacturing has never been a single technical breakthrough, but a deep fusion of algorithmic capability, product thinking and industry understanding. Yuanmu Intelligence entered through production planning, a frequent, core and verifiable scenario, and with its "large model + optimization algorithm" route has offered a practical example for the intelligent transformation of manufacturing. As the technology matures and industry demand continues to be released, AI agents will gradually reach every part of manufacturing, ultimately driving factories toward AI-native organizations.

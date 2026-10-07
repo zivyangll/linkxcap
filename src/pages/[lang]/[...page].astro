@@ -8,7 +8,6 @@ import Profile from '../../components/Profile.astro';
 import Insights from '../../components/Insights.astro';
 import Fellowship from '../../components/Fellowship.astro';
 import Article from '../../components/Article.astro';
-import Contact from '../../components/Contact.astro';
 import Legal from '../../components/Legal.astro';
 import {
   languages,
@@ -77,12 +76,10 @@ export async function getStaticPaths() {
       `Insight zh/en pairs must use the same route and category: ${inconsistentPairs.join(', ')}`,
     );
   return languages.flatMap((lang) => [
-    ...['portfolio', 'team', 'insights', 'fellowship', 'contact', 'legal'].map(
-      (page) => ({
-        params: { lang, page },
-        props: { kind: page },
-      }),
-    ),
+    ...['portfolio', 'team', 'insights', 'fellowship', 'legal'].map((page) => ({
+      params: { lang, page },
+      props: { kind: page },
+    })),
     ...companies.map((company) => ({
       params: { lang, page: `portfolio/${company.slug}` },
       props: { kind: 'company', company },
@@ -144,7 +141,7 @@ const description = article
   description={description}
   minimal={kind === 'company'}
   bodyClass={[
-    ['team', 'person', 'insights', 'article', 'contact'].includes(kind)
+    ['team', 'person', 'insights', 'article', 'fellowship'].includes(kind)
       ? 'alt-paper'
       : '',
     kind === 'portfolio' ? 'portfolio-view' : '',
@@ -159,6 +156,5 @@ const description = article
   {kind === 'insights' && <Insights lang={lang} />}
   {kind === 'fellowship' && <Fellowship lang={lang} />}
   {article && <Article lang={lang} article={article} />}
-  {kind === 'contact' && <Contact lang={lang} />}
   {kind === 'legal' && <Legal lang={lang} />}
 </SiteLayout>

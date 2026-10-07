@@ -1687,7 +1687,8 @@
     font-size: calc(16 * var(--u));
     text-align: left;
   }
-  .contact-details {
+  .contact-details,
+  .fellowship-brief {
     padding: 100px var(--page-gutter);
     display: grid;
     grid-template-columns: 1.4fr 1fr;
@@ -1697,6 +1698,35 @@
     font-size: 42px;
     margin: 25px 0 65px;
     letter-spacing: -0.04em;
+  }
+  /* Fellowship description + join call-to-action share the contact layout. */
+  .fellowship-brief {
+    align-items: start;
+  }
+  .fellowship-description {
+    max-width: 44rem;
+    font-size: clamp(16px, 1.25vw, 20px);
+    line-height: 1.7;
+    letter-spacing: -0.02em;
+  }
+  .fellowship-description p + p {
+    margin-top: 1.1em;
+  }
+  .fellowship-description strong {
+    font-weight: 600;
+  }
+  .fellowship-join h2 {
+    font-size: 42px;
+    margin: 25px 0 24px;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+  }
+  .fellowship-join > p:not(.eyebrow) {
+    max-width: 28rem;
+    margin-bottom: 36px;
+    font-size: 16px;
+    line-height: 1.6;
+    opacity: 0.7;
   }
   .contact-email {
     display: flex;
@@ -2266,10 +2296,12 @@
     .article-page {
       padding-top: 140px;
     }
-    .contact-details {
+    .contact-details,
+    .fellowship-brief {
       gap: 8%;
     }
-    .contact-details h2 {
+    .contact-details h2,
+    .fellowship-join h2 {
       font-size: 34px;
     }
     .contact-email {
@@ -3027,13 +3059,21 @@
     .contact-invitation .line-link {
       font-size: 15px;
     }
-    .contact-details {
+    .contact-details,
+    .fellowship-brief {
       padding: 75px 24px;
       display: block;
     }
     .contact-details h2 {
       font-size: 34px;
       margin-bottom: 45px;
+    }
+    .fellowship-join {
+      margin-top: 56px;
+    }
+    .fellowship-join h2 {
+      font-size: 34px;
+      margin-bottom: 20px;
     }
     .contact-email {
       font-size: 21px;

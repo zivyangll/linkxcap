@@ -6,6 +6,7 @@ import {
   navigationContent,
   siteContent,
   pageUrl,
+  contactUrl,
   ui,
   contactContent,
   socials,
@@ -24,9 +25,11 @@ const active =
     ? 'portfolio'
     : current.startsWith('team')
       ? 'team'
-      : ['index', 'contact', 'legal', 'fellowship'].includes(current)
+      : ['index', 'legal', 'fellowship'].includes(current)
         ? current
         : 'insights';
+// Contact has no page of its own; it is reached from Fellowship.
+const navItems = navigation.filter((item) => item.page !== 'contact');
 const [copyrightBefore, copyrightAfter] =
   siteContent.footerCopyright[lang].split('{year}');
 const socialByUrl = (fragment: string) =>
@@ -36,7 +39,7 @@ const menuSocials = [
     name: contactContent.wechat[0].title.zh,
     en: contactContent.wechat[0].title.en,
     key: '54',
-    href: pageUrl(lang, 'contact') + '#contact-details',
+    href: contactUrl(lang),
   },
   { ...socialByUrl('xhslink.com'), key: '55' },
   { ...socialByUrl('douyin.com'), key: '56' },
@@ -72,7 +75,7 @@ const menuSocials = [
     </a>
   </div>
   <nav class="desktop-nav" aria-label={navigationContent.mainNavLabel[lang]}>
-    {navigation.map((item) => (
+    {navItems.map((item) => (
       <a
         href={pageUrl(lang, item.page)}
         aria-current={active === item.page ? 'page' : undefined}
@@ -101,21 +104,19 @@ const menuSocials = [
     </button>
   </div>
   <nav aria-label={navigationContent.menuNavLabel[lang]}>
-    {navigation
-      .filter((item) => item.page !== 'contact')
-      .map((item) => (
-        <a
-          href={pageUrl(lang, item.page)}
-          aria-current={active === item.page ? 'page' : undefined}
-        >
-          <i class="menu-current diamond" aria-hidden="true"></i>
-          <span>{lang === 'zh' ? item.zh : item.en}</span>
-          {lang === 'zh' && item.zh !== item.en && (
-            <small lang="en">{item.en}</small>
-          )}
-          <Arrow />
-        </a>
-      ))}
+    {navItems.map((item) => (
+      <a
+        href={pageUrl(lang, item.page)}
+        aria-current={active === item.page ? 'page' : undefined}
+      >
+        <i class="menu-current diamond" aria-hidden="true"></i>
+        <span>{lang === 'zh' ? item.zh : item.en}</span>
+        {lang === 'zh' && item.zh !== item.en && (
+          <small lang="en">{item.en}</small>
+        )}
+        <Arrow />
+      </a>
+    ))}
   </nav>
   <div class="menu-footer">
     <div class="menu-contact">
@@ -133,7 +134,7 @@ const menuSocials = [
         <p>{contactContent.joinCopy[lang]}</p>
         {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
       </div>
-      <a class="line-link" href={pageUrl(lang, 'contact')}>
+      <a class="line-link" href={contactUrl(lang)}>
         {navigationContent.menuContactLink[lang]}
         <Arrow />
       </a>

@@ -2,6 +2,7 @@
 import {
   asset,
   pageUrl,
+  contactUrl,
   homeContent,
   sectors,
   url,
@@ -416,7 +417,7 @@ const openingBody = homeContent.opening.body[lang]
     </div>
     <FocusConstellation lang={lang} />
     <nav class="focus-links">
-      <a href={pageUrl(lang, 'contact')}>
+      <a href={contactUrl(lang)}>
         {homeContent.focus.contactLink[lang]} ↗
       </a>
       <a href="#about">{homeContent.focus.aboutLink[lang]} ↗</a>

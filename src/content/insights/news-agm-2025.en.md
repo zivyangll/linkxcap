@@ -21,7 +21,7 @@ Today, "historic opportunities for transformative change are once again before u
 
 The AGM covered global technology competition, AI technological leaps, industry deployment practices, and the Hong Kong IPO ecosystem. Speakers included Dr. Xue Jing, Special Researcher at the China-US Relations Research Center of Tsinghua University; Zhang Mingchen, Managing Partner of LinkX; Deng Hui, VP of Google China; Yang Yang, Director of Huatai United Securities; and founders from multiple portfolio companies.
 
-Voices from academia, industry, and capital markets converged on a consensus: <em>2025 is not only an acceleration year for technological change, but a critical starting point for a new cycle in the global technology industry.</em>
+Voices from academia, industry, and capital markets converged on a consensus: *2025 is not only an acceleration year for technological change, but a critical starting point for a new cycle in the global technology industry.*
 
 ## Global Competition
 
@@ -144,4 +144,4 @@ Returning to the scene of LinkX's 2025 AGM, we once again witnessed the power of
 
 LinkX will continue to discover and support entrepreneurs who "dare to think and act," running with speed and direction in the new acceleration cycle, jointly driving a new round of development and innovation in China's technology industry.
 
-<em>We believe that 2025 is only a new beginning.</em>
+*We believe that 2025 is only a new beginning.*

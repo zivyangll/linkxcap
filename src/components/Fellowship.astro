@@ -1,5 +1,13 @@
 ---
-import { fellowshipContent, pageUrl, type Lang } from '../lib/site';
+import {
+  contactContent,
+  fellowshipContent,
+  siteContent,
+  socials,
+  asset,
+  contentAsset,
+  type Lang,
+} from '../lib/site';
 import Arrow from './Arrow.astro';
 const { lang } = Astro.props as { lang: Lang };
 // Paragraphs keep the copy deck's emphasis, written as **text** in content.json.
@@ -9,41 +17,254 @@ const emphasis = (paragraph: string) =>
     .map((text, index) => ({ text, strong: index % 2 === 1 }));
 ---
 
-<article class="legal-page prose fellowship-page">
-  <p class="eyebrow">{fellowshipContent.eyebrow[lang]}</p>
-  <h1 class="page-title">
-    <span>{fellowshipContent.headline[lang]}</span>
-    {lang === 'zh' && <span lang="en">{fellowshipContent.headline.en}</span>}
+<section
+  class="story-scene next-signal fellow-intro"
+  data-node-id="2002:1617"
+  aria-labelledby="next-title"
+>
+  <div class="signal-guides signal-guides--opening" aria-hidden="true">
+    {[247, 389.6, 1531.4, 1681].map((x, i) => (
+      <img
+        class="signal-guide-v"
+        src={asset('1617', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+        alt=""
+      />
+    ))}
+    {[1, 2].map((_, i) => (
+      <span
+        class="signal-guide-v signal-guide-dash"
+        style={`left:calc(${i === 0 ? 633 : 1288} * var(--u));`}
+      />
+    ))}
+    {(lang === 'zh'
+      ? [377.32, 407.66, 465.83, 489.85, 525.25, 618.82]
+      : [317, 407.66, 465.83, 556]
+    ).map((y) => (
+      <img
+        class="signal-guide-h"
+        src={asset('1617', y === 407.66 ? 'imgVector44' : 'imgVector34')}
+        style={`top:calc(${y} * var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
+  <div class="signal-guides signal-guides--context" aria-hidden="true">
+    {[247, 389.6, 1531.4, 1681].map((x, i) => (
+      <img
+        class="signal-guide-v"
+        src={asset('1753', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
+  {lang === 'zh' && (
+    <div class="next-kicker-group">
+      <span
+        class="next-kicker next-kicker-outline"
+        lang="en"
+        aria-hidden="true"
+      >
+        {contactContent.signalTitle.en}
+      </span>
+      <p class="next-kicker next-kicker-fill" lang="en">
+        {contactContent.signalTitle.en}
+      </p>
+    </div>
+  )}
+  <span class="next-title-outline next-title-outline--text" aria-hidden="true">
+    {contactContent.signalTitle[lang]}
+  </span>
+  <h1 id="next-title" class="next-title-fill">
+    {contactContent.signalTitle[lang]}
   </h1>
-  <p class="fellowship-name">{fellowshipContent.title[lang]}</p>
-  {fellowshipContent.description[lang].map((paragraph) => (
-    <p>
-      {emphasis(paragraph).map(({ text, strong }) =>
-        strong ? <strong>{text}</strong> : text,
-      )}
-    </p>
-  ))}
-  <section class="fellowship-join" aria-labelledby="fellowship-join-title">
+  {lang === 'zh' ? (
+    <>
+      <p
+        class="next-zh next-zh-outline next-subtitle-outline"
+        aria-hidden="true"
+      >
+        {contactContent.signalSubtitle.zh}
+      </p>
+      <p class="next-zh next-zh-fill next-subtitle-fill">
+        {contactContent.signalSubtitle.zh}
+      </p>
+    </>
+  ) : (
+    <>
+      <p
+        class="next-en next-en-outline next-subtitle-outline"
+        aria-hidden="true"
+      >
+        {contactContent.signalSubtitle.en}
+      </p>
+      <p class="next-en next-en-fill next-subtitle-fill">
+        {contactContent.signalSubtitle.en}
+      </p>
+    </>
+  )}
+  <figure class="fellow-intro-figure">
+    <img
+      src={asset('fellow', 'groupPortrait')}
+      width="2163"
+      height="727"
+      alt={contactContent.videoPlaceholder[lang]}
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+  <div class="fellow-context" data-node-id="2002:1753">
+    <p>{contactContent.joinCopy[lang]}</p>
+    {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
+  </div>
+  <p class="fellow-definition">{contactContent.definition[lang]}</p>
+  <img
+    class="next-orbit next-orbit-raster"
+    src={asset('audit', '1751')}
+    width="1920"
+    height="430"
+    alt=""
+    loading="lazy"
+  />
+</section>
+
+<section
+  class="fellow-media-section"
+  data-fellow-media
+  data-node-id="2002:1811"
+>
+  <div class="fellow-media-guides" aria-hidden="true">
+    {[247, 389.6, 1531.4, 1681].map((x, i) => (
+      <img
+        src={asset('1811', i === 0 || i === 3 ? 'imgVector32' : 'imgVector45')}
+        class="fellow-media-guide"
+        style={`left:calc(${x} * var(--u));height:calc(${i === 0 || i === 3 ? 1090 : 1378.254} * var(--u));width:calc(${i === 0 || i === 3 ? 10 : 12.64} * var(--u));`}
+        alt=""
+      />
+    ))}
+  </div>
+  <img
+    class="fellow-media-orbit fellow-media-orbit--raster"
+    src={asset('audit', '1751')}
+    width="1920"
+    height="430"
+    alt=""
+    aria-hidden="true"
+  />
+  <div class="fellow-media-title">
+    <h2>{contactContent.signalTitle[lang]}</h2>
+    <p>{contactContent.signalSubtitle[lang]}</p>
+  </div>
+  <figure class="fellow-media-figure">
+    <img
+      src={asset('fellow', 'groupPortrait')}
+      width="2163"
+      height="727"
+      alt={contactContent.videoPlaceholder[lang]}
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
+  <p class="fellow-media-caption">{contactContent.joinCopy[lang]}</p>
+</section>
+<section class="fellowship-copy" aria-labelledby="fellowship-join-title">
+  <div class="fellowship-description">
+    {fellowshipContent.description[lang].map((paragraph) => (
+      <p>
+        {emphasis(paragraph).map(({ text, strong }) =>
+          strong ? <strong>{text}</strong> : text,
+        )}
+      </p>
+    ))}
+  </div>
+  <div class="fellowship-join">
     <p class="eyebrow">{fellowshipContent.joinLabel[lang]}</p>
     <h2 id="fellowship-join-title">{fellowshipContent.joinTitle[lang]}</h2>
     <p>{fellowshipContent.joinCopy[lang]}</p>
-    <a class="line-link" href={pageUrl(lang, 'contact') + '#contact-details'}>
+    <a class="line-link" href="#contact-details">
       {fellowshipContent.cta[lang]}
       <Arrow />
     </a>
-  </section>
-</article>
+  </div>
+</section>
+<section id="contact-details" class="contact-details">
+  <div>
+    <p class="eyebrow">{contactContent.detailsEyebrow[lang]}</p>
+    <h2>{contactContent.detailsTitle[lang]}</h2>
+    <p>{contactContent.emailLabel[lang]}</p>
+    <a class="contact-email" href={`mailto:${siteContent.email}`}>
+      {siteContent.email}
+      <Arrow />
+    </a>
+    <button class="text-link" data-copy={siteContent.email}>
+      {contactContent.copyEmail[lang]}
+    </button>
+  </div>
+  <div class="contact-socials">
+    <h3>{contactContent.findUs[lang]}</h3>
+    {contactContent.wechat.map((item) => (
+      <details>
+        <summary>{item.title[lang]}</summary>
+        <img
+          class="contact-wechat-qr"
+          src={contentAsset(item.imageFile)}
+          width="240"
+          height="240"
+          loading="lazy"
+          decoding="async"
+          alt={`${item.title[lang]}${lang === 'zh' ? '二维码' : ' QR code'}`}
+        />
+      </details>
+    ))}
+    {socials.map((s) => (
+      <a href={s.href} target="_blank" rel="noopener noreferrer">
+        {lang === 'en' ? s.en || s.name : s.name}
+        <Arrow />
+      </a>
+    ))}
+  </div>
+</section>
+
+<script>
+  import { DESKTOP_MOTION } from '../scripts/motion-policy';
+  import('../scripts/fellow')
+    .then((module) => module.initFellowPortrait())
+    .catch(() => {
+      /* The portrait simply stays at full size. */
+    });
+  const desktop = matchMedia(DESKTOP_MOTION);
+  let started = false;
+  const start = () => {
+    if (!desktop.matches || started) return;
+    started = true;
+    import('../scripts/fellow')
+      .then((module) => module.initFellow())
+      .catch(() => {
+        started = false;
+      });
+  };
+  start();
+  desktop.addEventListener('change', start);
+</script>
 
 <style>
-  .fellowship-page .page-title {
-    margin: 20px 0 12px;
+  .fellowship-copy {
+    position: relative;
+    padding: clamp(72px, calc(160 * var(--u)), 220px) var(--page-gutter);
   }
-  .fellowship-name {
-    margin-bottom: 40px;
-    opacity: 0.6;
+  .fellowship-description {
+    max-width: calc(1180 * var(--u));
+    min-width: min(100%, 320px);
+    margin: 0 auto;
+    font-size: max(16px, calc(24 * var(--u)));
+    line-height: 1.9;
+  }
+  .fellowship-description p + p {
+    margin-top: 1.4em;
   }
   .fellowship-join {
-    margin-top: 96px;
+    margin-top: clamp(80px, calc(180 * var(--u)), 240px);
     text-align: center;
   }
   .fellowship-join h2 {
@@ -54,6 +275,8 @@ const emphasis = (paragraph: string) =>
     margin: 0 auto 40px;
   }
   .fellowship-join .line-link {
+    max-width: 642px;
+    margin: auto;
     text-align: left;
   }
 </style>

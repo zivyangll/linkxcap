@@ -22,6 +22,9 @@ export const companyLogoAsset = (filename: string) =>
   filename ? url(`company/${encodeURIComponent(filename)}`) : '';
 export const pageUrl = (lang: Lang, page = 'index') =>
   url(`${lang}/${page}.html`);
+// There is no standalone contact page: the details live on Fellowship.
+export const contactUrl = (lang: Lang) =>
+  pageUrl(lang, 'fellowship') + '#contact-details';
 export const pick = (lang: Lang, zh: string, en: string) =>
   lang === 'zh' ? zh : en;
 export const asset = (node: string, key: string) => {

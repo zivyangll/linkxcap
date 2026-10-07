@@ -39,7 +39,7 @@ test('all page templates share the same responsive top bar contract', async ({
     'zh/portfolio/zhipu-ai.html',
     'zh/team.html',
     'zh/insights.html',
-    'zh/contact.html',
+    'zh/fellowship.html',
   ];
 
   for (const route of routes) {
@@ -444,7 +444,7 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('zh/contact.html');
+  await page.goto('zh/fellowship.html');
   await expect(page.locator('.next-title-outline')).toBeVisible();
   // The subtitle has no outline stage; it fades in with the solid title.
   await expect(page.locator('.next-zh-outline')).toBeHidden();
@@ -481,7 +481,11 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
   await expect(portrait).toHaveAttribute('alt', '让想法迈出下一步');
   // The portrait arrives inside the pinned opening scene (no second page):
   // at the end of the pin the title, arc and portrait share a screen.
-  await page.evaluate(() => scrollTo(0, innerHeight * 0.8 + 4));
+  const figureScale = () =>
+    page
+      .locator('.fellow-intro-figure')
+      .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a);
+  await page.evaluate(() => scrollTo(0, innerHeight * 0.797));
   await expect
     .poll(() =>
       page
@@ -489,13 +493,7 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
         .evaluate((el) => Number(getComputedStyle(el).opacity)),
     )
     .toBeGreaterThan(0.99);
-  await expect
-    .poll(() =>
-      page
-        .locator('.fellow-intro-figure')
-        .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a),
-    )
-    .toBeCloseTo(1, 2);
+  await expect.poll(figureScale).toBeCloseTo(1, 1);
   await expect
     .poll(() =>
       portrait.evaluate((img) => (img as HTMLImageElement).naturalWidth),
@@ -503,9 +501,14 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
     .toBeGreaterThan(0);
   await expect(page.locator('.fellow-media-section')).toBeHidden();
   const figure = (await page.locator('.fellow-intro-figure').boundingBox())!;
-  // Figma 275:2711: 1016 wide, centred.
-  expect(Math.abs(figure.width - (1016 * 1440) / 1920)).toBeLessThan(1);
+  // Figma 275:2711: 1016 wide at scale 1, centred.
+  expect(
+    Math.abs(figure.width / (await figureScale()) - (1016 * 1440) / 1920),
+  ).toBeLessThan(1);
   expect(Math.abs(figure.x + figure.width / 2 - 720)).toBeLessThan(1);
+  // Scrolling on keeps enlarging the portrait beyond its Figma size.
+  await page.evaluate(() => scrollTo(0, innerHeight * 1.3));
+  await expect.poll(figureScale).toBeGreaterThan(1.5);
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({
@@ -513,7 +516,7 @@ test('English Fellow subtitle changes from outline to fill without overlapping i
 }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('en/contact.html');
+  await page.goto('en/fellowship.html');
   const outline = page.locator('.next-en-outline');
   const fill = page.locator('.next-en-fill');
   await expect(page.locator('.fellow-context p')).toHaveCount(1);

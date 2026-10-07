@@ -31,7 +31,7 @@ He explained that the core mechanism of current LLMs lies in distributed semanti
 
 This approach converts traditionally co-occurring words in discrete space into sparse space in high-dimensional representation. He believed: 'This is a significant breakthrough — it makes language computable.' In theory, when training data is sufficiently large and context length sufficiently long, this vector space can approximate real semantic relationships, enabling machines to achieve a certain degree of 'understanding' and even 'reflexive' thinking.
 
-However, such models are essentially approximate models of human language, not true models of human language, because semantic definitions themselves are incomplete and inaccurate — accurate definitions simply cannot be found in science. This inevitably affects applications using language models, creating five 'deficits': <strong>deficits in reference, truth and causality, pragmatics, polysemy and dynamic context, and closed-loop behavior</strong>.
+However, such models are essentially approximate models of human language, not true models of human language, because semantic definitions themselves are incomplete and inaccurate — accurate definitions simply cannot be found in science. This inevitably affects applications using language models, creating five 'deficits': **deficits in reference, truth and causality, pragmatics, polysemy and dynamic context, and closed-loop behavior**.
 
 ## What Do We Need to Do?
 
@@ -39,7 +39,7 @@ Academician Zhang Bo further pointed out that an important goal in the current A
 
 He emphasized that everyone uses 'Artificial General Intelligence (AGI)' to frame this goal, but in fact there are misunderstandings about the concept of AGI. Although AGI emphasizes generality, many current definitions of AGI, such as 'machines can complete over 70% of human tasks and surpass human levels,' are unexecutable and unverifiable.
 
-Therefore, a workable, verifiable definition of AGI is crucial. Accordingly, AGI should satisfy five key capabilities: <strong>spatiotemporal-consistent multi-modal understanding and grounding, controllable online learning and adaptation, verifiable reasoning and long-term planning and execution, calibratable reflection and meta-cognition, and cross-task generalization</strong>.
+Therefore, a workable, verifiable definition of AGI is crucial. Accordingly, AGI should satisfy five key capabilities: **spatiotemporal-consistent multi-modal understanding and grounding, controllable online learning and adaptation, verifiable reasoning and long-term planning and execution, calibratable reflection and meta-cognition, and cross-task generalization**.
 
 If we take these five points as the goal for AGI, we have a workable, verifiable definition that can guide our future research directions. Around these five goals, six things are currently being done:
 
@@ -58,9 +58,9 @@ On one hand, we expect AI to take on more and more complex work; on the other ha
 
 To respond to these core questions, academician Zhang Bo proposed a framework: 'The future's agents are divided into three levels':
 
-- <strong>Functional and action agents</strong>: This is the level AI has already reached and is widely expected to fulfill — serving as tools that assist humans in completing tasks.
-- <strong>Normative and responsibility agents</strong>: An unrealized level where making machines assume responsibility is a current technical difficulty and future goal.
-- <strong>Experiential and conscious agents</strong>: The most concerning level — what happens to humanity if machines gain consciousness.
+- **Functional and action agents**: This is the level AI has already reached and is widely expected to fulfill — serving as tools that assist humans in completing tasks.
+- **Normative and responsibility agents**: An unrealized level where making machines assume responsibility is a current technical difficulty and future goal.
+- **Experiential and conscious agents**: The most concerning level — what happens to humanity if machines gain consciousness.
 
 Academician Zhang Bo believes that for companies doing practical work, it may not be necessary to consider this far, but the issue of 'alignment and governance' must be considered. He believes the primary objects of governance are not the machines themselves, but humans — especially researchers and users. This involves what responsibilities AI-era enterprises and entrepreneurs should bear.
 
@@ -70,7 +70,7 @@ Academician Zhang Bo redefined the mission of entrepreneurs in the AI era.
 
 He admitted that before large language models appeared, he did not encourage students to start businesses, because traditional entrepreneurs mostly aimed to 'make money.' But with the emergence of large model technology, he believes the best students should devote themselves to entrepreneurship, because AI is redefining what it means to be an entrepreneur.
 
-Academician Zhang Bo believes future entrepreneurs should assume responsibilities in six areas: <strong>redefining value creation, organizing and releasing new productive forces, establishing credible and governable intelligent systems, building long-term resilience, promoting industrial collaboration and ecosystem win-win, and achieving inclusive and sustainable growth</strong>.
+Academician Zhang Bo believes future entrepreneurs should assume responsibilities in six areas: **redefining value creation, organizing and releasing new productive forces, establishing credible and governable intelligent systems, building long-term resilience, promoting industrial collaboration and ecosystem win-win, and achieving inclusive and sustainable growth**.
 
 "AI should not merely provide products and services, but transform knowledge, principles, and applications into reusable tools to benefit humanity. AI should become a universal, inclusive technology like water and electricity, delivered to the whole of society."
 

@@ -13,7 +13,7 @@ list_summary: "How AI and human creators can work together across production and
 source_name: "Originally published by LinkX Capital"
 ---
 
-After generative AI deeply integrated into entertainment industry practices, development has moved beyond mere 'efficiency gains' — it's a comprehensive restructuring of production, experience, and business ecosystems. This piece shares insights from <strong>Xu Jinghui</strong>, CTO of <strong>Pole Interactive</strong>, a LinkX portfolio company. Drawing on Pole Interactive's hands-on experience, it systematically maps his understanding of AI entertainment's evolution, pain points, and breakthrough paths.
+After generative AI deeply integrated into entertainment industry practices, development has moved beyond mere 'efficiency gains' — it's a comprehensive restructuring of production, experience, and business ecosystems. This piece shares insights from **Xu Jinghui**, CTO of **Pole Interactive**, a LinkX portfolio company. Drawing on Pole Interactive's hands-on experience, it systematically maps his understanding of AI entertainment's evolution, pain points, and breakthrough paths.
 
 ## Four Years of AI Entertainment Evolution: Technological Leaps and Tooling Gaps Coexist
 

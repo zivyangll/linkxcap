@@ -989,7 +989,8 @@
       margin-top: calc(70 * var(--u));
     }
     .insight-row {
-      height: calc(180 * var(--u));
+      height: auto;
+      min-height: calc(180 * var(--u));
       padding: calc(40 * var(--u)) 0 calc(30 * var(--u));
       grid-template-columns:
         calc(137 * var(--u)) calc(460 * var(--u)) calc(362 * var(--u))

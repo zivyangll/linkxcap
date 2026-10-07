@@ -416,7 +416,7 @@ test('mobile Fellow media is the static group portrait, not a video', async ({
   page.on('request', (request) => {
     if (/\.(mp4|webm)$/.test(request.url())) requests.push(request.url());
   });
-  await page.goto('zh/contact.html');
+  await page.goto('zh/fellowship.html');
   const portrait = page.locator('.fellow-media-figure img');
   await portrait.scrollIntoViewIfNeeded();
   await expect

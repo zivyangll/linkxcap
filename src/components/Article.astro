@@ -44,9 +44,6 @@ const category = insightFilters.find(({ id }) => id === article.category);
     <div class="prose">
       <Content />
       <div class="article-actions">
-        <a href={article.source} target="_blank" rel="noopener noreferrer">
-          {ui[lang].original} · {article.sourceName} ↗
-        </a>
         <button data-copy="">{ui[lang].copy}</button>
       </div>
     </div>

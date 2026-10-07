@@ -11,7 +11,6 @@ export const GET: APIRoute = async ({ site }) => {
     'team',
     'insights',
     'fellowship',
-    'contact',
     'legal',
     ...companies.map((c) => `portfolio/${c.slug}`),
     ...team.map((p) => `team-${p.slug}`),
