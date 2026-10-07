@@ -46,17 +46,25 @@ test('01 expanded-menu contact hierarchy is legible', async ({ page }) => {
   expect(sizes[2]).toBeGreaterThanOrEqual(sizes[1]);
 });
 
-test('02 Open Signal body uses a stronger reading weight', async ({ page }) => {
+test('02 Open Signal body follows the Regular weight of the frame', async ({
+  page,
+}) => {
   await prepare(page);
   const weight = await page
     .locator('.opening-copy')
     .evaluate((element) => Number(getComputedStyle(element).fontWeight));
-  expect(weight).toBeGreaterThanOrEqual(500);
+  // Figma 272:783: the opening paragraph is Regular (400).
+  expect(weight).toBe(400);
 });
 
-test('03 First Light title is a single line', async ({ page }) => {
+test('03 First Light breaks onto two lines in en and sits under no extra line', async ({
+  page,
+}) => {
   await prepare(page);
-  await expect(page.locator('.opening-title br')).toHaveCount(0);
+  await expect(page.locator('.opening-title-line')).toHaveText([
+    'First',
+    'Light',
+  ]);
   await expect(page.locator('.opening-title')).toHaveText('First Light');
 });
 
@@ -106,9 +114,12 @@ test('06 Partnering appears while the single marker enters chapter two', async (
   expect(state.opacity).toBeGreaterThan(0.2);
 });
 
-test('07 Backing the builders headline keeps two lines', async ({ page }) => {
+test('07 Backing the builders headline sets three lines in the frame', async ({
+  page,
+}) => {
   await prepare(page);
-  await expect(page.locator('.hero-title br')).toHaveCount(1);
+  // "Backing" breaks off on desktop; the second break is the original one.
+  await expect(page.locator('.hero-title br')).toHaveCount(2);
   await expect(page.locator('.hero-title')).toContainText(
     'Backing the builders',
   );
@@ -123,7 +134,7 @@ test('07b Hero chapter renders only the active language', async ({ page }) => {
       path: 'en/index.html',
       expected: 'Backing the builders of the intelligence age',
       excluded: '投资真正的创造者',
-      breaks: 1,
+      breaks: 2,
       zh: false,
     },
     {
@@ -135,13 +146,15 @@ test('07b Hero chapter renders only the active language', async ({ page }) => {
     },
   ]) {
     await prepare(page, path);
-    const title = page.locator('.hero-title');
+    const title = page.locator('#hero-title');
     await expect(title).toContainText(expected);
     await expect(title).not.toContainText(excluded);
     await expect(title.locator('br')).toHaveCount(breaks);
     await expect(title).toHaveClass(
       zh ? 'hero-title hero-title--zh' : 'hero-title',
     );
+    // zh also sets the English headline above the Chinese one (frame 2).
+    await expect(page.locator('.hero-title-en')).toHaveCount(zh ? 1 : 0);
     await expect(page.locator('.hero-zh')).toHaveCount(0);
   }
 });
@@ -151,9 +164,10 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
 }) => {
   await prepare(page);
   const openingTrail = page.locator('.opening .scroll-trail');
+  // Figma 272:791: the rail is #573C79 fading to #8C8A9E.
   await expect(openingTrail).toHaveAttribute(
     'data-trail-base-color',
-    'rgba(87,60,121,.18)',
+    'linear-gradient(#573c79,#8c8a9e)',
   );
   await expect(openingTrail).toHaveAttribute(
     'data-trail-active-color',
@@ -163,29 +177,31 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
   await expect(page.locator('.opening-track > img')).toBeHidden();
 
   let stage = await setPhilosophyProgress(page, 0);
-  await expect(page.locator('.hero-title')).toHaveCSS('opacity', '0');
+  await expect(page.locator('#hero-title')).toHaveCSS('opacity', '1');
 
   stage = await setPhilosophyProgress(page, 0.06);
   expect(
     Number(
       await page
-        .locator('.hero-title')
+        .locator('#hero-title')
         .evaluate((title) => getComputedStyle(title).opacity),
     ),
   ).toBeGreaterThan(0.99);
 
-  stage = await setPhilosophyProgress(page, 0.55);
+  stage = await setPhilosophyProgress(page, 0.5);
   const stageTrail = stage.locator('.philosophy-stage-canvas');
   await expect(stageTrail).toHaveAttribute('data-trail-base-color', '#c9c9c9');
   await expect(stageTrail).toHaveAttribute(
     'data-trail-active-color',
     '#573c79',
   );
-  expect(Number(await stageTrail.getAttribute('data-trail-progress'))).toBe(1);
+  expect(
+    Number(await stageTrail.getAttribute('data-trail-progress')),
+  ).toBeGreaterThan(0.9);
   expect(
     Number(
       await page
-        .locator('.hero-title')
+        .locator('#hero-title')
         .evaluate((title) => getComputedStyle(title).opacity),
     ),
   ).toBeGreaterThan(0.98);
@@ -213,21 +229,17 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
   ).toBeLessThan(0.01);
 });
 
-test('07c Partnering follows the node rightward and exits before screen three', async ({
+test('07c Partnering holds its frame position and exits before screen three', async ({
   page,
 }) => {
   await prepare(page);
   const sample = async (progress: number) => {
     const stage = await setPhilosophyProgress(page, progress);
     return stage.evaluate((element) => {
-      const title = element.querySelector('.hero-title')!;
+      const title = element.querySelector('#hero-title')!;
       const rect = title.getBoundingClientRect();
-      const [pointX] = (element.querySelector('canvas')!.dataset.point || '0,0')
-        .split(',')
-        .map(Number);
       return {
         left: rect.left,
-        nodeX: element.getBoundingClientRect().left + pointX,
         opacity: Number(getComputedStyle(title).opacity),
         orbitOpacity: Number(
           getComputedStyle(element.querySelector('.orbit-label')!).opacity,
@@ -238,11 +250,11 @@ test('07c Partnering follows the node rightward and exits before screen three', 
   const entered = await sample(0.06);
   const travelled = await sample(0.5);
   const exiting = await sample(0.68);
-  expect(travelled.left).toBeGreaterThan(entered.left + 50);
-  expect(travelled.left - travelled.nodeX).toBeGreaterThan(20);
+  // Frame 2 keeps the headline where it is drawn while the node travels.
+  expect(travelled.left).toBeCloseTo(entered.left, 0);
   expect(travelled.opacity).toBeGreaterThan(0.99);
-  expect(travelled.orbitOpacity).toBeLessThan(0.01);
-  expect(exiting.left).toBeGreaterThan(travelled.left);
+  // "open signal" waits beside its marker on the arc until the hero leaves.
+  expect(travelled.orbitOpacity).toBeGreaterThan(0.99);
   expect(exiting.opacity).toBeLessThan(0.1);
   const reversed = await sample(0.5);
   expect(reversed.left).toBeCloseTo(travelled.left, 0);
@@ -276,7 +288,7 @@ test('08 institution headline is a centered two-line composition', async ({
   );
 });
 
-test('09 institution headline sits in the lower reading band', async ({
+test('09 institution headline sits in the upper band of frame 4', async ({
   page,
 }) => {
   await prepare(page);
@@ -288,8 +300,9 @@ test('09 institution headline sits in the lower reading band', async ({
       .getBoundingClientRect();
     return (title.top - stageBox.top) / stageBox.height;
   });
-  expect(ratio).toBeGreaterThan(0.44);
-  expect(ratio).toBeLessThan(0.7);
+  // Figma 272:970 top 263 of 1080.
+  expect(ratio).toBeGreaterThan(0.2);
+  expect(ratio).toBeLessThan(0.3);
 });
 
 test('10 guide system uses the calibrated gradient dashed treatment', async ({
@@ -310,33 +323,36 @@ test('11 dashed guide spacing uses the authored sparse rhythm', async ({
   await setPhilosophyProgress(page, 0.9);
   await expect(page.locator('.philosophy-stage-canvas')).toHaveAttribute(
     'data-guide-dash',
-    '3,8',
+    '4,4',
   );
 });
 
-test('12 diamond and side label remain a coordinated unit', async ({
-  page,
-}) => {
+test('12 node and the blurred label pair form frame 3', async ({ page }) => {
   await prepare(page);
-  const stage = await setPhilosophyProgress(page, 0.72);
+  const stage = await setPhilosophyProgress(page, 0.74);
   const geometry = await stage.evaluate((element) => {
     const [x, y] = (element.querySelector('canvas')!.dataset.point || '0,0')
       .split(',')
       .map(Number);
     const label = element
-      .querySelector('.about-label')!
+      .querySelector('.about-label-line')!
       .getBoundingClientRect();
     const box = element.getBoundingClientRect();
     return {
-      horizontalGap: box.left + x - label.right,
-      verticalGap: Math.abs(box.top + y - (label.top + label.height / 2)),
+      below: label.top - (box.top + y),
+      sideways: Math.abs(label.left + label.width / 2 - (box.left + x)),
+      opacity: Number(
+        getComputedStyle(element.querySelector('.about-label')!).opacity,
+      ),
     };
   });
-  expect(geometry.horizontalGap).toBeGreaterThanOrEqual(18);
-  expect(geometry.verticalGap).toBeLessThan(45);
+  // Figma 275:3955/272:881: the label sits below the node, left of centre.
+  expect(geometry.below).toBeGreaterThan(40);
+  expect(geometry.sideways).toBeLessThan(260);
+  expect(geometry.opacity).toBeGreaterThan(0.99);
 });
 
-test('13 line reaches the node before the outer ring appears', async ({
+test('13 the rail arrives before the final marker appears', async ({
   page,
 }) => {
   await prepare(page);
@@ -350,33 +366,19 @@ test('13 line reaches the node before the outer ring appears', async ({
     guide: Number(await stage.getAttribute('data-guide-progress')),
     ring: Number(await stage.getAttribute('data-ring-progress')),
   };
-  expect(before.guide).toBeGreaterThan(0);
+  expect(before.guide).toBe(0);
   expect(before.ring).toBe(0);
   expect(after.guide).toBe(1);
   expect(after.ring).toBeGreaterThan(0);
 });
 
-test('14 north-star label stays aligned to the fixed junction during the drop', async ({
-  page,
-}) => {
+test('14 north-star label has cleared before the drop', async ({ page }) => {
   await prepare(page);
-  const stage = await setPhilosophyProgress(page, 0.96);
-  const offset = await stage.evaluate((element) => {
-    const [, y] = (
-      element.querySelector('canvas')!.dataset.junctionPoint || '0,0'
-    )
-      .split(',')
-      .map(Number);
-    const label = element
-      .querySelector('.about-label')!
-      .getBoundingClientRect();
-    const box = element.getBoundingClientRect();
-    return Math.abs(box.top + y - (label.top + label.height / 2));
-  });
-  expect(offset).toBeLessThan(38);
+  await setPhilosophyProgress(page, 0.96);
+  await expect(page.locator('.about-label')).toHaveCSS('opacity', '0');
 });
 
-test('14a node moves left first, then drops vertically to the research axis', async ({
+test('14a the node stays on its frame 4 position instead of travelling left', async ({
   page,
 }) => {
   await prepare(page);
@@ -387,52 +389,28 @@ test('14a node moves left first, then drops vertically to the research axis', as
       const [pointX, pointY] = (canvas.dataset.point || '0,0')
         .split(',')
         .map(Number);
-      const [junctionX, junctionY] = (canvas.dataset.junctionPoint || '0,0')
-        .split(',')
-        .map(Number);
-      const stageBox = element.getBoundingClientRect();
-      const researchAxis = document
-        .querySelector('.research-axis')!
-        .getBoundingClientRect();
-      const label = element
-        .querySelector('.about-label')!
-        .getBoundingClientRect();
       return {
         vertical: Number((element as HTMLElement).dataset.researchHandoff),
         horizontal: Number((element as HTMLElement).dataset.horizontalHandoff),
         nodeOpacity: Number(canvas.dataset.nodeOpacity),
         markerCount: Number(canvas.dataset.markerCount),
-        pointX: stageBox.left + pointX,
+        pointX,
         pointY,
-        junctionX: stageBox.left + junctionX,
-        junctionY,
-        stageHeight: stageBox.height,
-        researchX: researchAxis.left,
-        labelGap: stageBox.left + pointX - label.right,
+        width: element.getBoundingClientRect().width,
       };
     });
   };
-  const horizontal = await sample(0.94);
-  expect(horizontal.horizontal).toBe(1);
-  expect(horizontal.vertical).toBe(0);
-  expect(horizontal.markerCount).toBe(1);
-  expect(horizontal.pointX).toBeCloseTo(horizontal.junctionX, 0);
-  expect(horizontal.pointY).toBeCloseTo(horizontal.junctionY, 0);
-  expect(Math.abs(horizontal.pointX - horizontal.researchX)).toBeLessThan(2);
-
-  const dropping = await sample(0.97);
-  expect(dropping.pointX).toBeCloseTo(horizontal.pointX, 0);
-  expect(dropping.markerCount).toBe(2);
-  expect(dropping.junctionX).toBeCloseTo(horizontal.junctionX, 0);
-  expect(dropping.pointY).toBeGreaterThan(dropping.junctionY);
-
-  const complete = await sample(1);
-  expect(complete.vertical).toBe(1);
-  expect(complete.nodeOpacity).toBe(0);
-  expect(complete.markerCount).toBe(1);
-  expect(complete.pointX).toBeCloseTo(horizontal.pointX, 0);
-  expect(complete.pointY / complete.stageHeight).toBeGreaterThan(0.99);
-  expect(complete.labelGap).toBeGreaterThanOrEqual(18);
+  const held = await sample(0.94);
+  // Figma 275:2208: the node rests at x 959 of 1920, centred.
+  expect(held.pointX / held.width).toBeCloseTo(959 / 1920, 2);
+  for (const progress of [0.975, 0.99, 1]) {
+    const next = await sample(progress);
+    expect(next.horizontal).toBe(0);
+    expect(next.vertical).toBe(0);
+    expect(next.markerCount).toBe(1);
+    expect(next.pointX).toBeCloseTo(held.pointX, 0);
+    expect(next.pointY).toBeCloseTo(held.pointY, 0);
+  }
 });
 
 test('14b active node stays dark and no left fork marker is rendered', async ({
@@ -451,7 +429,7 @@ test('14b active node stays dark and no left fork marker is rendered', async ({
     branchMarker: 0,
   });
 
-  stage = await setPhilosophyProgress(page, 0.86);
+  stage = await setPhilosophyProgress(page, 0.9);
   const fork = await stage.locator('canvas').evaluate((canvas) => ({
     node: Number(canvas.dataset.nodeActivation),
     color: canvas.dataset.nodeColor,
@@ -495,7 +473,8 @@ test('14b active node stays dark and no left fork marker is rendered', async ({
   const researchNodeColor = await page
     .locator('.research-axis .diamond')
     .evaluate((node) => getComputedStyle(node).backgroundColor);
-  expect(researchNodeColor).toBe('rgb(87, 60, 121)');
+  // Figma 272:1033: the research node is near-black.
+  expect(researchNodeColor).toBe('rgb(9, 9, 9)');
 });
 
 test('15 T-ONE frame appears in place without sliding from the left', async ({

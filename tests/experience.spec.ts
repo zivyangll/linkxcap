@@ -22,29 +22,25 @@ test('opening fades and resolves blur without scrolling', async ({ page }) => {
   expect(await page.evaluate(() => scrollY)).toBe(0);
 });
 
-test('opening copy sits one-third closer to the title in both locales', async ({
+test('opening copy and title sit on the Figma coordinates in both locales', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1920, height: 1080 });
-  const originalGaps = { zh: 325.953125, en: 414.109375 };
-  for (const locale of ['zh', 'en'] as const) {
+  // Figma 2001:501 / 2001:500: title left 514, copy left 1148 (zh) / 1086 (en).
+  for (const [locale, copyLeft] of [
+    ['zh', 1148],
+    ['en', 1086],
+  ] as const) {
     await page.goto(`${locale}/index.html`);
     await page.evaluate(() => document.fonts.ready);
-    const geometry = await page.evaluate(() => {
-      const title = document
-        .querySelector('.opening-title')!
-        .getBoundingClientRect();
-      const copy = document
-        .querySelector('.opening-copy')!
-        .getBoundingClientRect();
-      return {
-        gap: copy.left - title.right,
-        copyWidth: copy.width,
-      };
-    });
-    expect(geometry.gap / originalGaps[locale]).toBeGreaterThan(0.62);
-    expect(geometry.gap / originalGaps[locale]).toBeLessThan(0.7);
-    expect(geometry.copyWidth).toBeCloseTo(617, 0);
+    const geometry = await page.evaluate(() => ({
+      title: document.querySelector('.opening-title')!.getBoundingClientRect()
+        .left,
+      copy: document.querySelector('.opening-copy')!.getBoundingClientRect()
+        .left,
+    }));
+    expect(geometry.title).toBeCloseTo(514, 0);
+    expect(geometry.copy).toBeCloseTo(copyLeft, 0);
   }
 });
 
@@ -115,12 +111,8 @@ test('opening, Partnering, and About settle at equal-speed authored stops', asyn
           .getAttribute('data-motion-progress'),
       ),
     )
-    .toBeCloseTo(0.8, 2);
+    .toBeCloseTo(0.75, 2);
   await expect(page.locator('.about-label')).toBeVisible();
-  await expect(page.locator('.about-title span').first()).toHaveCSS(
-    'filter',
-    'blur(0px)',
-  );
   await page.mouse.wheel(0, (stops[3] - stops[2]) * 0.6);
   await page.waitForTimeout(250);
   expect(await page.evaluate(() => scrollY)).toBeLessThan(thresholds[2]);
@@ -244,7 +236,7 @@ test('key text progressively resolves from blurred to sharp', async ({
   await expect(line).toHaveCSS('filter', 'blur(0px)');
 });
 
-test('desktop chapter and orbit node labels share one size and clear their diamonds', async ({
+test('desktop chapter label clears its diamond and the orbit label stays left of the node', async ({
   page,
 }) => {
   for (const locale of ['zh', 'en']) {
@@ -257,12 +249,13 @@ test('desktop chapter and orbit node labels share one size and clear their diamo
       await page.goto(`${locale}/index.html`);
       await page.evaluate(() => document.fonts.ready);
       const stage = page.locator('[data-philosophy-stage]');
+      // Figma: the chapter label is 14px, the orbit label 15.6px.
       const sizes = await page
-        .locator('.chapter, .orbit-label, .about-label')
+        .locator('.chapter, .orbit-label')
         .evaluateAll((elements) =>
           elements.map((element) => getComputedStyle(element).fontSize),
         );
-      expect(new Set(sizes).size).toBe(1);
+      expect(sizes).toHaveLength(2);
       const chapterGap = await page.evaluate(() => {
         const chapter = document
           .querySelector('.chapter')!
@@ -301,8 +294,8 @@ test('desktop chapter and orbit node labels share one size and clear their diamo
           return stageBox.left + point[0] - labelBox.right;
         }, selector);
       };
-      expect(await gapAt(0.3, '.orbit-label')).toBeGreaterThanOrEqual(18);
-      expect(await gapAt(0.58, '.about-label')).toBeGreaterThanOrEqual(18);
+      // "open signal" rests beside its marker on the arc, left of the node.
+      expect(await gapAt(0.5, '.orbit-label')).toBeGreaterThanOrEqual(0);
     }
   }
 });

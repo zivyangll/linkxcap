@@ -114,7 +114,8 @@ export function mountChapterSnap(home: HTMLElement) {
         self.start,
         philosophy.start +
           (philosophy.end - philosophy.start) * PHILOSOPHY_ARC.start,
-        philosophy.start + (philosophy.end - philosophy.start) * 0.8,
+        // The about label pose (frame 3) is the second reading stop.
+        philosophy.start + (philosophy.end - philosophy.start) * 0.75,
         // The About stop is the completed junction pose: copy fully sharp,
         // active node centered in the ring, and no retired branch marker.
         // The downward handoff only starts after the next scroll gesture.
@@ -125,8 +126,8 @@ export function mountChapterSnap(home: HTMLElement) {
       const opening = home.querySelector<HTMLElement>('.opening')!;
       const copy = opening.querySelector<HTMLElement>('.opening-copy')!;
       const openingTrigger = ScrollTrigger.getById('chapter-1')!;
-      const trailStart = (opening.clientWidth * 480) / 1920;
-      const trailLength = opening.clientHeight * 0.556;
+      const trailStart = (opening.clientWidth * 485.5) / 1920;
+      const trailLength = opening.clientHeight - trailStart;
       const progress = gsap.utils.clamp(
         0.05,
         0.95,

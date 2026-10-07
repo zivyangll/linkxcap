@@ -1,14 +1,53 @@
 ---
-import { asset, pageUrl, homeContent, sectors, type Lang } from '../lib/site';
+import {
+  asset,
+  pageUrl,
+  homeContent,
+  sectors,
+  url,
+  type Lang,
+} from '../lib/site';
 import FocusConstellation from './FocusConstellation.astro';
 import PaperTexture from './PaperTexture.astro';
 import '../styles/home-mobile.css';
 import '../styles/focus-constellation.css';
 import '../styles/home-backdrop.css';
+import '../styles/home-figma.css';
 interface Props {
   lang: Lang;
 }
 const { lang } = Astro.props;
+// Figma frames: zh shows the English title line above the Chinese one, en
+// breaks "First Light" onto two lines, and the body breaks one line per clause.
+const openingTitle =
+  lang === 'zh'
+    ? [
+        { text: homeContent.opening.title.en.join(' '), lang: 'en' },
+        { text: homeContent.opening.title.zh.join(' '), lang: 'zh' },
+      ]
+    : homeContent.opening.title.en
+        .join(' ')
+        .split(' ')
+        .map((text) => ({ text, lang: 'en' }));
+// en breaks "Backing" onto its own line (three lines in the frame).
+const heroLines =
+  lang === 'zh' ? homeContent.hero.title.zh : homeContent.hero.title.en;
+const heroLead = lang === 'zh' ? '' : heroLines[0].split(' ')[0];
+const heroRest = (line: string, index: number) =>
+  lang !== 'zh' && index === 0 ? line.slice(heroLead.length).trim() : line;
+// en sets "What We / Invest In" on two lines on desktop only.
+const focusWords = homeContent.focus.title.en.join(' ').split(' ');
+const focusLead = focusWords.slice(0, 2).join(' ');
+const focusRest = focusWords.slice(2).join(' ');
+const openingBody = homeContent.opening.body[lang]
+  .filter(Boolean)
+  .flatMap((line, index) => {
+    if (index === 0) return [line];
+    const cut = Math.max(line.lastIndexOf('，'), line.lastIndexOf(', '));
+    return cut > 0
+      ? [line.slice(0, cut + 1).trim(), line.slice(cut + 1).trim()]
+      : [line];
+  });
 ---
 
 <noscript>
@@ -45,6 +84,12 @@ const { lang } = Astro.props;
     aria-labelledby="opening-title"
   >
     <PaperTexture eager />
+    <div class="opening-particles" aria-hidden="true">
+      <canvas
+        data-opening-particles
+        data-src={url('assets/particles.bin')}
+      ></canvas>
+    </div>
     <canvas
       class="scroll-trail"
       data-scroll-trail="opening"
@@ -54,26 +99,30 @@ const { lang } = Astro.props;
       <i class="diamond"></i>
       <img src={asset('3297', 'imgVector30')} width="2" height="590" alt="" />
     </div>
-    <span class="chapter">{homeContent.opening.chapter[lang]}</span>
+    <span class="chapter">
+      <span class="chapter-desktop">{homeContent.opening.chapter.en}</span>
+      <span class="chapter-mobile">{homeContent.opening.chapter[lang]}</span>
+    </span>
     <h1 id="opening-title" class="opening-title" data-reveal>
-      {homeContent.opening.title[lang].map((line, index) => (
+      {openingTitle.map((line, index) => (
         <>
+          {index > 0 && ' '}
           {index > 0 && <br />}
-          {line}
+          <span class="opening-title-line" lang={line.lang}>
+            {line.text}
+          </span>
         </>
       ))}
     </h1>
     <div class="opening-copy" data-reveal>
       <p>
-        {homeContent.opening.body[lang].map((line) =>
-          line ? (
-            <>
-              {line} <br />
-            </>
-          ) : (
-            <br />
-          ),
-        )}
+        {openingBody.map((line, index) => (
+          <>
+            {index > 0 && ' '}
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))}
       </p>
     </div>
   </section>
@@ -105,15 +154,30 @@ const { lang } = Astro.props;
           alt=""
         />
       </div>
+      {lang === 'zh' && (
+        <p class="hero-title hero-title-en" lang="en" aria-hidden="true">
+          {homeContent.hero.title.en.map((line, index) => (
+            <>
+              {index > 0 && <br />}
+              {line}
+            </>
+          ))}
+        </p>
+      )}
       <h2
         id="hero-title"
         class:list={['hero-title', { 'hero-title--zh': lang === 'zh' }]}
         data-reveal
       >
-        {homeContent.hero.title[lang].map((line, index) => (
+        {heroLines.map((line, index) => (
           <>
             {index > 0 && <br />}
-            {line}
+            {index === 0 && heroLead && (
+              <>
+                {heroLead} <br class="hero-desktop-br" />
+              </>
+            )}
+            {heroRest(line, index)}
           </>
         ))}
       </h2>
@@ -165,10 +229,31 @@ const { lang } = Astro.props;
         <i class="diamond"></i>
       </div>
       <div class="about-label">
-        {homeContent.about.eyebrow[lang]}
-        <br />
-        {homeContent.about.label[lang]}
+        {[homeContent.about.eyebrow[lang], homeContent.about.label[lang]].map(
+          (text, index) => (
+            <>
+              {index > 0 && <br />}
+              <span class="about-label-line">
+                <span class="about-label-soft">{text}</span>
+                <span class="about-label-sharp" aria-hidden="true">
+                  {text}
+                </span>
+              </span>
+            </>
+          ),
+        )}
       </div>
+      <img
+        class="about-arc"
+        src={asset('audit', '1751')}
+        width="1920"
+        height="430"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+      />
+      <i class="about-rail" aria-hidden="true"></i>
+      <i class="about-node" aria-hidden="true"></i>
       <h2 id="about-title" class="about-title" data-reveal>
         {homeContent.about.title[lang].map((line) => (
           <span>{line}</span>
@@ -238,27 +323,33 @@ const { lang } = Astro.props;
     <div class="focus-backdrop" aria-hidden="true">
       <img
         class="focus-backdrop-milky-way"
-        src={asset('home-bg', 'focusMilkyWay')}
+        src={url('assets/focus-milkyway.webp')}
         width="658"
         height="1068"
         alt=""
         loading="lazy"
         decoding="async"
       />
-      <video
-        class="focus-backdrop-stars"
-        data-focus-stars
-        data-src={asset('home-bg', 'focusStarsMp4')}
-        poster={asset('home-bg', 'focusStarsPoster')}
-        width="1440"
-        height="810"
-        muted
-        loop
-        playsinline
-        preload="none"
-        disablepictureinpicture
-        tabindex="-1"
-      ></video>
+      <span class="focus-backdrop-nebula focus-backdrop-nebula--a">
+        <img
+          src={url('assets/focus-nebula.webp')}
+          width="405"
+          height="720"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+      <span class="focus-backdrop-nebula focus-backdrop-nebula--b">
+        <img
+          src={url('assets/focus-nebula.webp')}
+          width="405"
+          height="720"
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
     </div>
     <div
       class="topology-drag-surface"
@@ -266,12 +357,24 @@ const { lang } = Astro.props;
       aria-hidden="true"
     ></div>
     <h2 id="focus-title" class="focus-title">
-      {homeContent.focus.title[lang].map((line, index) => (
+      {lang === 'zh' && (
+        <small class="focus-title-kicker" lang="en" aria-hidden="true">
+          Focus Area
+        </small>
+      )}
+      {lang === 'zh' ? (
+        homeContent.focus.title.zh.map((line, index) => (
+          <>
+            {index > 0 && <br />}
+            {line}
+          </>
+        ))
+      ) : (
         <>
-          {index > 0 && <br />}
-          {line}
+          {focusLead} <br class="focus-desktop-br" />
+          {focusRest}
         </>
-      ))}
+      )}
       <span>{homeContent.focus.auxiliaryTitle[lang]}</span>
     </h2>
     <p class="focus-hint">{homeContent.focus.interactionHint[lang]}</p>

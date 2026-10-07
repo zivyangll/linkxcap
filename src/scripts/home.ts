@@ -4,8 +4,60 @@ import { mountPhilosophyMotion } from './philosophy-motion';
 import { DESKTOP_MOTION } from './motion-policy';
 import { mountChapterSnap } from './chapter-snap';
 
+// Desktop-only particle field behind the opening screen. Reduced motion keeps
+// the first frame still (the component honours the system setting itself).
+function mountOpeningParticles() {
+  const canvas = document.querySelector<HTMLCanvasElement>(
+    '[data-opening-particles]',
+  );
+  if (!canvas) return;
+  const desktop = matchMedia(
+    '(min-width: 1024px) and (hover: hover) and (pointer: fine)',
+  );
+  let effect: { destroy: () => void } | null = null;
+  let token = 0;
+  const sync = () => {
+    const current = ++token;
+    if (!desktop.matches) {
+      effect?.destroy();
+      effect = null;
+      return;
+    }
+    if (effect) return;
+    Promise.all([
+      import('./particle-motion'),
+      fetch(canvas.dataset.src || '').then((response) =>
+        response.arrayBuffer(),
+      ),
+    ])
+      .then(([{ createParticleMotion }, buffer]) => {
+        if (current !== token || effect || !desktop.matches) return;
+        // 5 bytes per sample: x and y as uint16 (1/10000 of the frame), grey as uint8.
+        const view = new DataView(buffer);
+        const count = Math.floor(buffer.byteLength / 5);
+        const data = new Uint16Array(count * 3);
+        for (let i = 0; i < count; i++) {
+          data[i * 3] = view.getUint16(i * 5, true);
+          data[i * 3 + 1] = view.getUint16(i * 5 + 2, true);
+          data[i * 3 + 2] = view.getUint8(i * 5 + 4);
+        }
+        effect = createParticleMotion(canvas, data, {
+          color: '#202020',
+          maxDpr: 1.5,
+        });
+      })
+      .catch(() => {
+        /* The page simply keeps its plain paper background. */
+      });
+  };
+  sync();
+  desktop.addEventListener('change', sync);
+  window.addEventListener('pagehide', () => effect?.destroy(), { once: true });
+}
+
 export function initHome() {
   gsap.registerPlugin(ScrollTrigger);
+  mountOpeningParticles();
   const media = gsap.matchMedia();
   media.add(DESKTOP_MOTION, () => {
     const home = document.querySelector<HTMLElement>('[data-home]')!;
@@ -65,43 +117,44 @@ export function initHome() {
         0,
       );
       const reveal = scene.querySelectorAll('[data-reveal]');
-      // The opening has a CSS entrance on initial paint, independent of scroll.
-      if (reveal.length && index !== 0)
-        timeline.fromTo(
-          reveal,
-          { opacity: 0, y: 28, filter: 'blur(12px)' },
-          {
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            duration: 0.4,
-            stagger: 0.07,
-            ease: 'power1.out',
-          },
-          0,
-        );
+      // The research screen is shown as it scrolls in (before its pin starts),
+      // so the page never rests on an empty screen.
       if (index === 3) {
-        timeline.fromTo(
+        const entrance = gsap.timeline({
+          scrollTrigger: {
+            id: 'chapter-4-entrance',
+            trigger: scene,
+            start: 'top 92%',
+            end: 'top 8%',
+            scrub: 0.3,
+            invalidateOnRefresh: true,
+          },
+        });
+        if (reveal.length)
+          entrance.fromTo(
+            reveal,
+            { opacity: 0, y: 28, filter: 'blur(12px)' },
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              duration: 0.5,
+              stagger: 0.06,
+              ease: 'power1.out',
+            },
+            0,
+          );
+        entrance.fromTo(
           '.research-stats > div',
           { opacity: 0, y: 36 },
-          {
-            opacity: 1,
-            y: 0,
-            stagger: 0.09,
-            duration: 0.22,
-          },
+          { opacity: 1, y: 0, stagger: 0.08, duration: 0.3 },
           0.2,
         );
-        timeline.fromTo(
+        entrance.fromTo(
           '.research-marker',
           { opacity: 0, scale: 0.92, transformOrigin: 'center' },
-          {
-            opacity: 1,
-            scale: 1,
-            duration: 0.28,
-            ease: 'power1.out',
-          },
-          0.18,
+          { opacity: 1, scale: 1, duration: 0.3, ease: 'power1.out' },
+          0.15,
         );
       }
     });
@@ -134,8 +187,10 @@ function createScrollTrail(
     height = 0,
     value = 0;
   const point = (t: number) => ({
-    x: (width * 467) / 1920,
-    y: (width * 480) / 1920 + t * height * 0.556,
+    // The travelling node starts exactly on the static diamond (Figma centre
+    // 467.485, 485.5) and ends where the rail ends at y 1080.
+    x: (width * 467.485) / 1920,
+    y: (width * 485.5) / 1920 + t * (height - (width * 485.5) / 1920),
   });
   const draw = (progress: number) => {
     value = progress;
@@ -155,7 +210,16 @@ function createScrollTrail(
     ctx.beginPath();
     ctx.moveTo(origin.x, origin.y);
     ctx.lineTo(end.x, end.y);
-    ctx.strokeStyle = 'rgba(87,60,121,.18)';
+    // Figma 272:791: the rail is #573C79 down to y 569 and fades to #8C8A9E.
+    const rail = ctx.createLinearGradient(
+      0,
+      (569 * width) / 1920,
+      0,
+      (1080 * width) / 1920,
+    );
+    rail.addColorStop(0, '#573c79');
+    rail.addColorStop(1, '#8c8a9e');
+    ctx.strokeStyle = rail;
     ctx.stroke();
 
     ctx.beginPath();
@@ -169,7 +233,7 @@ function createScrollTrail(
     const p = point(progress);
     canvas.dataset.point = `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
     canvas.dataset.trailProgress = progress.toFixed(3);
-    canvas.dataset.trailBaseColor = 'rgba(87,60,121,.18)';
+    canvas.dataset.trailBaseColor = 'linear-gradient(#573c79,#8c8a9e)';
     canvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
     canvas.dataset.nodeColor = '#573c79';
     if (!shouldDrawPoint()) return;

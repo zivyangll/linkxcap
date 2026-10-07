@@ -27,19 +27,23 @@ export function mountPhilosophyMotion(
   const heroCopy = Array.from(
     stage.querySelectorAll<HTMLElement>('.hero-title'),
   );
+  const heroOrbit = stage.querySelector<HTMLElement>('.hero-orbit')!;
   const orbitLabel = stage.querySelector<HTMLElement>('.orbit-label')!;
   const aboutLabel = stage.querySelector<HTMLElement>('.about-label')!;
-  const aboutTitle = stage.querySelector<HTMLElement>('.about-title')!;
+  const aboutArc = stage.querySelector<HTMLElement>('.about-arc')!;
   const titleLines = Array.from(
     stage.querySelectorAll<HTMLElement>('.about-title span'),
   );
   const copy = stage.querySelector<HTMLElement>('.about-copy')!;
+  const zh = document.body.dataset.lang === 'zh';
   const styled = [
     hero,
     about,
     ...heroCopy,
+    heroOrbit,
     orbitLabel,
     aboutLabel,
+    aboutArc,
     ...titleLines,
     copy,
   ];
@@ -47,8 +51,6 @@ export function mountPhilosophyMotion(
   const progress = { value: 0 };
   let width = 0,
     height = 0;
-  let orbitLabelWidth = 0,
-    aboutLabelWidth = 0;
   let activeHandoff = false;
   home.classList.add('has-philosophy-motion');
 
@@ -61,82 +63,76 @@ export function mountPhilosophyMotion(
     element.style.transform = `translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0)`;
     element.style.opacity = String(opacity);
   };
+  // Poses are the 1920-wide Figma frames (zh 2001:501, en 2001:500):
+  //   frame 2  hero: rail x 467.5, circle r 1173, node starts on the circle
+  //            and travels to the purple "open signal" marker;
+  //   frame 3  about label: node (959, 470.5), arc bottom and tangent y 359;
+  //   frame 4  about title: the whole composition has risen by 284 and the
+  //            node rests at (959, 186.5).
+  const R = 1173;
+  const circle = { x: 1640, y: zh ? 107 : 37 };
+  const startY = zh ? 185.485 : 122.485;
+  const destination = zh
+    ? { x: 765.485, y: 889.485 }
+    : { x: 821.485, y: 877.485 };
+  const railEnd = { x: 467.485, y: zh ? 889.485 : 860.485 };
+  const angleAt = (x: number, y: number) =>
+    Math.atan2(y - circle.y, x - circle.x);
+  const startX = circle.x - Math.sqrt(R * R - (startY - circle.y) ** 2);
+  const startAngle = angleAt(startX, startY);
+  const node3 = { x: 959, y: 470.5 };
+  const node4 = { x: 959, y: 186.5 };
+  const RISE = node3.y - node4.y;
   function draw() {
     if (!ctx || !width || !height) return;
     const p = progress.value;
     const u = width / 1920;
     const arc = smooth(range(p, PHILOSOPHY_ARC.start, PHILOSOPHY_ARC.end));
-    const drop = smooth(range(p, 0.54, 0.68));
-    const pan = smooth(range(p, 0.69, 0.88));
-    const detail = smooth(range(p, 0.8, 0.92));
-    // Finish the lateral move first, then preserve a readable hold before
-    // the next scroll segment starts the vertical chapter handoff.
-    const horizontalHandoff = smooth(range(p, 0.86, 0.92));
-    const verticalHandoff = smooth(range(p, 0.96, 1));
-    const branchActivation = smooth(range(p, 0.54, 0.7));
-    const railActivation = smooth(range(p, 0.08, 0.68));
-    const rayActivation = smooth(range(p, 0.82, 0.94));
-    const aboutOffset = 100 * u * smooth(range(p, 0.49, 0.58));
-    // Partnering is its own authored screen. It holds after entering, follows
-    // the active point to the right, then clears before the About screen.
-    const heroExit = smooth(range(p, 0.54, 0.7));
+    const heroExit = smooth(range(p, 0.54, 0.66));
+    const toFrame3 = smooth(range(p, 0.54, 0.72));
+    const aboutIn = smooth(range(p, 0.6, 0.66));
+    // The rail is already there when the node enters from the top.
+    const railIn = smooth(range(p, 0.54, 0.58));
+    // Both ends of the label resolve last; it then holds until p 0.78.
+    const labelSharp = smooth(range(p, 0.64, 0.74));
+    const rise = smooth(range(p, 0.78, 0.88));
+    const labelOut = smooth(range(p, 0.8, 0.87));
+    const titleOpacity = smooth(range(p, 0.79, 0.88));
+    const detail = smooth(range(p, 0.88, 0.93));
+    // Frame 4 is the last pose of the stage: the node stays where it is drawn
+    // (no sideways trip to the research axis) and leaves with the page.
+    const horizontalHandoff = 0;
+    const verticalHandoff = 0;
     const heroOpacity = 1 - heroExit;
-    const heroCopyEntrance = smooth(range(p, 0, PHILOSOPHY_ARC.start));
+    // The hero is already complete while the stage scrolls in, so there is
+    // never an empty screen between the opening and frame 2.
+    const heroCopyEntrance = 1;
     const heroCopyOpacity = heroCopyEntrance * heroOpacity;
-    const titleOpacity = smooth(range(p, 0.7, 0.8));
-    const start = { x: 467.485 * u, y: 99.485 * u };
-    const circle = { x: 1640 * u, y: 37 * u };
-    const radius = Math.hypot(start.x - circle.x, start.y - circle.y);
-    const startAngle = Math.atan2(start.y - circle.y, start.x - circle.x);
-    const angle = lerp(startAngle, Math.PI / 2, arc);
-    const local = {
-      x: circle.x + Math.cos(angle) * radius,
-      y: circle.y + Math.sin(angle) * radius,
+    const railActivation = smooth(range(p, 0.08, 0.68));
+    const rayActivation = detail;
+    // The node slides along the arc through the "open signal" marker and out
+    // of the bottom of the screen; the frame 3 node then comes down the rail
+    // from the top, so the route reads as one continuous line.
+    const bottomY = height / u + 24;
+    const endAngle =
+      Math.PI - Math.asin(Math.min(0.995, (bottomY - circle.y) / R));
+    const angle = lerp(startAngle, endAngle, arc);
+    const heroNode = {
+      x: (circle.x + Math.cos(angle) * R) * u,
+      y: (circle.y + Math.sin(angle) * R) * u,
     };
-    // The camera reveals the circle's underside while the tracked point
-    // moves steadily down/right; it never climbs back up during the handoff.
-    const arcPoint = {
-      x: lerp(start.x, 960 * u, arc),
-      // Keep the intermediate headline in its final reading band instead of
-      // dropping it to y=644 and then lifting it back to y=384. The point
-      // clears the headline before settling at Frame 515's y=454.
-      y: lerp(start.y, 300 * u, arc),
+    const frame3Node = {
+      x: node3.x * u,
+      y: lerp(-24 * u, node3.y * u, toFrame3) - RISE * u * rise,
     };
-    const camera = {
-      x: arcPoint.x - local.x - 322 * u * pan,
-      y: arcPoint.y - local.y - 151 * u * pan,
-    };
-    const baseCenter = { x: circle.x + camera.x, y: circle.y + camera.y };
-    const pointBeforeHandoff = {
-      x: arcPoint.x - 322 * u * pan,
-      y:
-        p < PHILOSOPHY_ARC.start
-          ? start.y * range(p, 0, PHILOSOPHY_ARC.start)
-          : arcPoint.y + 50 * u * drop + 104 * u * pan + aboutOffset,
-    };
-    // The next chapter's axis is authored at x=324u. The handoff is strictly
-    // two-stage: first the entire junction moves left, then the active marker
-    // drops vertically without any remaining horizontal drift.
-    const researchAxisX = 324 * u;
-    const junctionX = lerp(
-      pointBeforeHandoff.x,
-      researchAxisX,
-      horizontalHandoff,
-    );
-    const junctionY = pointBeforeHandoff.y;
+    const rawNode = p < 0.54 ? heroNode : frame3Node;
+    const junctionX = rawNode.x;
+    const junctionY = rawNode.y;
     const point = {
       x: junctionX,
-      y: lerp(junctionY, height, verticalHandoff),
-    };
-    const compositionOffsetX = junctionX - pointBeforeHandoff.x;
-    const center = {
-      x: baseCenter.x + compositionOffsetX,
-      y: baseCenter.y,
+      y: junctionY,
     };
     const nodeColor = '#573c79';
-    // The research chapter owns the destination marker. Retire this canvas'
-    // marker at the instant it reaches the bottom handoff so it cannot be
-    // clipped into a half-diamond and ride upward when the pin releases.
     const nodeOpacity = 1 - smooth(range(p, 0.99, 1));
     const hasTravellingNode = verticalHandoff > 0 && nodeOpacity > 0;
     const phase =
@@ -144,15 +140,15 @@ export function mountPhilosophyMotion(
         ? 'lead-in'
         : p < 0.54
           ? 'arc'
-          : p < 0.69
+          : p < 0.72
             ? 'drop'
             : p < 0.88
               ? 'pan'
               : 'details';
     stage.dataset.motionPhase = phase;
     stage.dataset.motionProgress = p.toFixed(4);
-    stage.dataset.guideProgress = range(p, 0.49, 0.54).toFixed(3);
-    stage.dataset.ringProgress = smooth(range(p, 0.82, 0.94)).toFixed(3);
+    stage.dataset.guideProgress = aboutIn.toFixed(3);
+    stage.dataset.ringProgress = detail.toFixed(3);
     stage.dataset.researchHandoff = verticalHandoff.toFixed(3);
     stage.dataset.horizontalHandoff = horizontalHandoff.toFixed(3);
     canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
@@ -160,7 +156,7 @@ export function mountPhilosophyMotion(
     canvas.dataset.markerShape = 'diamond';
     canvas.dataset.markerCount = hasTravellingNode ? '2' : '1';
     canvas.dataset.guideStyle = 'gradient-dashed';
-    canvas.dataset.guideDash = '3,8';
+    canvas.dataset.guideDash = '4,4';
     canvas.dataset.trailBaseColor = '#c9c9c9';
     canvas.dataset.trailActiveColor = '#573c79';
     canvas.dataset.trailProgress = arc.toFixed(3);
@@ -168,7 +164,7 @@ export function mountPhilosophyMotion(
     canvas.dataset.nodeOpacity = nodeOpacity.toFixed(3);
     canvas.dataset.nodeColor = nodeColor;
     canvas.dataset.branchMarkerOpacity = '0.000';
-    canvas.dataset.branchActivation = branchActivation.toFixed(3);
+    canvas.dataset.branchActivation = toFrame3.toFixed(3);
     canvas.dataset.railActivation = railActivation.toFixed(3);
     canvas.dataset.rayActivation = rayActivation.toFixed(3);
     hero.dataset.scrollProgress = arc.toFixed(3);
@@ -178,163 +174,136 @@ export function mountPhilosophyMotion(
     setPose(about, 0, 0, 1);
     hero.inert = heroOpacity < 0.01;
     about.inert = titleOpacity < 0.01;
-    // The locale-specific chapter heading follows the same rightward motion
-    // as the active node. Its extra exit drift keeps the copy attached to the
-    // route before both make room for the third screen.
-    const heroFollowX = arcPoint.x - start.x + 72 * u * heroExit;
+    // The hero copy rests on its frame position and lifts away with the arc.
     heroCopy.forEach((el) => {
       setPose(
         el,
-        heroFollowX,
-        18 * u * (1 - heroCopyEntrance),
+        0,
+        18 * u * (1 - heroCopyEntrance) - 36 * u * heroExit,
         heroCopyOpacity,
       );
       el.style.filter = `blur(${((1 - heroCopyEntrance) * 10).toFixed(2)}px)`;
     });
-    // The label follows the same point; its original diamond is hidden.
-    const nodeLabelGap = Math.max(28 * u, 20);
-    orbitLabel.style.left = `${point.x - orbitLabelWidth - nodeLabelGap}px`;
-    orbitLabel.style.top = `${point.y + 10 * u}px`;
-    // The introductory label belongs to the top junction. Fade it before the
-    // headline follows the moving node so the two text blocks never cross.
-    setPose(orbitLabel, 0, 0, 1 - smooth(range(p, 0.18, 0.36)));
-    titleLines.forEach((el, index) => {
-      setPose(
-        el,
-        (index === 0 ? 109 : -52) * u * (1 - pan) + compositionOffsetX,
-        -32 * u * (1 - drop),
-        titleOpacity,
-      );
+    // "open signal" sits beside its marker on the arc for the whole approach.
+    setPose(orbitLabel, 0, 0, heroOpacity);
+    heroOrbit.style.opacity = String(heroOpacity);
+    // Frame 3: the blurred headline pair rises with the composition.
+    setPose(aboutLabel, 0, -RISE * u * rise, aboutIn * (1 - labelOut));
+    aboutLabel.style.setProperty(
+      '--label-sharp',
+      (labelSharp * 1.3).toFixed(3),
+    );
+    aboutLabel.style.setProperty('--label-soft', (1 - labelSharp).toFixed(3));
+    aboutArc.style.opacity = String(aboutIn * (1 - rise));
+    aboutArc.style.transform = `rotate(180deg) translate3d(0,${(RISE * u * rise).toFixed(3)}px,0)`;
+    titleLines.forEach((el) => {
+      setPose(el, 0, 20 * u * (1 - titleOpacity), titleOpacity);
       el.style.filter = `blur(${((1 - titleOpacity) * 14).toFixed(2)}px)`;
-      el.style.letterSpacing = `${((1 - titleOpacity) * 0.09).toFixed(4)}em`;
+      el.style.letterSpacing = `${(-0.05 + (1 - titleOpacity) * 0.14).toFixed(4)}em`;
     });
-    // The label and node share one anchor throughout the move. A fixed gap
-    // prevents the label from crossing the ring while the node changes axes.
-    const aboutLabelLeft = junctionX - aboutLabelWidth - nodeLabelGap;
-    const aboutLabelTop = junctionY - 24 * u;
-    aboutLabel.style.left = `${aboutLabelLeft}px`;
-    aboutLabel.style.top = `${aboutLabelTop}px`;
-    aboutLabel.style.right = 'auto';
-    setPose(aboutLabel, 0, 0, titleOpacity);
-    const copyOpacity = detail;
-    setPose(copy, 100 * u * (1 - detail) + compositionOffsetX, 0, copyOpacity);
-    copy.style.filter = `blur(${((1 - copyOpacity) * 8).toFixed(2)}px)`;
+    setPose(copy, 0, 0, detail);
+    copy.style.filter = `blur(${((1 - detail) * 8).toFixed(2)}px)`;
 
     ctx.clearRect(0, 0, width, height);
     const stroke = (
       opacity: number,
       drawPath: () => void,
-      sparse = false,
-      color = '#573c79',
+      dash: number[],
+      color: string | CanvasGradient = '#573c79',
     ) => {
       ctx.globalAlpha = opacity;
       ctx.strokeStyle = color;
       ctx.lineWidth = Math.max(0.75, 0.9 * u);
-      ctx.setLineDash(sparse ? [3 * u, 8 * u] : [2 * u, 4 * u]);
+      ctx.setLineDash(dash.map((n) => n * u));
       ctx.beginPath();
       drawPath();
       ctx.stroke();
     };
-    // Frame 510: faint vertical guide; the circle begins exactly at its dot.
+    // Frame 2: the pale rail, the full circle and the travelled purple arc.
+    const railX = railEnd.x * u;
     stroke(
       0.58 * heroOpacity,
       () => {
-        ctx.moveTo(start.x + camera.x, 0);
-        ctx.lineTo(start.x + camera.x, height);
+        ctx.moveTo(railX, (zh ? 70 : 0) * u);
+        ctx.lineTo(railX, height);
       },
-      true,
-      '#c9c9c9',
-    );
-    // The complete arc is visible as a pale route from the beginning. As the
-    // node advances, redraw the travelled arc in the active purple so the
-    // right-hand side does not remain uniformly pale.
-    stroke(
-      0.58 * heroOpacity,
-      () => ctx.arc(center.x, center.y, radius, startAngle, 0, true),
-      false,
+      [3, 8],
       '#c9c9c9',
     );
     if (arc > 0) {
-      stroke(0.96 * heroOpacity, () =>
-        ctx.arc(center.x, center.y, radius, startAngle, angle, true),
+      stroke(
+        0.96 * heroOpacity,
+        () =>
+          ctx.arc(circle.x * u, circle.y * u, R * u, startAngle, angle, true),
+        [2, 4],
       );
     }
-    // Frame 514: the full rail begins pale. The travelled section above the
-    // descending node activates to the final purple.
-    const guide = range(p, 0.49, 0.54);
-    stroke(
-      0.55,
-      () => {
-        ctx.moveTo(point.x, 0);
-        ctx.lineTo(point.x, height);
-      },
-      true,
-      '#c9c9c9',
-    );
-    stroke(0.94 * railActivation, () => {
-      ctx.moveTo(point.x, 0);
-      ctx.lineTo(point.x, p < 0.54 ? point.y * guide : point.y);
-    });
-    const tangent =
-      smooth(range(p, 0.48, 0.54)) * (1 - smooth(range(p, 0.96, 1)) * 0.35);
-    stroke(
-      0.88 * tangent,
-      () => {
-        ctx.moveTo(0, 300 * u);
-        ctx.lineTo(width, 300 * u);
-      },
-      true,
-    );
-    // Once the node reaches the junction, activate the untouched right-hand
-    // branch as well. Curve, horizontal and vertical rails then share the
-    // same finished colour.
-    stroke(0.9 * branchActivation, () =>
-      ctx.arc(center.x, center.y, radius, startAngle, 0, true),
-    );
-    // Frame 515: two diagonal rays plus the existing vertical ray, fading
-    // toward the top. The circle and copy leave with the stage afterward.
-    // The three outgoing rails (left ray, vertical rail, right ray) finish in
-    // one solid active colour. A gradient here made the upper portions look
-    // permanently disabled even after the node had arrived.
-    ctx.globalAlpha = rayActivation;
-    ctx.strokeStyle = '#573c79';
-    ctx.setLineDash([3 * u, 4 * u]);
-    for (const direction of [-1, 1]) {
-      ctx.beginPath();
-      ctx.moveTo(junctionX, junctionY);
-      ctx.lineTo(junctionX + direction * 655 * u, junctionY - 539 * u);
-      ctx.stroke();
-    }
-    ctx.setLineDash([]);
-    ctx.globalAlpha = rayActivation;
-    ctx.strokeStyle = 'rgba(29,29,29,.72)';
-    ctx.lineWidth = Math.max(0.75, 0.9 * u);
-    ctx.beginPath();
-    ctx.arc(junctionX, junctionY, 22 * u, 0, Math.PI * 2);
-    ctx.stroke();
-    const diamond = (x: number, y: number, color: string, opacity: number) => {
+    const diamond = (
+      x: number,
+      y: number,
+      color: string,
+      opacity: number,
+      size = 6,
+    ) => {
       ctx.save();
       ctx.globalAlpha = opacity;
       ctx.fillStyle = color;
       ctx.translate(x, y);
       ctx.rotate(Math.PI / 4);
-      ctx.fillRect(-6 * u, -6 * u, 12 * u, 12 * u);
+      ctx.fillRect(-size * u, -size * u, 2 * size * u, 2 * size * u);
       ctx.restore();
     };
-    // Once the handoff begins, the junction keeps its original marker and a
-    // second marker travels down the vertical rail. The removed grey fork
-    // marker is never restored.
-    if (verticalHandoff > 0) {
-      diamond(junctionX, junctionY, nodeColor, 1);
+    diamond(railEnd.x * u, railEnd.y * u, '#c9c9c9', 0.9 * heroOpacity);
+    diamond(destination.x * u, destination.y * u, nodeColor, heroOpacity);
+    // Frame 3 and 4: the rail from above, the tangent and the black node.
+    if (railIn > 0) {
+      const gradient = ctx.createLinearGradient(
+        0,
+        junctionY - 539 * u,
+        0,
+        junctionY + 10 * u,
+      );
+      gradient.addColorStop(0, '#c7c7c7');
+      gradient.addColorStop(1, '#000');
+      stroke(
+        railIn,
+        () => {
+          ctx.moveTo(junctionX, 0);
+          ctx.lineTo(junctionX, junctionY);
+        },
+        [4, 4],
+        gradient,
+      );
+      const tangent = ctx.createLinearGradient(257 * u, 0, width, 0);
+      tangent.addColorStop(0, '#000');
+      tangent.addColorStop(1, '#9d9d9d');
+      stroke(
+        0.2 * aboutIn * (1 - rise),
+        () => {
+          const y = (359 - RISE * rise) * u;
+          ctx.moveTo(0, y);
+          ctx.lineTo(width, y);
+        },
+        [4, 4],
+        tangent,
+      );
     }
-    diamond(point.x, point.y, nodeColor, nodeOpacity);
+    // The marker that has travelled becomes the black node of frames 3 / 4;
+    // zh leaves frame 2 black, en purple, and both arrive purple at the arc.
+    if (p < 0.54) {
+      const shade = zh ? Math.round(87 * arc) : 87;
+      const green = zh ? Math.round(60 * arc) : 60;
+      const blue = zh ? Math.round(121 * arc) : 121;
+      diamond(heroNode.x, heroNode.y, `rgb(${shade},${green},${blue})`, 1);
+    } else {
+      if (verticalHandoff > 0) diamond(junctionX, junctionY, '#000', 1);
+      diamond(point.x, point.y, '#000', nodeOpacity);
+    }
     ctx.globalAlpha = 1;
   }
   function resize() {
     width = stage.clientWidth;
     height = stage.clientHeight;
-    orbitLabelWidth = orbitLabel.getBoundingClientRect().width;
-    aboutLabelWidth = aboutLabel.getBoundingClientRect().width;
     const dpr = Math.min(devicePixelRatio, 1.5);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
@@ -385,8 +354,10 @@ export function mountPhilosophyMotion(
       ease: 'none',
       scrollTrigger: {
         id: 'philosophy-about-exit',
-        start: () => pin.end + Math.max(0, aboutTitle.offsetTop - 200),
-        end: () => pin.end + Math.max(200, aboutTitle.offsetTop),
+        // The last screen leaves late: it fades only once most of it has
+        // scrolled away, while the research screen is already coming in.
+        start: () => pin.end + innerHeight * 0.55,
+        end: () => pin.end + innerHeight * 0.95,
         scrub: true,
         invalidateOnRefresh: true,
         onUpdate: (self) => {

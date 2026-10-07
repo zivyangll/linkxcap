@@ -1,51 +1,40 @@
 // Presentation coordinates only. Sector names and company membership live in content.json.
-export const focusHub = { x: 1310, y: 525, z: 0 };
+export const focusHub = { x: 1290, y: 370, z: 0 };
 export type FocusPoint = {
   x: number;
   y: number;
   z: number;
   side: 'left' | 'right';
 };
+// Figma 275:1994 (zh) / 275:2916 (en): the selected node sits at (1120.7,
+// 603.5) and the five other sectors rise to its upper right.
 export const focusLayout: Record<string, FocusPoint> = {
-  foundation: { x: 1210, y: 755, z: 35, side: 'right' },
-  infrastructure: { x: 1180, y: 285, z: 70, side: 'left' },
-  applications: { x: 1600, y: 460, z: -65, side: 'right' },
-  physical: { x: 1000, y: 650, z: 15, side: 'left' },
-  frontiers: { x: 1660, y: 325, z: -90, side: 'left' },
-  chips: { x: 1450, y: 190, z: 45, side: 'right' },
+  foundation: { x: 1120.7, y: 603.5, z: 35, side: 'right' },
+  infrastructure: { x: 1210.9, y: 359.3, z: 70, side: 'left' },
+  applications: { x: 1490.9, y: 440.3, z: -65, side: 'right' },
+  physical: { x: 1352.9, y: 223.3, z: 15, side: 'right' },
+  frontiers: { x: 1339.9, y: 344.3, z: -90, side: 'right' },
+  chips: { x: 1121.9, y: 189.3, z: 45, side: 'left' },
 };
-const branches: Record<string, number[][]> = {
+// [x, y, label side] of the company dots; sectors without a preset fan
+// out around their node.
+const branches: Record<string, [number, number, 'left' | 'right'][]> = {
+  // Spread around the selected node, clear of the copy panel on its right.
   foundation: [
-    [955, 940],
-    [1300, 985],
-    [1470, 930],
-    [1540, 850],
-  ],
-  infrastructure: [
-    [1280, 110],
-    [1480, 150],
-    [1580, 240],
-    [1415, 395],
-    [1185, 530],
-    [1010, 545],
-    [1060, 900],
-    [1050, 110],
-  ],
-  applications: [
-    [1260, 220],
-    [1755, 240],
-    [1760, 695],
-    [1450, 660],
-  ],
-  physical: [
-    [865, 860],
-    [1110, 940],
-    [875, 430],
-  ],
-  frontiers: [
-    [1550, 120],
-    [1750, 180],
-    [1770, 500],
+    [1301, 915, 'right'],
+    [1150, 942, 'right'],
+    [1022, 908, 'left'],
+    [928, 833, 'left'],
+    [750, 801, 'left'],
+    [685, 665, 'left'],
+    [749, 524, 'left'],
+    [832, 423, 'left'],
+    [924, 351, 'left'],
+    [1031, 328, 'left'],
+    [1114, 404, 'left'],
+    [1309, 472, 'right'],
+    [632, 426, 'left'],
+    [866, 1011, 'left'],
   ],
 };
 export function focusBranch(
@@ -55,7 +44,8 @@ export function focusBranch(
 ): FocusPoint {
   const parent = focusLayout[sector];
   const preset = branches[sector] || [];
-  let point = preset[index];
+  const authored = preset[index];
+  let point: number[] | undefined = authored && [authored[0], authored[1]];
   if (count > preset.length || !point) {
     // Larger sectors must not collapse into an even radial fan. A deterministic
     // angular jitter plus several distance bands creates the authored mix of
@@ -80,7 +70,9 @@ export function focusBranch(
     x: point[0],
     y: point[1],
     z: parent.z + ((index % 3) - 1) * 30,
-    side: point[0] < parent.x || point[0] > 1690 ? 'left' : 'right',
+    side:
+      authored?.[2] ||
+      (point[0] < parent.x || point[0] > 1690 ? 'left' : 'right'),
   };
 }
 

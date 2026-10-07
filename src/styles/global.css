@@ -1092,14 +1092,22 @@
     inset: -1px;
     opacity: 0;
     background:
-      linear-gradient(var(--ink), var(--ink)) top left / 36px 2px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) top left / 2px 36px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) top right / 36px 2px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) top right / 2px 36px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) bottom left / 36px 2px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) bottom left / 2px 36px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) bottom right / 36px 2px no-repeat,
-      linear-gradient(var(--ink), var(--ink)) bottom right / 2px 36px no-repeat;
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) top left / 36px
+        2px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) top left / 2px
+        36px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) top right / 36px
+        2px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) top right / 2px
+        36px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) bottom left /
+        36px 2px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) bottom left /
+        2px 36px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) bottom right /
+        36px 2px no-repeat,
+      linear-gradient(rgb(29 29 29 / 80%), rgb(29 29 29 / 80%)) bottom right /
+        2px 36px no-repeat;
   }
   .card-arrow {
     position: absolute;

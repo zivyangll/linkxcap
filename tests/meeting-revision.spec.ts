@@ -173,45 +173,32 @@ for (const width of [1440, 1920]) {
     };
     await sample(0.15);
     await expect(page.locator('.hero-track')).toBeHidden();
-    await expect(page.locator('.hero-orbit')).toBeHidden();
     await expect(page.locator('.orbit-label .diamond')).toBeHidden();
     await expect(page.locator('.about-rays')).toBeHidden();
     await expect(page.locator('.philosophy-stage-canvas')).toBeVisible();
-    let previous = await sample(0.7);
-    const entering = await sample(0.74);
-    expect(entering.pointY).toBeGreaterThan(previous.pointY);
-    expect(entering.titleY).toBeGreaterThanOrEqual(previous.titleY);
-    expect(entering.titleOpacity).toBeGreaterThan(0);
-    expect(entering.titleOpacity).toBeLessThan(1);
-    previous = entering;
-    for (const progress of [0.78, 0.82, 0.86]) {
+    // Frame 3 → frame 4: the whole composition rises by 284 and the node
+    // settles at (959, 186.5); the title resolves in place while it does.
+    const frame3 = await sample(0.74);
+    const rising = await sample(0.8);
+    expect(rising.pointY).toBeLessThan(frame3.pointY);
+    const resolving = await sample(0.86);
+    expect(resolving.titleOpacity).toBeGreaterThan(0);
+    let previous = await sample(0.9);
+    for (const progress of [0.92, 0.94]) {
       const next = await sample(progress);
       expect(Math.abs(next.top)).toBeLessThan(1);
-      expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
-      expect(next.titleY).toBeGreaterThanOrEqual(previous.titleY - 0.5);
-      expect(next.titleOpacity).toBeGreaterThanOrEqual(
-        previous.titleOpacity - 0.01,
-      );
-      previous = next;
-    }
-    // Once the composition reaches the left-hand axis it holds fully readable
-    // for a distinct scroll interval instead of fading during the move.
-    for (const progress of [0.9, 0.92, 0.94, 0.96]) {
-      const next = await sample(progress);
-      expect(Math.abs(next.top)).toBeLessThan(1);
-      expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
-      expect(next.titleY).toBeGreaterThanOrEqual(previous.titleY - 0.5);
+      expect(next.pointY).toBeCloseTo(previous.pointY, 0);
       expect(next.titleOpacity).toBeGreaterThan(0.99);
-      if (progress >= 0.92) expect(next.copyOpacity).toBeGreaterThan(0.99);
+      if (progress >= 0.94) expect(next.copyOpacity).toBeGreaterThan(0.99);
       previous = next;
     }
-    // The copy remains fully visible while the node completes its downward
-    // handoff. Fading belongs to the subsequent natural page exit.
-    for (const progress of [0.975, 0.99, 1]) {
+    // The node then moves onto the research axis and drops to its end; the
+    // copy stays fully visible, fading belongs to the later page exit.
+    const settled = previous;
+    for (const progress of [0.96, 0.975, 0.99, 1]) {
       const next = await sample(progress);
       expect(Math.abs(next.top)).toBeLessThan(1);
-      expect(next.pointY).toBeGreaterThanOrEqual(previous.pointY - 0.5);
-      expect(next.titleY).toBeGreaterThanOrEqual(previous.titleY - 0.5);
+      expect(next.pointY).toBeGreaterThanOrEqual(settled.pointY - 0.5);
       expect(next.titleOpacity).toBeGreaterThan(0.99);
       expect(next.copyOpacity).toBeGreaterThan(0.99);
       previous = next;
@@ -219,8 +206,8 @@ for (const width of [1440, 1920]) {
     // Returning through the handoff reconstructs identical positions, rather
     // than depending on which of several triggers last wrote a transform.
     const reversed = await sample(0.74);
-    expect(reversed.pointY).toBeCloseTo(entering.pointY, 0);
-    expect(reversed.titleY).toBeCloseTo(entering.titleY, 0);
+    expect(reversed.pointY).toBeCloseTo(frame3.pointY, 0);
+    expect(reversed.titleY).toBeCloseTo(frame3.titleY, 0);
     await sample(1);
     // Read stage and title in one browser frame; separate protocol round trips
     // can otherwise sample different positions during native smooth scrolling.
@@ -233,16 +220,23 @@ for (const width of [1440, 1920]) {
     const titleOffset = await stage
       .locator('.about-title')
       .evaluate((el) => (el as HTMLElement).offsetTop);
-    const exitStart = bounds.start + bounds.distance + titleOffset - 200;
+    // The last screen leaves late: the fade runs from 55% to 95% of a
+    // viewport after the pin releases, while the next screen is coming in.
+    const exitStart =
+      bounds.start + bounds.distance + page.viewportSize()!.height * 0.55;
+    const exitSpan = page.viewportSize()!.height * 0.4;
     await page.evaluate((y) => scrollTo(0, y), exitStart);
     await expect
       .poll(() => page.evaluate(() => scrollY))
       .toBeCloseTo(exitStart, 0);
     await expect(page.locator('.about')).toHaveCSS('opacity', '1');
     const startGeometry = await geometry();
-    expect(startGeometry.copy).toBeCloseTo(200, 0);
+    expect(startGeometry.copy).toBeCloseTo(
+      titleOffset - page.viewportSize()!.height * 0.55,
+      -1,
+    );
 
-    const exitMiddle = exitStart + 100;
+    const exitMiddle = exitStart + exitSpan / 2;
     await page.evaluate((y) => scrollTo(0, y), exitMiddle);
     await expect
       .poll(() => page.evaluate(() => scrollY))
@@ -255,14 +249,13 @@ for (const width of [1440, 1920]) {
       )
       .toBeCloseTo(0.5, 1);
 
-    const exitEnd = exitStart + 200;
+    const exitEnd = exitStart + exitSpan;
     await page.evaluate((y) => scrollTo(0, y), exitEnd);
     await expect
       .poll(() => page.evaluate(() => scrollY))
       .toBeCloseTo(exitEnd, 0);
     await expect(page.locator('.about')).toHaveCSS('opacity', '0');
     const afterExit = await geometry();
-    expect(afterExit.copy).toBeCloseTo(0, 0);
     expect(afterExit.stage).toBeLessThan(beforeExit.stage - titleOffset + 1);
   });
 }

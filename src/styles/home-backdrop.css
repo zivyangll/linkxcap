@@ -74,6 +74,38 @@
   mix-blend-mode: screen;
 }
 
+/* Opening screen (desktop): the animated particle field replaces the paper
+   texture image. It keeps the texture's 1231×1080 slot at the top-left. */
+.opening-particles {
+  display: none;
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  .opening > .paper-texture {
+    display: none;
+  }
+
+  .opening-particles {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(1231 * var(--u));
+    height: calc(1080 * var(--u));
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .opening-particles canvas {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+}
+
 @media (max-width: 1023px), (hover: none), (pointer: coarse) {
   /* The mask keeps the frame's proportions, follows the screen height and
      centres its ellipse (x = 498 of 1231) on the narrow viewport. */

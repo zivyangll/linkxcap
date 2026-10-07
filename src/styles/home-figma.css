@@ -1,0 +1,698 @@
+/* Desktop-only additions stay out of the touch/H5 layout. */
+.chapter-desktop,
+.hero-title-en,
+.about-arc,
+.about-rail,
+.about-node,
+.about-label-sharp,
+.focus-title-kicker,
+.focus-desktop-br {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .home-story .opening-title br {
+    display: none;
+  }
+  body[data-lang='zh'] .home-story .opening-title-line[lang='en'] {
+    display: none;
+  }
+  .hero-desktop-br {
+    display: none;
+  }
+}
+
+/* HOME desktop: 1:1 with the 1920 Figma frames (zh 2001:501, en 2001:500).
+   The scroll choreography is untouched; poses and sizes are set here. */
+@media (min-width: 1024px) {
+  /* Frame 1: opening. */
+  body .home-story .opening .chapter {
+    left: calc(346 * var(--u));
+    top: calc(478 * var(--u));
+    width: calc(75 * var(--u));
+    text-align: center;
+    font-size: calc(14 * var(--u));
+    line-height: 1;
+    white-space: nowrap;
+  }
+  body .home-story .opening-track .diamond {
+    left: calc(-5.5 * var(--u));
+    top: calc(-10.5 * var(--u));
+  }
+  /* The chapter label rests at 40% like the frame; the shared arrive
+     keyframes would end at full opacity. */
+  body .home-story .opening .chapter {
+    animation-name: home-chapter-arrive;
+  }
+  @keyframes home-chapter-arrive {
+    from {
+      opacity: 0;
+      filter: blur(12px);
+      translate: 0 18px;
+    }
+    to {
+      opacity: 0.4;
+      filter: blur(0);
+      translate: 0 0;
+    }
+  }
+  body .home-story .opening-title {
+    left: calc(514 * var(--u));
+    top: calc(424 * var(--u));
+    font-size: calc(107.965 * var(--u));
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body[data-lang='zh'] .home-story .opening-title {
+    top: calc(427 * var(--u));
+    font-size: calc(81.333 * var(--u));
+  }
+  body .home-story .opening-title-line {
+    display: block;
+  }
+  body[data-lang='zh'] .home-story .opening-title-line[lang='zh'] {
+    margin-top: calc(8.4 * var(--u));
+    font-weight: 600;
+  }
+  body .home-story .opening-title br {
+    display: none;
+  }
+  body .home-story .opening-copy {
+    left: calc(1086 * var(--u));
+    top: calc(484 * var(--u));
+    width: auto;
+    font-size: calc(20 * var(--u));
+    font-weight: 400;
+    line-height: calc(29 * var(--u));
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body[data-lang='zh'] .home-story .opening-copy {
+    left: calc(1148 * var(--u));
+    top: calc(452 * var(--u));
+    font-size: calc(28.339 * var(--u));
+    line-height: calc(39.625 * var(--u));
+  }
+
+  body .home-story .chapter-desktop {
+    display: inline;
+  }
+  body .home-story .chapter-mobile {
+    display: none;
+  }
+
+  /* Frame 2: hero. Both locales share the rail; the arc, node colours and
+     titles differ per frame. */
+  body .home-story .hero-orbit {
+    top: calc(-1156 * var(--u));
+  }
+  body[data-lang='zh'] .home-story .hero-orbit {
+    top: calc(-1086 * var(--u));
+  }
+  body .home-story .hero-track .hero-track-start {
+    left: calc(-5.515 * var(--u));
+    top: calc(116.485 * var(--u));
+  }
+  body[data-lang='zh'] .home-story .hero-track .hero-track-start {
+    left: calc(-4.515 * var(--u));
+    top: calc(179.485 * var(--u));
+    background: #000;
+  }
+  body .home-story .hero-track .hero-track-end {
+    left: calc(-5.515 * var(--u));
+    top: calc(854.485 * var(--u));
+  }
+  body[data-lang='zh'] .home-story .hero-track .hero-track-end {
+    top: calc(883.485 * var(--u));
+  }
+  body .home-story .hero-title {
+    left: calc(546 * var(--u));
+    top: calc(93 * var(--u));
+    font-size: calc(81.333 * var(--u));
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body[data-lang='zh'] .home-story .hero-title-en {
+    display: block;
+    position: absolute;
+    left: calc(576 * var(--u));
+    top: calc(115 * var(--u));
+    margin: 0;
+  }
+  body[data-lang='zh'] .home-story .hero-title--zh {
+    left: calc(576 * var(--u));
+    top: calc(325 * var(--u));
+    font-weight: 600;
+  }
+  body .home-story .orbit-label {
+    left: calc(706.5 * var(--u));
+    top: calc(876 * var(--u));
+  }
+  body[data-lang='zh'] .home-story .orbit-label {
+    left: calc(651.5 * var(--u));
+    top: calc(879 * var(--u));
+  }
+  body[data-lang='zh'] .home-story .orbit-label .diamond {
+    left: calc(108 * var(--u));
+    top: calc(4.485 * var(--u));
+  }
+
+  /* Frame 3/4: about. */
+  body
+    .home-story
+    .about
+    :is(.about-decor, .about-orbit, .about-tangent-line, .about-rays) {
+    display: none;
+  }
+  body .home-story .about-title {
+    left: 0;
+    top: calc(263 * var(--u));
+    width: 100%;
+    text-align: center;
+    font-size: calc(81.333 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body .home-story .about-title span:first-child {
+    margin: 0 0 calc(10.4 * var(--u));
+  }
+  body .home-story .about-copy {
+    left: calc(50% - 500 * var(--u));
+    top: calc(537 * var(--u));
+    width: calc(1000 * var(--u));
+    text-align: center;
+    font-size: calc(20 * var(--u));
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='en'] .home-story .about-copy {
+    left: calc(50% - 560 * var(--u));
+    width: calc(1120 * var(--u));
+  }
+  body .home-story .about-rail {
+    display: block;
+    position: absolute;
+    left: calc(958.5 * var(--u));
+    top: 0;
+    width: max(1px, calc(1 * var(--u)));
+    height: calc(186.5 * var(--u));
+    background: linear-gradient(to bottom, #8a8a8a, #000);
+    -webkit-mask-image: repeating-linear-gradient(
+      to bottom,
+      #000 0 calc(4 * var(--u)),
+      transparent calc(4 * var(--u)) calc(8 * var(--u))
+    );
+    mask-image: repeating-linear-gradient(
+      to bottom,
+      #000 0 calc(4 * var(--u)),
+      transparent calc(4 * var(--u)) calc(8 * var(--u))
+    );
+  }
+  body .home-story .about-node {
+    display: block;
+    position: absolute;
+    left: calc(953 * var(--u));
+    top: calc(180.5 * var(--u));
+    width: calc(12 * var(--u));
+    height: calc(12 * var(--u));
+    background: #000;
+    transform: rotate(45deg);
+  }
+  /* The label is the Frame 3 headline: two blurred lines. */
+  body .home-story .about-label {
+    opacity: 0;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    font-size: calc(81.333 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    text-transform: lowercase;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  body .home-story .about-label br {
+    display: none;
+  }
+  body .home-story .about-label-line {
+    position: absolute;
+    transform: translateX(-50%);
+  }
+  /* The soft layer stays blurred; the sharp layer is revealed from the
+     middle outwards, so both ends resolve last (frame 3 mid-state). */
+  body .home-story .about-label-soft {
+    display: block;
+    filter: blur(10px);
+    opacity: var(--label-soft, 1);
+  }
+  body .home-story .about-label-sharp {
+    display: block;
+    position: absolute;
+    inset: 0;
+    --reach: calc(var(--label-sharp, 0) * 50%);
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent calc(50% - var(--reach) - 12%),
+      #000 calc(50% - var(--reach)),
+      #000 calc(50% + var(--reach)),
+      transparent calc(50% + var(--reach) + 12%)
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent calc(50% - var(--reach) - 12%),
+      #000 calc(50% - var(--reach)),
+      #000 calc(50% + var(--reach)),
+      transparent calc(50% + var(--reach) + 12%)
+    );
+  }
+  body .home-story .about-label-line:first-child {
+    left: calc(880 * var(--u));
+    top: calc(610 * var(--u));
+  }
+  body .home-story .about-label-line:last-child {
+    left: calc(1037 * var(--u));
+    top: calc(708 * var(--u));
+    opacity: 0.4;
+  }
+  body[data-lang='en'] .home-story .about-label-line:first-child {
+    left: calc(828 * var(--u));
+    top: calc(582 * var(--u));
+  }
+  body[data-lang='en'] .home-story .about-label-line:last-child {
+    left: calc(1138.5 * var(--u));
+    top: calc(680 * var(--u));
+  }
+
+  /* Frame 5: T-ONE lab. */
+  body .home-story[data-home] .research-axis {
+    left: calc(324 * var(--u));
+    width: max(1px, calc(1 * var(--u)));
+    border-left: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 60%) 0,
+      rgb(0 0 0 / 60%) calc(2 * var(--u)),
+      transparent calc(2 * var(--u)),
+      transparent calc(4 * var(--u))
+    );
+  }
+  body .home-story[data-home] .research-axis::after {
+    display: none;
+  }
+  body .home-story[data-home] .research-axis .diamond {
+    left: calc(-6.51 * var(--u));
+    top: calc(241.485 * var(--u));
+    background: #090909;
+  }
+  body .home-story[data-home] .research-marker {
+    left: calc(-46 * var(--u));
+    top: calc(201 * var(--u));
+    width: calc(91.697 * var(--u));
+    height: calc(91.697 * var(--u));
+  }
+  body .home-story[data-home] .research h2 {
+    left: calc(423 * var(--u));
+    top: calc(200 * var(--u));
+    width: auto;
+    font-size: calc(62.718 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body[data-lang='en'] .home-story[data-home] .research h2 {
+    font-weight: 600;
+  }
+  body .home-story[data-home] .research h2 span {
+    display: block;
+    width: auto;
+    margin-top: calc(9.7 * var(--u));
+    transform: none;
+  }
+  body[data-lang='en'] .home-story[data-home] .research h2 span {
+    width: calc(869 * var(--u));
+    white-space: normal;
+  }
+  body .home-story[data-home] .research-intro {
+    left: calc(423 * var(--u));
+    top: calc(390 * var(--u));
+    width: calc(813 * var(--u));
+    font-size: calc(20 * var(--u));
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='en'] .home-story[data-home] .research-intro {
+    top: calc(458 * var(--u));
+  }
+  body .home-story[data-home] .research-stats {
+    inset: 0;
+    width: auto;
+    display: block;
+  }
+  body .home-story[data-home] .research-stats > div {
+    position: absolute;
+    top: calc(667 * var(--u));
+  }
+  body .home-story[data-home] .research-stats > div:nth-of-type(1) {
+    left: calc(423 * var(--u));
+  }
+  body .home-story[data-home] .research-stats > div:nth-of-type(2) {
+    left: calc(842 * var(--u));
+  }
+  body .home-story[data-home] .research-stats > div:nth-of-type(3) {
+    left: calc(1166 * var(--u));
+  }
+  body .home-story[data-home] .research-stats > div:nth-of-type(4) {
+    left: calc(1505 * var(--u));
+  }
+  body[data-lang='en']
+    .home-story[data-home]
+    .research-stats
+    > div:nth-of-type(3) {
+    left: calc(1262 * var(--u));
+  }
+  body[data-lang='en']
+    .home-story[data-home]
+    .research-stats
+    > div:nth-of-type(4) {
+    left: calc(1585 * var(--u));
+  }
+  body .home-story[data-home] .research-stats strong {
+    font-size: calc(81.333 * var(--u));
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+  }
+  body .home-story[data-home] .research-stats span {
+    margin-top: calc(12 * var(--u));
+    font-size: calc(20 * var(--u));
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body .home-story[data-home] .research-stats .data-note {
+    position: absolute;
+    left: calc(423 * var(--u));
+    top: calc(905 * var(--u));
+    width: auto;
+    margin: 0;
+    font-size: calc(13 * var(--u));
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    opacity: 0.5;
+    white-space: nowrap;
+  }
+
+  body .home-story[data-home] .research-axis-line {
+    display: none;
+  }
+  body
+    .home-story[data-home]
+    .research-intro
+    .intro-paragraph
+    + .intro-paragraph {
+    margin-top: 0;
+  }
+  body .home-story[data-home] .research-intro,
+  body .home-story[data-home] .research-stats span {
+    font-weight: 400;
+  }
+
+  /* Under the pinned choreography the canvas draws the rail and node. */
+  body .home-story.has-philosophy-motion :is(.about-rail, .about-node) {
+    display: none;
+  }
+  body .home-story.has-philosophy-motion .about-arc {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: calc(-41 * var(--u));
+    width: 100%;
+    height: auto;
+    max-width: none;
+    opacity: 0;
+    transform: rotate(180deg);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  /* experience.css pins these lower for the old composition. */
+  body .home-story.has-philosophy-motion .about-title {
+    top: calc(263 * var(--u));
+  }
+  body .home-story.has-philosophy-motion .about-copy {
+    top: calc(537 * var(--u));
+  }
+  body .home-story.has-philosophy-motion .philosophy-stage .hero-orbit {
+    display: block;
+    pointer-events: none;
+  }
+}
+
+/* Frames 6 (zh 275:1994 / en 275:2916): focus area backdrop. */
+@media (min-width: 1024px) {
+  /* Figma frame ground #121212; the blends need it inside the backdrop. */
+  body .home-story .focus,
+  body .home-story .focus-backdrop {
+    background: #121212;
+  }
+  body .home-story .focus-backdrop-milky-way {
+    left: calc(963 * var(--u));
+    top: calc(-4 * var(--u));
+    width: calc(668 * var(--u));
+    height: calc(1084 * var(--u));
+    aspect-ratio: auto;
+    object-fit: cover;
+    opacity: 0.3;
+    transform: scaleX(-1);
+    mix-blend-mode: screen;
+  }
+  body .home-story .focus-backdrop-nebula {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(809.589 * var(--u));
+    height: calc(455.394 * var(--u));
+    mix-blend-mode: color-dodge;
+  }
+  body .home-story .focus-backdrop-nebula--a {
+    left: calc(-245 * var(--u));
+    top: calc(-95 * var(--u));
+  }
+  body .home-story .focus-backdrop-nebula--b {
+    left: calc(-107.59 * var(--u));
+    top: calc(377.94 * var(--u));
+  }
+  body .home-story .focus-backdrop-nebula img {
+    position: relative;
+    flex: none;
+    width: calc(455.394 * var(--u));
+    height: calc(809.589 * var(--u));
+    opacity: 0.21;
+    object-fit: cover;
+    transform: rotate(-90deg);
+  }
+  body .home-story .focus-backdrop-nebula--b img {
+    transform: rotate(-90deg) scaleY(-1);
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  body .home-story[data-home] .focus .focus-desktop-br {
+    display: inline;
+  }
+  body .home-story[data-home] .focus .focus-title {
+    left: calc(137 * var(--u));
+    top: calc(190 * var(--u));
+    font-size: calc(81.333 * var(--u));
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+  }
+  body[data-lang='zh'] .home-story[data-home] .focus .focus-title {
+    font-weight: 600;
+  }
+  body .home-story[data-home] .focus .focus-title-kicker {
+    display: block;
+    margin-bottom: calc(-2.6 * var(--u));
+    font-size: inherit;
+    font-weight: 400;
+  }
+  body .home-story[data-home] .focus .focus-title > span {
+    display: block;
+    width: calc(302 * var(--u));
+    margin-top: calc(23.8 * var(--u));
+    font-size: calc(24 * var(--u));
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+    opacity: 0.4;
+    white-space: normal;
+  }
+  body[data-lang='zh'] .home-story[data-home] .focus .focus-title > span {
+    width: auto;
+    margin-top: calc(26.4 * var(--u));
+    white-space: nowrap;
+  }
+  body .home-story[data-home] .focus .focus-hint {
+    left: calc(137 * var(--u));
+    top: calc(519.15 * var(--u));
+    font: 400 calc(15.484 * var(--u)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    opacity: 0.4;
+    white-space: nowrap;
+  }
+
+  /* The heading belongs to the selected node; the panel keeps the copy. */
+  body .home-story[data-home] .focus .focus-panels,
+  body .home-story[data-home] .focus.has-selection .focus-panels {
+    left: calc(1347 * var(--u));
+    top: calc(637 * var(--u));
+    width: calc(261 * var(--u));
+    min-height: 0;
+  }
+  body[data-lang='en'] .home-story[data-home] .focus .focus-panels,
+  body[data-lang='en']
+    .home-story[data-home]
+    .focus.has-selection
+    .focus-panels {
+    left: calc(1245 * var(--u));
+    top: calc(606 * var(--u));
+  }
+  body .home-story[data-home] .focus .focus-panel h3 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  body .home-story[data-home] .focus .focus-panel p {
+    width: auto;
+    margin: 0;
+    font-size: calc(16 * var(--u));
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    color: #d8d6cf;
+  }
+
+  /* Sector nodes. */
+  body .home-story[data-home] .focus .sector-star .star-label {
+    gap: calc(6 * var(--u));
+    font: 400 calc(15.615 * var(--u)) / normal var(--sans);
+    color: rgb(255 255 255 / 40%);
+  }
+  body
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-glyph
+    .diamond {
+    transform: none;
+  }
+  body .home-story[data-home] .focus .sector-star.is-active .star-label {
+    top: calc(50% - 43.5 * var(--u));
+    left: calc(50% + 194 * var(--u));
+    right: auto;
+    transform: none;
+    gap: 0;
+    font: 400 calc(20 * var(--u)) / 1.5 var(--serif);
+    color: #fff;
+    text-align: left;
+  }
+  body
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-label
+    [lang='zh'] {
+    order: -1;
+    margin-top: 0;
+    font-weight: 700;
+    letter-spacing: 0.58em;
+  }
+  body
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-label
+    [lang='zh']::before {
+    content: '/ ';
+  }
+  body
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-label
+    [lang='en'] {
+    margin-left: calc(35 * var(--u));
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='en']
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-label {
+    left: calc(50% + 104.3 * var(--u));
+    font-size: calc(24 * var(--u));
+    font-weight: 700;
+  }
+  body[data-lang='en']
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-label
+    [lang='en'] {
+    margin-left: 0;
+    letter-spacing: 0;
+  }
+  body[data-lang='en']
+    .home-story[data-home]
+    .focus
+    .sector-star.is-active
+    .star-label
+    [lang='en']::before {
+    content: '/ ';
+  }
+
+  /* Company dots: 4px squares with the label 8px away. */
+  body .home-story[data-home] .focus .constellation-company {
+    color: #b2a2ff;
+  }
+  body .home-story[data-home] .focus .constellation-company .constellation-dot {
+    width: calc(4 * var(--u));
+    height: calc(4 * var(--u));
+    top: calc(50% - 2 * var(--u));
+    left: calc(50% - 2 * var(--u));
+    transform: none;
+  }
+  body .home-story[data-home] .focus .constellation-company-label {
+    left: calc(50% + 10 * var(--u));
+    max-width: none;
+    font: 400 calc(15.414 * var(--u)) / 1.5 var(--serif);
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+    display: block;
+  }
+  body
+    .home-story[data-home]
+    .focus
+    .constellation-company[data-label-side='left']
+    .constellation-company-label {
+    left: auto;
+    right: calc(50% + 10 * var(--u));
+  }
+}
