@@ -23,7 +23,14 @@ const { lang } = Astro.props as { lang: Lang };
     }
     lang={lang}
   />
-  <p class="portfolio-intro">{portfolioContent.intro[lang]}</p>
+  <p class="portfolio-intro">
+    {portfolioContent.intro[lang].split(/(?<=[，,])\s*/).map((line, index) => (
+      <>
+        {index > 0 && <br />}
+        {line}
+      </>
+    ))}
+  </p>
   <nav
     class="portfolio-filters"
     aria-label={homeContent.focus.ariaLabel[lang]}

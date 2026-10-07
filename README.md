@@ -58,14 +58,13 @@ npm test
 
 ### 字体更新
 
-Source Han Serif SC、LXGW Neo XiHei、Source Serif 4 均本地托管，许可证在 `public/licenses/`。字体按实际用字和页面优先级拆分，原设计字体仍保持一致。
+中文统一使用系统默认字体（宋体 / 黑体回退），不再内嵌中文字库。`public/fonts/` 只保留拉丁字母、数字和标点的子集（Source Han Serif / LXGW Neo XiHei 的拉丁部分、Source Serif 4 斜体），许可证在 `public/licenses/`。
 
-新增中文后，浏览器可使用系统宋体作为缺字回退；正式交付应重新生成子集：
+修改文案不需要重新生成字体。仅在调整拉丁字体子集时：
 
 1. 将官方原始字体放入 `.cache/fonts/SourceHanSerifSC-VF.otf` 和 `.cache/fonts/LXGWNeoXiHei.ttf`。
-2. 本地预览运行时执行 `node scripts/collect-font-usage.mjs`。
-3. 在安装 `fonttools[woff]` 的 Python 环境运行 `python scripts/subset-fonts.py`。
-4. 重建并检查文字。生成字体和 `src/data/fonts.json` 一起提交。CI 使用已提交子集，不下载大字体。
+2. 在安装 `fonttools[woff]` 的 Python 环境运行 `python scripts/subset-fonts.py`。
+3. 重建并检查，生成字体和 `src/data/fonts.json` 一起提交。
 
 字体来源和使用范围见 [实现与维护说明](docs/04-实现与维护说明.md)。
 

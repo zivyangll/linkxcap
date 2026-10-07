@@ -542,6 +542,123 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
 }
 
+/* Portfolio desktop: 1:1 with the 1920 Figma frames (zh 272:596, en 275:3141).
+   The heading, intro and filters are placed on the design's coordinates; the
+   grid then starts at 427 (zh) / 493 (en). Logic and markup are untouched. */
+@media (min-width: 1024px) {
+  body .portfolio-page {
+    padding-top: calc(427 * var(--u));
+  }
+  body[data-lang='en'] .portfolio-page {
+    padding-top: calc(493 * var(--u));
+  }
+  body .portfolio-page > .page-title {
+    position: absolute;
+    left: calc(180 * var(--u));
+    top: calc(174 * var(--u));
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-size: calc(52.25 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  body[data-lang='en'] .portfolio-page > .page-title {
+    top: calc(191 * var(--u));
+  }
+  body .portfolio-page > .page-title span[lang='en'] {
+    order: -1;
+    margin: 0 0 calc(11.92 * var(--u));
+    font-size: calc(20.901 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  body[data-lang='en'] .portfolio-page > .page-title span {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  body .portfolio-page > .portfolio-intro {
+    position: absolute;
+    left: calc(1140 * var(--u));
+    top: calc(211 * var(--u));
+    margin: 0;
+    font-size: calc(30 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: #000;
+  }
+  body[data-lang='en'] .portfolio-page > .portfolio-intro {
+    left: calc(1216 * var(--u));
+    top: calc(198 * var(--u));
+    font-size: calc(20 * var(--u));
+  }
+  body .portfolio-page > .portfolio-filters {
+    top: calc(349 * var(--u));
+    left: calc(181 * var(--u));
+    right: auto;
+    transform: none;
+    justify-content: flex-start;
+    align-items: center;
+    gap: calc(20 * var(--u));
+    color: rgb(0 0 0 / 20%);
+    font-size: calc(24 * var(--u));
+    letter-spacing: -0.05em;
+    line-height: normal;
+  }
+  body[data-lang='en'] .portfolio-page > .portfolio-filters {
+    top: calc(413 * var(--u));
+  }
+  body[data-lang='en'] .portfolio-page > .portfolio-filters button {
+    font-size: calc(20 * var(--u));
+  }
+  body .portfolio-page > .portfolio-filters button:is(:hover, :focus-visible),
+  body .portfolio-page > .portfolio-filters button[aria-pressed='true'] {
+    color: #000;
+  }
+  body .portfolio-page .portfolio-card .company-caption {
+    left: 0;
+    right: 0;
+    bottom: calc(26.6 * var(--u));
+  }
+  body .portfolio-page .company-caption > span {
+    width: calc(26 * var(--u));
+    margin-bottom: calc(8 * var(--u));
+  }
+  body .portfolio-page .company-caption h2 {
+    font-size: calc(24 * var(--u));
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  body .portfolio-page .company-caption p {
+    margin-top: calc(8 * var(--u));
+    font-size: calc(8 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: calc(8 * var(--u));
+  }
+  body[data-lang='en'] .portfolio-page .company-caption p {
+    letter-spacing: 0.2em;
+  }
+  body .portfolio-page > .portfolio-filters button {
+    padding: 0;
+  }
+  body .portfolio-page .card-arrow {
+    left: calc(-44.3 * var(--u));
+    top: calc(44.7 * var(--u));
+  }
+  body
+    .portfolio-page
+    .portfolio-card:is(:hover, :focus-visible)
+    .company-logo {
+    transform: translate(-50%, -50%)
+      translate(calc(0.5 * var(--u)), calc(-40.5 * var(--u)))
+      scale(0.8543, 0.8996);
+  }
+}
+
 @media (max-width: 1023px) {
   .portfolio-filters {
     display: flex;

@@ -622,23 +622,28 @@ test('19 portfolio category filters select and filter the grid', async ({
   expect(state.wrong).toBe(0);
 });
 
-test('19a portfolio filters share the Portfolio title row', async ({
+test('19a portfolio filters sit between the title and the grid like Figma', async ({
   page,
 }) => {
   await prepare(page, 'zh/portfolio.html');
-  const centers = await page.evaluate(() => {
-    const title = document
-      .querySelector('.page-title span:nth-child(2)')!
-      .getBoundingClientRect();
-    const filters = document
-      .querySelector('.portfolio-filters')!
-      .getBoundingClientRect();
+  const box = await page.evaluate(() => {
+    const rect = (selector: string) =>
+      document.querySelector(selector)!.getBoundingClientRect();
+    const title = rect('.page-title');
+    const filters = rect('.portfolio-filters');
+    const grid = rect('.portfolio-grid');
     return {
-      title: (title.top + title.bottom) / 2,
-      filters: (filters.top + filters.bottom) / 2,
+      titleBottom: title.bottom,
+      filtersTop: filters.top,
+      filtersBottom: filters.bottom,
+      filtersLeft: filters.left,
+      gridTop: grid.top,
+      gridLeft: grid.left,
     };
   });
-  expect(Math.abs(centers.title - centers.filters)).toBeLessThan(2);
+  expect(box.filtersTop).toBeGreaterThanOrEqual(box.titleBottom);
+  expect(box.filtersBottom).toBeLessThanOrEqual(box.gridTop);
+  expect(Math.abs(box.filtersLeft - box.gridLeft)).toBeLessThan(2);
 });
 
 test('20 selected OPENMAIC node has a subtle looping breath', async ({

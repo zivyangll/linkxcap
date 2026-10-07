@@ -1,7 +1,7 @@
 """Build self-hosted subsets from the upstream OFL fonts in .cache/fonts.
 
 Run after changing site copy. The Latin subset is reused across languages;
-Chinese is split into small unicode ranges to avoid downloading unused glyphs.
+Chinese is deliberately not embedded: it falls back to the system fonts.
 """
 from pathlib import Path
 from fontTools import subset
@@ -32,7 +32,6 @@ out = root / 'public/fonts'
 out.mkdir(exist_ok=True)
 css = []
 report = []
-priority = json.loads((root / 'src/data/font-priority.json').read_text()) if (root / 'src/data/font-priority.json').exists() else {}
 for family, filename, variable in [('LinkX Serif', 'SourceHanSerifSC-VF.otf', True), ('LinkX Sans', 'LXGWNeoXiHei.ttf', False)]:
     font = TTFont(root / '.cache/fonts' / filename)
     source_subset = subset.Subsetter()
@@ -48,18 +47,9 @@ for family, filename, variable in [('LinkX Serif', 'SourceHanSerifSC-VF.otf', Tr
         cmap = face.getBestCmap()
         available = [ord(c) for c in chars if ord(c) in cmap]
         latin = [c for c in available if c < 0x3000]
-        chinese = [c for c in available if c >= 0x3000]
         key = f"{'serif' if variable else 'sans'}-{weight}"
+        # Chinese text uses the system serif/sans fallback; only Latin is self-hosted.
         groups = [latin]
-        remaining = set(chinese)
-        shared = ''.join(usage.get('shared', {}).get(key, '') for usage in priority.values())
-        samples = [shared] + [usage.get('critical', {}).get(key, '') for usage in priority.values()] + [usage.get('body', {}).get(key, '') for usage in priority.values()]
-        for sample in samples:
-            codes = sorted({ord(c) for c in sample} & remaining)
-            remaining -= set(codes)
-            groups.extend(codes[n:n+180] for n in range(0, len(codes), 180))
-        rest = sorted(remaining)
-        groups.extend(rest[n:n+180] for n in range(0, len(rest), 180))
         for index, codepoints in enumerate(groups):
             if not codepoints: continue
             f = TTFont(BytesIO(face_bytes.getvalue()))
