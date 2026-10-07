@@ -96,7 +96,7 @@ export function mountTopology(root: HTMLElement) {
   const branchMaterial = new LineBasicMaterial({
     color: 0xb2a2ee,
     transparent: true,
-    opacity: 0.72,
+    opacity: 0.46,
     depthWrite: false,
   });
   const baseLines = new LineSegments(baseGeometry, baseMaterial);

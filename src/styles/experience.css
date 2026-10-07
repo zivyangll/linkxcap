@@ -64,7 +64,7 @@
     to {
       opacity: 1;
       filter: blur(0);
-      translate: 0 0;
+      margin-top: 0;
     }
   }
   .has-live-cursor,
@@ -108,10 +108,11 @@
   .portfolio-page .card-arrow {
     visibility: hidden;
   }
-  .fellow-intro :is(.next-title-outline, .next-subtitle-outline) {
+  .fellow-intro
+    :is(.next-title-outline, .next-subtitle-outline, .next-kicker-outline) {
     animation: signal-outline 1.35s ease-in-out 0.1s both;
   }
-  .fellow-intro :is(.next-title-fill, .next-subtitle-fill) {
+  .fellow-intro :is(.next-title-fill, .next-subtitle-fill, .next-kicker-fill) {
     animation: signal-fill 1.35s ease-in-out 0.1s both;
   }
   .fellow-intro .signal-guides--opening .signal-guide-v {
@@ -120,24 +121,31 @@
   .fellow-intro .signal-guides--opening .signal-guide-h {
     clip-path: inset(0 100% 0 0);
   }
+  /* The title lines start lower (Figma frame 1) and settle upward as the
+     subtitle joins them (frame 2). margin-top is used because GSAP folds
+     the translate property into its own transform. */
   @keyframes signal-outline {
     from {
       opacity: 1;
       filter: blur(0);
+      margin-top: var(--signal-lift, 0px);
     }
     to {
       opacity: 0;
       filter: blur(1px);
+      margin-top: 0;
     }
   }
   @keyframes signal-fill {
     from {
       opacity: 0;
       filter: blur(4px);
+      margin-top: var(--signal-lift, 0px);
     }
     to {
       opacity: 1;
       filter: blur(0);
+      margin-top: 0;
     }
   }
 }
@@ -355,11 +363,13 @@ body .team-review .team-bio::-webkit-scrollbar {
     display: none !important;
   }
   .fellow-intro .next-title-outline,
-  .fellow-intro .next-subtitle-outline {
+  .fellow-intro .next-subtitle-outline,
+  .fellow-intro .next-kicker-outline {
     display: none;
   }
   .fellow-intro .next-title-fill,
   .fellow-intro .next-subtitle-fill,
+  .fellow-intro .next-kicker-fill,
   .fellow-intro .fellow-context,
   .fellow-media-caption {
     opacity: 1;
@@ -444,7 +454,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     }
     to {
       opacity: 1;
-      translate: 0 0;
+      margin-top: 0;
     }
   }
 }
@@ -730,4 +740,236 @@ body .team-review .team-bio::-webkit-scrollbar {
 /* Content check: cards whose company has not supplied a logo yet. */
 .portfolio-page .portfolio-card.is-missing-logo {
   background: #e5262a;
+}
+
+.next-kicker-group {
+  display: none;
+}
+
+/* CONTACT desktop: 1:1 with Figma zh 275:2531 / 2609 / 2711 / 274:1518 and en
+   275:3520 / 3601 / 3659 / 3819 (1920 wide). The scroll choreography in
+   scripts/fellow.ts is unchanged; only poses and sizes are set here. */
+@media (min-width: 1024px) {
+  body[data-lang='zh'] .fellow-intro {
+    --signal-lift: calc(60.07 * var(--u));
+  }
+  body[data-lang='en'] .fellow-intro {
+    --signal-lift: calc(101.07 * var(--u));
+  }
+  .fellow-intro .next-subtitle-fill {
+    --signal-lift: 0px;
+  }
+
+  /* zh only: the English line above the Chinese title. */
+  .fellow-intro .next-kicker-group {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .fellow-intro .next-kicker {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    top: calc(350 * var(--u));
+    margin: 0;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    font-size: calc(112.041 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+  }
+  .fellow-intro .next-kicker-outline,
+  body .fellow-intro .next-title-outline--text {
+    color: transparent;
+    -webkit-text-stroke: max(0.5px, calc(0.5 * var(--u))) #000;
+  }
+  .fellow-intro .next-kicker-fill {
+    color: #090909;
+    opacity: 0;
+  }
+
+  body .fellow-intro .next-title-outline--text,
+  body .fellow-intro .next-title-fill {
+    top: calc(350 * var(--u));
+    font-size: calc(112.041 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='zh'] .fellow-intro .next-title-outline--text,
+  body[data-lang='zh'] .fellow-intro .next-title-fill {
+    top: calc(508 * var(--u));
+    font-size: calc(97.613 * var(--u));
+    font-weight: 600;
+  }
+
+  /* The subtitle has no outline stage: it joins when the title turns solid. */
+  .fellow-intro .next-subtitle-outline {
+    display: none;
+  }
+  body .fellow-intro .next-zh,
+  body .fellow-intro .next-en {
+    top: calc(493 * var(--u));
+    font-size: calc(60.879 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.05em;
+  }
+  body[data-lang='zh'] .fellow-intro .next-zh {
+    top: calc(649 * var(--u));
+    font-size: calc(28.995 * var(--u));
+  }
+
+  /* Guides: dashed verticals that sit under the title block. */
+  .fellow-intro .signal-guide-dash {
+    top: calc(50% + 262.76 * var(--u));
+    width: calc(2.53 * var(--u));
+    height: calc(556 * var(--u));
+    background: linear-gradient(to top, #d9d7d4, #f8f6f2);
+    -webkit-mask-image: repeating-linear-gradient(
+      to bottom,
+      #000 0 calc(5.06 * var(--u)),
+      transparent calc(5.06 * var(--u)) calc(10.12 * var(--u))
+    );
+    mask-image: repeating-linear-gradient(
+      to bottom,
+      #000 0 calc(5.06 * var(--u)),
+      transparent calc(5.06 * var(--u)) calc(10.12 * var(--u))
+    );
+  }
+
+  /* Orbit: apex at y 766 before the scroll, and the intro copy is not part of
+     the design. */
+  .fellow-intro .next-orbit.next-orbit-raster {
+    top: calc(736 * var(--u));
+  }
+  .fellow-intro .fellow-context p {
+    display: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  /* Frame 3: title pair, group portrait and arc. */
+  /* The same arc raster as the opening scene, so the two frames read as one. */
+  .fellow-media-orbit.fellow-media-orbit--raster {
+    left: 0;
+    top: calc(154 * var(--u));
+    width: 100%;
+    height: auto;
+    transform: none;
+    mix-blend-mode: multiply;
+  }
+  .fellow-media-title {
+    top: 0;
+    height: 100%;
+  }
+  .fellow-media-title h2,
+  .fellow-media-title p {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    letter-spacing: -0.05em;
+    line-height: 1.2;
+  }
+  .fellow-media-title h2 {
+    top: calc(308 * var(--u));
+    font-size: calc(54.867 * var(--u));
+    font-weight: 500;
+  }
+  .fellow-media-title p {
+    top: calc(378.03 * var(--u));
+    font-size: calc(29.813 * var(--u));
+    font-weight: 600;
+  }
+  body[data-lang='zh'] .fellow-media-title h2 {
+    top: calc(282.36 * var(--u));
+    font-size: calc(63.635 * var(--u));
+    font-weight: 600;
+  }
+  body[data-lang='zh'] .fellow-media-title p {
+    top: calc(368 * var(--u));
+    font-size: calc(31.298 * var(--u));
+  }
+  .fellow-media-figure {
+    left: calc(50% - 508 * var(--u));
+    top: calc(498 * var(--u));
+    width: calc(1016 * var(--u));
+    height: calc(342 * var(--u));
+  }
+
+  /* Frame 4: invitation block. */
+  .contact-hero .contact-invitation h2 {
+    font-size: calc(40 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .contact-hero .contact-invitation h2 span {
+    margin-top: calc(4 * var(--u));
+    font-size: calc(52.25 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  body[data-lang='en'] .contact-hero .contact-invitation h2 {
+    font-size: calc(18 * var(--u));
+    font-weight: 900;
+  }
+  body[data-lang='en'] .contact-hero .contact-invitation h2 span {
+    width: calc(600 * var(--u));
+    margin-inline: auto;
+    letter-spacing: 0;
+  }
+  .contact-hero .contact-copy {
+    width: calc(420 * var(--u));
+    margin: calc(58 * var(--u)) auto calc(100 * var(--u));
+    font-size: calc(16 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  body[data-lang='en'] .contact-hero .contact-copy {
+    width: calc(360 * var(--u));
+    font-size: calc(14 * var(--u));
+  }
+  .contact-hero .contact-copy p[lang='en'] {
+    margin-top: calc(8 * var(--u));
+    font-size: calc(14 * var(--u));
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .contact-hero .contact-invitation .line-link {
+    font-size: calc(16 * var(--u));
+    font-weight: 500;
+  }
+}
+
+/* Under the pinned desktop choreography the portrait lives in the opening
+   scene, so the separate portrait page is not shown. */
+.fellow-intro-figure {
+  display: none;
+}
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .fellow-intro-figure {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    left: calc(50% - 508 * var(--u));
+    top: calc(498 * var(--u));
+    width: calc(1016 * var(--u));
+    height: calc(342 * var(--u));
+    margin: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .fellow-intro-figure img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .fellow-media-section {
+    display: none;
+  }
 }

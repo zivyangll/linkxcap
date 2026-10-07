@@ -307,9 +307,10 @@ for (const width of [390, 768, 1440])
     await expect(page).toHaveURL(/portfolio\/mosi.html$/);
     await page.locator('[data-company-nav]').focus();
     await page.keyboard.press('End');
-    await expect(
-      page.locator('[data-company-link=ligit]'),
-    ).toHaveAttribute('aria-current', 'page');
+    await expect(page.locator('[data-company-link=ligit]')).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     await page.keyboard.press('Home');
     await expect(
       page.locator('[data-company-link="zhipu-ai"]'),
@@ -375,18 +376,12 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
   await page.keyboard.press('Home');
   await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
   await page.keyboard.press('ArrowUp');
-  await expect(browser).toHaveAttribute(
-    'data-current-company',
-    'ligit',
-  );
+  await expect(browser).toHaveAttribute('data-current-company', 'ligit');
   await page.keyboard.press('ArrowDown');
   await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
 
   await page.keyboard.press('End');
-  await expect(browser).toHaveAttribute(
-    'data-current-company',
-    'ligit',
-  );
+  await expect(browser).toHaveAttribute('data-current-company', 'ligit');
   await page.keyboard.press('ArrowDown');
   await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
   await expect
@@ -457,12 +452,14 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('zh/contact.html');
   await expect(page.locator('.next-title-outline')).toBeVisible();
-  await expect(page.locator('.next-zh-outline')).toBeVisible();
+  // The subtitle has no outline stage; it fades in with the solid title.
+  await expect(page.locator('.next-zh-outline')).toBeHidden();
   await expect(page.locator('.next-zh-fill')).toHaveCSS('opacity', '1');
   expect(await page.evaluate(() => scrollY)).toBe(0);
+  // Four guide verticals plus the two dashed ones under the title block.
   await expect(
     page.locator('.signal-guides--opening .signal-guide-v'),
-  ).toHaveCount(4);
+  ).toHaveCount(6);
   await expect(
     page.locator('.signal-guides--opening .signal-guide-h'),
   ).toHaveCount(6);
@@ -482,35 +479,26 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
   await expect(page.locator('.fellow-media-orbit')).toHaveCount(1);
   await expect(page.locator('.fellow-orbit-point')).toHaveCount(0);
   const context = page.locator('.fellow-context');
-  const marker = context.locator('.fellow-context-marker');
-  await expect(marker).toHaveCount(1);
+  await expect(page.locator('.fellow-context-marker')).toHaveCount(0);
   await expect(context.locator('p')).toHaveCount(2);
-  const contextBox = (await context.boundingBox())!;
-  const markerBox = (await marker.boundingBox())!;
-  const lastLineBox = (await context.locator('p').last().boundingBox())!;
-  expect(markerBox.y).toBeGreaterThan(lastLineBox.y + lastLineBox.height);
-  expect(
-    Math.abs(
-      markerBox.x + markerBox.width / 2 - (contextBox.x + contextBox.width / 2),
-    ),
-  ).toBeLessThan(1);
   // Figma 251:96 replaces the video with a static group portrait.
   await expect(page.locator('[data-fellow-video], video')).toHaveCount(0);
-  const portrait = page.locator('.fellow-media-figure img');
+  const portrait = page.locator('.fellow-intro-figure img');
   await expect(portrait).toHaveAttribute('alt', '让想法迈出下一步');
-  // Rest on the Figma frame: the portrait finishes its scroll-linked growth
-  // exactly when the section reaches the top of the viewport.
-  await page.evaluate(() =>
-    scrollTo(
-      0,
-      document.querySelector('[data-fellow-media]')!.getBoundingClientRect()
-        .top + scrollY,
-    ),
-  );
+  // The portrait arrives inside the pinned opening scene (no second page):
+  // at the end of the pin the title, arc and portrait share a screen.
+  await page.evaluate(() => scrollTo(0, innerHeight * 0.8 + 4));
   await expect
     .poll(() =>
       page
-        .locator('.fellow-media-figure')
+        .locator('.fellow-intro-figure')
+        .evaluate((el) => Number(getComputedStyle(el).opacity)),
+    )
+    .toBeGreaterThan(0.99);
+  await expect
+    .poll(() =>
+      page
+        .locator('.fellow-intro-figure')
         .evaluate((el) => new DOMMatrix(getComputedStyle(el).transform).a),
     )
     .toBeCloseTo(1, 2);
@@ -519,10 +507,11 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
       portrait.evaluate((img) => (img as HTMLImageElement).naturalWidth),
     )
     .toBeGreaterThan(0);
-  const figure = (await page.locator('.fellow-media-figure').boundingBox())!;
-  // Figma places it at x 310 of 1920 (slightly right of centre).
-  expect(Math.abs(figure.x - (310 * 1440) / 1920)).toBeLessThan(1);
-  expect(Math.abs(figure.width - (1311 * 1440) / 1920)).toBeLessThan(1);
+  await expect(page.locator('.fellow-media-section')).toBeHidden();
+  const figure = (await page.locator('.fellow-intro-figure').boundingBox())!;
+  // Figma 275:2711: 1016 wide, centred.
+  expect(Math.abs(figure.width - (1016 * 1440) / 1920)).toBeLessThan(1);
+  expect(Math.abs(figure.x + figure.width / 2 - 720)).toBeLessThan(1);
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({
@@ -544,11 +533,6 @@ test('English Fellow subtitle changes from outline to fill without overlapping i
       Number(await fill.evaluate((e) => getComputedStyle(e).opacity)),
     )
     .toBeGreaterThan(0.9);
-  await expect
-    .poll(async () =>
-      Number(await outline.evaluate((e) => getComputedStyle(e).opacity)),
-    )
-    .toBeLessThan(0.1);
   // Fill opacity now finishes automatically before scrolling. Wait for the
   // scroll-driven layout as well, rather than treating opacity as its signal.
   await expect

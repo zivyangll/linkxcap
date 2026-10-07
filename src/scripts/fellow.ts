@@ -70,11 +70,16 @@ export function initFellow() {
       },
     });
     if (desktop) {
+      // Poses follow Figma frames 2 → 3: en shrinks both lines to 0.4897,
+      // zh scales the title to 0.6519, enlarges the subtitle slightly and
+      // lets the English kicker line fade out.
+      const zh = document.body.dataset.lang === 'zh';
+      const unit = () => innerWidth / 1920;
       introTimeline.to(
         '.fellow-intro .next-title-fill, .fellow-intro .next-title-outline',
         {
-          scale: 0.6615,
-          y: () => (-innerWidth * 76) / 1920,
+          scale: zh ? 0.6519 : 0.4897,
+          y: () => unit() * (zh ? -225.64 : -42),
           transformOrigin: '50% 0%',
           duration: 0.45,
         },
@@ -83,13 +88,20 @@ export function initFellow() {
       introTimeline.to(
         '.fellow-intro .next-subtitle-fill, .fellow-intro .next-subtitle-outline',
         {
-          scale: 0.802,
-          y: () => (-innerWidth * 134) / 1920,
+          scale: zh ? 1.0794 : 0.4897,
+          y: () => unit() * (zh ? -281 : -114.97),
           transformOrigin: '50% 0%',
           duration: 0.45,
         },
         0.35,
       );
+      if (zh) {
+        introTimeline.to(
+          '.fellow-intro .next-kicker-group',
+          { opacity: 0, duration: 0.3 },
+          0.35,
+        );
+      }
       introTimeline.to(
         '.fellow-intro .signal-guides--opening',
         { opacity: 0, duration: 0.18 },
@@ -102,8 +114,16 @@ export function initFellow() {
       );
       introTimeline.to(
         '.fellow-intro .next-orbit',
-        { y: () => (-innerWidth * 467) / 1920, duration: 0.45 },
+        { y: () => (-innerWidth * 582) / 1920, duration: 0.45 },
         0.35,
+      );
+      // The group portrait arrives inside the pinned scene, so the finished
+      // pose (title, arc, portrait, marker) is a single screen.
+      introTimeline.fromTo(
+        '.fellow-intro-figure',
+        { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' },
+        { opacity: 1, scale: 1, ease: 'none', duration: 0.4 },
+        0.55,
       );
       introTimeline.fromTo(
         '.fellow-context',

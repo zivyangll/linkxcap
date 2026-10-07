@@ -25,10 +25,19 @@ const { lang } = Astro.props as { lang: Lang };
         alt=""
       />
     ))}
-    {[437.32, 467.66, 525.83, 549.85, 585.25, 678.82].map((y) => (
+    {[1, 2].map((_, i) => (
+      <span
+        class="signal-guide-v signal-guide-dash"
+        style={`left:calc(${i === 0 ? 633 : 1288} * var(--u));`}
+      />
+    ))}
+    {(lang === 'zh'
+      ? [377.32, 407.66, 465.83, 489.85, 525.25, 618.82]
+      : [317, 407.66, 465.83, 556]
+    ).map((y) => (
       <img
         class="signal-guide-h"
-        src={asset('1617', y === 467.66 ? 'imgVector44' : 'imgVector34')}
+        src={asset('1617', y === 407.66 ? 'imgVector44' : 'imgVector34')}
         style={`top:calc(${y} * var(--u));`}
         alt=""
       />
@@ -44,6 +53,20 @@ const { lang } = Astro.props as { lang: Lang };
       />
     ))}
   </div>
+  {lang === 'zh' && (
+    <div class="next-kicker-group">
+      <span
+        class="next-kicker next-kicker-outline"
+        lang="en"
+        aria-hidden="true"
+      >
+        {contactContent.signalTitle.en}
+      </span>
+      <p class="next-kicker next-kicker-fill" lang="en">
+        {contactContent.signalTitle.en}
+      </p>
+    </div>
+  )}
   <span class="next-title-outline next-title-outline--text" aria-hidden="true">
     {contactContent.signalTitle[lang]}
   </span>
@@ -75,10 +98,19 @@ const { lang } = Astro.props as { lang: Lang };
       </p>
     </>
   )}
+  <figure class="fellow-intro-figure">
+    <img
+      src={asset('fellow', 'groupPortrait')}
+      width="2163"
+      height="727"
+      alt={contactContent.videoPlaceholder[lang]}
+      loading="lazy"
+      decoding="async"
+    />
+  </figure>
   <div class="fellow-context" data-node-id="2002:1753">
     <p>{contactContent.joinCopy[lang]}</p>
     {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
-    <i class="fellow-context-marker" aria-hidden="true"></i>
   </div>
   <p class="fellow-definition">{contactContent.definition[lang]}</p>
   <img
@@ -107,10 +139,10 @@ const { lang } = Astro.props as { lang: Lang };
     ))}
   </div>
   <img
-    class="fellow-media-orbit"
-    src={asset('1811', 'imgEllipse1')}
-    width="2406"
-    height="2406"
+    class="fellow-media-orbit fellow-media-orbit--raster"
+    src={asset('audit', '1751')}
+    width="1920"
+    height="430"
     alt=""
     aria-hidden="true"
   />
