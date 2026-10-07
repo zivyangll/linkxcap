@@ -73,12 +73,10 @@ const labels: Record<string, string> = {
   detail: '详细介绍',
   intro: '介绍',
   headline: '主标题',
-  footnote: '数据脚注',
   join_label: '加入区眉题',
   join_title: '加入区标题',
   join_copy: '邀请文案',
   cta: '联系链接文字',
-  interaction_hint: '星域交互提示',
   summary: '摘要',
   list_title: '列表标题',
   list_summary: '列表摘要',
@@ -169,7 +167,7 @@ const languageOf = (key: string) =>
   key.endsWith('_cn') ? '中文' : key.endsWith('_en') ? 'English' : '';
 const isLongText = (key: string, value: string) =>
   value.length > 90 ||
-  /(body|description|detail|summary|bio|intro|copy|notice|footnote)/.test(key);
+  /(body|description|detail|summary|bio|intro|copy|notice)/.test(key);
 const isReadonly = (key: string) => structuralFields.has(key);
 const editableCollections = new Set(['companies', 'team']);
 

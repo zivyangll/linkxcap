@@ -55,7 +55,9 @@ export function mountMobileHomeMotion(home: HTMLElement) {
       const research = home.querySelector<HTMLElement>('.research')!;
       const focus = home.querySelector<HTMLElement>('.focus')!;
       const canvas = stage.querySelector<HTMLCanvasElement>('canvas')!;
-      const openingCanvas = opening.querySelector<HTMLCanvasElement>('canvas')!;
+      const openingCanvas = opening.querySelector<HTMLCanvasElement>(
+        'canvas.scroll-trail',
+      )!;
       const ctx = canvas.getContext('2d');
       const openingCtx = openingCanvas.getContext('2d');
       if (!ctx || !openingCtx) return;
@@ -71,7 +73,9 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         height = 0,
         openingHeight = 0,
         aboutTitleTop = 0,
-        rail = 24;
+        rail = 24,
+        openingRail = 24,
+        openingStart = 0.3;
       const observers: ResizeObserver[] = [];
       // Oversized content first scrolls naturally, then holds at its bottom.
       // End distances use stable layout heights, not the mobile URL bar height.
@@ -99,20 +103,20 @@ export function mountMobileHomeMotion(home: HTMLElement) {
       };
       const drawOpening = () => {
         openingCtx.clearRect(0, 0, width, openingHeight);
-        const startY = openingHeight * 0.3;
+        const startY = openingHeight * openingStart;
         const y = lerp(startY, openingHeight, openingProgress.value);
         openingCtx.setLineDash([3, 5]);
         openingCtx.beginPath();
-        openingCtx.moveTo(rail, startY);
-        openingCtx.lineTo(rail, openingHeight);
+        openingCtx.moveTo(openingRail, startY);
+        openingCtx.lineTo(openingRail, openingHeight);
         openingCtx.strokeStyle = 'rgba(87,60,121,.18)';
         openingCtx.stroke();
         openingCtx.beginPath();
-        openingCtx.moveTo(rail, startY);
-        openingCtx.lineTo(rail, y);
+        openingCtx.moveTo(openingRail, startY);
+        openingCtx.lineTo(openingRail, y);
         openingCtx.strokeStyle = 'rgba(87,60,121,.95)';
         openingCtx.stroke();
-        diamond(openingCtx, rail, y);
+        diamond(openingCtx, openingRail, y);
         openingCanvas.dataset.trailProgress = openingProgress.value.toFixed(3);
         openingCanvas.dataset.trailBaseColor = 'rgba(87,60,121,.18)';
         openingCanvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
@@ -253,7 +257,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         canvas.dataset.nodeColor = nodeColor;
         canvas.dataset.branchMarkerOpacity = '0.000';
         hero.inert = p > 0.5;
-        about.inert = p < 0.68;
+        about.inert = p < 0.62;
       };
       const resize = () => {
         width = stage.clientWidth;
@@ -263,7 +267,13 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           about.querySelector('.about-title')!.getBoundingClientRect().top -
           stage.getBoundingClientRect().top -
           (Number(gsap.getProperty(about, 'y')) || 0);
-        rail = parseFloat(getComputedStyle(opening).paddingLeft) - 24;
+        // Each screen keeps its own rail: the opening's sits further right
+        // than the philosophy arc's (Figma x 125 vs 44).
+        rail = parseFloat(getComputedStyle(hero).paddingLeft) - 24;
+        const openingStyle = getComputedStyle(opening);
+        openingRail = parseFloat(openingStyle.paddingLeft) - 24;
+        openingStart =
+          parseFloat(openingStyle.getPropertyValue('--h5-trail-start')) || 0.3;
         const dpr = Math.min(devicePixelRatio || 1, 1.5);
         for (const [node, context, h] of [
           [canvas, ctx, height],
@@ -291,6 +301,27 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         0,
       );
 
+      // The hero copy resolves while the stage scrolls up into view, so the
+      // hand-off from the opening never rests on an empty screen.
+      gsap.fromTo(
+        heroCopy,
+        { opacity: 0, y: 24, filter: 'blur(8px)' },
+        {
+          opacity: 1,
+          y: 0,
+          filter: 'blur(0px)',
+          ease: 'power1.out',
+          scrollTrigger: {
+            id: 'mobile-hero-entrance',
+            trigger: stage,
+            start: 'top 88%',
+            end: 'top 30%',
+            scrub: 0.28,
+            invalidateOnRefresh: true,
+          },
+        },
+      );
+
       // Both chapters occupy the same grid cell. One scrubbed timeline owns
       // the only dot and every reveal; reverse scrolling is deterministic.
       const timeline = gsap.timeline({
@@ -307,28 +338,16 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           { value: 1, duration: 1, ease: 'none', onUpdate: draw },
           0,
         )
-        .fromTo(
-          heroCopy,
-          { opacity: 0, y: 24, filter: 'blur(8px)' },
-          {
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            duration: 0.08,
-            ease: 'power1.out',
-          },
-          0,
-        )
         .to(
           hero,
           { opacity: 0, x: 32, duration: 0.18, ease: 'power1.inOut' },
-          0.48,
+          0.44,
         )
         .fromTo(
           about.querySelector('.about-label'),
           { opacity: 0, y: 12 },
           { opacity: 1, y: 0, duration: 0.13 },
-          0.68,
+          0.62,
         )
         .fromTo(
           about.querySelectorAll('.about-title span'),
@@ -341,7 +360,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             stagger: 0.05,
             ease: 'power1.out',
           },
-          0.7,
+          0.64,
         )
         .fromTo(
           about.querySelector('.about-copy'),
@@ -353,7 +372,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             duration: 0.18,
             ease: 'power1.out',
           },
-          0.82,
+          0.7,
         )
         .to(
           about,
@@ -365,7 +384,7 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             ease: 'power1.inOut',
             onUpdate: draw,
           },
-          0.82,
+          0.74,
         );
 
       const researchTimeline = gsap.timeline({

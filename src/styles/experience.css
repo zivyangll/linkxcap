@@ -454,7 +454,6 @@ body .team-review .team-bio::-webkit-scrollbar {
     }
     to {
       opacity: 1;
-      margin-top: 0;
     }
   }
 }

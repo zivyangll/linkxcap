@@ -253,9 +253,7 @@
             "label_cn": "已投资的科学家创业者",
             "label_en": "Scientist founders backed"
           }
-        ],
-        "footnote_cn": "学生和教师数字描述清华相关 AI 人才网络的可触达规模，并非星连 T-ONE 创新实验室的实际入孵人数；50+ 指星连已投资的科学家创业者。",
-        "footnote_en": "Student and faculty figures describe the reach of the Tsinghua-related AI talent network, rather than the number of participants in LinkX T-ONE Innovation Lab. The 50+ figure refers to scientist founders backed by LinkX Capital."
+        ]
       },
       "focus": {
         "contact_link_cn": "联系我们",
@@ -271,9 +269,7 @@
           "What We Invest In"
         ],
         "auxiliary_title_cn": "从智能本身，到被智能重新定义的世界。",
-        "auxiliary_title_en": "From intelligence itself to the systems it transforms.",
-        "interaction_hint_cn": "选择一个方向，查看相关企业。",
-        "interaction_hint_en": "Select a focus area to explore companies."
+        "auxiliary_title_en": "From intelligence itself to the systems it transforms."
       }
     },
     "portfolio": {

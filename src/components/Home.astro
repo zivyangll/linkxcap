@@ -13,6 +13,7 @@ import '../styles/home-mobile.css';
 import '../styles/focus-constellation.css';
 import '../styles/home-backdrop.css';
 import '../styles/home-figma.css';
+import '../styles/home-h5.css';
 interface Props {
   lang: Lang;
 }
@@ -307,7 +308,6 @@ const openingBody = homeContent.opening.body[lang]
           <span>{label[lang]}</span>
         </div>
       ))}
-      <p class="data-note">{homeContent.research.footnote[lang]}</p>
     </div>
   </section>
   <section
@@ -391,7 +391,6 @@ const openingBody = homeContent.opening.body[lang]
       )}
       <span>{homeContent.focus.auxiliaryTitle[lang]}</span>
     </h2>
-    <p class="focus-hint">{homeContent.focus.interactionHint[lang]}</p>
     <div class="focus-panels">
       {sectors.map((s, i) => (
         <article

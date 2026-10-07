@@ -1,0 +1,396 @@
+/* HOME H5: Figma frames 750 × 1624 (zh 275:5429…5739, en 275:6606…6830),
+   fitted to the screen width. Touch/H5 only — nothing here reaches the
+   1024px+ pointer layout. One Figma px = var(--m).
+   The scroll choreography owns poses and canvases; this file only sets type,
+   spacing and colour. */
+@media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  .home-story {
+    --m: calc(min(100vw, 640px) / 750);
+    /* The opening rail and the philosophy rail sit at different x. The
+       motion script reads each screen's padding-left minus 24px. */
+    --h5-opening-rail: calc(125 * var(--m));
+    --h5-trail-start: 0.362;
+    --mobile-rail: calc(44 * var(--m));
+    --mobile-inset: calc(44 * var(--m) + 24px);
+    --mobile-right: calc(40 * var(--m));
+    --h5-header: calc(90 * var(--m));
+  }
+
+  /* Type shared by the light screens: Figma letter-spacing is -5%. */
+  html body .home-story :is(.opening, .hero, .about, .research) {
+    justify-content: flex-start;
+    gap: 0;
+    letter-spacing: -0.05em;
+  }
+
+  /* ---------- 1 · Opening (275:5429 / 275:6606) ---------- */
+  html body .home-story .opening {
+    padding: calc(505 * var(--m)) var(--mobile-right) calc(80 * var(--m))
+      calc(var(--h5-opening-rail) + 24px);
+  }
+  html body .home-story .opening :is(.chapter, .opening-title, .opening-copy) {
+    width: auto;
+    margin-left: max(0px, calc(65 * var(--m) - 24px));
+  }
+  html body .home-story .opening .chapter {
+    font: 400 max(9px, calc(14 * var(--m))) / 1 var(--sans);
+    letter-spacing: 0;
+    opacity: 0.4;
+    color: #000;
+  }
+  html body .home-story .opening .chapter-desktop {
+    display: inline;
+  }
+  html body .home-story .opening .chapter-mobile {
+    display: none;
+  }
+  html body .home-story .opening-title {
+    margin-top: calc(8 * var(--m));
+    font: 400 calc(81.333 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+  }
+  html body .home-story .opening-title-line {
+    display: block;
+  }
+  html body[data-lang='zh'] .home-story .opening-title-line[lang='en'] {
+    display: block;
+  }
+  html body[data-lang='zh'] .home-story .opening-title-line[lang='zh'] {
+    font-weight: 600;
+  }
+  html body[data-lang='en'] .home-story .opening-title {
+    font-size: calc(107.965 * var(--m));
+  }
+  html body .home-story .opening-copy {
+    max-width: none;
+    margin-top: calc(73 * var(--m));
+    font: 400 calc(24 * var(--m)) / 1.65 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+  }
+  html body[data-lang='en'] .home-story .opening-copy {
+    max-width: calc(435 * var(--m));
+    margin-top: calc(43 * var(--m));
+    font-size: calc(20 * var(--m));
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  html body .home-story .opening-copy br {
+    display: inline;
+  }
+  html body .home-story .opening-track {
+    left: var(--h5-opening-rail);
+    top: 36.2%;
+  }
+  /* Figma 275:5479: the texture fills the lower part of the opening only. */
+  html body .home-story .opening > .paper-texture .paper-texture-frame {
+    left: calc(-197 * var(--m));
+    top: calc(701 / 1624 * 100%);
+    width: calc(1231 * var(--m));
+    height: calc(1107 * var(--m));
+    aspect-ratio: auto;
+    translate: none;
+  }
+  html body .home-story .opening > .paper-texture .paper-texture-frame img {
+    left: calc(-864 / 1231 * 100%);
+    top: calc(-356.5 / 1107 * 100%);
+    width: calc(2108 / 1231 * 100%);
+    height: calc(1854 / 1107 * 100%);
+  }
+  html body .home-story :is(.philosophy-stage, .research) > .paper-texture,
+  html body .home-story .philosophy-stage .paper-texture {
+    display: none;
+  }
+
+  /* ---------- 2 · Hero (275:5492 / 275:6620) ---------- */
+  html body .home-story .hero {
+    padding: calc(413 * var(--m)) var(--mobile-right) calc(120 * var(--m))
+      var(--mobile-inset);
+  }
+  html body .home-story.has-mobile-motion .hero {
+    padding-bottom: calc(120 * var(--m));
+  }
+  html body .home-story .hero .hero-title {
+    width: auto;
+    max-width: calc(560 * var(--m));
+    margin-left: max(0px, calc(108 * var(--m) - 24px));
+    font: 400 calc(62.97 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+    text-wrap: balance;
+  }
+  html body .home-story .hero .hero-title-en br,
+  html body[data-lang='en'] .home-story .hero .hero-title br {
+    display: none;
+  }
+  html body .home-story .hero .hero-title-en {
+    display: block;
+    margin-bottom: calc(8 * var(--m));
+  }
+  html body .home-story .hero .hero-title--zh {
+    font-size: calc(68.539 * var(--m));
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  html body[data-lang='en'] .home-story .hero .hero-title {
+    margin-left: max(0px, calc(81 * var(--m) - 24px));
+    font-size: calc(70.139 * var(--m));
+  }
+
+  /* ---------- 3 · North star + About (275:5610 / 275:6715) ---------- */
+  html body .home-story .about {
+    padding: calc(603 * var(--m)) calc(43 * var(--m) + 14px)
+      calc(120 * var(--m));
+    text-align: center;
+  }
+  html body .home-story .about .about-title {
+    font: 600 calc(44.576 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+    text-wrap: balance;
+  }
+  html body[data-lang='en'] .home-story .about .about-title {
+    font-weight: 500;
+    font-size: calc(48.566 * var(--m));
+  }
+  html body .home-story .about .about-title span {
+    display: block;
+  }
+  html body .home-story .about .about-title span:first-child {
+    margin: 0 0 calc(17 * var(--m));
+  }
+  html body .home-story .about .about-copy {
+    max-width: calc(664 * var(--m));
+    margin: calc(61 * var(--m)) auto 0;
+    font: 400 calc(20 * var(--m)) / 1.5 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+    text-align: center;
+    text-wrap: pretty;
+  }
+  html body .home-story .about .about-copy .intro-paragraph {
+    display: block;
+  }
+  html body .home-story .about .about-copy .intro-paragraph + .intro-paragraph {
+    margin-top: calc(14 * var(--m));
+  }
+
+  /* ---------- 4 · T-ONE lab (275:5664 / 275:6763) ---------- */
+  html body .home-story .research {
+    padding: calc(238 * var(--m)) var(--mobile-right) calc(120 * var(--m))
+      calc(145 * var(--m));
+  }
+  html body .home-story .research .research-axis {
+    left: calc(83 * var(--m));
+  }
+  html body .home-story .research .research-axis::after {
+    display: none;
+  }
+  html body .home-story .research .research-marker {
+    top: calc(231 * var(--m));
+    left: calc(-35 * var(--m));
+    width: calc(70 * var(--m));
+    height: calc(70 * var(--m));
+  }
+  html body .home-story .research h2 {
+    font: 500 calc(48.505 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+    text-wrap: balance;
+  }
+  html body[data-lang='en'] .home-story .research h2 {
+    font-weight: 700;
+  }
+  html body .home-story .research h2 span {
+    display: block;
+    margin: 0;
+  }
+  html body[data-lang='zh'] .home-story .research h2 span {
+    margin-top: calc(6 * var(--m));
+  }
+  html body[data-lang='en'] .home-story .research h2 span {
+    margin-top: calc(0 * var(--m));
+  }
+  html body .home-story .research .research-intro {
+    max-width: calc(513 * var(--m));
+    margin-top: calc(23 * var(--m));
+    font: 400 calc(20 * var(--m)) / 1.5 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+  }
+  html body[data-lang='en'] .home-story .research .research-intro {
+    margin-top: calc(40 * var(--m));
+  }
+  html body .home-story .research .research-stats {
+    display: flex;
+    flex-direction: column;
+    gap: calc(50 * var(--m));
+    margin-top: calc(120 * var(--m));
+  }
+  html body[data-lang='en'] .home-story .research .research-stats {
+    display: grid;
+    grid-template-columns: calc(345 * var(--m)) minmax(0, 1fr);
+    grid-template-rows: repeat(2, auto);
+    grid-auto-flow: column;
+    gap: calc(76 * var(--m)) 0;
+    margin-top: calc(120 * var(--m));
+  }
+  html body .home-story .research .research-stats > div {
+    display: flex;
+    width: max-content;
+    max-width: 100%;
+    flex-direction: column;
+    gap: calc(12 * var(--m));
+  }
+  html body .home-story .research .research-stats strong {
+    font: 400 calc(81.333 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+  }
+  html body .home-story .research .research-stats span {
+    margin: 0;
+    font: 400 calc(20 * var(--m)) / 1.5 var(--serif);
+    letter-spacing: -0.05em;
+    color: #000;
+  }
+
+  /* ---------- 5 · Focus area (275:5739 / 275:6830) ---------- */
+  html body .home-story .focus {
+    gap: 0;
+    padding: calc(125 * var(--m)) 0 max(32px, env(safe-area-inset-bottom));
+  }
+  html body .home-story .focus .focus-title {
+    padding: 0 var(--mobile-right) 0 calc(101 * var(--m));
+    font: 400 calc(81.333 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    color: #fff;
+  }
+  html body .home-story .focus .focus-title-kicker {
+    display: block;
+    font: inherit;
+    letter-spacing: inherit;
+  }
+  html body[data-lang='zh'] .home-story .focus .focus-title {
+    font-weight: 600;
+  }
+  html body .home-story .focus .focus-desktop-br {
+    display: inline;
+  }
+  html body .home-story .focus .focus-title > span {
+    display: block;
+    margin-top: calc(26 * var(--m));
+    font: 400 calc(24 * var(--m)) / 1.2 var(--serif);
+    letter-spacing: -0.05em;
+    opacity: 0.4;
+    max-width: none;
+    color: #fff;
+  }
+  html body .home-story .focus .constellation {
+    margin-top: calc(40 * var(--m));
+    width: 100%;
+  }
+  html body .home-story .focus .focus-panels {
+    margin-top: calc(24 * var(--m));
+    padding: 0 var(--mobile-right) 0 calc(157 * var(--m));
+  }
+  html body .home-story .focus .focus-panel h3 {
+    font-size: calc(20 * var(--m));
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    color: #fff;
+  }
+  html body .home-story .focus .focus-panel h3 span:first-child {
+    font-weight: 700;
+    letter-spacing: 0.58em;
+  }
+  html body .home-story .focus .focus-panel h3 span:last-child {
+    margin: 0;
+    font-size: calc(20 * var(--m));
+    font-weight: 400;
+  }
+  html body .home-story .focus .focus-panel p {
+    margin: calc(14 * var(--m)) 0 0 calc(32 * var(--m));
+    font-size: calc(16 * var(--m));
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    color: #d8d6cf;
+  }
+  html body .home-story .focus .focus-links {
+    gap: 12px 28px;
+    margin: calc(40 * var(--m)) 0 0;
+    padding: 0 var(--mobile-right) 0 calc(101 * var(--m));
+    font-size: 12px;
+    opacity: 0.6;
+  }
+  /* Node labels: Figma 275:6038 (sector, white 40%) and 275:6536 (company). */
+  html body .home-story .focus .sector-star .star-label {
+    max-width: none;
+    padding: 0;
+    background: none;
+    font-size: max(9px, calc(15.615 * var(--m)));
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: rgb(255 255 255 / 40%);
+  }
+  html body .home-story .focus .sector-star.is-active .star-label {
+    max-width: calc(280 * var(--m));
+    font-size: max(11px, calc(20 * var(--m)));
+    font-weight: 700;
+    color: #fff;
+  }
+  html body .home-story .focus .constellation-company-label {
+    max-width: none;
+    padding: 0;
+    background: none;
+    font-size: max(9px, calc(15.137 * var(--m)));
+    line-height: 1.5;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+    color: #b2a2ff;
+  }
+  html body .home-story .focus .constellation-company .constellation-dot {
+    width: max(3px, calc(4 * var(--m)));
+    height: max(3px, calc(4 * var(--m)));
+    left: calc(50% - max(3px, calc(4 * var(--m))) / 2);
+    top: calc(50% - max(3px, calc(4 * var(--m))) / 2);
+    background: #b2a2ff;
+    transform: none;
+  }
+  /* Review fixes: backdrop, panel heading, stats labels, research marker. */
+  html body .home-story .focus .focus-backdrop-nebula {
+    display: none;
+  }
+  html body[data-lang='en'] .home-story .focus .focus-panel h3 span {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.05em;
+  }
+  html body[data-lang='en'] .home-story .focus .focus-panel h3 span::before {
+    content: '/ ';
+  }
+  html body[data-lang='zh'] .home-story .focus .focus-panel h3 span:last-child {
+    margin-left: calc(35 * var(--m));
+  }
+  html body .home-story .focus .focus-panel p {
+    max-width: calc(261 * var(--m));
+  }
+  html body .home-story .research .research-stats span {
+    max-width: none;
+  }
+  html body .home-story .research .research-marker {
+    display: block;
+  }
+  html body[data-lang='en'] .home-story .about .about-title {
+    font-size: calc(44 * var(--m));
+  }
+}
+
+/* A landscape phone scrolls the natural flow: the Figma top offsets would
+   leave the first screen empty, so the compact spacing stays. */
+@media (max-width: 1023px) and (max-height: 599px) {
+  html body .home-story :is(.opening, .hero, .about, .research) {
+    padding-top: 100px;
+    padding-bottom: 48px;
+  }
+}

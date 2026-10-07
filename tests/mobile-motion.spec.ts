@@ -56,7 +56,7 @@ for (const lang of ['zh', 'en']) {
       page.on('pageerror', (error) => errors.push(error.message));
       await page.goto(`${lang}/index.html`);
       await page.evaluate(() => document.fonts.ready);
-      const chapterTitle = page.locator('.hero-title');
+      const chapterTitle = page.locator('.hero-title:not(.hero-title-en)');
       // Copy deck §2.2: the hero keeps its two lines.
       await expect(chapterTitle).toContainText(
         lang === 'zh'

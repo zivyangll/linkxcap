@@ -77,12 +77,10 @@ type HomeContent = {
     title: Localized;
     intro: Localized<string[]>;
     stats: Array<{ value: string; label: Localized }>;
-    footnote: Localized;
   };
   focus: {
     title: Localized<string[]>;
     auxiliaryTitle: Localized;
-    interactionHint: Localized;
     contactLink: Localized;
     aboutLink: Localized;
     ariaLabel: Localized;
