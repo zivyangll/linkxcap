@@ -4,12 +4,22 @@ import PageTitle from './PageTitle.astro';
 import '../styles/team-review.css';
 const { lang } = Astro.props as { lang: Lang };
 const members = team;
+// Desktop composition breaks the first zh paragraph after its first comma.
+const introParagraphs = teamContent.intro[lang].map((paragraph: string) =>
+  lang === 'zh' ? paragraph.replace(/(。[^，。]*，)/, '$1\n') : paragraph,
+);
 ---
 
 <section class="team-review" data-team-review data-node-id="2002:4567">
   <div class="team-review-heading">
     <div class="team-review-title">
       <p class="eyebrow">{teamContent.eyebrow[lang]}</p>
+      <p class="team-desktop-title" aria-hidden="true">
+        {lang === 'zh' && <span lang="en">{teamContent.title.en}</span>}
+        <span>
+          {lang === 'zh' ? teamContent.eyebrow.zh : teamContent.title.en}
+        </span>
+      </p>
       <PageTitle
         zh={teamContent.headline.zh}
         en={teamContent.headline.en}
@@ -17,7 +27,7 @@ const members = team;
       />
     </div>
     <p>
-      {teamContent.intro[lang].map((paragraph) => (
+      {introParagraphs.map((paragraph: string) => (
         <span class="intro-paragraph">{paragraph}</span>
       ))}
     </p>

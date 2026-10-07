@@ -11,6 +11,10 @@ body .team-review {
   display: block;
 }
 
+.team-review .team-desktop-title {
+  display: none;
+}
+
 .team-review .team-review-heading .page-title {
   position: static;
 }
@@ -192,41 +196,73 @@ body .team-review {
 }
 
 @media (min-width: 1024px) {
+  /* Figma 275:2828 (zh) / 275:3880 (en), 1920 wide: the heading is placed on
+     the design's coordinates and the portrait grid starts at y 428. */
   body .team-review {
+    position: relative;
     min-height: calc(1080 * var(--u));
-    padding: calc(194 * var(--u)) 0 calc(125 * var(--u));
+    padding: 0 0 calc(125 * var(--u));
   }
 
   .team-review .team-review-heading {
-    position: relative;
-    display: flex;
-    height: calc(198 * var(--u));
-    padding: 0 calc(180 * var(--u));
-    justify-content: space-between;
-    align-items: flex-start;
+    display: block;
+    height: calc(428 * var(--u));
+    padding: 0;
   }
 
   .team-review .team-review-title {
-    position: relative;
-    flex: 1 1 auto;
-    min-width: 0;
-    padding-right: calc(40 * var(--u));
+    position: static;
+    padding: 0;
   }
 
-  /* Figma has no eyebrow: keep the copy's page name above the title so the
-     two title lines still start at y 194 and 257. */
   .team-review .team-review-title .eyebrow {
+    display: none;
+  }
+
+  .team-review .team-desktop-title {
     position: absolute;
-    left: 0;
-    bottom: calc(100% + 14 * var(--u));
+    left: calc(180 * var(--u));
+    top: calc(191 * var(--u));
+    display: flex;
+    flex-direction: column;
     margin: 0;
+    font-size: calc(52.25 * var(--u));
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  body[data-lang='zh'] .team-review .team-desktop-title {
+    top: calc(174 * var(--u));
+  }
+
+  .team-review .team-desktop-title span[lang='en'] {
+    margin-bottom: calc(11.92 * var(--u));
+    font-size: calc(20.901 * var(--u));
+    font-weight: 500;
   }
 
   .team-review .team-review-title .page-title {
-    font-size: calc(52.25 * var(--u));
-    font-weight: 500;
+    position: absolute;
+    left: calc(991 * var(--u));
+    top: calc(208 * var(--u));
+    font-size: calc(30 * var(--u));
+    font-weight: 600;
     line-height: 1.2;
     text-wrap: nowrap;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-title .page-title {
+    left: calc(1200 * var(--u));
+    top: calc(222 * var(--u));
+  }
+
+  body[data-lang='zh']
+    .team-review
+    .team-review-title
+    .page-title
+    span[lang='en'] {
+    display: none;
   }
 
   .team-review .team-review-title .page-title span + span,
@@ -236,15 +272,29 @@ body .team-review {
   }
 
   .team-review .team-review-heading > p {
-    flex: none;
-    width: calc(673 * var(--u));
+    position: absolute;
+    left: calc(991 * var(--u));
+    top: calc(255 * var(--u));
+    width: calc(784 * var(--u));
     max-width: none;
     margin: 0;
     padding: 0;
-    font-size: max(10px, calc(14 * var(--u)));
+    font-size: calc(14 * var(--u));
+    font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
-    text-align: right;
+    text-align: left;
+    white-space: pre-line;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-heading > p {
+    left: calc(1200 * var(--u));
+    top: calc(269 * var(--u));
+    width: calc(575 * var(--u));
+  }
+
+  .team-review .team-review-heading > p .intro-paragraph + .intro-paragraph {
+    margin-top: 0;
   }
 
   .team-review .team-explorer {
@@ -276,50 +326,60 @@ body .team-review {
     border-right: 1px solid rgb(0 0 0 / 30%);
   }
 
-  /* Portraits are 407 × 509 at each slot's Figma offset from its cell. */
+  /* Portraits keep their artwork; each slot is scaled and placed so the figure
+     lines up with Figma 275:2828 / 275:3880 (row 1 starts at y 429, row 2 at
+     y 1087). */
   .team-review .team-member .member-portrait img {
     inset: auto;
     left: var(--portrait-x);
     top: var(--portrait-y);
-    width: calc(407 * var(--u));
-    height: calc(509 * var(--u));
+    width: var(--portrait-w);
+    height: var(--portrait-h);
     max-width: none;
     object-fit: contain;
     object-position: center;
   }
 
   .team-review .team-member:nth-child(1) {
-    --portrait-x: calc(224 * var(--u));
-    --portrait-y: calc(71 * var(--u));
+    --portrait-x: calc(223 * var(--u));
+    --portrait-y: calc(85.8 * var(--u));
+    --portrait-w: calc(406 * var(--u));
+    --portrait-h: calc(507.7 * var(--u));
   }
 
   .team-review .team-member:nth-child(2) {
-    --portrait-x: calc(76 * var(--u));
-    --portrait-y: calc(62 * var(--u));
+    --portrait-x: calc(82.9 * var(--u));
+    --portrait-y: calc(61.7 * var(--u));
+    --portrait-w: calc(384 * var(--u));
+    --portrait-h: calc(480.2 * var(--u));
   }
 
   .team-review .team-member:nth-child(3) {
-    --portrait-x: calc(77 * var(--u));
-    --portrait-y: calc(56 * var(--u));
-  }
-
-  .team-review .team-member:nth-child(3) .member-portrait img {
-    width: calc(408 * var(--u));
+    --portrait-x: calc(66.5 * var(--u));
+    --portrait-y: calc(73 * var(--u));
+    --portrait-w: calc(390.9 * var(--u));
+    --portrait-h: calc(488.9 * var(--u));
   }
 
   .team-review .team-member:nth-child(4) {
     --portrait-x: calc(224 * var(--u));
-    --portrait-y: calc(69 * var(--u));
+    --portrait-y: calc(38 * var(--u));
+    --portrait-w: calc(407 * var(--u));
+    --portrait-h: calc(509 * var(--u));
   }
 
   .team-review .team-member:nth-child(5) {
-    --portrait-x: calc(76 * var(--u));
-    --portrait-y: calc(69 * var(--u));
+    --portrait-x: calc(77.7 * var(--u));
+    --portrait-y: calc(44 * var(--u));
+    --portrait-w: calc(407 * var(--u));
+    --portrait-h: calc(509 * var(--u));
   }
 
   .team-review .team-member:nth-child(6) {
-    --portrait-x: calc(78 * var(--u));
-    --portrait-y: calc(69 * var(--u));
+    --portrait-x: calc(60.7 * var(--u));
+    --portrait-y: calc(21.2 * var(--u));
+    --portrait-w: calc(407 * var(--u));
+    --portrait-h: calc(509 * var(--u));
   }
 
   .team-review .member-caption {

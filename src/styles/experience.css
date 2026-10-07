@@ -659,6 +659,17 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
 }
 
+/* Figma 272:597: an unselected mark is the logo at half strength (mid grey on
+   the paper), not solid black; hover or focus restores full strength. */
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  body
+    .portfolio-page
+    .portfolio-card:not(:hover, :focus-visible)
+    .company-logo {
+    opacity: 0.5;
+  }
+}
+
 @media (max-width: 1023px) {
   .portfolio-filters {
     display: flex;
