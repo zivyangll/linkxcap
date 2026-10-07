@@ -629,126 +629,54 @@
   ],
   "companies": [
     {
-      "id": "agic-micro",
-      "slug": "agic-micro",
-      "name_cn": "谦合益邦",
-      "name_en": "AGIC micro",
-      "description_cn": "谦合益邦提供从计算芯片、加速卡到集成计算方案的 AI 基础设施，覆盖不同部署环境的算力需求。其“芯片到云”路线将硬件与系统交付结合。",
-      "description_en": "AGIC micro spans the infrastructure stack from compute chips and accelerator cards to integrated AI systems. Its chip-to-cloud approach addresses different deployment needs through hardware and system design.",
-      "detail_cn": "谦合益邦提供从计算芯片、加速卡到集成计算方案的 AI 基础设施，覆盖不同部署环境的算力需求。其“芯片到云”路线将硬件与系统交付结合。",
-      "detail_en": "AGIC micro spans the infrastructure stack from compute chips and accelerator cards to integrated AI systems. Its chip-to-cloud approach addresses different deployment needs through hardware and system design.",
-      "website_url": "https://www.agicmicro.com",
+      "id": "zhipu-ai",
+      "slug": "zhipu-ai",
+      "name_cn": "智谱",
+      "name_en": "Z.AI",
+      "description_cn": "智谱源于清华大学相关研究团队，以 GLM 系列语言及多模态模型为核心，提供面向开发者和企业的平台、智能体接口等服务。公司于 2026 年 1 月在港交所上市，股票代码 02513.HK。",
+      "description_en": "Originating from Tsinghua research, Z.AI centers its developer and enterprise offerings on the GLM family of language and multimodal models, alongside agent APIs and related tools. It listed on the Hong Kong Stock Exchange in January 2026 under 02513.HK.",
+      "detail_cn": "智谱源于清华大学相关研究团队，以 GLM 系列语言及多模态模型为核心，提供面向开发者和企业的平台、智能体接口等服务。公司于 2026 年 1 月在港交所上市，股票代码 02513.HK。",
+      "detail_en": "Originating from Tsinghua research, Z.AI centers its developer and enterprise offerings on the GLM family of language and multimodal models, alongside agent APIs and related tools. It listed on the Hong Kong Stock Exchange in January 2026 under 02513.HK.",
+      "website_url": "https://z.ai",
       "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "agic-micro.webp",
+      "sector_id": "foundation",
+      "logo_file": "zhipu-ai.svg",
       "sector_ids": [
-        "chips"
-      ]
-    },
-    {
-      "id": "aipher",
-      "slug": "aipher",
-      "name_cn": "艾斐智药",
-      "name_en": "AIPher",
-      "description_cn": "艾斐智药源于清华 AIR，以 DrugCLIP 等算法把大规模分子筛选转化为高效检索问题。其 AI 药物研发路线从疾病与靶点研究延伸至分子设计，探索更连续的发现流程。",
-      "description_en": "Originating from Tsinghua AIR, AIPher uses algorithms including DrugCLIP to turn large-scale molecular screening into a retrieval problem. Its broader drug-discovery work connects disease and target research with molecular design.",
-      "detail_cn": "艾斐智药源于清华 AIR，以 DrugCLIP 等算法把大规模分子筛选转化为高效检索问题。其 AI 药物研发路线从疾病与靶点研究延伸至分子设计，探索更连续的发现流程。",
-      "detail_en": "Originating from Tsinghua AIR, AIPher uses algorithms including DrugCLIP to turn large-scale molecular screening into a retrieval problem. Its broader drug-discovery work connects disease and target research with molecular design.",
-      "website_url": "https://www.aipher-tech.com",
-      "investment_year": "",
-      "sector_id": "frontiers",
-      "logo_file": "aipher.webp",
-      "sector_ids": [
-        "frontiers"
-      ]
-    },
-    {
-      "id": "algoenergy",
-      "slug": "algoenergy",
-      "name_cn": "九章智电",
-      "name_en": "AlgoEnergy",
-      "description_cn": "九章智电是一家专注于电力 AI 的科技公司，面向发电、售电、用电和储能等主体提供覆盖电力交易、策略优化与运营管理的全链路服务。公司依托北大 AI 与量化团队的技术积累，在电力现货交易场景中形成了领先的策略能力和商业化表现，助力客户提升收益、降低成本，并具备成长为电力智能化领域领军企业的潜力。",
-      "description_en": "AlgoEnergy is a technology company focused on AI for the power sector, providing end-to-end services for power generation, retail, consumption, and energy storage players across electricity trading, strategy optimization, and operations management. Backed by the team's strengths in AI and quantitative modeling from Peking University, the company has demonstrated strong performance and scalable profitability in spot power trading, helping customers improve returns and reduce costs while positioning itself as a potential leader in power intelligence.",
-      "detail_cn": "九章智电是一家专注于电力 AI 的科技公司，面向发电、售电、用电和储能等主体提供覆盖电力交易、策略优化与运营管理的全链路服务。公司依托北大 AI 与量化团队的技术积累，在电力现货交易场景中形成了领先的策略能力和商业化表现，助力客户提升收益、降低成本，并具备成长为电力智能化领域领军企业的潜力。",
-      "detail_en": "AlgoEnergy is a technology company focused on AI for the power sector, providing end-to-end services for power generation, retail, consumption, and energy storage players across electricity trading, strategy optimization, and operations management. Backed by the team's strengths in AI and quantitative modeling from Peking University, the company has demonstrated strong performance and scalable profitability in spot power trading, helping customers improve returns and reduce costs while positioning itself as a potential leader in power intelligence.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "algoenergy.svg",
-      "sector_ids": [
-        "applications",
         "foundation"
       ]
     },
     {
-      "id": "amio-robotics",
-      "slug": "amio-robotics",
-      "name_cn": "阿米奥机器人",
-      "name_en": "amigos",
-      "description_cn": "阿米奥机器人面向消费电子等柔性制造场景，研发能自主完成复杂操作的具身机器人。大模型、强化学习与机器人控制的结合，帮助系统适应不断变化的工序。",
-      "description_en": "amigos develops embodied robots for flexible manufacturing, including consumer electronics. By combining language models, reinforcement learning and robotics, it aims to handle complex tasks as production steps change.",
-      "detail_cn": "阿米奥机器人面向消费电子等柔性制造场景，研发能自主完成复杂操作的具身机器人。大模型、强化学习与机器人控制的结合，帮助系统适应不断变化的工序。",
-      "detail_en": "amigos develops embodied robots for flexible manufacturing, including consumer electronics. By combining language models, reinforcement learning and robotics, it aims to handle complex tasks as production steps change.",
-      "website_url": "https://amigos-robot.com",
+      "id": "shengshu-technology",
+      "slug": "shengshu-technology",
+      "name_cn": "生数科技",
+      "name_en": "GensPI",
+      "description_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期具身智能方向。",
+      "description_en": "GensPI brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and embodied AI.",
+      "detail_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期具身智能方向。",
+      "detail_en": "GensPI brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and embodied AI.",
+      "website_url": "https://www.genspi.com",
       "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "amio-robotics.svg",
+      "sector_id": "foundation",
+      "logo_file": "shengshu-technology.webp",
       "sector_ids": [
-        "physical",
         "foundation"
       ]
     },
     {
-      "id": "nexus",
-      "slug": "nexus",
-      "name_cn": "奇点逃逸",
-      "name_en": "Antropy",
-      "description_cn": "奇点逃逸的 Learnable System 把任务流、系统评测和递归优化结合，使智能体能从执行反馈中持续改进。其重点是将“自我进化”做成可重复的学习机制。",
-      "description_en": "Antropy combines task flows, systematic evaluation and recursive optimization so agents can improve from their own execution feedback. The focus is a repeatable learning mechanism rather than a one-time capability gain.",
-      "detail_cn": "奇点逃逸的 Learnable System 把任务流、系统评测和递归优化结合，使智能体能从执行反馈中持续改进。其重点是将“自我进化”做成可重复的学习机制。",
-      "detail_en": "Antropy combines task flows, systematic evaluation and recursive optimization so agents can improve from their own execution feedback. The focus is a repeatable learning mechanism rather than a one-time capability gain.",
-      "website_url": "",
+      "id": "modelbest",
+      "slug": "modelbest",
+      "name_cn": "面壁智能",
+      "name_en": "MODELBEST",
+      "description_cn": "面壁智能以 MiniCPM 系列高效语言及多模态模型推动端侧 AI。相对庞大的云端模型，其重点是在资源受限设备上提供可实际部署的模型能力。",
+      "description_en": "MODELBEST's MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
+      "detail_cn": "面壁智能以 MiniCPM 系列高效语言及多模态模型推动端侧 AI。相对庞大的云端模型，其重点是在资源受限设备上提供可实际部署的模型能力。",
+      "detail_en": "MODELBEST's MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
+      "website_url": "https://modelbest.cn",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "nexus.svg",
+      "logo_file": "modelbest.webp",
       "sector_ids": [
-        "foundation",
-        "applications"
-      ]
-    },
-    {
-      "id": "chaoyan-intelligence",
-      "slug": "chaoyan-intelligence",
-      "name_cn": "超衍智能",
-      "name_en": "Apex Intelligence",
-      "description_cn": "超衍智能围绕自进化基座模型，把任务环境、数据、模型和评估器组成持续学习闭环。已探索计算物理、化学、生物等跨学科研发环境，目标是让模型在实际科研任务中不断改进。",
-      "description_en": "Apex Intelligence is developing self-evolving foundation models around a loop of task environments, data, models and evaluators. Its cross-disciplinary research settings include computational physics, chemistry and biology, where learning from real R&D tasks matters.",
-      "detail_cn": "超衍智能围绕自进化基座模型，把任务环境、数据、模型和评估器组成持续学习闭环。已探索计算物理、化学、生物等跨学科研发环境，目标是让模型在实际科研任务中不断改进。",
-      "detail_en": "Apex Intelligence is developing self-evolving foundation models around a loop of task environments, data, models and evaluators. Its cross-disciplinary research settings include computational physics, chemistry and biology, where learning from real R&D tasks matters.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "chaoyan-intelligence.svg",
-      "sector_ids": [
-        "foundation",
-        "frontiers"
-      ]
-    },
-    {
-      "id": "approaching-ai",
-      "slug": "approaching-ai",
-      "name_cn": "趋境科技",
-      "name_en": "APPROACHING.AI",
-      "description_cn": "趋境科技通过软硬件协同优化大模型推理，覆盖缓存管理、异构计算和集群调度。其 Token 服务与定制推理方案，重点提升吞吐量、降低延迟和使用成本。",
-      "description_en": "APPROACHING.AI works across cache management, heterogeneous compute and cluster scheduling to improve model inference. Its token services and tailored deployments focus on throughput, latency and the cost of serving AI at scale.",
-      "detail_cn": "趋境科技通过软硬件协同优化大模型推理，覆盖缓存管理、异构计算和集群调度。其 Token 服务与定制推理方案，重点提升吞吐量、降低延迟和使用成本。",
-      "detail_en": "APPROACHING.AI works across cache management, heterogeneous compute and cluster scheduling to improve model inference. Its token services and tailored deployments focus on throughput, latency and the cost of serving AI at scale.",
-      "website_url": "https://approaching-ai.com",
-      "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "approaching-ai.svg",
-      "sector_ids": [
-        "infrastructure"
+        "foundation"
       ]
     },
     {
@@ -770,38 +698,19 @@
       ]
     },
     {
-      "id": "biogeometry",
-      "slug": "biogeometry",
-      "name_cn": "百奥几何",
-      "name_en": "BioGeometry",
-      "description_cn": "百奥几何利用生成式 AI 研究蛋白质序列、结构与功能之间的关系，开展全新可编程蛋白设计。应用方向包括生物制药与合成生物学。",
-      "description_en": "BioGeometry applies generative AI to the relationship between protein sequence, structure and function. Its de novo design work targets programmable proteins for biopharmaceutical and synthetic-biology applications.",
-      "detail_cn": "百奥几何利用生成式 AI 研究蛋白质序列、结构与功能之间的关系，开展全新可编程蛋白设计。应用方向包括生物制药与合成生物学。",
-      "detail_en": "BioGeometry applies generative AI to the relationship between protein sequence, structure and function. Its de novo design work targets programmable proteins for biopharmaceutical and synthetic-biology applications.",
-      "website_url": "https://www.biogeom.com",
+      "id": "mosi",
+      "slug": "mosi",
+      "name_cn": "模思智能",
+      "name_en": "Mosi",
+      "description_cn": "模思智能源于复旦大学语音研究团队，以 SpeechGPT 等成果探索能感知、表达并实时回应的语音模型。其方向是让语音智能体处理打断、情绪和自然对话，而不只是朗读文字。",
+      "description_en": "Originating from Fudan speech research, Mosi builds on SpeechGPT to pursue voice models that perceive, generate and respond in real time. Its focus moves beyond reading text toward agents that handle interruptions and richer conversational cues.",
+      "detail_cn": "模思智能源于复旦大学语音研究团队，以 SpeechGPT 等成果探索能感知、表达并实时回应的语音模型。其方向是让语音智能体处理打断、情绪和自然对话，而不只是朗读文字。",
+      "detail_en": "Originating from Fudan speech research, Mosi builds on SpeechGPT to pursue voice models that perceive, generate and respond in real time. Its focus moves beyond reading text toward agents that handle interruptions and richer conversational cues.",
+      "website_url": "https://www.mosi.cn",
       "investment_year": "",
-      "sector_id": "frontiers",
-      "logo_file": "biogeometry.svg",
+      "sector_id": "foundation",
+      "logo_file": "mosi.svg",
       "sector_ids": [
-        "frontiers",
-        "foundation"
-      ]
-    },
-    {
-      "id": "openmaic",
-      "slug": "openmaic",
-      "name_cn": "元知进化",
-      "name_en": "CogEvol",
-      "description_cn": "元知进化以 OpenMAIC 开源社区为基础，将认知赋能型 AI 用于教育、科研、人才发展和知识创作。它强调人机协同，让学习者和专业人员参与能力形成过程。",
-      "description_en": "CogEvol is an open-source community and product effort around cognitive AI for education, research, talent development and knowledge creation. Its emphasis is on people and AI learning together rather than replacing expert judgment.",
-      "detail_cn": "元知进化以 OpenMAIC 开源社区为基础，将认知赋能型 AI 用于教育、科研、人才发展和知识创作。它强调人机协同，让学习者和专业人员参与能力形成过程。",
-      "detail_en": "CogEvol is an open-source community and product effort around cognitive AI for education, research, talent development and knowledge creation. Its emphasis is on people and AI learning together rather than replacing expert judgment.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "openmaic.svg",
-      "sector_ids": [
-        "applications",
         "foundation"
       ]
     },
@@ -824,41 +733,6 @@
       ]
     },
     {
-      "id": "discover-robotics",
-      "slug": "discover-robotics",
-      "name_cn": "求之科技",
-      "name_en": "DISCOVER Robotics",
-      "description_cn": "求之科技面向真实家庭任务研发具身机器人，优先覆盖收纳、洗护与备餐等高频家务。轮式底盘、双臂及灵巧手与自研分层模型、仿真和数据工具链协同设计，目标是走向可持续交付的家庭产品。",
-      "description_en": "DISCOVER Robotics designs home robots around concrete chores such as tidying, laundry and meal preparation. Wheeled mobility, dual arms and hands are paired with a layered model architecture, simulation and data tools aimed at practical household use.",
-      "detail_cn": "求之科技面向真实家庭任务研发具身机器人，优先覆盖收纳、洗护与备餐等高频家务。轮式底盘、双臂及灵巧手与自研分层模型、仿真和数据工具链协同设计，目标是走向可持续交付的家庭产品。",
-      "detail_en": "DISCOVER Robotics designs home robots around concrete chores such as tidying, laundry and meal preparation. Wheeled mobility, dual arms and hands are paired with a layered model architecture, simulation and data tools aimed at practical household use.",
-      "website_url": "https://www.discover-robotics.com",
-      "investment_year": "",
-      "sector_id": "physical",
-      "logo_file": "discover-robotics.svg",
-      "sector_ids": [
-        "physical"
-      ]
-    },
-    {
-      "id": "eonark",
-      "slug": "eonark",
-      "name_cn": "无尽方舟",
-      "name_en": "EonArk",
-      "description_cn": "无尽方舟是一家专注于 AI 生物医药的创新公司，围绕衰老干预与延寿药物发现搭建跨物种研发平台。公司通过自研 H2P 模型提升小鼠研究向人类应用转化的效率，并以宠物健康市场作为早期商业化切入点，在降低临床与伦理风险的同时验证产品价值，具备成长为全球抗衰老药物研发平台的潜力。",
-      "description_en": "EonArk is an AI-enabled biotechnology company focused on aging intervention and longevity drug discovery. Through its proprietary H2P model, the company aims to improve the translation of findings from mouse studies to human applications, while using the pet health market as an early commercialization path to validate product value with lower clinical and ethical risk. EonArk has the potential to develop into a global platform for anti-aging drug discovery.",
-      "detail_cn": "无尽方舟是一家专注于 AI 生物医药的创新公司，围绕衰老干预与延寿药物发现搭建跨物种研发平台。公司通过自研 H2P 模型提升小鼠研究向人类应用转化的效率，并以宠物健康市场作为早期商业化切入点，在降低临床与伦理风险的同时验证产品价值，具备成长为全球抗衰老药物研发平台的潜力。",
-      "detail_en": "EonArk is an AI-enabled biotechnology company focused on aging intervention and longevity drug discovery. Through its proprietary H2P model, the company aims to improve the translation of findings from mouse studies to human applications, while using the pet health market as an early commercialization path to validate product value with lower clinical and ethical risk. EonArk has the potential to develop into a global platform for anti-aging drug discovery.",
-      "website_url": "https://eonark.ai",
-      "investment_year": "",
-      "sector_id": "frontiers",
-      "logo_file": "eonark.webp",
-      "sector_ids": [
-        "frontiers",
-        "foundation"
-      ]
-    },
-    {
       "id": "facemind",
       "slug": "facemind",
       "name_cn": "脸谱心智",
@@ -877,55 +751,127 @@
       ]
     },
     {
-      "id": "fangcun-leap",
-      "slug": "fangcun-leap",
-      "name_cn": "方寸跃迁",
-      "name_en": "Fangcun AI",
-      "description_cn": "方寸跃迁定位智能体时代的安全中间层，在智能体调用外部工具与执行任务时提供检测和防护。其产品覆盖 Skill 检查、运行时防护及高自主执行场景的安全控制。",
-      "description_en": "Fangcun AI positions security middleware between AI agents and the tools they use. Its products address skill inspection, runtime protection and controls for more autonomous execution, where risks emerge after a model starts acting.",
-      "detail_cn": "方寸跃迁定位智能体时代的安全中间层，在智能体调用外部工具与执行任务时提供检测和防护。其产品覆盖 Skill 检查、运行时防护及高自主执行场景的安全控制。",
-      "detail_en": "Fangcun AI positions security middleware between AI agents and the tools they use. Its products address skill inspection, runtime protection and controls for more autonomous execution, where risks emerge after a model starts acting.",
-      "website_url": "https://www.fangcunleap.com",
+      "id": "lychee-ai",
+      "slug": "lychee-ai",
+      "name_cn": "厘清智能",
+      "name_en": "Litchi",
+      "description_cn": "厘清智能不以机器人本体为核心，而是提供具身智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
+      "description_en": "Litchi works on the infrastructure beneath embodied AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
+      "detail_cn": "厘清智能不以机器人本体为核心，而是提供具身智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
+      "detail_en": "Litchi works on the infrastructure beneath embodied AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "foundation",
+      "logo_file": "lychee-ai.svg",
+      "sector_ids": [
+        "foundation",
+        "physical"
+      ]
+    },
+    {
+      "id": "chaoyan-intelligence",
+      "slug": "chaoyan-intelligence",
+      "name_cn": "超衍智能",
+      "name_en": "Apex Intelligence",
+      "description_cn": "超衍智能围绕自进化基座模型，把任务环境、数据、模型和评估器组成持续学习闭环。已探索计算物理、化学、生物等跨学科研发环境，目标是让模型在实际科研任务中不断改进。",
+      "description_en": "Apex Intelligence is developing self-evolving foundation models around a loop of task environments, data, models and evaluators. Its cross-disciplinary research settings include computational physics, chemistry and biology, where learning from real R&D tasks matters.",
+      "detail_cn": "超衍智能围绕自进化基座模型，把任务环境、数据、模型和评估器组成持续学习闭环。已探索计算物理、化学、生物等跨学科研发环境，目标是让模型在实际科研任务中不断改进。",
+      "detail_en": "Apex Intelligence is developing self-evolving foundation models around a loop of task environments, data, models and evaluators. Its cross-disciplinary research settings include computational physics, chemistry and biology, where learning from real R&D tasks matters.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "foundation",
+      "logo_file": "chaoyan-intelligence.svg",
+      "sector_ids": [
+        "foundation",
+        "frontiers"
+      ]
+    },
+    {
+      "id": "mirros",
+      "slug": "mirros",
+      "name_cn": "无限镜元",
+      "name_en": "MirroS",
+      "description_cn": "无限镜元构建“智能体＋环境”双向演化的世界模型：智能体行动改变环境，环境反馈又更新智能体能力。该闭环针对具身训练中交互数据稀缺与虚实衔接困难的问题。",
+      "description_en": "MirroS models both the agent and its environment: actions change the world, and the resulting feedback updates the agent. This dual loop addresses scarce interaction data and the gap between simulated and real physical-AI training.",
+      "detail_cn": "无限镜元构建“智能体＋环境”双向演化的世界模型：智能体行动改变环境，环境反馈又更新智能体能力。该闭环针对具身训练中交互数据稀缺与虚实衔接困难的问题。",
+      "detail_en": "MirroS models both the agent and its environment: actions change the world, and the resulting feedback updates the agent. This dual loop addresses scarce interaction data and the gap between simulated and real physical-AI training.",
+      "website_url": "https://mirros.ai",
+      "investment_year": "",
+      "sector_id": "foundation",
+      "logo_file": "mirros.svg",
+      "sector_ids": [
+        "foundation",
+        "physical"
+      ]
+    },
+    {
+      "id": "omnimind",
+      "slug": "omnimind",
+      "name_cn": "万象智维",
+      "name_en": "OMNIMIND",
+      "description_cn": "万象智维采用“云端规划、设备端执行”架构，让智能体在手机等终端完成出行、购物和游戏相关任务。这样的分工兼顾复杂推理与本地响应。",
+      "description_en": "OMNIMIND pairs cloud-side planning with on-device execution so agents can carry out tasks on mobile devices. Its early use cases include mobility, shopping and gaming, where local responsiveness matters alongside more complex reasoning.",
+      "detail_cn": "万象智维采用“云端规划、设备端执行”架构，让智能体在手机等终端完成出行、购物和游戏相关任务。这样的分工兼顾复杂推理与本地响应。",
+      "detail_en": "OMNIMIND pairs cloud-side planning with on-device execution so agents can carry out tasks on mobile devices. Its early use cases include mobility, shopping and gaming, where local responsiveness matters alongside more complex reasoning.",
+      "website_url": "https://omnimind.com.cn",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "fangcun-leap.webp",
+      "logo_file": "omnimind.svg",
       "sector_ids": [
         "infrastructure",
         "applications"
       ]
     },
     {
-      "id": "shengshu-technology",
-      "slug": "shengshu-technology",
-      "name_cn": "生数科技",
-      "name_en": "GensPI",
-      "description_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期具身智能方向。",
-      "description_en": "GensPI brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and embodied AI.",
-      "detail_cn": "生数科技以 Vidu 视频生成产品服务内容创作，同时研发 Vidar 等视频理解与具身基础模型。视频产品与世界模型研究并进，连接当前创作需求和长期具身智能方向。",
-      "detail_en": "GensPI brings video generation to creators through Vidu while pursuing video understanding and embodied-model research, including Vidar. Its two tracks connect a current creative product with longer-term work on world models and embodied AI.",
-      "website_url": "https://www.genspi.com",
+      "id": "nexus",
+      "slug": "nexus",
+      "name_cn": "奇点逃逸",
+      "name_en": "Antropy",
+      "description_cn": "奇点逃逸的 Learnable System 把任务流、系统评测和递归优化结合，使智能体能从执行反馈中持续改进。其重点是将“自我进化”做成可重复的学习机制。",
+      "description_en": "Antropy combines task flows, systematic evaluation and recursive optimization so agents can improve from their own execution feedback. The focus is a repeatable learning mechanism rather than a one-time capability gain.",
+      "detail_cn": "奇点逃逸的 Learnable System 把任务流、系统评测和递归优化结合，使智能体能从执行反馈中持续改进。其重点是将“自我进化”做成可重复的学习机制。",
+      "detail_en": "Antropy combines task flows, systematic evaluation and recursive optimization so agents can improve from their own execution feedback. The focus is a repeatable learning mechanism rather than a one-time capability gain.",
+      "website_url": "",
       "investment_year": "",
       "sector_id": "foundation",
-      "logo_file": "shengshu-technology.webp",
+      "logo_file": "nexus.svg",
+      "sector_ids": [
+        "foundation",
+        "applications"
+      ]
+    },
+    {
+      "id": "yuanhuan-intelligence",
+      "slug": "yuanhuan-intelligence",
+      "name_cn": "元环智能",
+      "name_en": "MetaCircle",
+      "description_cn": "元环智能的元模型读取模型架构与数据分布，预测训练曲线，并探索反向设计更合适的模型。它把高度依赖经验的模型实验，推进为更可预测的研发流程。",
+      "description_en": "MetaCircle uses a meta-model to forecast training curves from model architecture and data distribution. It also explores reverse design, giving researchers earlier evidence for decisions that have often depended on intuition.",
+      "detail_cn": "元环智能的元模型读取模型架构与数据分布，预测训练曲线，并探索反向设计更合适的模型。它把高度依赖经验的模型实验，推进为更可预测的研发流程。",
+      "detail_en": "MetaCircle uses a meta-model to forecast training curves from model architecture and data distribution. It also explores reverse design, giving researchers earlier evidence for decisions that have often depended on intuition.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "foundation",
+      "logo_file": "yuanhuan-intelligence.svg",
       "sector_ids": [
         "foundation"
       ]
     },
     {
-      "id": "houdu-technology",
-      "slug": "houdu-technology",
-      "name_cn": "厚笃科技",
-      "name_en": "Houdu",
-      "description_cn": "厚笃科技以高性能数据处理引擎为基础，结合隐私保护和数据治理，帮助企业在大数据与 AI 场景中安全整合、使用数据。团队源于清华大学计算机领域研究背景。",
-      "description_en": "Houdu Technology combines a high-performance data engine with privacy protection and governance tools. Originating from a Tsinghua computer-science research team, it helps enterprises prepare and use data across analytics and AI workloads.",
-      "detail_cn": "厚笃科技以高性能数据处理引擎为基础，结合隐私保护和数据治理，帮助企业在大数据与 AI 场景中安全整合、使用数据。团队源于清华大学计算机领域研究背景。",
-      "detail_en": "Houdu Technology combines a high-performance data engine with privacy protection and governance tools. Originating from a Tsinghua computer-science research team, it helps enterprises prepare and use data across analytics and AI workloads.",
-      "website_url": "https://www.houdutech.cn/",
+      "id": "lingxin-zhiyu",
+      "slug": "lingxin-zhiyu",
+      "name_cn": "聆芯智语",
+      "name_en": "LINGX INTELLIGENCE",
+      "description_cn": "聆芯智语研发融合语音、视觉和文本的自然交互基座模型，关注情感、意图、长期上下文与实时双工对话。当前以富有表现力的语音生成和实时交流作为应用切口。",
+      "description_en": "LINGX INTELLIGENCE is working on a natural-interaction foundation model that combines speech, vision and text. Emotional cues, intent, long context and real-time two-way conversation shape its approach, with expressive voice as an early application.",
+      "detail_cn": "聆芯智语研发融合语音、视觉和文本的自然交互基座模型，关注情感、意图、长期上下文与实时双工对话。当前以富有表现力的语音生成和实时交流作为应用切口。",
+      "detail_en": "LINGX INTELLIGENCE is working on a natural-interaction foundation model that combines speech, vision and text. Emotional cues, intent, long context and real-time two-way conversation shape its approach, with expressive voice as an early application.",
+      "website_url": "",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "houdu-technology.svg",
+      "sector_id": "foundation",
+      "logo_file": "lingxin-zhiyu.svg",
       "sector_ids": [
-        "infrastructure"
+        "foundation"
       ]
     },
     {
@@ -941,6 +887,110 @@
       "investment_year": "",
       "sector_id": "chips",
       "logo_file": "rhino.webp",
+      "sector_ids": [
+        "chips",
+        "physical"
+      ]
+    },
+    {
+      "id": "neuhelium",
+      "slug": "neuhelium",
+      "name_cn": "新氦类脑",
+      "name_en": "NeuHelium",
+      "description_cn": "新氦类脑聚焦类脑芯片与片上智能系统，连接底层研发、产品化和应用场景。作为上海类脑芯片相关功能平台，其工作覆盖共性技术与前沿探索。",
+      "description_en": "NeuHelium works on neuromorphic chips and on-chip intelligence, linking research with commercialization and application needs. As a Shanghai platform for this field, it supports both shared industry technologies and exploratory work.",
+      "detail_cn": "新氦类脑聚焦类脑芯片与片上智能系统，连接底层研发、产品化和应用场景。作为上海类脑芯片相关功能平台，其工作覆盖共性技术与前沿探索。",
+      "detail_en": "NeuHelium works on neuromorphic chips and on-chip intelligence, linking research with commercialization and application needs. As a Shanghai platform for this field, it supports both shared industry technologies and exploratory work.",
+      "website_url": "http://www.neuhelium.com",
+      "investment_year": "",
+      "sector_id": "chips",
+      "logo_file": "neuhelium.webp",
+      "sector_ids": [
+        "chips",
+        "foundation"
+      ]
+    },
+    {
+      "id": "agic-micro",
+      "slug": "agic-micro",
+      "name_cn": "谦合益邦",
+      "name_en": "AGIC micro",
+      "description_cn": "谦合益邦提供从计算芯片、加速卡到集成计算方案的 AI 基础设施，覆盖不同部署环境的算力需求。其“芯片到云”路线将硬件与系统交付结合。",
+      "description_en": "AGIC micro spans the infrastructure stack from compute chips and accelerator cards to integrated AI systems. Its chip-to-cloud approach addresses different deployment needs through hardware and system design.",
+      "detail_cn": "谦合益邦提供从计算芯片、加速卡到集成计算方案的 AI 基础设施，覆盖不同部署环境的算力需求。其“芯片到云”路线将硬件与系统交付结合。",
+      "detail_en": "AGIC micro spans the infrastructure stack from compute chips and accelerator cards to integrated AI systems. Its chip-to-cloud approach addresses different deployment needs through hardware and system design.",
+      "website_url": "https://www.agicmicro.com",
+      "investment_year": "",
+      "sector_id": "chips",
+      "logo_file": "agic-micro.webp",
+      "sector_ids": [
+        "chips"
+      ]
+    },
+    {
+      "id": "beiji-xiongxin",
+      "slug": "beiji-xiongxin",
+      "name_cn": "北极雄芯",
+      "name_en": "Polar Bear Tech",
+      "description_cn": "北极雄芯以 Chiplet、3DIC 和近存计算探索更适配 AI 推理的芯片架构，同时面向车规级场景开发异构集成 SoC。云端推理与端侧应用构成其双线技术路线。",
+      "description_en": "Polar Bear Tech combines chiplets, 3D integration and near-memory computing for AI inference, alongside automotive-grade heterogeneous SoCs. Its architecture work spans both data-center decoding and edge applications.",
+      "detail_cn": "北极雄芯以 Chiplet、3DIC 和近存计算探索更适配 AI 推理的芯片架构，同时面向车规级场景开发异构集成 SoC。云端推理与端侧应用构成其双线技术路线。",
+      "detail_en": "Polar Bear Tech combines chiplets, 3D integration and near-memory computing for AI inference, alongside automotive-grade heterogeneous SoCs. Its architecture work spans both data-center decoding and edge applications.",
+      "website_url": "http://www.bjxx.tech",
+      "investment_year": "",
+      "sector_id": "chips",
+      "logo_file": "beiji-xiongxin.webp",
+      "sector_ids": [
+        "chips"
+      ]
+    },
+    {
+      "id": "xinsheng-vision",
+      "slug": "xinsheng-vision",
+      "name_cn": "芯生视界",
+      "name_en": "XS Vision",
+      "description_cn": "芯生视界研究面向视觉重建的植入式脑机接口。外部摄像设备采集画面，再经算法、低功耗芯片和柔性电极向视觉皮层传递刺激信号，探索帮助重度视觉损伤者恢复基本视觉感知的路径。",
+      "description_en": "XS Vision is researching an implantable visual-cortex interface for vision restoration. Its proposed system combines camera input, encoding algorithms, a low-power chip and flexible electrodes to explore basic visual perception for people with severe vision loss.",
+      "detail_cn": "芯生视界研究面向视觉重建的植入式脑机接口。外部摄像设备采集画面，再经算法、低功耗芯片和柔性电极向视觉皮层传递刺激信号，探索帮助重度视觉损伤者恢复基本视觉感知的路径。",
+      "detail_en": "XS Vision is researching an implantable visual-cortex interface for vision restoration. Its proposed system combines camera input, encoding algorithms, a low-power chip and flexible electrodes to explore basic visual perception for people with severe vision loss.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "chips",
+      "logo_file": "xinsheng-vision.svg",
+      "sector_ids": [
+        "chips"
+      ]
+    },
+    {
+      "id": "guanglian-xinke",
+      "slug": "guanglian-xinke",
+      "name_cn": "光联芯科",
+      "name_en": "LIGHTLINK",
+      "description_cn": "光联芯科以微环硅光路线研发芯片级光互连，面向 AI 集群日益增长的数据传输需求。近封装光学引擎与精密波长修调工艺，是其从研究走向可制造产品的重点。",
+      "description_en": "LIGHTLINK pursues chip-level optical interconnects through microring silicon photonics. Near-package optical engines and precise wavelength tuning are central to serving the growing data-transfer demands of AI clusters.",
+      "detail_cn": "光联芯科以微环硅光路线研发芯片级光互连，面向 AI 集群日益增长的数据传输需求。近封装光学引擎与精密波长修调工艺，是其从研究走向可制造产品的重点。",
+      "detail_en": "LIGHTLINK pursues chip-level optical interconnects through microring silicon photonics. Near-package optical engines and precise wavelength tuning are central to serving the growing data-transfer demands of AI clusters.",
+      "website_url": "https://lightlinktech.net",
+      "investment_year": "",
+      "sector_id": "chips",
+      "logo_file": "guanglian-xinke.svg",
+      "sector_ids": [
+        "chips"
+      ]
+    },
+    {
+      "id": "yuanchu-wanwu",
+      "slug": "yuanchu-wanwu",
+      "name_cn": "元触万物",
+      "name_en": "Libiligence",
+      "description_cn": "元触万物研发可贴附、可裁剪的柔性触觉皮肤，从手指扩展到整手及更大表面。其 TFT 有源矩阵路线让机器人获取高密度接触反馈，为精细操作提供新的感知数据。",
+      "description_en": "Libiligence's cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
+      "detail_cn": "元触万物研发可贴附、可裁剪的柔性触觉皮肤，从手指扩展到整手及更大表面。其 TFT 有源矩阵路线让机器人获取高密度接触反馈，为精细操作提供新的感知数据。",
+      "detail_en": "Libiligence's cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "chips",
+      "logo_file": "yuanchu-wanwu.webp",
       "sector_ids": [
         "chips",
         "physical"
@@ -981,266 +1031,89 @@
       ]
     },
     {
-      "id": "knevo",
-      "slug": "knevo",
-      "name_cn": "思演智能",
-      "name_en": "Kando AI",
-      "description_cn": "思演智能以记忆、智能体和强化学习构建个人化决策辅助系统。用户接受或拒绝建议后的结果会回流，帮助系统持续形成更贴近个人目标的判断；金融投资是其早期场景。",
-      "description_en": "Kando AI combines memory, agents and reinforcement learning in a personalized decision-support system. Feedback on accepted or rejected suggestions returns to the system, with investing as an early setting for testing this loop.",
-      "detail_cn": "思演智能以记忆、智能体和强化学习构建个人化决策辅助系统。用户接受或拒绝建议后的结果会回流，帮助系统持续形成更贴近个人目标的判断；金融投资是其早期场景。",
-      "detail_en": "Kando AI combines memory, agents and reinforcement learning in a personalized decision-support system. Feedback on accepted or rejected suggestions returns to the system, with investing as an early setting for testing this loop.",
-      "website_url": "",
+      "id": "qingcheng-jizhi",
+      "slug": "qingcheng-jizhi",
+      "name_cn": "清程极智",
+      "name_en": "Qingcheng.AI",
+      "description_cn": "清程极智提出覆盖云、边、端的 Token 网络，将不同设备和算力节点连接起来提供模型推理服务。公司源于清华大学计算机系相关团队，关注低成本、可扩展的推理能力。",
+      "description_en": "Qingcheng.AI envisions a token-serving network spanning cloud, edge and devices. Originating from a Tsinghua computer-science team, it focuses on connecting compute resources to make model inference more accessible and efficient.",
+      "detail_cn": "清程极智提出覆盖云、边、端的 Token 网络，将不同设备和算力节点连接起来提供模型推理服务。公司源于清华大学计算机系相关团队，关注低成本、可扩展的推理能力。",
+      "detail_en": "Qingcheng.AI envisions a token-serving network spanning cloud, edge and devices. Originating from a Tsinghua computer-science team, it focuses on connecting compute resources to make model inference more accessible and efficient.",
+      "website_url": "https://www.qingcheng.ai",
       "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "knevo.svg",
+      "sector_id": "infrastructure",
+      "logo_file": "qingcheng-jizhi.svg",
       "sector_ids": [
-        "applications"
+        "infrastructure"
       ]
     },
     {
-      "id": "yuanchu-wanwu",
-      "slug": "yuanchu-wanwu",
-      "name_cn": "元触万物",
-      "name_en": "Libiligence",
-      "description_cn": "元触万物研发可贴附、可裁剪的柔性触觉皮肤，从手指扩展到整手及更大表面。其 TFT 有源矩阵路线让机器人获取高密度接触反馈，为精细操作提供新的感知数据。",
-      "description_en": "Libiligence's cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
-      "detail_cn": "元触万物研发可贴附、可裁剪的柔性触觉皮肤，从手指扩展到整手及更大表面。其 TFT 有源矩阵路线让机器人获取高密度接触反馈，为精细操作提供新的感知数据。",
-      "detail_en": "Libiligence's cut-to-fit tactile skin can extend from a robotic finger to a hand or larger surface. An active-matrix TFT design aims to capture dense contact feedback, a missing input for precise manipulation.",
-      "website_url": "",
+      "id": "siliconflow",
+      "slug": "siliconflow",
+      "name_cn": "硅基流动",
+      "name_en": "SiliconFlow",
+      "description_cn": "硅基流动的 SiliconCloud 提供模型云服务，SiliconLLM 聚焦推理引擎，OneDiff 加速图像及视频生成。三类产品覆盖模型访问、部署与性能优化。",
+      "description_en": "SiliconFlow's stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
+      "detail_cn": "硅基流动的 SiliconCloud 提供模型云服务，SiliconLLM 聚焦推理引擎，OneDiff 加速图像及视频生成。三类产品覆盖模型访问、部署与性能优化。",
+      "detail_en": "SiliconFlow's stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
+      "website_url": "https://siliconflow.cn",
       "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "yuanchu-wanwu.webp",
+      "sector_id": "infrastructure",
+      "logo_file": "siliconflow.svg",
       "sector_ids": [
-        "chips",
-        "physical"
+        "infrastructure"
       ]
     },
     {
-      "id": "guanglian-xinke",
-      "slug": "guanglian-xinke",
-      "name_cn": "光联芯科",
-      "name_en": "LIGHTLINK",
-      "description_cn": "光联芯科以微环硅光路线研发芯片级光互连，面向 AI 集群日益增长的数据传输需求。近封装光学引擎与精密波长修调工艺，是其从研究走向可制造产品的重点。",
-      "description_en": "LIGHTLINK pursues chip-level optical interconnects through microring silicon photonics. Near-package optical engines and precise wavelength tuning are central to serving the growing data-transfer demands of AI clusters.",
-      "detail_cn": "光联芯科以微环硅光路线研发芯片级光互连，面向 AI 集群日益增长的数据传输需求。近封装光学引擎与精密波长修调工艺，是其从研究走向可制造产品的重点。",
-      "detail_en": "LIGHTLINK pursues chip-level optical interconnects through microring silicon photonics. Near-package optical engines and precise wavelength tuning are central to serving the growing data-transfer demands of AI clusters.",
-      "website_url": "https://lightlinktech.net",
+      "id": "xingyun-ic",
+      "slug": "xingyun-ic",
+      "name_cn": "行云",
+      "name_en": "XING YUN",
+      "description_cn": "行云集成研发面向大模型负载的新一代 GPU 与计算系统，探索异构、白盒的硬件形态。公司聚焦推理时代对算力、内存和部署成本的共同要求。",
+      "description_en": "XING YUN is developing GPU chips and computing systems for large-model workloads. Its exploration of heterogeneous and white-box hardware addresses the intertwined demands of compute, memory and deployment cost in inference.",
+      "detail_cn": "行云集成研发面向大模型负载的新一代 GPU 与计算系统，探索异构、白盒的硬件形态。公司聚焦推理时代对算力、内存和部署成本的共同要求。",
+      "detail_en": "XING YUN is developing GPU chips and computing systems for large-model workloads. Its exploration of heterogeneous and white-box hardware addresses the intertwined demands of compute, memory and deployment cost in inference.",
+      "website_url": "",
       "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "guanglian-xinke.svg",
+      "sector_id": "infrastructure",
+      "logo_file": "xingyun-ic.svg",
       "sector_ids": [
+        "infrastructure",
         "chips"
       ]
     },
     {
-      "id": "ligit",
-      "slug": "ligit",
-      "name_cn": "利太智药",
-      "name_en": "LigIT",
-      "description_cn": "利太智药把计算设计、镜像蛋白化学与实验验证结合，探索新的药物分子类型。其 CPMirror 模型研究天然蛋白知识如何迁移至镜像蛋白设计，形成从算法到实验的闭环。",
-      "description_en": "LigIT combines computational design, mirror-protein chemistry and experiments to explore a new therapeutic modality. Its CPMirror model investigates how knowledge from natural proteins can transfer to mirror-protein design and validation.",
-      "detail_cn": "利太智药把计算设计、镜像蛋白化学与实验验证结合，探索新的药物分子类型。其 CPMirror 模型研究天然蛋白知识如何迁移至镜像蛋白设计，形成从算法到实验的闭环。",
-      "detail_en": "LigIT combines computational design, mirror-protein chemistry and experiments to explore a new therapeutic modality. Its CPMirror model investigates how knowledge from natural proteins can transfer to mirror-protein design and validation.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "frontiers",
-      "logo_file": "ligit.webp",
-      "sector_ids": [
-        "frontiers",
-        "foundation"
-      ]
-    },
-    {
-      "id": "lingxin-zhiyu",
-      "slug": "lingxin-zhiyu",
-      "name_cn": "聆芯智语",
-      "name_en": "LINGX INTELLIGENCE",
-      "description_cn": "聆芯智语研发融合语音、视觉和文本的自然交互基座模型，关注情感、意图、长期上下文与实时双工对话。当前以富有表现力的语音生成和实时交流作为应用切口。",
-      "description_en": "LINGX INTELLIGENCE is working on a natural-interaction foundation model that combines speech, vision and text. Emotional cues, intent, long context and real-time two-way conversation shape its approach, with expressive voice as an early application.",
-      "detail_cn": "聆芯智语研发融合语音、视觉和文本的自然交互基座模型，关注情感、意图、长期上下文与实时双工对话。当前以富有表现力的语音生成和实时交流作为应用切口。",
-      "detail_en": "LINGX INTELLIGENCE is working on a natural-interaction foundation model that combines speech, vision and text. Emotional cues, intent, long context and real-time two-way conversation shape its approach, with expressive voice as an early application.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "lingxin-zhiyu.svg",
-      "sector_ids": [
-        "foundation"
-      ]
-    },
-    {
-      "id": "lychee-ai",
-      "slug": "lychee-ai",
-      "name_cn": "厘清智能",
-      "name_en": "Litchi",
-      "description_cn": "厘清智能不以机器人本体为核心，而是提供具身智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
-      "description_en": "Litchi works on the infrastructure beneath embodied AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
-      "detail_cn": "厘清智能不以机器人本体为核心，而是提供具身智能所需的世界模型、数据与技能基础设施。其方向是帮助具身系统在不同场景、任务和机器人形态之间迁移能力。",
-      "detail_en": "Litchi works on the infrastructure beneath embodied AI rather than robot hardware. Its world-model, data and skill systems aim to help embodied capabilities generalize across settings, tasks and robot forms.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "lychee-ai.svg",
-      "sector_ids": [
-        "foundation",
-        "physical"
-      ]
-    },
-    {
-      "id": "maimais-technology",
-      "slug": "maimais-technology",
-      "name_cn": "麦麦科技",
-      "name_en": "MAIMAI",
-      "description_cn": "麦麦科技将 AI、物联网、云计算和区块链应用于农业生产与流通，从作物管理到产品销售连接数据与经营决策。其目标是提高农业运营效率与可追溯性。",
-      "description_en": "MAIMAI combines AI, IoT, cloud computing and blockchain across agricultural production and distribution. Its tools connect crop management with downstream sales data to support more efficient and traceable operations.",
-      "detail_cn": "麦麦科技将 AI、物联网、云计算和区块链应用于农业生产与流通，从作物管理到产品销售连接数据与经营决策。其目标是提高农业运营效率与可追溯性。",
-      "detail_en": "MAIMAI combines AI, IoT, cloud computing and blockchain across agricultural production and distribution. Its tools connect crop management with downstream sales data to support more efficient and traceable operations.",
-      "website_url": "https://www.maimaiplanet.com",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "maimais-technology.webp",
-      "sector_ids": [
-        "applications",
-        "frontiers"
-      ]
-    },
-    {
-      "id": "megatech-ai",
-      "slug": "megatech-ai",
-      "name_cn": "麦伽智能",
-      "name_en": "MegaTech",
-      "description_cn": "麦伽智能依托清华大学互联网司法研究相关基础，开发面向法院业务的司法大模型。公司聚焦法律专业流程，并探索模型在社会治理与政策研究场景中的使用。",
-      "description_en": "Built on research in internet justice at Tsinghua University, MegaTech is developing a judicial language model for court workflows. Its domain focus extends to legal services, public governance and policy-related use cases.",
-      "detail_cn": "麦伽智能依托清华大学互联网司法研究相关基础，开发面向法院业务的司法大模型。公司聚焦法律专业流程，并探索模型在社会治理与政策研究场景中的使用。",
-      "detail_en": "Built on research in internet justice at Tsinghua University, MegaTech is developing a judicial language model for court workflows. Its domain focus extends to legal services, public governance and policy-related use cases.",
-      "website_url": "https://www.megatechai.com",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "megatech-ai.webp",
-      "sector_ids": [
-        "applications",
-        "foundation"
-      ]
-    },
-    {
-      "id": "yuanhuan-intelligence",
-      "slug": "yuanhuan-intelligence",
-      "name_cn": "元环智能",
-      "name_en": "MetaCircle",
-      "description_cn": "元环智能的元模型读取模型架构与数据分布，预测训练曲线，并探索反向设计更合适的模型。它把高度依赖经验的模型实验，推进为更可预测的研发流程。",
-      "description_en": "MetaCircle uses a meta-model to forecast training curves from model architecture and data distribution. It also explores reverse design, giving researchers earlier evidence for decisions that have often depended on intuition.",
-      "detail_cn": "元环智能的元模型读取模型架构与数据分布，预测训练曲线，并探索反向设计更合适的模型。它把高度依赖经验的模型实验，推进为更可预测的研发流程。",
-      "detail_en": "MetaCircle uses a meta-model to forecast training curves from model architecture and data distribution. It also explores reverse design, giving researchers earlier evidence for decisions that have often depended on intuition.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "yuanhuan-intelligence.svg",
-      "sector_ids": [
-        "foundation"
-      ]
-    },
-    {
-      "id": "yuanxu-xinghe",
-      "slug": "yuanxu-xinghe",
-      "name_cn": "元序星核",
-      "name_en": "MetaOrdo",
-      "description_cn": "元序星核面向智能体执行层的安全问题，提供云端控制、安全网关与全链路防护能力。其产品关注工具调用、权限和行动过程，不只停留在模型输出过滤。",
-      "description_en": "MetaOrdo addresses security at the agent execution layer through cloud controls, a gateway and end-to-end defenses. The emphasis is on permissions, tool access and actions as they unfold, beyond filtering model outputs alone.",
-      "detail_cn": "元序星核面向智能体执行层的安全问题，提供云端控制、安全网关与全链路防护能力。其产品关注工具调用、权限和行动过程，不只停留在模型输出过滤。",
-      "detail_en": "MetaOrdo addresses security at the agent execution layer through cloud controls, a gateway and end-to-end defenses. The emphasis is on permissions, tool access and actions as they unfold, beyond filtering model outputs alone.",
-      "website_url": "",
+      "id": "approaching-ai",
+      "slug": "approaching-ai",
+      "name_cn": "趋境科技",
+      "name_en": "APPROACHING.AI",
+      "description_cn": "趋境科技通过软硬件协同优化大模型推理，覆盖缓存管理、异构计算和集群调度。其 Token 服务与定制推理方案，重点提升吞吐量、降低延迟和使用成本。",
+      "description_en": "APPROACHING.AI works across cache management, heterogeneous compute and cluster scheduling to improve model inference. Its token services and tailored deployments focus on throughput, latency and the cost of serving AI at scale.",
+      "detail_cn": "趋境科技通过软硬件协同优化大模型推理，覆盖缓存管理、异构计算和集群调度。其 Token 服务与定制推理方案，重点提升吞吐量、降低延迟和使用成本。",
+      "detail_en": "APPROACHING.AI works across cache management, heterogeneous compute and cluster scheduling to improve model inference. Its token services and tailored deployments focus on throughput, latency and the cost of serving AI at scale.",
+      "website_url": "https://approaching-ai.com",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "yuanxu-xinghe.svg",
+      "logo_file": "approaching-ai.svg",
       "sector_ids": [
-        "infrastructure",
-        "applications"
+        "infrastructure"
       ]
     },
     {
-      "id": "mirros",
-      "slug": "mirros",
-      "name_cn": "无限镜元",
-      "name_en": "MirroS",
-      "description_cn": "无限镜元构建“智能体＋环境”双向演化的世界模型：智能体行动改变环境，环境反馈又更新智能体能力。该闭环针对具身训练中交互数据稀缺与虚实衔接困难的问题。",
-      "description_en": "MirroS models both the agent and its environment: actions change the world, and the resulting feedback updates the agent. This dual loop addresses scarce interaction data and the gap between simulated and real physical-AI training.",
-      "detail_cn": "无限镜元构建“智能体＋环境”双向演化的世界模型：智能体行动改变环境，环境反馈又更新智能体能力。该闭环针对具身训练中交互数据稀缺与虚实衔接困难的问题。",
-      "detail_en": "MirroS models both the agent and its environment: actions change the world, and the resulting feedback updates the agent. This dual loop addresses scarce interaction data and the gap between simulated and real physical-AI training.",
-      "website_url": "https://mirros.ai",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "mirros.svg",
-      "sector_ids": [
-        "foundation",
-        "physical"
-      ]
-    },
-    {
-      "id": "modalink",
-      "slug": "modalink",
-      "name_cn": "魔豆领科",
-      "name_en": "Modalink.ai",
-      "description_cn": "魔豆领科以自研 F3 通用数据格式为基础，为具身智能、自动驾驶与世界模型提供全生命周期数据平台。平台覆盖摄取、存储、质量处理、检索与高吞吐加载，解决多模态数据难以对齐和利用的问题。",
-      "description_en": "Modalink.ai's F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
-      "detail_cn": "魔豆领科以自研 F3 通用数据格式为基础，为具身智能、自动驾驶与世界模型提供全生命周期数据平台。平台覆盖摄取、存储、质量处理、检索与高吞吐加载，解决多模态数据难以对齐和利用的问题。",
-      "detail_en": "Modalink.ai's F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
-      "website_url": "",
+      "id": "houdu-technology",
+      "slug": "houdu-technology",
+      "name_cn": "厚笃科技",
+      "name_en": "Houdu",
+      "description_cn": "厚笃科技以高性能数据处理引擎为基础，结合隐私保护和数据治理，帮助企业在大数据与 AI 场景中安全整合、使用数据。团队源于清华大学计算机领域研究背景。",
+      "description_en": "Houdu Technology combines a high-performance data engine with privacy protection and governance tools. Originating from a Tsinghua computer-science research team, it helps enterprises prepare and use data across analytics and AI workloads.",
+      "detail_cn": "厚笃科技以高性能数据处理引擎为基础，结合隐私保护和数据治理，帮助企业在大数据与 AI 场景中安全整合、使用数据。团队源于清华大学计算机领域研究背景。",
+      "detail_en": "Houdu Technology combines a high-performance data engine with privacy protection and governance tools. Originating from a Tsinghua computer-science research team, it helps enterprises prepare and use data across analytics and AI workloads.",
+      "website_url": "https://www.houdutech.cn/",
       "investment_year": "",
       "sector_id": "infrastructure",
-      "logo_file": "modalink.webp",
+      "logo_file": "houdu-technology.svg",
       "sector_ids": [
-        "infrastructure",
-        "physical"
-      ]
-    },
-    {
-      "id": "modelbest",
-      "slug": "modelbest",
-      "name_cn": "面壁智能",
-      "name_en": "MODELBEST",
-      "description_cn": "面壁智能以 MiniCPM 系列高效语言及多模态模型推动端侧 AI。相对庞大的云端模型，其重点是在资源受限设备上提供可实际部署的模型能力。",
-      "description_en": "MODELBEST's MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
-      "detail_cn": "面壁智能以 MiniCPM 系列高效语言及多模态模型推动端侧 AI。相对庞大的云端模型，其重点是在资源受限设备上提供可实际部署的模型能力。",
-      "detail_en": "MODELBEST's MiniCPM family focuses on efficient language and multimodal models for on-device AI. The work brings useful model capability to resource-constrained hardware rather than relying solely on large cloud deployments.",
-      "website_url": "https://modelbest.cn",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "modelbest.webp",
-      "sector_ids": [
-        "foundation"
-      ]
-    },
-    {
-      "id": "mosi",
-      "slug": "mosi",
-      "name_cn": "模思智能",
-      "name_en": "Mosi",
-      "description_cn": "模思智能源于复旦大学语音研究团队，以 SpeechGPT 等成果探索能感知、表达并实时回应的语音模型。其方向是让语音智能体处理打断、情绪和自然对话，而不只是朗读文字。",
-      "description_en": "Originating from Fudan speech research, Mosi builds on SpeechGPT to pursue voice models that perceive, generate and respond in real time. Its focus moves beyond reading text toward agents that handle interruptions and richer conversational cues.",
-      "detail_cn": "模思智能源于复旦大学语音研究团队，以 SpeechGPT 等成果探索能感知、表达并实时回应的语音模型。其方向是让语音智能体处理打断、情绪和自然对话，而不只是朗读文字。",
-      "detail_en": "Originating from Fudan speech research, Mosi builds on SpeechGPT to pursue voice models that perceive, generate and respond in real time. Its focus moves beyond reading text toward agents that handle interruptions and richer conversational cues.",
-      "website_url": "https://www.mosi.cn",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "mosi.svg",
-      "sector_ids": [
-        "foundation"
-      ]
-    },
-    {
-      "id": "suitan-technology",
-      "slug": "suitan-technology",
-      "name_cn": "随弹科技",
-      "name_en": "Musspark",
-      "description_cn": "随弹科技以轻量化智能乐器和 AI 辅助交互降低演奏与创作门槛。产品把硬件设计与软件体验结合，面向希望更容易开始音乐创作的日常用户。",
-      "description_en": "Musspark combines lightweight smart instruments with AI-assisted interaction. Its hardware and software are designed to make playing and creating music more approachable for everyday users.",
-      "detail_cn": "随弹科技以轻量化智能乐器和 AI 辅助交互降低演奏与创作门槛。产品把硬件设计与软件体验结合，面向希望更容易开始音乐创作的日常用户。",
-      "detail_en": "Musspark combines lightweight smart instruments with AI-assisted interaction. Its hardware and software are designed to make playing and creating music more approachable for everyday users.",
-      "website_url": "https://www.musspark.com",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "suitan-technology.svg",
-      "sector_ids": [
-        "applications"
+        "infrastructure"
       ]
     },
     {
@@ -1261,38 +1134,56 @@
       ]
     },
     {
-      "id": "mythlink",
-      "slug": "mythlink",
-      "name_cn": "觅思汇智",
-      "name_en": "MythLink",
-      "description_cn": "觅思汇智由清华大学喻纯教授团队创立，专注于以人为中心的下一代人机交互平台。公司融合前沿 HCI 技术，推出以智能戒指 Mem Ring 和随身智能硬件 Mem Card 协同组成的个人智能终端方案，覆盖身份识别、信息输入、自然交互与环境感知等核心场景，探索 AI 时代更自然、更连续的人机交互入口。",
-      "description_en": "MythLink, founded by Professor Chun Yu's team at Tsinghua University, is building a human-centered platform for next-generation human-computer interaction. Its first product combines Mem Ring, a smart ring for identity, input, natural interaction, and passive data capture, with Mem Card, a portable device for continuous environmental awareness. Together, they form a new personal intelligent terminal designed for more natural and continuous interaction in the AI era.",
-      "detail_cn": "觅思汇智由清华大学喻纯教授团队创立，专注于以人为中心的下一代人机交互平台。公司融合前沿 HCI 技术，推出以智能戒指 Mem Ring 和随身智能硬件 Mem Card 协同组成的个人智能终端方案，覆盖身份识别、信息输入、自然交互与环境感知等核心场景，探索 AI 时代更自然、更连续的人机交互入口。",
-      "detail_en": "MythLink, founded by Professor Chun Yu's team at Tsinghua University, is building a human-centered platform for next-generation human-computer interaction. Its first product combines Mem Ring, a smart ring for identity, input, natural interaction, and passive data capture, with Mem Card, a portable device for continuous environmental awareness. Together, they form a new personal intelligent terminal designed for more natural and continuous interaction in the AI era.",
-      "website_url": "",
+      "id": "aippt",
+      "slug": "aippt",
+      "name_cn": "像素绽放",
+      "name_en": "PixelBloom",
+      "description_cn": "像素绽放将内容生成、自动排版与可编辑模板结合，帮助个人和团队完成演示文稿。除面向普通用户的产品外，也提供企业本地部署和 API 接入方式。",
+      "description_en": "PixelBloom combines slide generation, design assistance and editable templates in one presentation workflow. Alongside its consumer product, the company offers on-premise deployment and API integration for enterprise teams.",
+      "detail_cn": "像素绽放将内容生成、自动排版与可编辑模板结合，帮助个人和团队完成演示文稿。除面向普通用户的产品外，也提供企业本地部署和 API 接入方式。",
+      "detail_en": "PixelBloom combines slide generation, design assistance and editable templates in one presentation workflow. Alongside its consumer product, the company offers on-premise deployment and API integration for enterprise teams.",
+      "website_url": "https://www.aippt.com",
       "investment_year": "",
       "sector_id": "applications",
-      "logo_file": "mythlink.svg",
+      "logo_file": "aippt.webp",
       "sector_ids": [
         "applications"
       ]
     },
     {
-      "id": "neuhelium",
-      "slug": "neuhelium",
-      "name_cn": "新氦类脑",
-      "name_en": "NeuHelium",
-      "description_cn": "新氦类脑聚焦类脑芯片与片上智能系统，连接底层研发、产品化和应用场景。作为上海类脑芯片相关功能平台，其工作覆盖共性技术与前沿探索。",
-      "description_en": "NeuHelium works on neuromorphic chips and on-chip intelligence, linking research with commercialization and application needs. As a Shanghai platform for this field, it supports both shared industry technologies and exploratory work.",
-      "detail_cn": "新氦类脑聚焦类脑芯片与片上智能系统，连接底层研发、产品化和应用场景。作为上海类脑芯片相关功能平台，其工作覆盖共性技术与前沿探索。",
-      "detail_en": "NeuHelium works on neuromorphic chips and on-chip intelligence, linking research with commercialization and application needs. As a Shanghai platform for this field, it supports both shared industry technologies and exploratory work.",
-      "website_url": "http://www.neuhelium.com",
+      "id": "xmax-ai",
+      "slug": "xmax-ai",
+      "name_cn": "星脉智动",
+      "name_en": "Xmax AI",
+      "description_cn": "星脉智动以 XMAX X1 探索实时交互视频模型，让生成内容可随用户动作和场景变化即时响应。其技术面向虚实融合内容、沉浸式体验和新型终端交互。",
+      "description_en": "XMAX X1 is Xmax AI's real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
+      "detail_cn": "星脉智动以 XMAX X1 探索实时交互视频模型，让生成内容可随用户动作和场景变化即时响应。其技术面向虚实融合内容、沉浸式体验和新型终端交互。",
+      "detail_en": "XMAX X1 is Xmax AI's real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
+      "website_url": "https://xmax.ai",
       "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "neuhelium.webp",
+      "sector_id": "foundation",
+      "logo_file": "xmax-ai.svg",
       "sector_ids": [
-        "chips",
-        "foundation"
+        "foundation",
+        "applications"
+      ]
+    },
+    {
+      "id": "realai",
+      "slug": "realai",
+      "name_cn": "瑞莱智慧",
+      "name_en": "RealAI",
+      "description_cn": "瑞莱智慧将基础 AI 模型与安全能力结合，为城市治理、金融、教育、科研及智能汽车等场景提供平台和行业方案。其路线同时关注模型可用性与应用安全。",
+      "description_en": "RealAI pairs foundational AI capabilities with safety technology in platforms and industry solutions. Its applications span urban governance, finance, education, scientific research and intelligent vehicles, with attention to both usefulness and control.",
+      "detail_cn": "瑞莱智慧将基础 AI 模型与安全能力结合，为城市治理、金融、教育、科研及智能汽车等场景提供平台和行业方案。其路线同时关注模型可用性与应用安全。",
+      "detail_en": "RealAI pairs foundational AI capabilities with safety technology in platforms and industry solutions. Its applications span urban governance, finance, education, scientific research and intelligent vehicles, with attention to both usefulness and control.",
+      "website_url": "https://www.realai.ai",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "realai.svg",
+      "sector_ids": [
+        "applications",
+        "infrastructure"
       ]
     },
     {
@@ -1313,20 +1204,70 @@
       ]
     },
     {
-      "id": "omnimind",
-      "slug": "omnimind",
-      "name_cn": "万象智维",
-      "name_en": "OMNIMIND",
-      "description_cn": "万象智维采用“云端规划、设备端执行”架构，让智能体在手机等终端完成出行、购物和游戏相关任务。这样的分工兼顾复杂推理与本地响应。",
-      "description_en": "OMNIMIND pairs cloud-side planning with on-device execution so agents can carry out tasks on mobile devices. Its early use cases include mobility, shopping and gaming, where local responsiveness matters alongside more complex reasoning.",
-      "detail_cn": "万象智维采用“云端规划、设备端执行”架构，让智能体在手机等终端完成出行、购物和游戏相关任务。这样的分工兼顾复杂推理与本地响应。",
-      "detail_en": "OMNIMIND pairs cloud-side planning with on-device execution so agents can carry out tasks on mobile devices. Its early use cases include mobility, shopping and gaming, where local responsiveness matters alongside more complex reasoning.",
-      "website_url": "https://omnimind.com.cn",
+      "id": "zettlab",
+      "slug": "zettlab",
+      "name_cn": "吾云创新",
+      "name_en": "Zettlab",
+      "description_cn": "吾云创新把多模态 AI 能力融入 NAS 存储，让个人和家庭数据在本地完成搜索、整理与知识管理。产品以私有数据空间为入口，探索消费级 AI 基础设施。",
+      "description_en": "Zettlab integrates multimodal AI with consumer NAS storage. The result is a private data workspace where people can search, organize and use personal or family information locally rather than relying entirely on cloud services.",
+      "detail_cn": "吾云创新把多模态 AI 能力融入 NAS 存储，让个人和家庭数据在本地完成搜索、整理与知识管理。产品以私有数据空间为入口，探索消费级 AI 基础设施。",
+      "detail_en": "Zettlab integrates multimodal AI with consumer NAS storage. The result is a private data workspace where people can search, organize and use personal or family information locally rather than relying entirely on cloud services.",
+      "website_url": "https://www.zettlab.com",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "omnimind.svg",
+      "sector_id": "applications",
+      "logo_file": "zettlab.svg",
       "sector_ids": [
-        "infrastructure",
+        "applications"
+      ]
+    },
+    {
+      "id": "tairex",
+      "slug": "tairex",
+      "name_cn": "紫荆智康",
+      "name_en": "Tairex",
+      "description_cn": "紫荆智康源于清华大学智能产业研究院相关孵化，以大模型驱动的医疗智能体支持就医服务流程。其方向是让医疗信息与服务更易获得，并改善不同环节之间的衔接。",
+      "description_en": "Incubated through Tsinghua's Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
+      "detail_cn": "紫荆智康源于清华大学智能产业研究院相关孵化，以大模型驱动的医疗智能体支持就医服务流程。其方向是让医疗信息与服务更易获得，并改善不同环节之间的衔接。",
+      "detail_en": "Incubated through Tsinghua's Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
+      "website_url": "https://www.tairex.cn",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "tairex.svg",
+      "sector_ids": [
+        "applications"
+      ]
+    },
+    {
+      "id": "yuanmu-ai",
+      "slug": "yuanmu-ai",
+      "name_cn": "圆木智能",
+      "name_en": "YUANMU.AI",
+      "description_cn": "圆木智能为离散制造、尤其是中小机加工企业提供智能排程与生产运营平台。智能体将订单、设备产能、工序和交期纳入动态计划，帮助工厂应对插单与变化。",
+      "description_en": "YUANMU.AI focuses on production scheduling for discrete manufacturers, particularly smaller machining businesses. Its agent-based software brings orders, capacity, process steps and delivery dates into plans that can be revised as shop-floor conditions change.",
+      "detail_cn": "圆木智能为离散制造、尤其是中小机加工企业提供智能排程与生产运营平台。智能体将订单、设备产能、工序和交期纳入动态计划，帮助工厂应对插单与变化。",
+      "detail_en": "YUANMU.AI focuses on production scheduling for discrete manufacturers, particularly smaller machining businesses. Its agent-based software brings orders, capacity, process steps and delivery dates into plans that can be revised as shop-floor conditions change.",
+      "website_url": "https://www.yuanmu.ai",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "yuanmu-ai.svg",
+      "sector_ids": [
+        "applications"
+      ]
+    },
+    {
+      "id": "suitan-technology",
+      "slug": "suitan-technology",
+      "name_cn": "随弹科技",
+      "name_en": "Musspark",
+      "description_cn": "随弹科技以轻量化智能乐器和 AI 辅助交互降低演奏与创作门槛。产品把硬件设计与软件体验结合，面向希望更容易开始音乐创作的日常用户。",
+      "description_en": "Musspark combines lightweight smart instruments with AI-assisted interaction. Its hardware and software are designed to make playing and creating music more approachable for everyday users.",
+      "detail_cn": "随弹科技以轻量化智能乐器和 AI 辅助交互降低演奏与创作门槛。产品把硬件设计与软件体验结合，面向希望更容易开始音乐创作的日常用户。",
+      "detail_en": "Musspark combines lightweight smart instruments with AI-assisted interaction. Its hardware and software are designed to make playing and creating music more approachable for everyday users.",
+      "website_url": "https://www.musspark.com",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "suitan-technology.svg",
+      "sector_ids": [
         "applications"
       ]
     },
@@ -1349,6 +1290,148 @@
       ]
     },
     {
+      "id": "fangcun-leap",
+      "slug": "fangcun-leap",
+      "name_cn": "方寸跃迁",
+      "name_en": "Fangcun AI",
+      "description_cn": "方寸跃迁定位智能体时代的安全中间层，在智能体调用外部工具与执行任务时提供检测和防护。其产品覆盖 Skill 检查、运行时防护及高自主执行场景的安全控制。",
+      "description_en": "Fangcun AI positions security middleware between AI agents and the tools they use. Its products address skill inspection, runtime protection and controls for more autonomous execution, where risks emerge after a model starts acting.",
+      "detail_cn": "方寸跃迁定位智能体时代的安全中间层，在智能体调用外部工具与执行任务时提供检测和防护。其产品覆盖 Skill 检查、运行时防护及高自主执行场景的安全控制。",
+      "detail_en": "Fangcun AI positions security middleware between AI agents and the tools they use. Its products address skill inspection, runtime protection and controls for more autonomous execution, where risks emerge after a model starts acting.",
+      "website_url": "https://www.fangcunleap.com",
+      "investment_year": "",
+      "sector_id": "infrastructure",
+      "logo_file": "fangcun-leap.webp",
+      "sector_ids": [
+        "infrastructure",
+        "applications"
+      ]
+    },
+    {
+      "id": "yuanxu-xinghe",
+      "slug": "yuanxu-xinghe",
+      "name_cn": "元序星核",
+      "name_en": "MetaOrdo",
+      "description_cn": "元序星核面向智能体执行层的安全问题，提供云端控制、安全网关与全链路防护能力。其产品关注工具调用、权限和行动过程，不只停留在模型输出过滤。",
+      "description_en": "MetaOrdo addresses security at the agent execution layer through cloud controls, a gateway and end-to-end defenses. The emphasis is on permissions, tool access and actions as they unfold, beyond filtering model outputs alone.",
+      "detail_cn": "元序星核面向智能体执行层的安全问题，提供云端控制、安全网关与全链路防护能力。其产品关注工具调用、权限和行动过程，不只停留在模型输出过滤。",
+      "detail_en": "MetaOrdo addresses security at the agent execution layer through cloud controls, a gateway and end-to-end defenses. The emphasis is on permissions, tool access and actions as they unfold, beyond filtering model outputs alone.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "infrastructure",
+      "logo_file": "yuanxu-xinghe.svg",
+      "sector_ids": [
+        "infrastructure",
+        "applications"
+      ]
+    },
+    {
+      "id": "megatech-ai",
+      "slug": "megatech-ai",
+      "name_cn": "麦伽智能",
+      "name_en": "MegaTech",
+      "description_cn": "麦伽智能依托清华大学互联网司法研究相关基础，开发面向法院业务的司法大模型。公司聚焦法律专业流程，并探索模型在社会治理与政策研究场景中的使用。",
+      "description_en": "Built on research in internet justice at Tsinghua University, MegaTech is developing a judicial language model for court workflows. Its domain focus extends to legal services, public governance and policy-related use cases.",
+      "detail_cn": "麦伽智能依托清华大学互联网司法研究相关基础，开发面向法院业务的司法大模型。公司聚焦法律专业流程，并探索模型在社会治理与政策研究场景中的使用。",
+      "detail_en": "Built on research in internet justice at Tsinghua University, MegaTech is developing a judicial language model for court workflows. Its domain focus extends to legal services, public governance and policy-related use cases.",
+      "website_url": "https://www.megatechai.com",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "megatech-ai.webp",
+      "sector_ids": [
+        "applications",
+        "foundation"
+      ]
+    },
+    {
+      "id": "maimais-technology",
+      "slug": "maimais-technology",
+      "name_cn": "麦麦科技",
+      "name_en": "MAIMAI",
+      "description_cn": "麦麦科技将 AI、物联网、云计算和区块链应用于农业生产与流通，从作物管理到产品销售连接数据与经营决策。其目标是提高农业运营效率与可追溯性。",
+      "description_en": "MAIMAI combines AI, IoT, cloud computing and blockchain across agricultural production and distribution. Its tools connect crop management with downstream sales data to support more efficient and traceable operations.",
+      "detail_cn": "麦麦科技将 AI、物联网、云计算和区块链应用于农业生产与流通，从作物管理到产品销售连接数据与经营决策。其目标是提高农业运营效率与可追溯性。",
+      "detail_en": "MAIMAI combines AI, IoT, cloud computing and blockchain across agricultural production and distribution. Its tools connect crop management with downstream sales data to support more efficient and traceable operations.",
+      "website_url": "https://www.maimaiplanet.com",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "maimais-technology.webp",
+      "sector_ids": [
+        "applications",
+        "frontiers"
+      ]
+    },
+    {
+      "id": "mythlink",
+      "slug": "mythlink",
+      "name_cn": "觅思汇智",
+      "name_en": "MythLink",
+      "description_cn": "觅思汇智由清华大学喻纯教授团队创立，专注于以人为中心的下一代人机交互平台。公司融合前沿 HCI 技术，推出以智能戒指 Mem Ring 和随身智能硬件 Mem Card 协同组成的个人智能终端方案，覆盖身份识别、信息输入、自然交互与环境感知等核心场景，探索 AI 时代更自然、更连续的人机交互入口。",
+      "description_en": "MythLink, founded by Professor Chun Yu's team at Tsinghua University, is building a human-centered platform for next-generation human-computer interaction. Its first product combines Mem Ring, a smart ring for identity, input, natural interaction, and passive data capture, with Mem Card, a portable device for continuous environmental awareness. Together, they form a new personal intelligent terminal designed for more natural and continuous interaction in the AI era.",
+      "detail_cn": "觅思汇智由清华大学喻纯教授团队创立，专注于以人为中心的下一代人机交互平台。公司融合前沿 HCI 技术，推出以智能戒指 Mem Ring 和随身智能硬件 Mem Card 协同组成的个人智能终端方案，覆盖身份识别、信息输入、自然交互与环境感知等核心场景，探索 AI 时代更自然、更连续的人机交互入口。",
+      "detail_en": "MythLink, founded by Professor Chun Yu's team at Tsinghua University, is building a human-centered platform for next-generation human-computer interaction. Its first product combines Mem Ring, a smart ring for identity, input, natural interaction, and passive data capture, with Mem Card, a portable device for continuous environmental awareness. Together, they form a new personal intelligent terminal designed for more natural and continuous interaction in the AI era.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "mythlink.svg",
+      "sector_ids": [
+        "applications"
+      ]
+    },
+    {
+      "id": "algoenergy",
+      "slug": "algoenergy",
+      "name_cn": "九章智电",
+      "name_en": "AlgoEnergy",
+      "description_cn": "九章智电是一家专注于电力 AI 的科技公司，面向发电、售电、用电和储能等主体提供覆盖电力交易、策略优化与运营管理的全链路服务。公司依托北大 AI 与量化团队的技术积累，在电力现货交易场景中形成了领先的策略能力和商业化表现，助力客户提升收益、降低成本，并具备成长为电力智能化领域领军企业的潜力。",
+      "description_en": "AlgoEnergy is a technology company focused on AI for the power sector, providing end-to-end services for power generation, retail, consumption, and energy storage players across electricity trading, strategy optimization, and operations management. Backed by the team's strengths in AI and quantitative modeling from Peking University, the company has demonstrated strong performance and scalable profitability in spot power trading, helping customers improve returns and reduce costs while positioning itself as a potential leader in power intelligence.",
+      "detail_cn": "九章智电是一家专注于电力 AI 的科技公司，面向发电、售电、用电和储能等主体提供覆盖电力交易、策略优化与运营管理的全链路服务。公司依托北大 AI 与量化团队的技术积累，在电力现货交易场景中形成了领先的策略能力和商业化表现，助力客户提升收益、降低成本，并具备成长为电力智能化领域领军企业的潜力。",
+      "detail_en": "AlgoEnergy is a technology company focused on AI for the power sector, providing end-to-end services for power generation, retail, consumption, and energy storage players across electricity trading, strategy optimization, and operations management. Backed by the team's strengths in AI and quantitative modeling from Peking University, the company has demonstrated strong performance and scalable profitability in spot power trading, helping customers improve returns and reduce costs while positioning itself as a potential leader in power intelligence.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "algoenergy.svg",
+      "sector_ids": [
+        "applications",
+        "foundation"
+      ]
+    },
+    {
+      "id": "openmaic",
+      "slug": "openmaic",
+      "name_cn": "元知进化",
+      "name_en": "CogEvol",
+      "description_cn": "元知进化以 OpenMAIC 开源社区为基础，将认知赋能型 AI 用于教育、科研、人才发展和知识创作。它强调人机协同，让学习者和专业人员参与能力形成过程。",
+      "description_en": "CogEvol is an open-source community and product effort around cognitive AI for education, research, talent development and knowledge creation. Its emphasis is on people and AI learning together rather than replacing expert judgment.",
+      "detail_cn": "元知进化以 OpenMAIC 开源社区为基础，将认知赋能型 AI 用于教育、科研、人才发展和知识创作。它强调人机协同，让学习者和专业人员参与能力形成过程。",
+      "detail_en": "CogEvol is an open-source community and product effort around cognitive AI for education, research, talent development and knowledge creation. Its emphasis is on people and AI learning together rather than replacing expert judgment.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "openmaic.svg",
+      "sector_ids": [
+        "applications",
+        "foundation"
+      ]
+    },
+    {
+      "id": "knevo",
+      "slug": "knevo",
+      "name_cn": "思演智能",
+      "name_en": "Kando AI",
+      "description_cn": "思演智能以记忆、智能体和强化学习构建个人化决策辅助系统。用户接受或拒绝建议后的结果会回流，帮助系统持续形成更贴近个人目标的判断；金融投资是其早期场景。",
+      "description_en": "Kando AI combines memory, agents and reinforcement learning in a personalized decision-support system. Feedback on accepted or rejected suggestions returns to the system, with investing as an early setting for testing this loop.",
+      "detail_cn": "思演智能以记忆、智能体和强化学习构建个人化决策辅助系统。用户接受或拒绝建议后的结果会回流，帮助系统持续形成更贴近个人目标的判断；金融投资是其早期场景。",
+      "detail_en": "Kando AI combines memory, agents and reinforcement learning in a personalized decision-support system. Feedback on accepted or rejected suggestions returns to the system, with investing as an early setting for testing this loop.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "applications",
+      "logo_file": "knevo.svg",
+      "sector_ids": [
+        "applications"
+      ]
+    },
+    {
       "id": "phybot",
       "slug": "phybot",
       "name_cn": "动易科技",
@@ -1366,37 +1449,56 @@
       ]
     },
     {
-      "id": "aippt",
-      "slug": "aippt",
-      "name_cn": "像素绽放",
-      "name_en": "PixelBloom",
-      "description_cn": "像素绽放将内容生成、自动排版与可编辑模板结合，帮助个人和团队完成演示文稿。除面向普通用户的产品外，也提供企业本地部署和 API 接入方式。",
-      "description_en": "PixelBloom combines slide generation, design assistance and editable templates in one presentation workflow. Alongside its consumer product, the company offers on-premise deployment and API integration for enterprise teams.",
-      "detail_cn": "像素绽放将内容生成、自动排版与可编辑模板结合，帮助个人和团队完成演示文稿。除面向普通用户的产品外，也提供企业本地部署和 API 接入方式。",
-      "detail_en": "PixelBloom combines slide generation, design assistance and editable templates in one presentation workflow. Alongside its consumer product, the company offers on-premise deployment and API integration for enterprise teams.",
-      "website_url": "https://www.aippt.com",
+      "id": "amio-robotics",
+      "slug": "amio-robotics",
+      "name_cn": "阿米奥机器人",
+      "name_en": "amigos",
+      "description_cn": "阿米奥机器人面向消费电子等柔性制造场景，研发能自主完成复杂操作的具身机器人。大模型、强化学习与机器人控制的结合，帮助系统适应不断变化的工序。",
+      "description_en": "amigos develops embodied robots for flexible manufacturing, including consumer electronics. By combining language models, reinforcement learning and robotics, it aims to handle complex tasks as production steps change.",
+      "detail_cn": "阿米奥机器人面向消费电子等柔性制造场景，研发能自主完成复杂操作的具身机器人。大模型、强化学习与机器人控制的结合，帮助系统适应不断变化的工序。",
+      "detail_en": "amigos develops embodied robots for flexible manufacturing, including consumer electronics. By combining language models, reinforcement learning and robotics, it aims to handle complex tasks as production steps change.",
+      "website_url": "https://amigos-robot.com",
       "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "aippt.webp",
+      "sector_id": "physical",
+      "logo_file": "amio-robotics.svg",
       "sector_ids": [
-        "applications"
+        "physical",
+        "foundation"
       ]
     },
     {
-      "id": "beiji-xiongxin",
-      "slug": "beiji-xiongxin",
-      "name_cn": "北极雄芯",
-      "name_en": "Polar Bear Tech",
-      "description_cn": "北极雄芯以 Chiplet、3DIC 和近存计算探索更适配 AI 推理的芯片架构，同时面向车规级场景开发异构集成 SoC。云端推理与端侧应用构成其双线技术路线。",
-      "description_en": "Polar Bear Tech combines chiplets, 3D integration and near-memory computing for AI inference, alongside automotive-grade heterogeneous SoCs. Its architecture work spans both data-center decoding and edge applications.",
-      "detail_cn": "北极雄芯以 Chiplet、3DIC 和近存计算探索更适配 AI 推理的芯片架构，同时面向车规级场景开发异构集成 SoC。云端推理与端侧应用构成其双线技术路线。",
-      "detail_en": "Polar Bear Tech combines chiplets, 3D integration and near-memory computing for AI inference, alongside automotive-grade heterogeneous SoCs. Its architecture work spans both data-center decoding and edge applications.",
-      "website_url": "http://www.bjxx.tech",
+      "id": "modalink",
+      "slug": "modalink",
+      "name_cn": "魔豆领科",
+      "name_en": "Modalink.ai",
+      "description_cn": "魔豆领科以自研 F3 通用数据格式为基础，为具身智能、自动驾驶与世界模型提供全生命周期数据平台。平台覆盖摄取、存储、质量处理、检索与高吞吐加载，解决多模态数据难以对齐和利用的问题。",
+      "description_en": "Modalink.ai's F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
+      "detail_cn": "魔豆领科以自研 F3 通用数据格式为基础，为具身智能、自动驾驶与世界模型提供全生命周期数据平台。平台覆盖摄取、存储、质量处理、检索与高吞吐加载，解决多模态数据难以对齐和利用的问题。",
+      "detail_en": "Modalink.ai's F3 data format anchors a lifecycle platform for embodied AI, autonomous driving and world models. It covers ingestion, storage, quality improvement, retrieval and high-throughput loading, addressing the practical difficulty of aligning and using multimodal training data.",
+      "website_url": "",
       "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "beiji-xiongxin.webp",
+      "sector_id": "infrastructure",
+      "logo_file": "modalink.webp",
       "sector_ids": [
-        "chips"
+        "infrastructure",
+        "physical"
+      ]
+    },
+    {
+      "id": "discover-robotics",
+      "slug": "discover-robotics",
+      "name_cn": "求之科技",
+      "name_en": "DISCOVER Robotics",
+      "description_cn": "求之科技面向真实家庭任务研发具身机器人，优先覆盖收纳、洗护与备餐等高频家务。轮式底盘、双臂及灵巧手与自研分层模型、仿真和数据工具链协同设计，目标是走向可持续交付的家庭产品。",
+      "description_en": "DISCOVER Robotics designs home robots around concrete chores such as tidying, laundry and meal preparation. Wheeled mobility, dual arms and hands are paired with a layered model architecture, simulation and data tools aimed at practical household use.",
+      "detail_cn": "求之科技面向真实家庭任务研发具身机器人，优先覆盖收纳、洗护与备餐等高频家务。轮式底盘、双臂及灵巧手与自研分层模型、仿真和数据工具链协同设计，目标是走向可持续交付的家庭产品。",
+      "detail_en": "DISCOVER Robotics designs home robots around concrete chores such as tidying, laundry and meal preparation. Wheeled mobility, dual arms and hands are paired with a layered model architecture, simulation and data tools aimed at practical household use.",
+      "website_url": "https://www.discover-robotics.com",
+      "investment_year": "",
+      "sector_id": "physical",
+      "logo_file": "discover-robotics.svg",
+      "sector_ids": [
+        "physical"
       ]
     },
     {
@@ -1418,176 +1520,74 @@
       ]
     },
     {
-      "id": "qingcheng-jizhi",
-      "slug": "qingcheng-jizhi",
-      "name_cn": "清程极智",
-      "name_en": "Qingcheng.AI",
-      "description_cn": "清程极智提出覆盖云、边、端的 Token 网络，将不同设备和算力节点连接起来提供模型推理服务。公司源于清华大学计算机系相关团队，关注低成本、可扩展的推理能力。",
-      "description_en": "Qingcheng.AI envisions a token-serving network spanning cloud, edge and devices. Originating from a Tsinghua computer-science team, it focuses on connecting compute resources to make model inference more accessible and efficient.",
-      "detail_cn": "清程极智提出覆盖云、边、端的 Token 网络，将不同设备和算力节点连接起来提供模型推理服务。公司源于清华大学计算机系相关团队，关注低成本、可扩展的推理能力。",
-      "detail_en": "Qingcheng.AI envisions a token-serving network spanning cloud, edge and devices. Originating from a Tsinghua computer-science team, it focuses on connecting compute resources to make model inference more accessible and efficient.",
-      "website_url": "https://www.qingcheng.ai",
+      "id": "biogeometry",
+      "slug": "biogeometry",
+      "name_cn": "百奥几何",
+      "name_en": "BioGeometry",
+      "description_cn": "百奥几何利用生成式 AI 研究蛋白质序列、结构与功能之间的关系，开展全新可编程蛋白设计。应用方向包括生物制药与合成生物学。",
+      "description_en": "BioGeometry applies generative AI to the relationship between protein sequence, structure and function. Its de novo design work targets programmable proteins for biopharmaceutical and synthetic-biology applications.",
+      "detail_cn": "百奥几何利用生成式 AI 研究蛋白质序列、结构与功能之间的关系，开展全新可编程蛋白设计。应用方向包括生物制药与合成生物学。",
+      "detail_en": "BioGeometry applies generative AI to the relationship between protein sequence, structure and function. Its de novo design work targets programmable proteins for biopharmaceutical and synthetic-biology applications.",
+      "website_url": "https://www.biogeom.com",
       "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "qingcheng-jizhi.svg",
+      "sector_id": "frontiers",
+      "logo_file": "biogeometry.svg",
       "sector_ids": [
-        "infrastructure"
-      ]
-    },
-    {
-      "id": "realai",
-      "slug": "realai",
-      "name_cn": "瑞莱智慧",
-      "name_en": "RealAI",
-      "description_cn": "瑞莱智慧将基础 AI 模型与安全能力结合，为城市治理、金融、教育、科研及智能汽车等场景提供平台和行业方案。其路线同时关注模型可用性与应用安全。",
-      "description_en": "RealAI pairs foundational AI capabilities with safety technology in platforms and industry solutions. Its applications span urban governance, finance, education, scientific research and intelligent vehicles, with attention to both usefulness and control.",
-      "detail_cn": "瑞莱智慧将基础 AI 模型与安全能力结合，为城市治理、金融、教育、科研及智能汽车等场景提供平台和行业方案。其路线同时关注模型可用性与应用安全。",
-      "detail_en": "RealAI pairs foundational AI capabilities with safety technology in platforms and industry solutions. Its applications span urban governance, finance, education, scientific research and intelligent vehicles, with attention to both usefulness and control.",
-      "website_url": "https://www.realai.ai",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "realai.svg",
-      "sector_ids": [
-        "applications",
-        "infrastructure"
-      ]
-    },
-    {
-      "id": "siliconflow",
-      "slug": "siliconflow",
-      "name_cn": "硅基流动",
-      "name_en": "SiliconFlow",
-      "description_cn": "硅基流动的 SiliconCloud 提供模型云服务，SiliconLLM 聚焦推理引擎，OneDiff 加速图像及视频生成。三类产品覆盖模型访问、部署与性能优化。",
-      "description_en": "SiliconFlow's stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
-      "detail_cn": "硅基流动的 SiliconCloud 提供模型云服务，SiliconLLM 聚焦推理引擎，OneDiff 加速图像及视频生成。三类产品覆盖模型访问、部署与性能优化。",
-      "detail_en": "SiliconFlow's stack spans SiliconCloud for model services, SiliconLLM for inference and OneDiff for accelerating image and video generation. Together, they address model access, deployment and performance for developers and enterprises.",
-      "website_url": "https://siliconflow.cn",
-      "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "siliconflow.svg",
-      "sector_ids": [
-        "infrastructure"
-      ]
-    },
-    {
-      "id": "tairex",
-      "slug": "tairex",
-      "name_cn": "紫荆智康",
-      "name_en": "Tairex",
-      "description_cn": "紫荆智康源于清华大学智能产业研究院相关孵化，以大模型驱动的医疗智能体支持就医服务流程。其方向是让医疗信息与服务更易获得，并改善不同环节之间的衔接。",
-      "description_en": "Incubated through Tsinghua's Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
-      "detail_cn": "紫荆智康源于清华大学智能产业研究院相关孵化，以大模型驱动的医疗智能体支持就医服务流程。其方向是让医疗信息与服务更易获得，并改善不同环节之间的衔接。",
-      "detail_en": "Incubated through Tsinghua's Institute for AI Industry Research, Tairex applies language-model-powered agents to healthcare services. It aims to make medical information and assistance more accessible across the care journey.",
-      "website_url": "https://www.tairex.cn",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "tairex.svg",
-      "sector_ids": [
-        "applications"
-      ]
-    },
-    {
-      "id": "xingyun-ic",
-      "slug": "xingyun-ic",
-      "name_cn": "行云",
-      "name_en": "XING YUN",
-      "description_cn": "行云集成研发面向大模型负载的新一代 GPU 与计算系统，探索异构、白盒的硬件形态。公司聚焦推理时代对算力、内存和部署成本的共同要求。",
-      "description_en": "XING YUN is developing GPU chips and computing systems for large-model workloads. Its exploration of heterogeneous and white-box hardware addresses the intertwined demands of compute, memory and deployment cost in inference.",
-      "detail_cn": "行云集成研发面向大模型负载的新一代 GPU 与计算系统，探索异构、白盒的硬件形态。公司聚焦推理时代对算力、内存和部署成本的共同要求。",
-      "detail_en": "XING YUN is developing GPU chips and computing systems for large-model workloads. Its exploration of heterogeneous and white-box hardware addresses the intertwined demands of compute, memory and deployment cost in inference.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "infrastructure",
-      "logo_file": "xingyun-ic.svg",
-      "sector_ids": [
-        "infrastructure",
-        "chips"
-      ]
-    },
-    {
-      "id": "xmax-ai",
-      "slug": "xmax-ai",
-      "name_cn": "星脉智动",
-      "name_en": "Xmax AI",
-      "description_cn": "星脉智动以 XMAX X1 探索实时交互视频模型，让生成内容可随用户动作和场景变化即时响应。其技术面向虚实融合内容、沉浸式体验和新型终端交互。",
-      "description_en": "XMAX X1 is Xmax AI's real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
-      "detail_cn": "星脉智动以 XMAX X1 探索实时交互视频模型，让生成内容可随用户动作和场景变化即时响应。其技术面向虚实融合内容、沉浸式体验和新型终端交互。",
-      "detail_en": "XMAX X1 is Xmax AI's real-time interactive video model, designed to respond as users and scenes change rather than producing a fixed clip. The technology points toward immersive content and new interactions on devices such as XR hardware.",
-      "website_url": "https://xmax.ai",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "xmax-ai.svg",
-      "sector_ids": [
-        "foundation",
-        "applications"
-      ]
-    },
-    {
-      "id": "xinsheng-vision",
-      "slug": "xinsheng-vision",
-      "name_cn": "芯生视界",
-      "name_en": "XS Vision",
-      "description_cn": "芯生视界研究面向视觉重建的植入式脑机接口。外部摄像设备采集画面，再经算法、低功耗芯片和柔性电极向视觉皮层传递刺激信号，探索帮助重度视觉损伤者恢复基本视觉感知的路径。",
-      "description_en": "XS Vision is researching an implantable visual-cortex interface for vision restoration. Its proposed system combines camera input, encoding algorithms, a low-power chip and flexible electrodes to explore basic visual perception for people with severe vision loss.",
-      "detail_cn": "芯生视界研究面向视觉重建的植入式脑机接口。外部摄像设备采集画面，再经算法、低功耗芯片和柔性电极向视觉皮层传递刺激信号，探索帮助重度视觉损伤者恢复基本视觉感知的路径。",
-      "detail_en": "XS Vision is researching an implantable visual-cortex interface for vision restoration. Its proposed system combines camera input, encoding algorithms, a low-power chip and flexible electrodes to explore basic visual perception for people with severe vision loss.",
-      "website_url": "",
-      "investment_year": "",
-      "sector_id": "chips",
-      "logo_file": "xinsheng-vision.svg",
-      "sector_ids": [
-        "chips"
-      ]
-    },
-    {
-      "id": "yuanmu-ai",
-      "slug": "yuanmu-ai",
-      "name_cn": "圆木智能",
-      "name_en": "YUANMU.AI",
-      "description_cn": "圆木智能为离散制造、尤其是中小机加工企业提供智能排程与生产运营平台。智能体将订单、设备产能、工序和交期纳入动态计划，帮助工厂应对插单与变化。",
-      "description_en": "YUANMU.AI focuses on production scheduling for discrete manufacturers, particularly smaller machining businesses. Its agent-based software brings orders, capacity, process steps and delivery dates into plans that can be revised as shop-floor conditions change.",
-      "detail_cn": "圆木智能为离散制造、尤其是中小机加工企业提供智能排程与生产运营平台。智能体将订单、设备产能、工序和交期纳入动态计划，帮助工厂应对插单与变化。",
-      "detail_en": "YUANMU.AI focuses on production scheduling for discrete manufacturers, particularly smaller machining businesses. Its agent-based software brings orders, capacity, process steps and delivery dates into plans that can be revised as shop-floor conditions change.",
-      "website_url": "https://www.yuanmu.ai",
-      "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "yuanmu-ai.svg",
-      "sector_ids": [
-        "applications"
-      ]
-    },
-    {
-      "id": "zhipu-ai",
-      "slug": "zhipu-ai",
-      "name_cn": "智谱",
-      "name_en": "Z.AI",
-      "description_cn": "智谱源于清华大学相关研究团队，以 GLM 系列语言及多模态模型为核心，提供面向开发者和企业的平台、智能体接口等服务。公司于 2026 年 1 月在港交所上市，股票代码 02513.HK。",
-      "description_en": "Originating from Tsinghua research, Z.AI centers its developer and enterprise offerings on the GLM family of language and multimodal models, alongside agent APIs and related tools. It listed on the Hong Kong Stock Exchange in January 2026 under 02513.HK.",
-      "detail_cn": "智谱源于清华大学相关研究团队，以 GLM 系列语言及多模态模型为核心，提供面向开发者和企业的平台、智能体接口等服务。公司于 2026 年 1 月在港交所上市，股票代码 02513.HK。",
-      "detail_en": "Originating from Tsinghua research, Z.AI centers its developer and enterprise offerings on the GLM family of language and multimodal models, alongside agent APIs and related tools. It listed on the Hong Kong Stock Exchange in January 2026 under 02513.HK.",
-      "website_url": "https://z.ai",
-      "investment_year": "",
-      "sector_id": "foundation",
-      "logo_file": "zhipu-ai.svg",
-      "sector_ids": [
+        "frontiers",
         "foundation"
       ]
     },
     {
-      "id": "zettlab",
-      "slug": "zettlab",
-      "name_cn": "吾云创新",
-      "name_en": "Zettlab",
-      "description_cn": "吾云创新把多模态 AI 能力融入 NAS 存储，让个人和家庭数据在本地完成搜索、整理与知识管理。产品以私有数据空间为入口，探索消费级 AI 基础设施。",
-      "description_en": "Zettlab integrates multimodal AI with consumer NAS storage. The result is a private data workspace where people can search, organize and use personal or family information locally rather than relying entirely on cloud services.",
-      "detail_cn": "吾云创新把多模态 AI 能力融入 NAS 存储，让个人和家庭数据在本地完成搜索、整理与知识管理。产品以私有数据空间为入口，探索消费级 AI 基础设施。",
-      "detail_en": "Zettlab integrates multimodal AI with consumer NAS storage. The result is a private data workspace where people can search, organize and use personal or family information locally rather than relying entirely on cloud services.",
-      "website_url": "https://www.zettlab.com",
+      "id": "eonark",
+      "slug": "eonark",
+      "name_cn": "无尽方舟",
+      "name_en": "EonArk",
+      "description_cn": "无尽方舟是一家专注于 AI 生物医药的创新公司，围绕衰老干预与延寿药物发现搭建跨物种研发平台。公司通过自研 H2P 模型提升小鼠研究向人类应用转化的效率，并以宠物健康市场作为早期商业化切入点，在降低临床与伦理风险的同时验证产品价值，具备成长为全球抗衰老药物研发平台的潜力。",
+      "description_en": "EonArk is an AI-enabled biotechnology company focused on aging intervention and longevity drug discovery. Through its proprietary H2P model, the company aims to improve the translation of findings from mouse studies to human applications, while using the pet health market as an early commercialization path to validate product value with lower clinical and ethical risk. EonArk has the potential to develop into a global platform for anti-aging drug discovery.",
+      "detail_cn": "无尽方舟是一家专注于 AI 生物医药的创新公司，围绕衰老干预与延寿药物发现搭建跨物种研发平台。公司通过自研 H2P 模型提升小鼠研究向人类应用转化的效率，并以宠物健康市场作为早期商业化切入点，在降低临床与伦理风险的同时验证产品价值，具备成长为全球抗衰老药物研发平台的潜力。",
+      "detail_en": "EonArk is an AI-enabled biotechnology company focused on aging intervention and longevity drug discovery. Through its proprietary H2P model, the company aims to improve the translation of findings from mouse studies to human applications, while using the pet health market as an early commercialization path to validate product value with lower clinical and ethical risk. EonArk has the potential to develop into a global platform for anti-aging drug discovery.",
+      "website_url": "https://eonark.ai",
       "investment_year": "",
-      "sector_id": "applications",
-      "logo_file": "zettlab.svg",
+      "sector_id": "frontiers",
+      "logo_file": "eonark.webp",
       "sector_ids": [
-        "applications"
+        "frontiers",
+        "foundation"
+      ]
+    },
+    {
+      "id": "aipher",
+      "slug": "aipher",
+      "name_cn": "艾斐智药",
+      "name_en": "AIPher",
+      "description_cn": "艾斐智药源于清华 AIR，以 DrugCLIP 等算法把大规模分子筛选转化为高效检索问题。其 AI 药物研发路线从疾病与靶点研究延伸至分子设计，探索更连续的发现流程。",
+      "description_en": "Originating from Tsinghua AIR, AIPher uses algorithms including DrugCLIP to turn large-scale molecular screening into a retrieval problem. Its broader drug-discovery work connects disease and target research with molecular design.",
+      "detail_cn": "艾斐智药源于清华 AIR，以 DrugCLIP 等算法把大规模分子筛选转化为高效检索问题。其 AI 药物研发路线从疾病与靶点研究延伸至分子设计，探索更连续的发现流程。",
+      "detail_en": "Originating from Tsinghua AIR, AIPher uses algorithms including DrugCLIP to turn large-scale molecular screening into a retrieval problem. Its broader drug-discovery work connects disease and target research with molecular design.",
+      "website_url": "https://www.aipher-tech.com",
+      "investment_year": "",
+      "sector_id": "frontiers",
+      "logo_file": "aipher.webp",
+      "sector_ids": [
+        "frontiers"
+      ]
+    },
+    {
+      "id": "ligit",
+      "slug": "ligit",
+      "name_cn": "利太智药",
+      "name_en": "LigIT",
+      "description_cn": "利太智药把计算设计、镜像蛋白化学与实验验证结合，探索新的药物分子类型。其 CPMirror 模型研究天然蛋白知识如何迁移至镜像蛋白设计，形成从算法到实验的闭环。",
+      "description_en": "LigIT combines computational design, mirror-protein chemistry and experiments to explore a new therapeutic modality. Its CPMirror model investigates how knowledge from natural proteins can transfer to mirror-protein design and validation.",
+      "detail_cn": "利太智药把计算设计、镜像蛋白化学与实验验证结合，探索新的药物分子类型。其 CPMirror 模型研究天然蛋白知识如何迁移至镜像蛋白设计，形成从算法到实验的闭环。",
+      "detail_en": "LigIT combines computational design, mirror-protein chemistry and experiments to explore a new therapeutic modality. Its CPMirror model investigates how knowledge from natural proteins can transfer to mirror-protein design and validation.",
+      "website_url": "",
+      "investment_year": "",
+      "sector_id": "frontiers",
+      "logo_file": "ligit.webp",
+      "sector_ids": [
+        "frontiers",
+        "foundation"
       ]
     }
   ],

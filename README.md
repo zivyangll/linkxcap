@@ -45,6 +45,17 @@ npm test
 
 当前是 **mock 设计预览**：文章正文／英文译稿、人物简介、部分投资方向介绍及统计数字待审核。预览设置 `noindex,follow`；正式内容替换并验收后，才将 `PUBLIC_CONTENT_MODE` 改为 `production`。
 
+### 被投企业名单与顺序
+
+被投企业以 `docs/被投企业汇总_V6.csv` 为准：名单、名称、文案、官网和分类标签都取自该表，作品集页和公司轨道的展示顺序与 CSV 行顺序一致（不再按英文名排序）。
+
+| 命令                      | 作用                                                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `npm run portfolio:sync`  | 按 CSV 重新生成 `src/data/content.json` 的公司列表（含顺序）和 `docs/portfolio-v6-classification-audit.json` |
+| `npm run portfolio:check` | 只校验，不写文件：对比 CSV 与站点数据，输出缺失和未列入的公司                                                |
+
+增删公司或调整顺序：修改 CSV（新增公司需先在 `public/company` 放入 Logo）→ `npm run portfolio:sync` → `npm run build`。若首末公司变化，同步更新 `tests/meeting-revision.spec.ts` 中公司轨道的首末项（当前为 `zhipu-ai`、`ligit`）。
+
 ### 字体更新
 
 Source Han Serif SC、LXGW Neo XiHei、Source Serif 4 均本地托管，许可证在 `public/licenses/`。字体按实际用字和页面优先级拆分，原设计字体仍保持一致。

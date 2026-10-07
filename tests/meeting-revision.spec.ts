@@ -308,11 +308,11 @@ for (const width of [390, 768, 1440])
     await page.locator('[data-company-nav]').focus();
     await page.keyboard.press('End');
     await expect(
-      page.locator('[data-company-link=zettlab]'),
+      page.locator('[data-company-link=ligit]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.keyboard.press('Home');
     await expect(
-      page.locator('[data-company-link="agic-micro"]'),
+      page.locator('[data-company-link="zhipu-ai"]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.locator('[data-company-link=mosi]').click();
     if (width < 1280) {
@@ -373,22 +373,22 @@ test('desktop company rail remains a single continuous blurred looping arc', asy
 
   await rail.focus();
   await page.keyboard.press('Home');
-  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
   await page.keyboard.press('ArrowUp');
   await expect(browser).toHaveAttribute(
     'data-current-company',
-    'zettlab',
+    'ligit',
   );
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
 
   await page.keyboard.press('End');
   await expect(browser).toHaveAttribute(
     'data-current-company',
-    'zettlab',
+    'ligit',
   );
   await page.keyboard.press('ArrowDown');
-  await expect(browser).toHaveAttribute('data-current-company', 'agic-micro');
+  await expect(browser).toHaveAttribute('data-current-company', 'zhipu-ai');
   await expect
     .poll(() =>
       page.locator('[data-company-loop-link]').evaluateAll(

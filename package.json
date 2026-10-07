@@ -9,6 +9,8 @@
     "preview": "astro preview --host 127.0.0.1",
     "test": "playwright test",
     "assets:download": "node scripts/download-assets.mjs",
+    "portfolio:sync": "node scripts/sync-portfolio-v6.mjs --write",
+    "portfolio:check": "node scripts/sync-portfolio-v6.mjs",
     "assets:optimize": "node scripts/optimize-assets.mjs",
     "format": "prettier --write src/components src/layouts src/pages src/scripts src/lib src/styles tests",
     "test:performance": "node scripts/performance-check.mjs"

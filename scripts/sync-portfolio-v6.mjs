@@ -256,10 +256,7 @@ if (process.argv.includes('--write')) {
         logo_file: logo,
         sector_ids: record.sectorIds,
       };
-    })
-    .sort((a, b) =>
-      a.name_en.localeCompare(b.name_en, 'en', { sensitivity: 'base' }),
-    );
+    });
   await fs.writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`);
   await fs.writeFile(mappingPath, `${JSON.stringify(report, null, 2)}\n`);
 } else {
