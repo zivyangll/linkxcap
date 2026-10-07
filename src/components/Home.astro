@@ -330,6 +330,20 @@ const openingBody = homeContent.opening.body[lang]
         loading="lazy"
         decoding="async"
       />
+      <video
+        class="focus-backdrop-stars"
+        data-focus-stars
+        data-src={asset('home-bg', 'focusStarsMp4')}
+        poster={asset('home-bg', 'focusStarsPoster')}
+        width="1440"
+        height="810"
+        muted
+        loop
+        playsinline
+        preload="none"
+        disablepictureinpicture
+        tabindex="-1"
+      ></video>
       <span class="focus-backdrop-nebula focus-backdrop-nebula--a">
         <img
           src={url('assets/focus-nebula.webp')}
