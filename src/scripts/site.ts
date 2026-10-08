@@ -1,9 +1,21 @@
 import { mountFocusControls } from './focus-controls';
 export {};
-const currentYear = String(new Date().getFullYear());
-document
-  .querySelectorAll<HTMLElement>('[data-current-year]')
-  .forEach((element) => (element.textContent = currentYear));
+// The copyright year is never written at build time: the site is deployed
+// once and keeps running for years, so the browser fills it in.
+function fillCurrentYear() {
+  const year = String(new Date().getFullYear());
+  document
+    .querySelectorAll<HTMLElement>('[data-current-year]')
+    .forEach((element) => {
+      element.textContent = year;
+      element.setAttribute('datetime', year);
+    });
+}
+fillCurrentYear();
+// A page restored from the back/forward cache may be from another year.
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) fillCurrentYear();
+});
 const liveStatus = document.querySelector<HTMLElement>('[data-status]');
 const menu = document.querySelector<HTMLDialogElement>('#site-menu');
 const menuOpener =

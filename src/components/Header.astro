@@ -11,7 +11,6 @@ import {
   contactContent,
   socials,
   asset,
-  currentYear,
   type Lang,
 } from '../lib/site';
 interface Props {
@@ -183,7 +182,7 @@ const menuSocials = [
       <p class="menu-tagline">{siteContent.footerTagline[lang]}</p>
       <p class="menu-copyright">
         {copyrightBefore}
-        <time data-current-year>{currentYear}</time>
+        <time data-current-year></time>
         {copyrightAfter}
       </p>
       <div class="menu-legal-links">

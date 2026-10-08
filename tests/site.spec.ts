@@ -81,6 +81,27 @@ test('menu legal block and insights use the current runtime year', async ({
     page.locator('.insights-copyright [data-current-year]'),
   ).toHaveText(year);
 });
+test('the copyright year is not baked into the deployed HTML', async ({
+  request,
+}) => {
+  for (const path of ['zh/index.html', 'en/insights.html', '404.html']) {
+    const html = await (await request.get(path)).text();
+    expect(html, path).toContain('<time data-current-year');
+    expect(html, path).not.toMatch(/<time data-current-year[^>]*>\s*\d/);
+    expect(html, path).not.toMatch(/©\s*(?:<[^>]+>\s*)*(?:19|20)\d{2}/);
+  }
+});
+test('the copyright year follows the browser clock', async ({ page }) => {
+  await page.clock.install({ time: new Date('2041-06-01T12:00:00Z') });
+  await page.goto('zh/index.html');
+  await expect(page.locator('.menu-legal [data-current-year]')).toHaveText(
+    '2041',
+  );
+  await page.goto('en/insights.html');
+  await expect(
+    page.locator('.insights-copyright [data-current-year]'),
+  ).toHaveText('2041');
+});
 test('insights list, language state and original article link', async ({
   page,
 }) => {

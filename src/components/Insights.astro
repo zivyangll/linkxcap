@@ -6,7 +6,6 @@ import {
   insightArticleFromData,
   insightsContent,
   content,
-  currentYear,
   siteContent,
   type Lang,
 } from '../lib/site';
@@ -115,7 +114,7 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
   </div>
   <p class="insights-copyright">
     {copyrightBefore}
-    <time data-current-year>{currentYear}</time>
+    <time data-current-year></time>
     {copyrightAfter}
   </p>
 </section>

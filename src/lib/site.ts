@@ -33,7 +33,6 @@ export const asset = (node: string, key: string) => {
   return url(src);
 };
 export const preview = import.meta.env.PUBLIC_CONTENT_MODE !== 'production';
-export const currentYear = new Date().getFullYear();
 
 type AnyRecord = Record<string, any>;
 type Localized<T = string> = { zh: T; en: T };
