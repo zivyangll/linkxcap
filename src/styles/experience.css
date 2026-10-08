@@ -165,6 +165,7 @@
   .focus-links {
     font-size: max(12px, calc(16 * var(--u)));
   }
+  .contact-details .eyebrow,
   .contact-details h2 {
     font-size: max(24px, calc(32 * var(--u)));
   }

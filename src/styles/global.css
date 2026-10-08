@@ -1759,6 +1759,10 @@
     font-size: 24px;
     font-weight: 400;
   }
+  /* The contact block's two heading lines share one size. */
+  .contact-details .eyebrow {
+    font-size: 32px;
+  }
   .contact-socials > a {
     display: flex;
     justify-content: space-between;

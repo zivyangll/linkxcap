@@ -49,7 +49,7 @@
   }
   html body .home-story .opening-title {
     margin-top: calc(8 * var(--m));
-    font: 400 calc(44 * var(--k)) / 1.2 var(--serif);
+    font: 500 calc(44 * var(--k)) / 1.2 var(--serif);
     letter-spacing: -0.05em;
     color: #000;
   }
@@ -60,7 +60,7 @@
     display: block;
   }
   html body[data-lang='zh'] .home-story .opening-title-line[lang='zh'] {
-    font-weight: 600;
+    font-weight: 500;
   }
   html body[data-lang='en'] .home-story .opening-title {
     font-size: calc(44 * var(--k));
@@ -118,7 +118,7 @@
     width: auto;
     max-width: calc(560 * var(--m));
     margin-left: max(0px, calc(108 * var(--m) - 24px));
-    font: 400 calc(32 * var(--k)) / 1.2 var(--serif);
+    font: 500 calc(32 * var(--k)) / 1.2 var(--serif);
     letter-spacing: -0.05em;
     color: #000;
     text-wrap: balance;
@@ -133,7 +133,7 @@
   }
   html body .home-story .hero .hero-title--zh {
     font-size: calc(32 * var(--k));
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.2;
   }
   html body[data-lang='en'] .home-story .hero .hero-title {
@@ -148,7 +148,7 @@
     text-align: center;
   }
   html body .home-story .about .about-title {
-    font: 600 calc(24 * var(--k)) / 1.2 var(--serif);
+    font: 500 calc(24 * var(--k)) / 1.2 var(--serif);
     letter-spacing: -0.05em;
     color: #000;
     text-wrap: balance;
@@ -203,7 +203,7 @@
     text-wrap: balance;
   }
   html body[data-lang='en'] .home-story .research h2 {
-    font-weight: 700;
+    font-weight: 500;
   }
   html body .home-story .research h2 span {
     display: block;

@@ -81,7 +81,9 @@ export function initFellow() {
         '.fellow-intro .next-title-fill, .fellow-intro .next-title-outline',
         {
           scale: zh ? 0.6519 : 0.4897,
-          y: () => unit() * (zh ? -225.64 : -42),
+          // 30 design px higher than the Figma pose: the title now sits on the
+          // 112px scale step and needs room above the subtitle.
+          y: () => unit() * (zh ? -255.64 : -72),
           transformOrigin: '50% 0%',
           duration: 0.45,
         },
@@ -91,7 +93,9 @@ export function initFellow() {
         '.fellow-intro .next-subtitle-fill, .fellow-intro .next-subtitle-outline',
         {
           scale: zh ? 1.0794 : 0.4897,
-          y: () => unit() * (zh ? -281 : -114.97),
+          // 10 design px higher than the Figma pose so the portrait, which keeps
+          // growing to 1.6x, does not run into the subtitle.
+          y: () => unit() * (zh ? -291 : -125),
           transformOrigin: '50% 0%',
           duration: 0.45,
         },
