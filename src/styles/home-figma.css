@@ -326,14 +326,16 @@
   body .home-story[data-home] .research-axis::after {
     display: none;
   }
+  /* Node and its chevrons centre on the ink of the title's first line
+     (y 243.5: the glyphs sit 7.5 below the centre of the 72px line box). */
   body .home-story[data-home] .research-axis .diamond {
     left: calc(-6.51 * var(--u));
-    top: calc(241.485 * var(--u));
+    top: calc(237.5 * var(--u));
     background: #090909;
   }
   body .home-story[data-home] .research-marker {
     left: calc(-46 * var(--u));
-    top: calc(201 * var(--u));
+    top: calc(197.65 * var(--u));
     width: calc(91.697 * var(--u));
     height: calc(91.697 * var(--u));
   }
@@ -652,11 +654,12 @@
     .diamond {
     transform: none;
   }
+  /* The selected label sits 20px clear of the 44px node, centred on it. */
   body .home-story[data-home] .focus .sector-star.is-active .star-label {
-    top: calc(50% - 43.5 * var(--u));
-    left: calc(50% + 194 * var(--u));
+    top: 50%;
+    left: calc(100% + 20px);
     right: auto;
-    transform: none;
+    transform: translateY(-50%);
     gap: 0;
     font: 400 max(12px, calc(20 * var(--u))) / 1.5 var(--serif);
     color: #fff;
@@ -679,7 +682,7 @@
     .sector-star.is-active
     .star-label
     [lang='en'] {
-    margin-left: calc(35 * var(--u));
+    margin-left: 0;
     letter-spacing: -0.05em;
   }
   body[data-lang='en']
@@ -687,7 +690,7 @@
     .focus
     .sector-star.is-active
     .star-label {
-    left: calc(50% + 104.3 * var(--u));
+    left: calc(100% + 20px);
     font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
   }

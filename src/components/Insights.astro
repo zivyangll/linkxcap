@@ -200,6 +200,10 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
       line-height: 1.5;
       letter-spacing: -0.05em;
     }
+    /* Same rhythm as the Team intro: paragraphs follow on at line height. */
+    .insights-intro .intro-paragraph + .intro-paragraph {
+      margin-top: 0;
+    }
   }
   .insights-orbit {
     aspect-ratio: 1;

@@ -26,7 +26,8 @@ function mountOpeningParticles() {
     if (effect) return;
     Promise.all([
       import('./particle-motion'),
-      fetch(canvas.dataset.src || '').then((response) =>
+      // Ambience only: queue behind everything the first screen needs.
+      fetch(canvas.dataset.src || '', { priority: 'low' }).then((response) =>
         response.arrayBuffer(),
       ),
     ])

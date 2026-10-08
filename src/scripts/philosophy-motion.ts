@@ -277,6 +277,25 @@ export function mountPhilosophyMotion(
       [4, 4],
       OPENING_RAIL_END_COLOR,
     );
+    // Figma 2014:1162 Vector 30: a faint straight rail on x 468 from y 70,
+    // 1080 long, black to #9d9d9d from y 214.6, dashed 4 / 4 at 20%. It grows
+    // down from its top while the node rides the arc.
+    const heroRailGrow = smooth(range(p, PHILOSOPHY_ARC.start, 0.42));
+    if (heroRailGrow > 0) {
+      const top = 70 * u;
+      const fade = ctx.createLinearGradient(0, 214.61 * u, 0, 1150 * u);
+      fade.addColorStop(0, '#000');
+      fade.addColorStop(1, '#9d9d9d');
+      stroke(
+        0.2 * heroOpacity,
+        () => {
+          ctx.moveTo(468 * u, top);
+          ctx.lineTo(468 * u, top + 1080 * u * heroRailGrow);
+        },
+        [4, 4],
+        fade,
+      );
+    }
     if (arc > 0) {
       stroke(
         0.96 * heroOpacity,

@@ -473,8 +473,9 @@ body .team-review .team-bio::-webkit-scrollbar {
   .site-menu .menu-contact .line-link {
     font-size: max(16px, calc(16 * var(--u)));
   }
+  /* A notch below the header's 16px switch. */
   .site-menu .menu-language {
-    font-size: max(14px, calc(16 * var(--u)));
+    font-size: max(12px, calc(14 * var(--u)));
   }
   .home-story .opening-copy {
     font-weight: 500;
@@ -796,7 +797,8 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body[data-lang='zh'] .fellow-intro .next-title-outline--text,
   body[data-lang='zh'] .fellow-intro .next-title-fill {
-    top: calc(508 * var(--u));
+    /* Lifted so the characters' bottom edge sits on the y 618.82 guide. */
+    top: calc(484 * var(--u));
     font-size: max(12px, calc(112 * var(--u)));
     font-weight: 600;
   }

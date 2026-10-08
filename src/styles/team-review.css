@@ -464,12 +464,18 @@ body .team-review {
     gap: calc(40 * var(--u));
   }
 
-  /* The card keeps the same 20px inset in the wide and narrow columns. */
+  /* Every card takes the middle column's size (560 - 2 × 20). In the wide
+     outer columns it hugs the middle: left cards sit right, right cards
+     sit left, each 20px in from that inner rule. */
   .team-review .team-member:nth-child(n) .team-bio {
     left: calc(20 * var(--u));
-    right: calc(20 * var(--u));
-    width: auto;
+    right: auto;
+    width: calc(520 * var(--u));
     transform: none;
+  }
+  .team-review .team-member:nth-child(3n + 1) .team-bio {
+    left: auto;
+    right: calc(20 * var(--u));
   }
 }
 

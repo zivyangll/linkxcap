@@ -37,6 +37,31 @@ const branches: Record<string, [number, number, 'left' | 'right'][]> = {
     [866, 1011, 'left'],
   ],
 };
+const BRANCH_SCALE = 0.8;
+// Sparse sectors (five companies or fewer) pull their rays in another 20%.
+export const SPARSE_BRANCH_COUNT = 5;
+export const branchScale = (count: number) =>
+  count <= SPARSE_BRANCH_COUNT ? 0.8 : 1;
+// The selected sector's label sits just right of its node, so no ray may
+// leave within this angle of due right. The full circle is squeezed into the
+// remaining arc: rays keep their order and rhythm, only the wedge is empty.
+const LABEL_WEDGE = (38 * Math.PI) / 180;
+export const clearOfLabel = (angle: number) => {
+  const turn = Math.PI * 2;
+  const around = ((angle % turn) + turn) % turn;
+  return LABEL_WEDGE + (around * (turn - 2 * LABEL_WEDGE)) / turn;
+};
+// Elliptical spreads flatten angles, so the final offset from the node is
+// checked again: one still inside the wedge turns out to its edge, keeping
+// its length and whether it points up or down.
+export const clearRay = (dx: number, dy: number): [number, number] => {
+  if (dx <= 0 || Math.abs(Math.atan2(dy, dx)) >= LABEL_WEDGE) return [dx, dy];
+  const length = Math.hypot(dx, dy);
+  return [
+    Math.cos(LABEL_WEDGE) * length,
+    Math.sin(LABEL_WEDGE) * length * (dy < 0 ? -1 : 1),
+  ];
+};
 export function focusBranch(
   sector: string,
   index: number,
@@ -54,10 +79,11 @@ export function focusBranch(
       (sum, character) => sum + character.charCodeAt(0),
       0,
     );
-    const angle =
+    const angle = clearOfLabel(
       -Math.PI +
-      (index * Math.PI * 2) / count +
-      Math.sin((index + seed) * 1.73) * 0.15;
+        (index * Math.PI * 2) / count +
+        Math.sin((index + seed) * 1.73) * 0.15,
+    );
     const radiusX = 250 + ((index * 73 + seed) % 190);
     const radiusY = 175 + ((index * 47 + seed) % 175);
     const centreX = Math.max(1050, Math.min(1500, parent.x));
@@ -66,6 +92,13 @@ export function focusBranch(
       Math.max(100, Math.min(990, parent.y + Math.sin(angle) * radiusY)),
     ];
   }
+  // Every ray is drawn 20% shorter than the authored/generated layout.
+  const scale = BRANCH_SCALE * branchScale(count);
+  const [dx, dy] = clearRay(
+    (point[0] - parent.x) * scale,
+    (point[1] - parent.y) * scale,
+  );
+  point = [parent.x + dx, parent.y + dy];
   return {
     x: point[0],
     y: point[1],

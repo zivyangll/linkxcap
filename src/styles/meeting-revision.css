@@ -18,7 +18,7 @@
 .home-story .about-rays .diamond {
   background: var(--purple);
 }
-.home-story .opening.has-scroll-trail .opening-track > img {
+.home-story .opening.has-scroll-trail .opening-track > svg {
   visibility: hidden;
 }
 @media (min-width: 1024px) {
@@ -1487,7 +1487,7 @@
     height: 190px;
   }
 
-  [data-mobile-static] .opening-track img {
+  [data-mobile-static] .opening-track svg {
     width: 2px;
     height: 190px;
     opacity: 0.58;

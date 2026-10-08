@@ -75,7 +75,10 @@
 }
 
 /* Opening screen (desktop): the animated particle field replaces the paper
-   texture image. It keeps the texture's 1231×1080 slot at the top-left. */
+   texture image. The field is the texture's 1231-wide slot scaled up 10%
+   and centred on the chapter diamond (.opening-track: 24.375%, 44.16% +
+   half of its 12u box), then lowered by 10% of its own height; the scene
+   clips the overflow. */
 .opening-particles {
   display: none;
 }
@@ -88,21 +91,13 @@
   .opening-particles {
     display: block;
     position: absolute;
-    left: 0;
-    top: 0;
-    width: calc(1231 * var(--u));
-    height: calc(1080 * var(--u));
-    overflow: hidden;
+    left: 24.375%;
+    top: calc(44.16% + 6 * var(--u));
+    width: calc(1231 * 1.1 * var(--u));
+    aspect-ratio: 4164 / 3662;
+    translate: -50% -40%;
     pointer-events: none;
-    opacity: 0.55;
-  }
-
-  .opening-particles canvas {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 100%;
-    transform: translateY(-50%);
+    opacity: 0.385;
   }
 }
 

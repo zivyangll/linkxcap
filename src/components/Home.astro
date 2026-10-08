@@ -99,7 +99,35 @@ const openingBody = homeContent.opening.body[lang]
     ></canvas>
     <div class="opening-track" aria-hidden="true">
       <i class="diamond"></i>
-      <img src={asset('3297', 'imgVector30')} width="2" height="590" alt="" />
+      {/* Inline, not an <img>: on a slow network the rail must paint with
+          the first frame, not wait in the image queue (Figma 3297 Vector 30). */}
+      <svg
+        width="2"
+        height="590"
+        viewBox="0 0 2 590"
+        preserveAspectRatio="none"
+        fill="none"
+      >
+        <defs>
+          <linearGradient
+            id="opening-rail-gradient"
+            x1="1.5"
+            y1="79"
+            x2="1.5"
+            y2="590"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#573C79" />
+            <stop offset="1" stop-color="#8C8A9E" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M1 0V590"
+          stroke="url(#opening-rail-gradient)"
+          stroke-width="2"
+          stroke-dasharray="4 4"
+        />
+      </svg>
     </div>
     <span class="chapter">
       <span class="chapter-desktop">{homeContent.opening.chapter.en}</span>
@@ -137,24 +165,55 @@ const openingBody = homeContent.opening.body[lang]
       data-minimal-header
       aria-labelledby="hero-title"
     >
-      <img
+      {/* Figma 3348 Ellipse 1: the dashed left arc of the orbit (130.7° to
+          278.2°). Inline so it needs no 100 KB raster on a slow network. */}
+      <svg
         class="hero-orbit ambient-orbit"
-        src={asset('3348', 'imgEllipse1')}
         width="2386"
         height="2386"
-        alt=""
-        loading="lazy"
-      />
+        viewBox="0 0 2386 2386"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M428.4 2081.9A1172.5 1172.5 0 0 1 1360.2 32.5"
+          stroke="#413F5E"
+          stroke-opacity="0.94"
+          stroke-dasharray="4 4"
+        />
+      </svg>
       <div class="hero-track" aria-hidden="true">
         <i class="diamond hero-track-start"></i>
         <i class="diamond hero-track-end"></i>
-        <img
+        <svg
           class="hero-track-line"
-          src={asset('3348', 'imgVector30')}
           width="2"
           height="1080"
-          alt=""
-        />
+          viewBox="0 0 2 1080"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          <defs>
+            <linearGradient
+              id="hero-rail-gradient"
+              x1="1.5"
+              y1="144.61"
+              x2="1.5"
+              y2="1080"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop />
+              <stop offset="1" stop-color="#9D9D9D" />
+            </linearGradient>
+          </defs>
+          <path
+            d="M1 0V1080"
+            opacity="0.2"
+            stroke="url(#hero-rail-gradient)"
+            stroke-width="2"
+            stroke-dasharray="4 4"
+          />
+        </svg>
       </div>
       {lang === 'zh' && (
         <p class="hero-title hero-title-en" lang="en" aria-hidden="true">
@@ -320,13 +379,16 @@ const openingBody = homeContent.opening.body[lang]
     aria-labelledby="focus-title"
   >
     <div class="focus-backdrop" aria-hidden="true">
+      {/* 540 KB of star noise that no encoder shrinks much. Browsers start
+          "lazy" images thousands of pixels early on slow links, so the
+          script sets src only when this screen is about to arrive. */}
       <img
         class="focus-backdrop-milky-way"
-        src={url('assets/focus-milkyway.webp')}
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+        data-defer-src={url('assets/focus-milkyway.webp')}
         width="658"
         height="1068"
         alt=""
-        loading="lazy"
         decoding="async"
       />
       <video
@@ -351,6 +413,7 @@ const openingBody = homeContent.opening.body[lang]
           alt=""
           loading="lazy"
           decoding="async"
+          fetchpriority="low"
         />
       </span>
       <span class="focus-backdrop-nebula focus-backdrop-nebula--b">
@@ -361,6 +424,7 @@ const openingBody = homeContent.opening.body[lang]
           alt=""
           loading="lazy"
           decoding="async"
+          fetchpriority="low"
         />
       </span>
     </div>
@@ -399,16 +463,14 @@ const openingBody = homeContent.opening.body[lang]
           aria-labelledby={`sector-label-${s.id}`}
         >
           <h3 id={`sector-label-${s.id}`}>
-            {
-              lang === 'zh' && (
-                <span>
-                  <b class="focus-slash" aria-hidden="true">
-                    /{' '}
-                  </b>
-                  {s.zh}
-                </span>
-              )
-            }
+            {lang === 'zh' && (
+              <span>
+                <b class="focus-slash" aria-hidden="true">
+                  /{' '}
+                </b>
+                {s.zh}
+              </span>
+            )}
             <span lang="en">{s.en}</span>
           </h3>
           <p>{s.desc[lang]}</p>
@@ -417,29 +479,30 @@ const openingBody = homeContent.opening.body[lang]
     </div>
     <FocusConstellation lang={lang} />
     <nav class="focus-links">
-      <a href={contactUrl(lang)}>
-        {homeContent.focus.contactLink[lang]} ↗
-      </a>
+      <a href={contactUrl(lang)}>{homeContent.focus.contactLink[lang]} ↗</a>
       <a href="#about">{homeContent.focus.aboutLink[lang]} ↗</a>
     </nav>
   </section>
 </div>
 <script>
-  import { initFocusStars } from '../scripts/focus-stars';
+  import { initFocusBackdrop, initFocusStars } from '../scripts/focus-stars';
+  initFocusBackdrop();
   initFocusStars();
 </script>
 <script>
+  // Static imports on purpose: the bundler then hands the browser this entry,
+  // gsap and both motion modules as one parallel batch. Dynamic imports added
+  // two more round trips before any rail or scroll motion could appear, which
+  // on a 3G link cost several seconds.
   import { DESKTOP_MOTION, MOBILE_MOTION } from '../scripts/motion-policy';
+  import { initHome } from '../scripts/home';
+  import { initMobileHome } from '../scripts/home-mobile-motion';
   const desktop = matchMedia(DESKTOP_MOTION);
   let started = false;
   const start = () => {
     if (!desktop.matches || started) return;
     started = true;
-    import('../scripts/home')
-      .then((module) => module.initHome())
-      .catch(() => {
-        started = false;
-      });
+    initHome();
   };
   start();
   desktop.addEventListener('change', start);
@@ -448,11 +511,7 @@ const openingBody = homeContent.opening.body[lang]
   const startMobile = () => {
     if (!mobile.matches || mobileStarted) return;
     mobileStarted = true;
-    import('../scripts/home-mobile-motion')
-      .then((module) => module.initMobileHome())
-      .catch(() => {
-        mobileStarted = false;
-      });
+    initMobileHome();
   };
   startMobile();
   mobile.addEventListener('change', startMobile);

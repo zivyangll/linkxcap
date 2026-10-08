@@ -31,6 +31,10 @@ const active =
 const navItems = navigation.filter((item) => item.page !== 'contact');
 const [copyrightBefore, copyrightAfter] =
   siteContent.footerCopyright[lang].split('{year}');
+// The menu keeps only the company line: "© 2026 北京…有限责任公司。"
+const companyEnd = copyrightAfter.indexOf('。');
+const menuCopyrightAfter =
+  companyEnd >= 0 ? copyrightAfter.slice(0, companyEnd + 1) : copyrightAfter;
 const socialByUrl = (fragment: string) =>
   socials.find((social) => social.href.includes(fragment))!;
 const menuSocials = [
@@ -109,9 +113,10 @@ const menuSocials = [
         aria-current={active === item.page ? 'page' : undefined}
       >
         <i class="menu-current diamond" aria-hidden="true"></i>
-        <span>{lang === 'zh' ? item.zh : item.en}</span>
+        {/* Figma 100:261: English name first, Chinese after it. */}
+        <span lang="en">{item.en}</span>
         {lang === 'zh' && item.zh !== item.en && (
-          <small lang="en">{item.en}</small>
+          <small lang="zh">{item.zh}</small>
         )}
         <Arrow />
       </a>
@@ -138,12 +143,21 @@ const menuSocials = [
         <Arrow />
       </a>
     </div>
+    {/* Same switch as the header: "EN 中", the current language at full strength. */}
     <div class="menu-language">
-      <a href={pageUrl('zh', current)} data-language="zh">
-        {navigationContent.languageNames.zh}
+      <a
+        href={pageUrl('en', current)}
+        data-language="en"
+        aria-current={lang === 'en' ? 'page' : undefined}
+      >
+        {navigationContent.languageShort.en}
       </a>
-      <a href={pageUrl('en', current)} data-language="en">
-        {navigationContent.languageNames.en}
+      <a
+        href={pageUrl('zh', current)}
+        data-language="zh"
+        aria-current={lang === 'zh' ? 'page' : undefined}
+      >
+        {navigationContent.languageShort.zh}
       </a>
     </div>
     <div class="menu-bottom">
@@ -179,11 +193,10 @@ const menuSocials = [
       </div>
     </div>
     <div class="menu-legal">
-      <p class="menu-tagline">{siteContent.footerTagline[lang]}</p>
       <p class="menu-copyright">
         {copyrightBefore}
         <time data-current-year></time>
-        {copyrightAfter}
+        {menuCopyrightAfter}
       </p>
       <div class="menu-legal-links">
         <a href={`mailto:${siteContent.email}`}>{siteContent.email}</a>

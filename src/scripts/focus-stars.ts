@@ -1,5 +1,26 @@
 import { TOPOLOGY_MOTION } from './motion-policy';
 
+// Heavy Focus backdrop images carry data-defer-src instead of src and load one
+// screen ahead of the section, so they never compete with the first screen.
+export function initFocusBackdrop() {
+  const images = document.querySelectorAll<HTMLImageElement>(
+    '.focus img[data-defer-src]',
+  );
+  const section = images[0]?.closest('.focus');
+  if (!section) return;
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      observer.disconnect();
+      images.forEach((image) => {
+        image.src = image.dataset.deferSrc!;
+      });
+    },
+    { rootMargin: '100% 0px' },
+  );
+  observer.observe(section);
+}
+
 // The designer's looping star layer over the Focus backdrop. It loads only
 // near the viewport and plays while visible; otherwise the poster frame stays.
 export function initFocusStars() {

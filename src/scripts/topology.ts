@@ -1,4 +1,5 @@
 import { TOPOLOGY_MOTION, TOUCH_LAYOUT } from './motion-policy';
+import { branchScale, clearOfLabel, clearRay } from '../lib/focus-layout';
 import {
   Scene,
   PerspectiveCamera,
@@ -27,19 +28,29 @@ type Anchor = {
 const CYCLE_MS = 5200;
 const BRANCH_MS = 620;
 const FOCUS_DEPTH = 240;
-const FOCUS_BRANCH_RADIUS_X = 340;
-const FOCUS_BRANCH_RADIUS_Y = 270;
-// On desktop the selected node stays inside the right two thirds of the
+const FOCUS_BRANCH_RADIUS_X = 425;
+const FOCUS_BRANCH_RADIUS_Y = 340;
+// On desktop the selected node stays inside the right three quarters of the
 // viewport, at least this far from either edge of that region.
 const SAFE_AREA_MARGIN = 200;
-const branchPose = (index: number, count: number) => ({
-  angle:
-    -Math.PI / 2 +
-    (index * Math.PI * 2) / count +
-    Math.sin((index + 1) * 1.87) * 0.14,
-  radiusX: 0.72 + ((index * 37) % 7) / 10,
-  radiusY: 0.7 + ((index * 53) % 9) / 14,
-});
+// Long and short rays, read in a stride of 5 so neighbours rarely repeat a
+// pattern; this keeps the fan from looking like an even starburst.
+const BRANCH_RHYTHM = [1, 0.58, 1.3, 0.8, 1.14, 0.66, 1.38, 0.9];
+const branchPose = (index: number, count: number) => {
+  // Shift each ray by up to 0.38 of its slot: rays bunch into small groups
+  // with open gaps between them, but never cross their neighbours.
+  const slot = index + Math.sin(index * 2.4 + 0.6) * 0.38;
+  // 0.8: every ray is drawn a fifth shorter than the rhythm's raw length.
+  const reach =
+    BRANCH_RHYTHM[(index * 5) % BRANCH_RHYTHM.length] *
+    0.8 *
+    branchScale(count);
+  return {
+    angle: clearOfLabel(-Math.PI / 2 + (slot * Math.PI * 2) / count),
+    radiusX: reach * (0.92 + ((index * 37) % 5) / 25),
+    radiusY: reach * (0.9 + ((index * 53) % 7) / 30),
+  };
+};
 
 export function mountTopology(root: HTMLElement) {
   const canvas = root.querySelector<HTMLCanvasElement>('.topology-canvas')!;
@@ -156,14 +167,14 @@ export function mountTopology(root: HTMLElement) {
   const centreShift = new Vector3();
   const frontRotation = new Euler();
   // Shifts a graph position so the selected node, under the given rotation,
-  // projects inside the desktop safe area: the right two thirds of the
+  // projects inside the desktop safe area: the right three quarters of the
   // window, 200px from either side, and 200px from the top and bottom of
   // the stage's first screen. Projection is linear in world x and y at a
   // fixed depth, so one correction is exact.
   const keepActiveInSafeArea = (position: Vector3, rotation: Euler) => {
     if (touch.matches || !width || !height) return;
     const left = stage.getBoundingClientRect().left;
-    const minX = innerWidth / 3 + SAFE_AREA_MARGIN - left;
+    const minX = innerWidth / 4 + SAFE_AREA_MARGIN - left;
     const maxX = innerWidth - SAFE_AREA_MARGIN - left;
     const minY = SAFE_AREA_MARGIN;
     const maxY = Math.min(height, innerHeight) - SAFE_AREA_MARGIN;
@@ -213,12 +224,13 @@ export function mountTopology(root: HTMLElement) {
     targetPitch = 0;
     const frontZ = Math.max(active.origin.z, FOCUS_DEPTH);
     const perspective = (camera.position.z - frontZ) / camera.position.z;
-    // The original hub coordinate is the visual centre of the right-hand 3D
-    // region. Preserve that projection while the selected node moves forward;
-    // the left-hand title and explanatory copy remain unobstructed.
+    // Horizontally the hub stays the visual centre of the right-hand 3D
+    // region, keeping the left-hand copy clear. Vertically the selected node
+    // goes to the middle of the stage (world y 0 projects there at any
+    // depth), so its companies can use the space below it too.
     targetPosition.set(
       homePosition.x * perspective - active.origin.x,
-      homePosition.y * perspective - active.origin.y,
+      -active.origin.y,
       homePosition.z,
     );
     keepActiveInSafeArea(
@@ -249,11 +261,16 @@ export function mountTopology(root: HTMLElement) {
           Math.tan((camera.fov * Math.PI) / 360) *
           (camera.position.z - frontZ);
         const pixelsToWorld = visibleHeight / height;
-        const radiusX = Math.min(FOCUS_BRANCH_RADIUS_X, width * 0.22);
-        const radiusY = Math.min(FOCUS_BRANCH_RADIUS_Y, height * 0.32);
+        // 25% larger than the first pass, so the fan fills the taller stage.
+        const radiusX = Math.min(FOCUS_BRANCH_RADIUS_X, width * 0.275);
+        const radiusY = Math.min(FOCUS_BRANCH_RADIUS_Y, height * 0.4);
+        const [dx, dy] = clearRay(
+          Math.cos(angle) * radiusX * spreadX,
+          Math.sin(angle) * radiusY * spreadY,
+        );
         target.set(
-          active.origin.x + Math.cos(angle) * radiusX * spreadX * pixelsToWorld,
-          active.origin.y - Math.sin(angle) * radiusY * spreadY * pixelsToWorld,
+          active.origin.x + dx * pixelsToWorld,
+          active.origin.y - dy * pixelsToWorld,
           frontZ,
         );
       }
@@ -338,13 +355,20 @@ export function mountTopology(root: HTMLElement) {
       parseFloat(getComputedStyle(stage).getPropertyValue('--u')) ||
       width / 1920;
     const span = 2 * Math.tan((38 * Math.PI) / 360) * 1000;
+    // The stage is taller than the 1080 design frame (at least half a screen
+    // plus 777), so the frame is centred in it instead of hugging its top and
+    // leaving the lower part empty. DOM nodes keep their CSS origin; the
+    // projected translate absorbs this shift.
+    const frameTop = touch.matches
+      ? 0
+      : Math.max(0, (height - 1080 * unit) / 2);
     const toWorld = (element: HTMLElement, target: Vector3) => {
       const x = touch.matches
         ? (Number(element.dataset.mx) * width) / 360
         : Number(element.dataset.x) * unit;
       const y = touch.matches
         ? (Number(element.dataset.my) * height) / 560
-        : Number(element.dataset.y) * unit;
+        : Number(element.dataset.y) * unit + frameTop;
       const z = Number(touch.matches ? element.dataset.mz : element.dataset.z);
       const perspective = (1000 - z) / 1000;
       return target.set(

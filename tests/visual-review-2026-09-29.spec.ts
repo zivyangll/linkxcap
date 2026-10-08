@@ -174,7 +174,7 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
     'rgba(87,60,121,.95)',
   );
   await expect(openingTrail).toHaveAttribute('data-node-color', '#000');
-  await expect(page.locator('.opening-track > img')).toBeHidden();
+  await expect(page.locator('.opening-track > svg')).toBeHidden();
 
   let stage = await setPhilosophyProgress(page, 0);
   await expect(page.locator('#hero-title')).toHaveCSS('opacity', '1');
