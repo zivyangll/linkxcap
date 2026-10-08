@@ -156,6 +156,51 @@ for (const lang of ['zh', 'en']) {
   }
 }
 
+for (const lang of ['zh', 'en']) {
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 768, height: 1024 },
+  ]) {
+    test(`H5 research ${lang} ${viewport.width}px finishes revealing at the top without further scrolling`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport);
+      await page.goto(`${lang}/index.html`);
+      await expect(page.locator('[data-home]')).toHaveClass(/has-mobile-motion/);
+      await page.evaluate(() => document.fonts.ready);
+      await expect(page.locator('.pin-spacer')).toHaveCount(3);
+      const research = page.locator('.research');
+      const content = research.locator('h2,.research-intro,.research-stats > div');
+      await expect(content.last()).toHaveCSS('opacity', '0.15');
+      const top = await research.evaluate(
+        (el) => el.parentElement!.getBoundingClientRect().top + scrollY,
+      );
+      await page.evaluate(
+        (top) => scrollTo({ top: top + 2, behavior: 'instant' }),
+        top,
+      );
+      for (const element of await content.all()) {
+        await expect(element).toHaveCSS('opacity', '1');
+      }
+      expect(await page.evaluate(() => scrollY)).toBeCloseTo(top + 2, 0);
+
+      // Reading backwards must not return finished text to a translucent pose.
+      await page.evaluate(
+        (top) => scrollTo({ top: top - 100, behavior: 'instant' }),
+        top,
+      );
+      for (const element of await content.all()) {
+        await expect(element).toHaveCSS('opacity', '1');
+      }
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await expect(page.locator('.pin-spacer')).toHaveCount(0);
+      for (const element of await content.all()) {
+        await expect(element).toHaveCSS('opacity', '1');
+      }
+    });
+  }
+}
+
 test('H5 about deep link and return link land on readable copy, not the hidden overlapping scene', async ({
   page,
 }) => {

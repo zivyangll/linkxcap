@@ -45,6 +45,61 @@ test('philosophy top bar collapses on the first scroll and expands only at the t
   await expect(page.locator('[data-menu-open]')).toHaveCSS('width', '48px');
 });
 
+for (const device of [
+  {
+    name: 'H5',
+    viewport: { width: 390, height: 844 },
+    isMobile: true,
+    hasTouch: true,
+  },
+  {
+    name: 'PC',
+    viewport: { width: 1440, height: 900 },
+    isMobile: false,
+    hasTouch: false,
+  },
+]) {
+  test(`${device.name} header deterministically turns white over the star map`, async ({
+    browser,
+    baseURL,
+  }) => {
+    const context = await browser.newContext({
+      viewport: device.viewport,
+      isMobile: device.isMobile,
+      hasTouch: device.hasTouch,
+      reducedMotion: 'no-preference',
+    });
+    const page = await context.newPage();
+    await page.goto(`${baseURL}zh/index.html`);
+    await page.evaluate(() => document.fonts.ready);
+    const focusTop = await page.locator('#focus').evaluate((element) => {
+      document.documentElement.style.scrollBehavior = 'auto';
+      return element.getBoundingClientRect().top + scrollY + 2;
+    });
+    // Coalesced jumps used to let an older IntersectionObserver entry win.
+    await page.evaluate((top) => {
+      for (let index = 0; index < 4; index++) {
+        scrollTo(0, 0);
+        scrollTo(0, top);
+      }
+    }, focusTop);
+    const header = page.locator('[data-header]');
+    await expect(header).toHaveClass(/is-dark/);
+    await expect(header).toHaveCSS('color', 'rgb(255, 255, 255)');
+    await expect(header.locator('.brand-link')).toHaveCSS(
+      'filter',
+      'invert(1)',
+    );
+
+    await page.evaluate(() => dispatchEvent(new Event('resize')));
+    await expect(header).toHaveClass(/is-dark/);
+
+    await page.evaluate(() => scrollTo(0, 0));
+    await expect(header).not.toHaveClass(/is-dark/);
+    await context.close();
+  });
+}
+
 test('all page templates share the same responsive top bar contract', async ({
   page,
 }) => {

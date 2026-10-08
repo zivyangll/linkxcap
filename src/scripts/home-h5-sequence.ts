@@ -385,12 +385,12 @@ export function mountH5HomeSequence(home: HTMLElement) {
   });
   resize();
 
-  // Preserve the following research/focus chapters' existing touch reveals.
+  // Research copy finishes revealing on its own once the screen reaches the top.
   const researchTimeline = gsap.timeline({
     scrollTrigger: {
-      ...pinOptions(research, 0.8),
-      id: 'mobile-research',
-      scrub: 0.28,
+      trigger: research,
+      start: 'top top',
+      toggleActions: 'play none none none',
     },
   });
   researchTimeline
@@ -405,13 +405,21 @@ export function mountH5HomeSequence(home: HTMLElement) {
       { opacity: 0.15, y: 28 },
       { opacity: 1, y: 0, duration: 0.32, stagger: 0.1, ease: 'power1.out' },
       0.15,
-    )
-    .fromTo(
-      research.querySelector('.research-marker'),
-      { rotation: -90 },
-      { rotation: 0, duration: 0.8, ease: 'power1.out' },
-      0,
     );
+  gsap.fromTo(
+    research.querySelector('.research-marker'),
+    { rotation: -90 },
+    {
+      rotation: 0,
+      duration: 0.8,
+      ease: 'power1.out',
+      scrollTrigger: {
+        ...pinOptions(research, 0.8),
+        id: 'mobile-research',
+        scrub: 0.28,
+      },
+    },
+  );
   gsap.fromTo(
     focus.querySelectorAll('.focus-title,.constellation,.focus-panels'),
     { opacity: 0.25, y: 24 },

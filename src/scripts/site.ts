@@ -125,34 +125,69 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) =>
 
 const header = document.querySelector<HTMLElement>('[data-header]');
 const homeStory = document.querySelector('[data-home]');
+const storyScenes = homeStory
+  ? Array.from(homeStory.querySelectorAll<HTMLElement>('.story-scene'))
+  : [];
+let headerThemeFrame = 0;
+const syncHeaderTheme = () => {
+  headerThemeFrame = 0;
+  if (!header || !homeStory || !storyScenes.length) return;
+  const headerBottom = header.getBoundingClientRect().bottom;
+  const sampleX = Math.max(0, Math.min(innerWidth - 1, innerWidth / 2));
+  const sampleY = Math.max(
+    0,
+    Math.min(innerHeight - 1, Math.ceil(headerBottom) + 1),
+  );
+  let active = document
+    .elementsFromPoint(sampleX, sampleY)
+    .map((element) => element.closest<HTMLElement>('.story-scene'))
+    .find((scene) => scene && homeStory.contains(scene));
+  // A canvas or a temporarily transformed pin spacer can leave the sample
+  // point without a hit. In that case, prefer the last painted scene whose
+  // layout box crosses the same line.
+  if (!active) {
+    for (const scene of storyScenes) {
+      const bounds = scene.getBoundingClientRect();
+      if (bounds.top <= sampleY && bounds.bottom > sampleY) active = scene;
+    }
+  }
+  header.classList.toggle(
+    'is-dark',
+    !!active?.hasAttribute('data-dark-header'),
+  );
+};
+const scheduleHeaderTheme = () => {
+  if (!homeStory || headerThemeFrame) return;
+  headerThemeFrame = requestAnimationFrame(syncHeaderTheme);
+};
 const updateHeaderMask = () => {
   header?.classList.toggle('is-scrolled', scrollY > 12);
   // Full navigation is available only at the top, regardless of scroll direction.
   header?.classList.toggle('is-minimal', scrollY > 0);
+  scheduleHeaderTheme();
 };
 updateHeaderMask();
 window.addEventListener('scroll', updateHeaderMask, { passive: true });
 window.addEventListener('resize', updateHeaderMask);
 window.addEventListener('pageshow', updateHeaderMask);
 if (homeStory) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          header?.classList.toggle(
-            'is-dark',
-            entry.target.hasAttribute('data-dark-header'),
-          );
-        }
-      }
-    },
-    { rootMargin: '-8% 0px -87% 0px', threshold: 0 },
-  );
-  document
-    .querySelectorAll('.story-scene')
-    .forEach((section) => observer.observe(section));
+  const observer = new IntersectionObserver(scheduleHeaderTheme, {
+    rootMargin: '-8% 0px -87% 0px',
+    threshold: 0,
+  });
+  const resizeObserver = new ResizeObserver(scheduleHeaderTheme);
+  storyScenes.forEach((section) => {
+    observer.observe(section);
+    resizeObserver.observe(section);
+  });
+  syncHeaderTheme();
+  document.fonts.ready.then(scheduleHeaderTheme);
+  window.addEventListener('load', scheduleHeaderTheme, { once: true });
   window.addEventListener('pagehide', (event) => {
-    if (!event.persisted) observer.disconnect();
+    if (event.persisted) return;
+    observer.disconnect();
+    resizeObserver.disconnect();
+    cancelAnimationFrame(headerThemeFrame);
   });
 }
 

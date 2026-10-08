@@ -548,6 +548,46 @@ for (const width of [360, 390, 768]) {
       await map.scrollIntoViewIfNeeded();
       await expect(map).toBeVisible();
       await expect(page.locator('.constellation')).toBeHidden();
+      const backdrop = map.locator('[data-h5-focus-backdrop]');
+      await expect(backdrop).toHaveAttribute(
+        'src',
+        '/linkxcap/assets/focus-milkyway.webp',
+      );
+      const backdropLayout = await backdrop.evaluate((image) => {
+        const imageBox = image.getBoundingClientRect();
+        const frameBox = image
+          .closest('.h5-focus-frame')!
+          .getBoundingClientRect();
+        return {
+          image: {
+            left: imageBox.left,
+            top: imageBox.top,
+            width: imageBox.width,
+            height: imageBox.height,
+          },
+          frame: {
+            left: frameBox.left,
+            top: frameBox.top,
+            width: frameBox.width,
+            height: frameBox.height,
+          },
+          fit: getComputedStyle(image).objectFit,
+        };
+      });
+      expect(backdropLayout.fit).toBe('fill');
+      expect(backdropLayout.image.left).toBeCloseTo(
+        backdropLayout.frame.left,
+        1,
+      );
+      expect(backdropLayout.image.top).toBeCloseTo(backdropLayout.frame.top, 1);
+      expect(backdropLayout.image.width).toBeCloseTo(
+        backdropLayout.frame.width,
+        1,
+      );
+      expect(backdropLayout.image.height).toBeCloseTo(
+        backdropLayout.frame.height,
+        1,
+      );
       for (const sector of content.sectors) {
         const button = map.locator(`[data-h5-sector="${sector.id}"]`);
         await button.tap();

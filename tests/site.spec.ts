@@ -195,6 +195,30 @@ test('phone Fellow sections use a non-overlapping natural flow', async ({
   expect(boxes.portraitBottom).toBeLessThan(boxes.captionTop);
   await expect(page.locator('.pin-spacer')).toHaveCount(0);
 });
+test('English phone Fellow portrait and caption are vertically centered', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('en/fellowship.html');
+  const boxes = await page.evaluate(() => {
+    const box = (selector: string) =>
+      document.querySelector(selector)!.getBoundingClientRect();
+    const media = box('.fellow-media-section');
+    const title = box('.fellow-media-title');
+    const portrait = box('.fellow-media-figure');
+    const caption = box('.fellow-media-caption');
+    return {
+      mediaHeight: media.height,
+      mediaCenter: media.top + media.height / 2,
+      contentCenter: (portrait.top + caption.bottom) / 2,
+      titleBottom: title.bottom,
+      portraitTop: portrait.top,
+    };
+  });
+  expect(boxes.mediaHeight).toBeGreaterThanOrEqual(844);
+  expect(boxes.contentCenter).toBeCloseTo(boxes.mediaCenter, 0);
+  expect(boxes.titleBottom).toBeLessThan(boxes.portraitTop);
+});
 test('focus controls and reduced motion', async ({ page }) => {
   await page.goto('zh/index.html');
   await page.locator('[data-sector=physical]').click();

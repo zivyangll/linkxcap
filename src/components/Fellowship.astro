@@ -252,6 +252,12 @@ const titleParts = contactContent.signalTitle.zh
     margin-top: clamp(80px, calc(180 * var(--u)), 240px);
     text-align: center;
   }
+  .fellowship-join .eyebrow,
+  .fellowship-join h2 {
+    font-size: 44px;
+    line-height: 1.15;
+    letter-spacing: -0.04em;
+  }
   .fellowship-join h2 {
     margin: 12px 0 20px;
   }
@@ -272,6 +278,13 @@ const titleParts = contactContent.signalTitle.zh
     }
   }
 
+  @media (max-width: 1023px) {
+    .fellowship-join .eyebrow,
+    .fellowship-join h2 {
+      font-size: 32px;
+    }
+  }
+
   @media (max-width: 767px) {
     .fellowship-description {
       max-width: none;
@@ -285,10 +298,7 @@ const titleParts = contactContent.signalTitle.zh
       font-weight: inherit;
     }
 
-    .fellowship-join .eyebrow {
-      font-size: 19px;
-    }
-
+    .fellowship-join .eyebrow,
     .fellowship-join h2 {
       font-size: 22px;
     }

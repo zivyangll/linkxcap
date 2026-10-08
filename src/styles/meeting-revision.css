@@ -1754,6 +1754,10 @@
 
   body[data-lang='en'] .fellow-media-section {
     --fellow-mobile-title-size: clamp(22px, 7.2vw, 28px);
+    height: 100svh;
+    min-height: 650px;
+    padding-block: 0;
+    justify-content: center;
   }
 
   .fellow-media-guides,
@@ -1799,6 +1803,18 @@
     font-size: 14px;
     line-height: 1.7;
     opacity: 1 !important;
+  }
+
+  body[data-lang='en'] .fellow-media-title {
+    position: absolute;
+    top: calc(var(--header) + 40px);
+    right: 24px;
+    left: 24px;
+    width: auto;
+  }
+
+  body[data-lang='en'] .fellow-media-figure {
+    margin-top: 0;
   }
 }
 

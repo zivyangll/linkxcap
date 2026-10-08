@@ -1,4 +1,5 @@
 import { TOUCH_LAYOUT } from './motion-policy';
+import { mountH5FocusSnap } from './h5-focus-snap';
 
 export function mountH5FocusConstellation(root: HTMLElement) {
   const touch = matchMedia(TOUCH_LAYOUT);
@@ -13,6 +14,7 @@ export function mountH5FocusConstellation(root: HTMLElement) {
   const section = root.closest<HTMLElement>('#focus')!;
   const lifetime = new AbortController();
   const options = { signal: lifetime.signal };
+  const stopSnap = mountH5FocusSnap(root);
   let visible = false;
 
   const sync = () => {
@@ -92,6 +94,7 @@ export function mountH5FocusConstellation(root: HTMLElement) {
     'pagehide',
     (event) => {
       if (event.persisted) return;
+      stopSnap();
       observer.disconnect();
       lifetime.abort();
     },

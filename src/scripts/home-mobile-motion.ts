@@ -414,9 +414,9 @@ export function mountMobileHomeMotion(home: HTMLElement) {
 
       const researchTimeline = gsap.timeline({
         scrollTrigger: {
-          ...pinOptions(research, 0.8),
-          id: 'mobile-research',
-          scrub: 0.28,
+          trigger: research,
+          start: 'top top',
+          toggleActions: 'play none none none',
         },
       });
       researchTimeline
@@ -437,13 +437,21 @@ export function mountMobileHomeMotion(home: HTMLElement) {
             ease: 'power1.out',
           },
           0.15,
-        )
-        .fromTo(
-          research.querySelector('.research-marker'),
-          { rotation: -90 },
-          { rotation: 0, duration: 0.8, ease: 'power1.out' },
-          0,
         );
+      gsap.fromTo(
+        research.querySelector('.research-marker'),
+        { rotation: -90 },
+        {
+          rotation: 0,
+          duration: 0.8,
+          ease: 'power1.out',
+          scrollTrigger: {
+            ...pinOptions(research, 0.8),
+            id: 'mobile-research',
+            scrub: 0.28,
+          },
+        },
+      );
 
       gsap.fromTo(
         focus.querySelectorAll('.focus-title,.constellation,.focus-panels'),
