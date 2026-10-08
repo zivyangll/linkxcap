@@ -75,7 +75,6 @@
   html body[data-lang='en'] .home-story .opening-copy {
     max-width: calc(435 * var(--m));
     margin-top: calc(43 * var(--m));
-    font-size: max(12px, calc(12 * var(--k)));
     line-height: 1.25;
     text-wrap: balance;
   }
@@ -131,14 +130,8 @@
     display: block;
     margin-bottom: calc(8 * var(--m));
   }
-  html body .home-story .hero .hero-title--zh {
-    font-size: calc(32 * var(--k));
-    font-weight: 500;
-    line-height: 1.2;
-  }
   html body[data-lang='en'] .home-story .hero .hero-title {
     margin-left: max(0px, calc(81 * var(--m) - 24px));
-    font-size: calc(32 * var(--k));
   }
 
   /* ---------- 3 · North star + About (275:5610 / 275:6715) ---------- */
@@ -152,10 +145,6 @@
     letter-spacing: -0.05em;
     color: #000;
     text-wrap: balance;
-  }
-  html body[data-lang='en'] .home-story .about .about-title {
-    font-weight: 500;
-    font-size: calc(24 * var(--k));
   }
   html body .home-story .about .about-title span {
     display: block;
@@ -191,6 +180,7 @@
     display: none;
   }
   html body .home-story .research .research-marker {
+    display: block;
     top: calc(231 * var(--m));
     left: calc(-35 * var(--m) - 0.5px);
     width: calc(70 * var(--m));
@@ -213,9 +203,6 @@
     color: #000;
     text-wrap: balance;
   }
-  html body[data-lang='en'] .home-story .research h2 {
-    font-weight: 500;
-  }
   html body .home-story .research h2 span {
     display: block;
     margin: 0;
@@ -224,7 +211,7 @@
     margin-top: calc(6 * var(--m));
   }
   html body[data-lang='en'] .home-story .research h2 span {
-    margin-top: calc(0 * var(--m));
+    margin-top: 0;
   }
   html body .home-story .research .research-intro {
     max-width: calc(513 * var(--m));
@@ -248,7 +235,6 @@
     grid-template-rows: repeat(2, auto);
     grid-auto-flow: column;
     gap: calc(76 * var(--m)) 0;
-    margin-top: calc(120 * var(--m));
   }
   html body .home-story .research .research-stats > div {
     display: flex;
@@ -263,6 +249,7 @@
     color: #000;
   }
   html body .home-story .research .research-stats span {
+    max-width: none;
     margin: 0;
     font: 400 max(12px, calc(12 * var(--k))) / 1.5 var(--serif);
     letter-spacing: -0.05em;
@@ -327,6 +314,7 @@
     font-weight: 400;
   }
   html body .home-story .focus .focus-panel p {
+    max-width: calc(261 * var(--m));
     margin: calc(14 * var(--m)) 0 0;
     font-size: max(12px, calc(12 * var(--k)));
     line-height: 1.5;
@@ -352,7 +340,6 @@
   }
   html body .home-story .focus .sector-star.is-active .star-label {
     max-width: calc(280 * var(--m));
-    font-size: max(12px, calc(12 * var(--k)));
     font-weight: 700;
     color: #fff;
   }
@@ -382,21 +369,6 @@
     margin: 0;
     font-weight: 700;
     letter-spacing: -0.05em;
-  }
-  html body[data-lang='zh'] .home-story .focus .focus-panel h3 span:last-child {
-    margin-left: 0;
-  }
-  html body .home-story .focus .focus-panel p {
-    max-width: calc(261 * var(--m));
-  }
-  html body .home-story .research .research-stats span {
-    max-width: none;
-  }
-  html body .home-story .research .research-marker {
-    display: block;
-  }
-  html body[data-lang='en'] .home-story .about .about-title {
-    font-size: calc(24 * var(--k));
   }
 }
 
