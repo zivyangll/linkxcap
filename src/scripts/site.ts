@@ -125,19 +125,20 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) =>
 
 const header = document.querySelector<HTMLElement>('[data-header]');
 const homeStory = document.querySelector('[data-home]');
+const updateHeaderMask = () => {
+  header?.classList.toggle('is-scrolled', scrollY > 12);
+  // Full navigation is available only at the top, regardless of scroll direction.
+  header?.classList.toggle('is-minimal', scrollY > 0);
+};
+updateHeaderMask();
+window.addEventListener('scroll', updateHeaderMask, { passive: true });
+window.addEventListener('resize', updateHeaderMask);
+window.addEventListener('pageshow', updateHeaderMask);
 if (homeStory) {
-  const updateHeaderMask = () =>
-    header?.classList.toggle('is-scrolled', scrollY > 12);
-  updateHeaderMask();
-  window.addEventListener('scroll', updateHeaderMask, { passive: true });
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
         if (entry.isIntersecting) {
-          header?.classList.toggle(
-            'is-minimal',
-            entry.target.hasAttribute('data-minimal-header'),
-          );
           header?.classList.toggle(
             'is-dark',
             entry.target.hasAttribute('data-dark-header'),
@@ -150,14 +151,9 @@ if (homeStory) {
   document
     .querySelectorAll('.story-scene')
     .forEach((section) => observer.observe(section));
-  window.addEventListener(
-    'pagehide',
-    () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', updateHeaderMask);
-    },
-    { once: true },
-  );
+  window.addEventListener('pagehide', (event) => {
+    if (!event.persisted) observer.disconnect();
+  });
 }
 
 // Content selection stays available if the optional animation chunk fails.

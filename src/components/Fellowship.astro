@@ -2,10 +2,8 @@
 import {
   contactContent,
   fellowshipContent,
-  siteContent,
-  socials,
+  contactUrl,
   asset,
-  contentAsset,
   type Lang,
 } from '../lib/site';
 import Arrow from './Arrow.astro';
@@ -182,47 +180,10 @@ const emphasis = (paragraph: string) =>
     <p class="eyebrow">{fellowshipContent.joinLabel[lang]}</p>
     <h2 id="fellowship-join-title">{fellowshipContent.joinTitle[lang]}</h2>
     <p>{fellowshipContent.joinCopy[lang]}</p>
-    <a class="line-link" href="#contact-details">
+    <a class="line-link" href={contactUrl()}>
       {fellowshipContent.cta[lang]}
       <Arrow />
     </a>
-  </div>
-</section>
-<section id="contact-details" class="contact-details">
-  <div>
-    <p class="eyebrow">{contactContent.detailsEyebrow[lang]}</p>
-    <h2>{contactContent.detailsTitle[lang]}</h2>
-    <p>{contactContent.emailLabel[lang]}</p>
-    <a class="contact-email" href={`mailto:${siteContent.email}`}>
-      {siteContent.email}
-      <Arrow />
-    </a>
-    <button class="text-link" data-copy={siteContent.email}>
-      {contactContent.copyEmail[lang]}
-    </button>
-  </div>
-  <div class="contact-socials">
-    <h3>{contactContent.findUs[lang]}</h3>
-    {contactContent.wechat.map((item) => (
-      <details>
-        <summary>{item.title[lang]}</summary>
-        <img
-          class="contact-wechat-qr"
-          src={contentAsset(item.imageFile)}
-          width="240"
-          height="240"
-          loading="lazy"
-          decoding="async"
-          alt={`${item.title[lang]}${lang === 'zh' ? '二维码' : ' QR code'}`}
-        />
-      </details>
-    ))}
-    {socials.map((s) => (
-      <a href={s.href} target="_blank" rel="noopener noreferrer">
-        {lang === 'en' ? s.en || s.name : s.name}
-        <Arrow />
-      </a>
-    ))}
   </div>
 </section>
 
@@ -278,5 +239,34 @@ const emphasis = (paragraph: string) =>
     max-width: 642px;
     margin: auto;
     text-align: left;
+  }
+
+  @media (max-width: 767px) {
+    .fellowship-description {
+      max-width: none;
+      min-width: 0;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        'PingFang SC',
+        'Microsoft YaHei',
+        sans-serif;
+      font-weight: 400;
+      font-synthesis: none;
+    }
+
+    .fellowship-description strong {
+      font-weight: inherit;
+    }
+
+    .fellowship-join .eyebrow {
+      font-size: 19px;
+    }
+
+    .fellowship-join h2 {
+      font-size: 22px;
+    }
   }
 </style>

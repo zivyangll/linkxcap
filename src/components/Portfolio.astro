@@ -27,7 +27,7 @@ const { lang } = Astro.props as { lang: Lang };
     {portfolioContent.intro[lang].split(/(?<=[，,])\s*/).map((line, index) => (
       <>
         {index > 0 && <br />}
-        {line}
+        <span class="portfolio-intro-line">{line}</span>
       </>
     ))}
   </p>

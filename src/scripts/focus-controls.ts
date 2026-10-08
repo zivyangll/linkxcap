@@ -1,4 +1,5 @@
 import { TOPOLOGY_MOTION, TOUCH_LAYOUT } from './motion-policy';
+import { initialFocusSector } from '../lib/focus-layout';
 
 // HTML remains the source of accessible content, including without WebGL.
 export function mountFocusControls(root: HTMLElement) {
@@ -12,6 +13,8 @@ export function mountFocusControls(root: HTMLElement) {
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
   let current = '';
   let pointer: HTMLElement | null = null;
+  let pointerX = NaN;
+  let pointerY = NaN;
   let keyboard: HTMLElement | null = null;
   let release = 0;
   const hold = () => {
@@ -72,7 +75,17 @@ export function mountFocusControls(root: HTMLElement) {
           !matchMedia('(hover: hover) and (pointer: fine)').matches
         )
           return;
+        // A moving node can enter a stationary cursor during the camera pan.
+        // Keep the intentional selection until the cursor actually moves.
+        if (
+          pointer &&
+          pointer !== target &&
+          Math.hypot(event.clientX - pointerX, event.clientY - pointerY) < 2
+        )
+          return;
         pointer = target;
+        pointerX = event.clientX;
+        pointerY = event.clientY;
         target.dataset.hovered = 'true';
         hold();
         // The current node only holds still under the cursor so it can be
@@ -136,6 +149,8 @@ export function mountFocusControls(root: HTMLElement) {
         });
     });
   const releaseBackgroundHover = (event: PointerEvent) => {
+    pointerX = event.clientX;
+    pointerY = event.clientY;
     if (
       !pointer ||
       touch.matches ||
@@ -158,7 +173,7 @@ export function mountFocusControls(root: HTMLElement) {
     root.dataset.focusPinned = 'false';
     root.dispatchEvent(new Event('focushold'));
   });
-  select(stars[0]?.dataset.sector || '');
+  select(initialFocusSector);
   window.addEventListener(
     'pagehide',
     () => {

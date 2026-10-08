@@ -4,61 +4,117 @@ import { mountPhilosophyMotion } from './philosophy-motion';
 import { DESKTOP_MOTION } from './motion-policy';
 import { mountChapterSnap } from './chapter-snap';
 
-// Desktop-only particle field behind the opening screen. Reduced motion keeps
-// the first frame still (the component honours the system setting itself).
-function mountOpeningParticles() {
+// Independent of chapter motion: one fixed backdrop, hidden and paused in Focus.
+// Reduced motion keeps the first frame still on desktop and touch screens.
+export function initHomeParticles() {
   const canvas = document.querySelector<HTMLCanvasElement>(
-    '[data-opening-particles]',
+    '[data-home-particles]',
   );
-  if (!canvas) return;
-  const desktop = matchMedia(
-    '(min-width: 1024px) and (hover: hover) and (pointer: fine)',
+  const layer = document.querySelector<HTMLElement>(
+    '[data-home-particles-layer]',
   );
-  let effect: { destroy: () => void } | null = null;
-  let token = 0;
-  const sync = () => {
-    const current = ++token;
-    if (!desktop.matches) {
-      effect?.destroy();
-      effect = null;
-      return;
-    }
-    if (effect) return;
-    Promise.all([
-      import('./particle-motion'),
-      // Ambience only: queue behind everything the first screen needs.
-      fetch(canvas.dataset.src || '', { priority: 'low' }).then((response) =>
-        response.arrayBuffer(),
-      ),
-    ])
-      .then(([{ createParticleMotion }, buffer]) => {
-        if (current !== token || effect || !desktop.matches) return;
-        // 5 bytes per sample: x and y as uint16 (1/10000 of the frame), grey as uint8.
-        const view = new DataView(buffer);
-        const count = Math.floor(buffer.byteLength / 5);
-        const data = new Uint16Array(count * 3);
-        for (let i = 0; i < count; i++) {
-          data[i * 3] = view.getUint16(i * 5, true);
-          data[i * 3 + 1] = view.getUint16(i * 5 + 2, true);
-          data[i * 3 + 2] = view.getUint8(i * 5 + 4);
-        }
-        effect = createParticleMotion(canvas, data, {
-          color: '#202020',
-          maxDpr: 1.5,
-        });
-      })
-      .catch(() => {
-        /* The page simply keeps its plain paper background. */
-      });
+  const opening = document.querySelector<HTMLElement>('.opening');
+  const focus = document.querySelector<HTMLElement>('#focus');
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (!canvas || !layer || !opening || !focus) return;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const lifetime = new AbortController();
+  let effect: {
+    play: () => void;
+    pause: () => void;
+    destroy: () => void;
+  } | null = null;
+  let playing = false;
+  let focusBoundary = 0;
+  const syncVisibility = () => {
+    // The star map covers the background as it enters; hide the whole field
+    // when it reaches the reading area below the fixed header.
+    layer.hidden = focus.getBoundingClientRect().top <= focusBoundary;
+    const next = !layer.hidden && !reduced.matches;
+    if (!effect || next === playing) return;
+    playing = next;
+    if (playing) effect.play();
+    else effect.pause();
   };
-  sync();
-  desktop.addEventListener('change', sync);
-  window.addEventListener('pagehide', () => effect?.destroy(), { once: true });
+  const resize = () => {
+    // Anchor links stop at scroll-padding-top rather than the viewport edge.
+    focusBoundary =
+      Math.max(
+        header?.offsetHeight ?? 0,
+        parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop,
+        ) || 0,
+      ) + 1;
+    // Preserve the opening frame's existing desktop placement without tying
+    // the field to its scrolling/pinned parent. Only layout size changes it.
+    const bounds = opening.getBoundingClientRect();
+    const unit = Math.min(innerWidth / 1920, 1);
+    layer.style.setProperty(
+      '--particle-left',
+      `${bounds.left + bounds.width * 0.24375}px`,
+    );
+    layer.style.setProperty(
+      '--particle-top',
+      `${opening.clientHeight * 0.4416 + 6 * unit}px`,
+    );
+    syncVisibility();
+  };
+  const observer = new ResizeObserver(resize);
+  observer.observe(opening);
+  resize();
+  window.addEventListener('scroll', syncVisibility, {
+    passive: true,
+    signal: lifetime.signal,
+  });
+  window.addEventListener('resize', resize, { signal: lifetime.signal });
+  window.addEventListener('pageshow', resize, { signal: lifetime.signal });
+  reduced.addEventListener('change', syncVisibility, {
+    signal: lifetime.signal,
+  });
+  Promise.all([
+    import('./particle-motion'),
+    // Ambience only: queue behind everything the first screen needs.
+    fetch(canvas.dataset.src || '', {
+      priority: 'low',
+      signal: lifetime.signal,
+    }).then((response) => {
+      if (!response.ok) throw new Error('Particle data is unavailable');
+      return response.arrayBuffer();
+    }),
+  ])
+    .then(([{ createParticleMotion }, buffer]) => {
+      if (lifetime.signal.aborted) return;
+      // 5 bytes per sample: x/y as uint16 (1/10000 of the frame), grey as uint8.
+      const view = new DataView(buffer);
+      const count = Math.floor(buffer.byteLength / 5);
+      const data = new Uint16Array(count * 3);
+      for (let i = 0; i < count; i++) {
+        data[i * 3] = view.getUint16(i * 5, true);
+        data[i * 3 + 1] = view.getUint16(i * 5 + 2, true);
+        data[i * 3 + 2] = view.getUint8(i * 5 + 4);
+      }
+      document.body.classList.add('has-home-particles');
+      effect = createParticleMotion(canvas, data, {
+        color: '#202020',
+        maxDpr: 1.5,
+        autoplay: false,
+      });
+      syncVisibility();
+    })
+    .catch(() => {
+      document.body.classList.remove('has-home-particles');
+      // Keep the original paper texture if the optional particle field fails.
+    });
+  window.addEventListener('pagehide', (event) => {
+    if (event.persisted) return;
+    lifetime.abort();
+    observer.disconnect();
+    effect?.destroy();
+  });
 }
 
 export function initHome() {
   gsap.registerPlugin(ScrollTrigger);
-  mountOpeningParticles();
   const media = gsap.matchMedia();
   media.add(DESKTOP_MOTION, () => {
     const home = document.querySelector<HTMLElement>('[data-home]')!;

@@ -573,3 +573,4 @@ The value of AI scheduling should be tested through equipment use, delivery perf
 | 洞察与动态 | 阅读星连资本关于 AI 研究、创业、产业实践及被投企业的文章。                       | Read LinkX Capital's perspectives and news on AI research, entrepreneurship, industry and portfolio companies\.              |
 | 联系我们   | 与星连资本交流 AI 研究、创业和产业合作机会。                                     | Contact LinkX Capital about AI research, entrepreneurship and industry collaboration\.                                       |
 | 法律声明   | 了解星连资本网站的信息说明、知识产权和联系渠道。                                 | Read LinkX Capital's website information, intellectual\-property notice and contact details\.                                |
+基础模型与学习范式

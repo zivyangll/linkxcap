@@ -1,5 +1,10 @@
 import { TOPOLOGY_MOTION, TOUCH_LAYOUT } from './motion-policy';
-import { branchScale, clearOfLabel, clearRay } from '../lib/focus-layout';
+import {
+  initialFocusSector,
+  branchScale,
+  clearOfLabel,
+  clearRay,
+} from '../lib/focus-layout';
 import {
   Scene,
   PerspectiveCamera,
@@ -32,7 +37,7 @@ const FOCUS_BRANCH_RADIUS_X = 425;
 const FOCUS_BRANCH_RADIUS_Y = 340;
 // On desktop the selected node stays inside the right three quarters of the
 // viewport, at least this far from either edge of that region.
-const SAFE_AREA_MARGIN = 200;
+const SAFE_AREA_MARGIN = 150;
 // Long and short rays, read in a stride of 5 so neighbours rarely repeat a
 // pattern; this keeps the fan from looking like an even starburst.
 const BRANCH_RHYTHM = [1, 0.58, 1.3, 0.8, 1.14, 0.66, 1.38, 0.9];
@@ -118,7 +123,10 @@ export function mountTopology(root: HTMLElement) {
   const branchLines = new LineSegments(branchGeometry, branchMaterial);
   baseLines.frustumCulled = branchLines.frustumCulled = false;
   graph.add(baseLines, branchLines);
-  let active = sectors[0];
+  const defaultSector =
+    sectors.find((anchor) => anchor.sector === initialFocusSector) ||
+    sectors[0];
+  let active = defaultSector;
   let companies: Anchor[] = [];
   let width = 0,
     height = 0,
@@ -156,6 +164,11 @@ export function mountTopology(root: HTMLElement) {
     targetPitch = 0,
     frontHoldUntil = 0;
   let focused = false;
+  // The first sector keeps its authored opening pose until the visitor reaches
+  // Focus. Loading the graph near the viewport must not spend its first cycle.
+  let initialPose = true;
+  let entered = false;
+  let readingInset = 0;
   const homePosition = new Vector3();
   const targetPosition = new Vector3();
   const projected = new Vector3();
@@ -166,18 +179,43 @@ export function mountTopology(root: HTMLElement) {
   const safePoint = new Vector3();
   const centreShift = new Vector3();
   const frontRotation = new Euler();
+  const desktopNodeArea = () => {
+    const bounds = stage.getBoundingClientRect();
+    const left = Math.max(bounds.left, innerWidth / 4);
+    const right = Math.min(bounds.right, innerWidth);
+    const top = Math.max(
+      bounds.top,
+      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0,
+    );
+    const bottom = Math.min(bounds.bottom, innerHeight);
+    // Short windows retain a usable core when two 150px margins cannot fit.
+    const padX = Math.min(
+      SAFE_AREA_MARGIN,
+      Math.max(0, (right - left - 120) / 2),
+    );
+    const padY = Math.min(
+      SAFE_AREA_MARGIN,
+      Math.max(0, (bottom - top - 120) / 2),
+    );
+    return {
+      left: left + padX,
+      right: right - padX,
+      top: top + padY,
+      bottom: bottom - padY,
+    };
+  };
   // Shifts a graph position so the selected node, under the given rotation,
   // projects inside the desktop safe area: the right three quarters of the
-  // window, 200px from either side, and 200px from the top and bottom of
-  // the stage's first screen. Projection is linear in world x and y at a
-  // fixed depth, so one correction is exact.
+  // window, 150px from each side of the visible container. Projection is
+  // linear in world x and y at a fixed depth, so one correction is exact.
   const keepActiveInSafeArea = (position: Vector3, rotation: Euler) => {
     if (touch.matches || !width || !height) return;
-    const left = stage.getBoundingClientRect().left;
-    const minX = innerWidth / 4 + SAFE_AREA_MARGIN - left;
-    const maxX = innerWidth - SAFE_AREA_MARGIN - left;
-    const minY = SAFE_AREA_MARGIN;
-    const maxY = Math.min(height, innerHeight) - SAFE_AREA_MARGIN;
+    const bounds = stage.getBoundingClientRect();
+    const area = desktopNodeArea();
+    const minX = area.left - bounds.left;
+    const maxX = area.right - bounds.left;
+    const minY = area.top - bounds.top;
+    const maxY = area.bottom - bounds.top;
     renderPoint(active, safePoint).applyEuler(rotation).add(position);
     const depth = camera.position.z - safePoint.z;
     if (depth <= 0) return;
@@ -201,13 +239,50 @@ export function mountTopology(root: HTMLElement) {
     const depth = camera.position.z - safePoint.z;
     if (depth <= 0) return out;
     safePoint.project(camera);
-    centreTarget.copy(homePosition).project(camera);
+    if (touch.matches) centreTarget.copy(homePosition).project(camera);
+    else {
+      const bounds = stage.getBoundingClientRect();
+      const area = desktopNodeArea();
+      centreTarget.set(
+        (((area.left + area.right) / 2 - bounds.left) / width) * 2 - 1,
+        1 - (((area.top + area.bottom) / 2 - bounds.top) / height) * 2,
+        0,
+      );
+    }
     const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * depth;
     return out.set(
       (centreTarget.x - safePoint.x) * halfHeight * camera.aspect,
       (centreTarget.y - safePoint.y) * halfHeight,
       0,
     );
+  };
+  const placeInitialSector = () => {
+    if (touch.matches) {
+      graph.position.add(
+        centreOffset(graph.position, graph.rotation, centreShift),
+      );
+      return;
+    }
+    const bounds = stage.getBoundingClientRect();
+    const top = Math.max(bounds.top, readingInset);
+    const bottom = Math.min(bounds.bottom, innerHeight);
+    const targetX = innerWidth * 0.75 - bounds.left;
+    const targetY =
+      bottom > top
+        ? (top + bottom) / 2 - bounds.top
+        : Math.min(height, innerHeight) / 2;
+    renderPoint(active, safePoint)
+      .applyEuler(graph.rotation)
+      .add(graph.position);
+    const depth = camera.position.z - safePoint.z;
+    if (depth <= 0) return;
+    safePoint.project(camera);
+    const pixelsToWorld =
+      (2 * Math.tan((camera.fov * Math.PI) / 360) * depth) / height;
+    graph.position.x +=
+      (targetX - ((safePoint.x + 1) * width) / 2) * pixelsToWorld;
+    graph.position.y -=
+      (targetY - ((1 - safePoint.y) * height) / 2) * pixelsToWorld;
   };
   const held = () =>
     root.dataset.focusHeld === 'true' || root.dataset.focusPinned === 'true';
@@ -233,6 +308,15 @@ export function mountTopology(root: HTMLElement) {
       -active.origin.y,
       homePosition.z,
     );
+    if (!touch.matches) {
+      targetPosition.add(
+        centreOffset(
+          targetPosition,
+          frontRotation.set(targetPitch, targetYaw, 0),
+          centreShift,
+        ),
+      );
+    }
     keepActiveInSafeArea(
       targetPosition,
       frontRotation.set(targetPitch, targetYaw, 0),
@@ -278,6 +362,9 @@ export function mountTopology(root: HTMLElement) {
     return target;
   };
   const focusActive = (event?: Event) => {
+    initialPose = false;
+    entered = true;
+    pinnedReturn = false;
     focused = true;
     updateFocusTarget();
     yawVelocity = pitchVelocity = 0;
@@ -300,10 +387,19 @@ export function mountTopology(root: HTMLElement) {
     sync();
   };
 
-  function select() {
-    active =
+  function select(event?: Event) {
+    // Explicit selections and subsequent automatic cycles keep their existing
+    // poses and transitions; only the first presentation is centred.
+    const next =
       sectors.find((anchor) => anchor.sector === root.dataset.focus) ||
-      sectors[0];
+      defaultSector;
+    // Controls can finish loading after WebGL on a restored scroll position.
+    // Their identical initial selection must not discard the opening pose.
+    if (event && (next !== active || held())) {
+      initialPose = false;
+      entered = true;
+    }
+    active = next;
     companies = anchors.filter(
       (anchor) => anchor.element.dataset.focusSector === active.sector,
     );
@@ -338,6 +434,11 @@ export function mountTopology(root: HTMLElement) {
     width = box.width;
     height = box.height;
     if (!width || !height) return;
+    readingInset = Math.max(
+      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0,
+      parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) ||
+        0,
+    );
     renderer.setPixelRatio(
       Math.min(
         devicePixelRatio,
@@ -407,11 +508,22 @@ export function mountTopology(root: HTMLElement) {
       graph.rotation.set(pitch, yaw, 0);
       graph.position.copy(targetPosition);
     }
+    if (initialPose) placeInitialSector();
     draw();
     sync();
   }
   function draw() {
     if (!enabled() || !width) return;
+    if (initialPose && !entered) {
+      placeInitialSector();
+      if (
+        root.getBoundingClientRect().top <= readingInset + 1 &&
+        stage.getBoundingClientRect().bottom > readingInset
+      ) {
+        entered = true;
+        cycle = orbit = 0;
+      }
+    }
     if (!dragging) keepActiveInSafeArea(graph.position, graph.rotation);
     graph.updateMatrixWorld(true);
     const bounds = stage.getBoundingClientRect();
@@ -422,7 +534,7 @@ export function mountTopology(root: HTMLElement) {
     const headerBottom =
       document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0;
     const seen = {
-      left: Math.max(bounds.left, 0),
+      left: Math.max(bounds.left, touch.matches ? 0 : innerWidth / 4),
       right: Math.min(bounds.right, innerWidth),
       top: Math.max(bounds.top, headerBottom),
       bottom: Math.min(bounds.bottom, innerHeight),
@@ -430,7 +542,16 @@ export function mountTopology(root: HTMLElement) {
     const hasView =
       seen.right - seen.left > 120 && seen.bottom - seen.top > 120;
     const view = hasView ? seen : bounds;
-    for (const anchor of anchors) {
+    const nodeView = touch.matches || !hasView ? view : desktopNodeArea();
+    const sectorPositions: { x: number; y: number }[] = [];
+    // Keep the selected node in place, then leave each other sector a clear
+    // mouse target when several projected nodes meet the same padded edge.
+    const projectionOrder = [
+      active,
+      ...sectors.filter((anchor) => anchor !== active),
+      ...anchors.filter((anchor) => !anchor.element.dataset.sector),
+    ];
+    for (const anchor of projectionOrder) {
       if (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
         continue;
       const isBranch = !!anchor.element.dataset.focusSector;
@@ -441,11 +562,14 @@ export function mountTopology(root: HTMLElement) {
         .project(camera);
       let finalX = ((projected.x + 1) * width) / 2;
       let finalY = ((1 - projected.y) * height) / 2;
-      if ((isBranch || isSector) && hasView) {
+      if (hasView && (isBranch || isSector || !touch.matches)) {
         // A sector star is a ~50px glyph; its label is placed separately.
-        const labelWidth = isBranch ? anchor.label?.offsetWidth || 0 : 0;
+        const labelWidth =
+          isBranch && touch.matches ? anchor.label?.offsetWidth || 0 : 0;
         const labelHeight = isBranch
-          ? anchor.label?.offsetHeight || 0
+          ? touch.matches
+            ? anchor.label?.offsetHeight || 0
+            : 8
           : touch.matches
             ? 24
             : 52;
@@ -453,23 +577,76 @@ export function mountTopology(root: HTMLElement) {
         const reach = labelWidth + (touch.matches ? 6 : 14);
         const halfWidth = isSector ? (touch.matches ? 12 : 26) : 0;
         const minX =
-          view.left -
+          nodeView.left -
           bounds.left +
           labelInset +
           halfWidth +
           (side === 'left' ? reach : 0);
         const maxX =
-          view.right -
+          nodeView.right -
           bounds.left -
           labelInset -
           halfWidth -
           (side === 'right' ? reach : 0);
-        const minY = view.top - bounds.top + labelInset + labelHeight / 2;
-        const maxY = view.bottom - bounds.top - labelInset - labelHeight / 2;
-        const clampedX =
+        const minY = nodeView.top - bounds.top + labelInset + labelHeight / 2;
+        const maxY =
+          nodeView.bottom - bounds.top - labelInset - labelHeight / 2;
+        let clampedX =
           minX > maxX ? finalX : Math.min(maxX, Math.max(minX, finalX));
-        const clampedY =
+        let clampedY =
           minY > maxY ? finalY : Math.min(maxY, Math.max(minY, finalY));
+        if (isSector && !touch.matches) {
+          const spacing = 56;
+          const clear = (x: number, y: number) =>
+            sectorPositions.every(
+              (other) =>
+                Math.abs(other.x - x) >= spacing ||
+                Math.abs(other.y - y) >= spacing,
+            );
+          if (!clear(clampedX, clampedY)) {
+            const xs = [
+              clampedX,
+              minX,
+              maxX,
+              ...sectorPositions.flatMap((other) => [
+                other.x - spacing,
+                other.x + spacing,
+              ]),
+            ];
+            const ys = [
+              clampedY,
+              minY,
+              maxY,
+              ...sectorPositions.flatMap((other) => [
+                other.y - spacing,
+                other.y + spacing,
+              ]),
+            ];
+            let distance = Infinity;
+            let bestX = clampedX;
+            let bestY = clampedY;
+            for (const x of xs)
+              for (const y of ys) {
+                if (
+                  x < minX ||
+                  x > maxX ||
+                  y < minY ||
+                  y > maxY ||
+                  !clear(x, y)
+                )
+                  continue;
+                const next = (x - clampedX) ** 2 + (y - clampedY) ** 2;
+                if (next < distance) {
+                  distance = next;
+                  bestX = x;
+                  bestY = y;
+                }
+              }
+            clampedX = bestX;
+            clampedY = bestY;
+          }
+          sectorPositions.push({ x: clampedX, y: clampedY });
+        }
         if (clampedX !== finalX || clampedY !== finalY) {
           finalX = clampedX;
           finalY = clampedY;
@@ -526,7 +703,17 @@ export function mountTopology(root: HTMLElement) {
         };
       })
       .sort((a, b) => a.priority - b.priority || a.box.top - b.box.top);
-    const placed: Rect[] = [];
+    const placed: Rect[] = touch.matches
+      ? []
+      : sectors.map(({ element }) => {
+          const box = element.getBoundingClientRect();
+          return {
+            left: box.left - 16,
+            right: box.right + 16,
+            top: box.top - 16,
+            bottom: box.bottom + 16,
+          };
+        });
     for (const placement of placements) {
       const base = move(placement.box, placement.x, placement.y);
       const minimum = view.top + labelInset - base.top;
@@ -573,12 +760,13 @@ export function mountTopology(root: HTMLElement) {
     }
     const basePositions = baseGeometry.getAttribute('position');
     if (basePositions) {
+      renderPoint(hub, branchStart, true);
       sectors.forEach((anchor, index) => {
         basePositions.setXYZ(
           index * 2,
-          hub.origin.x,
-          hub.origin.y,
-          hub.origin.z,
+          branchStart.x,
+          branchStart.y,
+          branchStart.z,
         );
         renderPoint(anchor, endpoint, true);
         basePositions.setXYZ(index * 2 + 1, endpoint.x, endpoint.y, endpoint.z);
@@ -646,6 +834,9 @@ export function mountTopology(root: HTMLElement) {
           frontHoldUntil = time + 900;
           root.dataset.cameraState = 'front';
         }
+      } else if (initialPose && !entered && !dragging) {
+        cycle = orbit = 0;
+        graph.rotation.set(pitch, yaw, 0);
       } else if (time < frontHoldUntil && !dragging) {
         yaw = targetYaw;
         pitch = targetPitch;
@@ -663,9 +854,9 @@ export function mountTopology(root: HTMLElement) {
           yaw + Math.sin(orbit * 0.00018) * (touch.matches ? 0.25 : 0.58),
           0,
         );
-        // On H5 the graph orbits around the selected node, easing each newly
-        // cycled sector into the centre.
-        if (touch.matches)
+        // Ease each cycled sector towards its container's centre, keeping the
+        // existing orbit and its timing.
+        if (touch.matches || !initialPose)
           graph.position.add(
             centreOffset(
               graph.position,
@@ -715,6 +906,8 @@ export function mountTopology(root: HTMLElement) {
     if (running) frame = requestAnimationFrame(tick);
   }
   const startDrag = (event: PointerEvent) => {
+    initialPose = false;
+    entered = true;
     dragging = true;
     pending = false;
     pointer = event.pointerId;
@@ -761,7 +954,7 @@ export function mountTopology(root: HTMLElement) {
       dragY = startY;
       nodeDrag = true;
       graph.updateMatrixWorld();
-      renderPoint(active, pivotWorld).applyMatrix4(graph.matrixWorld);
+      renderPoint(active, pivotWorld, true).applyMatrix4(graph.matrixWorld);
     }
     if (!dragging || event.pointerId !== pointer) return;
     const dx = ((event.clientX - dragX) / width) * Math.PI * 1.2;
@@ -804,6 +997,13 @@ export function mountTopology(root: HTMLElement) {
       // simply its released world position minus its local offset.
       pinnedReturn = true;
       targetPosition.copy(pivotWorld).sub(renderPoint(active, pivotLocal));
+      keepActiveInSafeArea(
+        targetPosition,
+        frontRotation.set(targetPitch, targetYaw, 0),
+      );
+      renderPoint(active, pivotWorld)
+        .applyEuler(frontRotation)
+        .add(targetPosition);
     }
   };
   // Releasing a node drag must not also count as a click on that node.
@@ -837,6 +1037,7 @@ export function mountTopology(root: HTMLElement) {
     if (scrollFrame || !visible) return;
     scrollFrame = requestAnimationFrame(() => {
       scrollFrame = 0;
+      if (initialPose) placeInitialSector();
       draw();
     });
   };

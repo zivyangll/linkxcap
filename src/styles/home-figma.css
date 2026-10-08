@@ -328,13 +328,15 @@
   }
   /* Node and its chevrons centre on the ink of the title's first line
      (y 243.5: the glyphs sit 7.5 below the centre of the 72px line box). */
+  /* The axis is a 1u-wide dashed strip, so its centre line is at x 0.5u:
+     the node (12u box) and its chevrons (91.697u) both centre on it. */
   body .home-story[data-home] .research-axis .diamond {
-    left: calc(-6.51 * var(--u));
+    left: calc(-5.5 * var(--u));
     top: calc(237.5 * var(--u));
     background: #090909;
   }
   body .home-story[data-home] .research-marker {
-    left: calc(-46 * var(--u));
+    left: calc(-45.35 * var(--u));
     top: calc(197.65 * var(--u));
     width: calc(91.697 * var(--u));
     height: calc(91.697 * var(--u));
@@ -530,16 +532,20 @@
 }
 
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  body .home-story[data-home] .focus {
+    --focus-text-inset: calc(137 * var(--u));
+  }
   body .home-story[data-home] .focus .focus-desktop-br {
     display: inline;
   }
   body .home-story[data-home] .focus .focus-title {
-    left: calc(137 * var(--u));
+    left: var(--focus-text-inset);
     top: calc(190 * var(--u));
     font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.05em;
+    text-align: left;
     white-space: nowrap;
   }
   body[data-lang='zh'] .home-story[data-home] .focus .focus-title {
@@ -568,7 +574,7 @@
     white-space: nowrap;
   }
   body .home-story[data-home] .focus .focus-hint {
-    left: calc(137 * var(--u));
+    left: var(--focus-text-inset);
     top: calc(519.15 * var(--u));
     font: 400 max(12px, calc(16 * var(--u))) / 1.2 var(--serif);
     letter-spacing: -0.05em;
@@ -576,7 +582,7 @@
     white-space: nowrap;
   }
 
-  /* Figma 262:168 — the selected node's intro sits on the left of the screen. */
+  /* The selected node's intro shares the title's left edge. */
   body .home-story[data-home] .focus .focus-panels,
   body .home-story[data-home] .focus.has-selection .focus-panels,
   body[data-lang='en'] .home-story[data-home] .focus .focus-panels,
@@ -584,10 +590,11 @@
     .home-story[data-home]
     .focus.has-selection
     .focus-panels {
-    left: calc(171 * var(--u));
+    left: var(--focus-text-inset);
     top: calc(610 * var(--u));
     width: calc(385 * var(--u));
     min-height: 0;
+    text-align: left;
   }
   body .home-story[data-home] .focus .focus-panel h3 {
     color: #d8d6cf;

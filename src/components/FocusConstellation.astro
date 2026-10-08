@@ -9,6 +9,7 @@ import {
   type Lang,
 } from '../lib/site';
 import {
+  initialFocusSector,
   focusHub,
   focusLayout,
   focusBranch,
@@ -76,11 +77,11 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
       />
     ))}
   </svg>
-  {scenes.map((scene, index) => (
+  {scenes.map((scene) => (
     <div
       class="constellation-scene"
       data-constellation={scene.id}
-      hidden={index !== 0}
+      hidden={scene.id !== initialFocusSector}
     >
       <svg
         class="constellation-fallback constellation-fallback--desktop constellation-branches"
@@ -138,7 +139,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
       ))}
     </div>
   ))}
-  {sectors.map((sector, index) => {
+  {sectors.map((sector) => {
     const point = focusLayout[sector.id];
     const mobile = mobileFocusLayout[sector.id];
     return (
@@ -146,7 +147,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
         class:list={[
           'sector-star',
           `star-${sector.id}`,
-          { 'is-active': index === 0 },
+          { 'is-active': sector.id === initialFocusSector },
         ]}
         data-sector={sector.id}
         data-topology-anchor={`sector-${sector.id}`}
@@ -160,7 +161,7 @@ const place = (x: number, y: number, mobile: { x: number; y: number }) =>
         data-mobile-side={mobile.side}
         data-label-side={point.side}
         aria-controls={`sector-${sector.id}`}
-        aria-pressed={index === 0}
+        aria-pressed={sector.id === initialFocusSector}
         style={place(point.x, point.y, mobile)}
       >
         <span class="star-glyph" aria-hidden="true">

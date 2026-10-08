@@ -534,7 +534,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: calc(70 * var(--u));
+      gap: calc(70 * var(--u) * 2 / 3);
     }
     .site-menu nav a {
       position: relative;

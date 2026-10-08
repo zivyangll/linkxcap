@@ -12,7 +12,6 @@ interface Props {
   page?: string;
   title: string;
   description?: string;
-  minimal?: boolean;
   bodyClass?: string;
 }
 const {
@@ -20,7 +19,6 @@ const {
   page = 'index',
   title,
   description = siteContent.metaDescription[lang],
-  minimal = false,
   bodyClass = '',
 } = Astro.props;
 // A changed subset map must not reuse fonts cached under the previous map.
@@ -82,7 +80,7 @@ const canonical = absolute(pageUrl(lang, page));
     data-copied-status={ui.clientMessages.copied[lang]}
     data-copy-failed-status={ui.clientMessages.copyFailed[lang]}
   >
-    <Header lang={lang} current={page} minimal={minimal} />
+    <Header lang={lang} current={page} />
     <main id="main" tabindex="-1">
       <slot />
     </main>

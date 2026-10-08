@@ -11,14 +11,14 @@ import {
   contactContent,
   socials,
   asset,
+  contentAsset,
   type Lang,
 } from '../lib/site';
 interface Props {
   lang: Lang;
   current: string;
-  minimal?: boolean;
 }
-const { lang, current, minimal = false } = Astro.props;
+const { lang, current } = Astro.props;
 const active =
   current === 'portfolio' || current.startsWith('portfolio/')
     ? 'portfolio'
@@ -27,7 +27,7 @@ const active =
       : ['index', 'legal', 'fellowship'].includes(current)
         ? current
         : 'insights';
-// Contact has no page of its own; it is reached from Fellowship.
+// Contact is available in the menu rather than a separate page.
 const navItems = navigation.filter((item) => item.page !== 'contact');
 const [copyrightBefore, copyrightAfter] =
   siteContent.footerCopyright[lang].split('{year}');
@@ -42,7 +42,7 @@ const menuSocials = [
     name: contactContent.wechat[0].title.zh,
     en: contactContent.wechat[0].title.en,
     key: '54',
-    href: contactUrl(lang),
+    href: contentAsset(contactContent.wechat[0].imageFile),
   },
   { ...socialByUrl('xhslink.com'), key: '55' },
   { ...socialByUrl('douyin.com'), key: '56' },
@@ -54,7 +54,7 @@ const menuSocials = [
 <a class="skip-link" href="#main">
   {ui[lang].skip}
 </a>
-<header class:list={['site-header', { 'is-minimal': minimal }]} data-header>
+<header class="site-header" data-header>
   <a class="home-link" href={pageUrl(lang)} aria-label={siteContent.brand}>
     <Brand />
   </a>
@@ -138,8 +138,10 @@ const menuSocials = [
         <p>{contactContent.joinCopy[lang]}</p>
         {lang === 'zh' && <p lang="en">{contactContent.joinCopy.en}</p>}
       </div>
-      <a class="line-link" href={contactUrl(lang)}>
-        {navigationContent.menuContactLink[lang]}
+      <a class="line-link" href={contactUrl()}>
+        <span class="menu-contact-link-label">
+          {navigationContent.menuContactLink[lang]}
+        </span>
         <Arrow />
       </a>
     </div>
@@ -167,8 +169,8 @@ const menuSocials = [
             class={`menu-social social-${s.key}`}
             href={s.href}
             aria-label={lang === 'en' ? s.en : s.name}
-            target={s.key === '54' ? undefined : '_blank'}
-            rel={s.key === '54' ? undefined : 'noopener noreferrer'}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             <img
               class="social-circle"
@@ -216,9 +218,7 @@ const menuSocials = [
   <nav class="noscript-nav">
     {navigation.map((item) => (
       <a
-        href={
-          item.page === 'contact' ? contactUrl(lang) : pageUrl(lang, item.page)
-        }
+        href={item.page === 'contact' ? contactUrl() : pageUrl(lang, item.page)}
       >
         {lang === 'zh' ? item.zh : item.en}
       </a>

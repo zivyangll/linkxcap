@@ -58,6 +58,158 @@ async function hoverNode(page: Page, id: string) {
   return button;
 }
 
+for (const width of [1440, 2048])
+  test(`refresh starts with Foundation at the right viewport centre at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    for (const lang of ['zh', 'en']) {
+      await page.goto(`${lang}/index.html`);
+      for (let refresh = 0; refresh < 3; refresh++) {
+        if (refresh) await page.reload();
+        await expect(page.locator('[data-home]')).toHaveClass(
+          /has-philosophy-motion/,
+        );
+        await page.evaluate(() => document.fonts.ready);
+        await page.locator('#focus').evaluate(
+          (element, offset) =>
+            scrollTo({
+              top: element.getBoundingClientRect().top + scrollY + offset,
+              behavior: 'instant',
+            }),
+          refresh === 2 ? 200 : 0,
+        );
+        const scene = page.locator('#focus');
+        await expect(scene).toHaveAttribute('data-running', 'true');
+        await expect(scene).toHaveAttribute('data-focus', 'foundation');
+        await expect(scene).toHaveAttribute(
+          'data-highlighted-node',
+          'sector-foundation',
+        );
+        await expect(
+          page.locator('[data-sector-panel=foundation]'),
+        ).toBeVisible();
+        await expect
+          .poll(async () => {
+            const node = (await page
+              .locator('[data-sector=foundation]')
+              .boundingBox())!;
+            return Math.max(
+              Math.abs(node.x + node.width / 2 - width * 0.75) / (width * 0.03),
+              Math.abs(node.y + node.height / 2 - 450) / 60,
+            );
+          })
+          .toBeLessThan(1);
+        // Refresh after a different pinned selection must still start afresh.
+        await page.locator('[data-sector=chips]').dispatchEvent('click');
+        await expect(scene).toHaveAttribute('data-focus', 'chips');
+      }
+    }
+  });
+
+test('the first Foundation cycle waits until the star map is reached', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('zh/index.html');
+  await expect(page.locator('[data-home]')).toHaveClass(
+    /has-philosophy-motion/,
+  );
+  await page.evaluate(() => document.fonts.ready);
+  await page.locator('#focus').evaluate((element) =>
+    scrollTo({
+      top: element.getBoundingClientRect().top + scrollY - 600,
+      behavior: 'instant',
+    }),
+  );
+  const scene = page.locator('#focus');
+  await expect(scene).toHaveAttribute('data-running', 'true');
+  await page.waitForTimeout(5600);
+  await expect(scene).toHaveAttribute('data-focus', 'foundation');
+  await scene.evaluate((element) =>
+    scrollTo({
+      top: element.getBoundingClientRect().top + scrollY,
+      behavior: 'instant',
+    }),
+  );
+  await expect(scene).toHaveAttribute('data-focus', 'foundation');
+  await expect
+    .poll(() => scene.getAttribute('data-focus'), { timeout: 10000 })
+    .toBe(content.sectors[1].id);
+});
+
+for (const width of [1440, 2048])
+  test(`all desktop graph nodes respect 150px container padding at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 1058 });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('zh/index.html');
+    await expect(page.locator('[data-home]')).toHaveClass(
+      /has-philosophy-motion/,
+    );
+    await page.evaluate(() => document.fonts.ready);
+    const scene = page.locator('#focus');
+    await scene.evaluate((element) =>
+      scrollTo({
+        top: element.getBoundingClientRect().top + scrollY,
+        behavior: 'instant',
+      }),
+    );
+    await expect(scene).toHaveAttribute('data-running', 'true');
+    const checkNodes = async () => {
+      const outside = await scene.evaluate(async (element) => {
+        const header = document.querySelector<HTMLElement>('[data-header]')!;
+        const area = {
+          left: innerWidth / 4 + 150,
+          right: innerWidth - 150,
+          top: header.offsetHeight + 150,
+          bottom: innerHeight - 150,
+        };
+        for (let frame = 0; frame < 12; frame++) {
+          await new Promise(requestAnimationFrame);
+          for (const node of element.querySelectorAll<HTMLElement>(
+            '.sector-star, .constellation-scene:not([hidden]) .constellation-company',
+          )) {
+            const box = node.getBoundingClientRect();
+            if (
+              box.left < area.left - 1 ||
+              box.right > area.right + 1 ||
+              box.top < area.top - 1 ||
+              box.bottom > area.bottom + 1
+            )
+              return {
+                node: node.dataset.topologyAnchor,
+                box: box.toJSON(),
+                area,
+              };
+          }
+        }
+        return null;
+      });
+      expect(outside).toBeNull();
+    };
+    await checkNodes();
+    for (const sector of content.sectors) {
+      await scene.evaluate(
+        (element, id) =>
+          element.dispatchEvent(new CustomEvent('focusselect', { detail: id })),
+        sector.id,
+      );
+      await checkNodes();
+    }
+    // Turning the scene must not allow its nodes to cross the container edge.
+    await page.mouse.move(width * 0.9, 150);
+    await page.mouse.down();
+    await page.mouse.move(width * 0.8, 700, { steps: 8 });
+    await expect(scene).toHaveAttribute('data-dragging', 'true');
+    await checkNodes();
+    await page.mouse.up();
+    await checkNodes();
+  });
+
 test('hover immediately selects every sector and connects only its configured companies', async ({
   page,
 }) => {

@@ -2366,6 +2366,8 @@
       background: #1d1d1dbb;
     }
     .site-menu {
+      /* Fit "Insights & News" in one column, with the same size for all English labels. */
+      --menu-en-font-size: clamp(12px, calc(6.25vw - 4px), 20px);
       padding: 20px 24px 28px;
     }
     .menu-top {
@@ -2375,19 +2377,27 @@
       margin: 34px 0;
     }
     .site-menu nav a {
-      grid-template-columns: 1fr 1fr 20px;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 16px;
       min-height: 67px;
     }
-    .site-menu nav a span {
-      font-size: 24px;
+    .site-menu nav a span,
+    body[data-lang='en'] .site-menu .menu-contact h2 {
+      font-size: var(--menu-en-font-size);
+      white-space: nowrap;
     }
     .site-menu nav a small {
-      font-size: 16px;
+      font-size: 14px;
+      white-space: nowrap;
       text-align: right;
       padding-right: 20px;
     }
-    .menu-contact h2 {
-      font-size: 24px;
+    .site-menu nav .arrow {
+      width: 16px;
+      height: 12px;
+    }
+    .site-menu .menu-contact h2 {
+      font-size: 14px;
+      white-space: nowrap;
     }
     .menu-contact p {
       font-size: 12px;
@@ -3104,9 +3114,6 @@
     }
     .contact-socials {
       margin-top: 70px;
-    }
-    .site-menu nav a small {
-      font-size: 16px;
     }
     .data-note {
       font-size: 12px;

@@ -1,4 +1,5 @@
 // Presentation coordinates only. Sector names and company membership live in content.json.
+export const initialFocusSector = 'foundation';
 export const focusHub = { x: 1290, y: 370, z: 0 };
 export type FocusPoint = {
   x: number;

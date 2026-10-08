@@ -128,9 +128,15 @@ export function mountMobileHomeMotion(home: HTMLElement) {
         const pan = smooth(phase(p, 0.66, 0.86));
         const handoff = smooth(phase(p, 0.92, 1));
         const branchActivation = smooth(phase(p, 0.5, 0.7));
-        const start = { x: rail, y: height * 0.16 };
-        const circle = { x: width * 1.28, y: height * 0.1 };
-        const radius = Math.hypot(start.x - circle.x, start.y - circle.y);
+        // As on PC, the line comes straight down from the opening's node and
+        // then turns into the orbit: the circle's leftmost point sits on the
+        // opening's rail at y 0.1h, with the radius the orbit always had.
+        const radius = Math.hypot(width * 1.28 - rail, height * 0.06);
+        const circle = { x: openingRail + radius, y: height * 0.1 };
+        const start = {
+          x: circle.x - Math.sqrt(radius ** 2 - (height * 0.06) ** 2),
+          y: height * 0.16,
+        };
         const startAngle = Math.atan2(start.y - circle.y, start.x - circle.x);
         const angle = lerp(startAngle, Math.PI / 2, arc);
         const tracked = {
@@ -158,12 +164,31 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           x: tracked.x - panShift * pan,
           y: tracked.y + height * (0.06 * drop + 0.19 * pan) + contentShift,
         };
-        const point = {
-          x: junction.x,
-          y:
-            p < 0.04
-              ? start.y * phase(p, 0, 0.04)
-              : lerp(junction.y, height, handoff),
+        // The opening's rail sits further right than this one, so the line
+        // enters at the opening's x and eases onto this rail by start.y; the
+        // bend straightens out as the node leaves along the arc.
+        // Above the start: straight down the rail to the tangent point, then
+        // along the circle. The bend straightens out as the node leaves.
+        const routeX = (y: number) =>
+          y <= circle.y
+            ? openingRail
+            : circle.x - Math.sqrt(radius ** 2 - (y - circle.y) ** 2);
+        const railX = (y: number) =>
+          y >= start.y
+            ? junction.x
+            : junction.x + (routeX(y) - start.x) * (1 - arc);
+        const pointY =
+          p < 0.04
+            ? start.y * phase(p, 0, 0.04)
+            : lerp(junction.y, height, handoff);
+        const point = { x: railX(pointY), y: pointY };
+        const strokeRail = (to: number) => {
+          ctx.beginPath();
+          ctx.moveTo(railX(0), 0);
+          for (let y = 4; y < Math.min(to, start.y); y += 4)
+            ctx.lineTo(railX(y), y);
+          ctx.lineTo(railX(to), to);
+          ctx.stroke();
         };
         const nodeOpacity = 1 - smooth(phase(p, 0.99, 1));
         const hasTravellingNode = handoff > 0 && nodeOpacity > 0;
@@ -213,16 +238,10 @@ export function mountMobileHomeMotion(home: HTMLElement) {
           ctx.strokeStyle = `rgba(87,60,121,${0.9 * branchActivation})`;
           ctx.stroke();
         }
-        ctx.beginPath();
-        ctx.moveTo(point.x, 0);
-        ctx.lineTo(point.x, height);
         ctx.strokeStyle = 'rgba(87,60,121,.18)';
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(point.x, 0);
-        ctx.lineTo(point.x, point.y);
+        strokeRail(height);
         ctx.strokeStyle = `rgba(87,60,121,${0.94 * smooth(phase(p, 0.06, 0.68))})`;
-        ctx.stroke();
+        strokeRail(point.y);
         ctx.globalAlpha = smooth(phase(p, 0.76, 0.92));
         ctx.strokeStyle = 'rgba(87,60,121,.92)';
         ctx.beginPath();

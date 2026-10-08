@@ -1216,8 +1216,8 @@
   }
 }
 
-/* One header contract for every page: a readable glass layer, expanded
-   navigation on wide screens, and the menu trigger only on narrow screens. */
+/* One header contract for every page: a readable glass layer and full desktop
+   navigation at the top, folding into the menu trigger as soon as it scrolls. */
 .site-header,
 .site-header.is-minimal {
   position: fixed;
@@ -1337,7 +1337,7 @@
     display: none;
   }
 
-  /* Past the first screen the full navigation folds into the menu trigger. */
+  /* Away from the page top the full navigation folds into the menu trigger. */
   .site-header.is-minimal .desktop-nav,
   .site-header.is-minimal .language-switch {
     display: none;
@@ -1466,7 +1466,74 @@
     padding-left: max(24px, env(safe-area-inset-left));
   }
 
-  .menu-legal-links a,
+  .site-menu[open] {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .site-menu > .menu-top,
+  .site-menu > nav,
+  .site-menu .menu-footer > * {
+    flex-shrink: 0;
+  }
+
+  .site-menu .menu-contact .line-link {
+    opacity: 0.5;
+  }
+
+  body[data-lang='zh'] .site-menu .menu-contact h2::after {
+    content: 'build with us';
+    display: block;
+    margin-top: 2px;
+    font-size: var(--menu-en-font-size);
+    line-height: 1.2;
+  }
+
+  body[data-lang='zh'] .site-menu .menu-contact .line-link {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 20px;
+    font-size: var(--menu-en-font-size);
+    line-height: 1.2;
+  }
+
+  body[data-lang='zh'] .site-menu .menu-contact .menu-contact-link-label {
+    display: none;
+  }
+
+  body[data-lang='zh'] .site-menu .menu-contact .line-link::before {
+    content: 'contact us';
+    grid-column: 1;
+    grid-row: 1;
+    white-space: nowrap;
+  }
+
+  body[data-lang='zh'] .site-menu .menu-contact .line-link .arrow {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .site-menu .menu-legal {
+    margin-top: auto;
+    padding-top: 24px;
+    gap: 4px;
+  }
+
+  .site-menu .menu-legal-links {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: 4px 20px;
+  }
+
+  .site-menu .menu-legal-links a {
+    min-height: 0;
+    padding: 2px 0;
+  }
+
+  .site-menu .menu-legal-links a:last-child {
+    grid-column: 1 / -1;
+  }
+
   .not-found a {
     display: inline-flex;
     min-height: 44px;
@@ -1603,7 +1670,7 @@
   }
 
   .fellow-intro {
-    display: grid;
+    display: none;
     height: auto;
     min-height: 0;
     padding: 170px 24px 72px;
@@ -1676,12 +1743,17 @@
   }
 
   .fellow-media-section {
+    --fellow-mobile-title-size: clamp(24px, 9vw, 36px);
     display: flex;
     height: auto;
     min-height: 0;
-    padding: 72px 24px 80px;
+    padding: calc(var(--header) + 40px) 24px 80px;
     flex-direction: column;
     overflow: hidden;
+  }
+
+  body[data-lang='en'] .fellow-media-section {
+    --fellow-mobile-title-size: clamp(22px, 7.2vw, 28px);
   }
 
   .fellow-media-guides,
@@ -1696,12 +1768,13 @@
   }
 
   .fellow-media-title h2 {
-    font-size: clamp(32px, 11.282vw, 44px);
+    font-size: var(--fellow-mobile-title-size);
+    white-space: nowrap;
   }
 
   .fellow-media-title p {
     margin-top: 12px;
-    font-size: clamp(24px, 8.205vw, 32px);
+    font-size: calc(var(--fellow-mobile-title-size) - 10px);
   }
 
   .fellow-media-figure {
@@ -1709,10 +1782,12 @@
     inset: auto;
     order: 1;
     width: 100%;
+    max-width: 100%;
     height: auto;
     margin-top: 48px;
     aspect-ratio: 1311 / 441;
     translate: none;
+    transform: none !important;
   }
 
   .fellow-media-caption {
@@ -1724,5 +1799,126 @@
     font-size: 14px;
     line-height: 1.7;
     opacity: 1 !important;
+  }
+}
+
+/* The Chinese H5 section headings share the Insights hierarchy. */
+@media (max-width: 767px) {
+  body[data-lang='zh'] :is(.team-review, .portfolio-page, .insights-page) {
+    --h5-section-title-size: clamp(32px, 8.205vw, 44px);
+  }
+
+  body[data-lang='zh'] .team-review {
+    padding: 125px 24px 72px;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-title > .eyebrow,
+  body[data-lang='zh'] .portfolio-page > .page-title,
+  body[data-lang='zh'] .insights-page .insights-heading-title > p {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: var(--h5-section-title-size);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  body[data-lang='zh'] .portfolio-page > .page-title {
+    display: flex;
+    margin-inline: 24px;
+    flex-direction: column;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-title > .eyebrow::before {
+    content: 'Team';
+  }
+
+  body[data-lang='zh'] .team-review .team-review-title > .eyebrow::before,
+  body[data-lang='zh'] .portfolio-page > .page-title > span[lang='en'],
+  body[data-lang='zh'] .insights-page .insights-heading-title > span {
+    display: block;
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+  }
+
+  body[data-lang='zh'] .portfolio-page > .page-title > span[lang='en'] {
+    order: -1;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-title > .page-title,
+  body[data-lang='zh']
+    .portfolio-page
+    > .portfolio-intro
+    > .portfolio-intro-line:first-child,
+  body[data-lang='zh'] .insights-page .insights-headline {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-title > .page-title,
+  body[data-lang='zh'] .insights-page .insights-headline {
+    margin: 32px 0 0;
+    text-wrap: wrap;
+  }
+
+  body[data-lang='zh']
+    .team-review
+    .team-review-title
+    > .page-title
+    > span[lang='en'],
+  body[data-lang='zh'] .insights-page .insights-headline > span[lang='en'] {
+    display: none;
+  }
+
+  body[data-lang='zh'] .portfolio-page > .portfolio-intro {
+    margin: 32px 24px 26px;
+  }
+
+  body[data-lang='zh'] .portfolio-page > .portfolio-intro > br {
+    display: none;
+  }
+
+  body[data-lang='zh']
+    .portfolio-page
+    > .portfolio-intro
+    > .portfolio-intro-line {
+    display: block;
+  }
+
+  body[data-lang='zh'] .team-review .team-review-heading > p,
+  body[data-lang='zh']
+    .portfolio-page
+    > .portfolio-intro
+    > .portfolio-intro-line
+    ~ .portfolio-intro-line,
+  body[data-lang='zh'] .insights-page .insights-intro {
+    max-width: none;
+    margin-top: 16px;
+    padding: 0;
+    color: #000;
+    font-family: var(--serif);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: 0;
+    opacity: 0.8;
+  }
+}
+
+@media (max-width: 767px) {
+  .portfolio-page .portfolio-card .company-caption {
+    top: auto;
+    bottom: 16px;
+  }
+
+  .portfolio-page .portfolio-card .company-caption > p {
+    display: none;
   }
 }

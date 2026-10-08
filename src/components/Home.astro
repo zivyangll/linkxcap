@@ -1,7 +1,6 @@
 ---
 import {
   asset,
-  pageUrl,
   contactUrl,
   homeContent,
   sectors,
@@ -10,6 +9,7 @@ import {
 } from '../lib/site';
 import FocusConstellation from './FocusConstellation.astro';
 import PaperTexture from './PaperTexture.astro';
+import { initialFocusSector } from '../lib/focus-layout';
 import '../styles/home-mobile.css';
 import '../styles/focus-constellation.css';
 import '../styles/home-backdrop.css';
@@ -79,6 +79,11 @@ const openingBody = homeContent.opening.body[lang]
     }
   </style>
 </noscript>
+<div class="home-particles" data-home-particles-layer aria-hidden="true">
+  <div class="home-particle-field">
+    <canvas data-home-particles data-src={url('assets/particles.bin')}></canvas>
+  </div>
+</div>
 <div class="home-story" data-home data-mobile-static="true">
   <section
     class="story-scene opening"
@@ -86,12 +91,6 @@ const openingBody = homeContent.opening.body[lang]
     aria-labelledby="opening-title"
   >
     <PaperTexture eager />
-    <div class="opening-particles" aria-hidden="true">
-      <canvas
-        data-opening-particles
-        data-src={url('assets/particles.bin')}
-      ></canvas>
-    </div>
     <canvas
       class="scroll-trail"
       data-scroll-trail="opening"
@@ -376,6 +375,7 @@ const openingBody = homeContent.opening.body[lang]
     data-dark-header
     data-topology
     data-topology-kind="home"
+    data-focus={initialFocusSector}
     aria-labelledby="focus-title"
   >
     <div class="focus-backdrop" aria-hidden="true">
@@ -455,10 +455,13 @@ const openingBody = homeContent.opening.body[lang]
       <span>{homeContent.focus.auxiliaryTitle[lang]}</span>
     </h2>
     <div class="focus-panels">
-      {sectors.map((s, i) => (
+      {sectors.map((s) => (
         <article
           id={`sector-${s.id}`}
-          class:list={['focus-panel', { 'is-active': i === 0 }]}
+          class:list={[
+            'focus-panel',
+            { 'is-active': s.id === initialFocusSector },
+          ]}
           data-sector-panel={s.id}
           aria-labelledby={`sector-label-${s.id}`}
         >
@@ -479,7 +482,7 @@ const openingBody = homeContent.opening.body[lang]
     </div>
     <FocusConstellation lang={lang} />
     <nav class="focus-links">
-      <a href={contactUrl(lang)}>{homeContent.focus.contactLink[lang]} ↗</a>
+      <a href={contactUrl()}>{homeContent.focus.contactLink[lang]} ↗</a>
       <a href="#about">{homeContent.focus.aboutLink[lang]} ↗</a>
     </nav>
   </section>
@@ -495,8 +498,9 @@ const openingBody = homeContent.opening.body[lang]
   // two more round trips before any rail or scroll motion could appear, which
   // on a 3G link cost several seconds.
   import { DESKTOP_MOTION, MOBILE_MOTION } from '../scripts/motion-policy';
-  import { initHome } from '../scripts/home';
+  import { initHome, initHomeParticles } from '../scripts/home';
   import { initMobileHome } from '../scripts/home-mobile-motion';
+  initHomeParticles();
   const desktop = matchMedia(DESKTOP_MOTION);
   let started = false;
   const start = () => {

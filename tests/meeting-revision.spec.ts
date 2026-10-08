@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import content from '../src/data/content.json' with { type: 'json' };
 
-test('philosophy top bar gains a scroll mask and collapses to the menu button after the first screen', async ({
+test('philosophy top bar collapses on the first scroll and expands only at the top', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -9,21 +9,35 @@ test('philosophy top bar gains a scroll mask and collapses to the menu button af
   const header = page.locator('[data-header]');
   await expect(page.locator('.desktop-nav')).toBeVisible();
   await expect(page.locator('[data-menu-open]')).toBeHidden();
-  await page.evaluate(() => scrollTo(0, 240));
+  await page.evaluate(() => scrollTo({ top: 1, behavior: 'instant' }));
+  await expect(header).toHaveClass(/is-minimal/);
+  await expect(page.locator('.desktop-nav')).toBeHidden();
+  await expect(page.locator('.language-switch')).toBeHidden();
+  await expect(page.locator('[data-menu-open]')).toBeVisible();
+
+  await page.evaluate(() => scrollTo({ top: 240, behavior: 'instant' }));
   await expect(header).toHaveClass(/is-scrolled/);
   await expect(header).toHaveCSS('backdrop-filter', /blur\(7\.5px\)/);
   await expect(header).toHaveCSS(
     'background-color',
     /rgba\(211, 211, 211, 0\.1\)/,
   );
-  await expect(page.locator('.desktop-nav')).toBeVisible();
-  await expect(page.locator('[data-menu-open]')).toBeHidden();
-
-  await page.evaluate(() => scrollTo(0, innerHeight * 3));
+  await page.evaluate(() =>
+    scrollTo({ top: innerHeight * 3, behavior: 'instant' }),
+  );
   await expect(header).toHaveClass(/is-minimal/);
   await expect(page.locator('.desktop-nav')).toBeHidden();
   await expect(page.locator('.language-switch')).toBeHidden();
   await expect(page.locator('[data-menu-open]')).toBeVisible();
+
+  await page.evaluate(() => scrollTo({ top: 1, behavior: 'instant' }));
+  await expect(page.locator('.desktop-nav')).toBeHidden();
+  await expect(page.locator('[data-menu-open]')).toBeVisible();
+  await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+  await expect(header).not.toHaveClass(/is-minimal|is-scrolled/);
+  await expect(page.locator('.desktop-nav')).toBeVisible();
+  await expect(page.locator('.language-switch')).toBeVisible();
+  await expect(page.locator('[data-menu-open]')).toBeHidden();
 
   await page.setViewportSize({ width: 1100, height: 900 });
   await expect(page.locator('.desktop-nav')).toBeHidden();
@@ -52,13 +66,6 @@ test('all page templates share the same responsive top bar contract', async ({
       'background-color',
       /rgba\(211, 211, 211, 0\.1\)/,
     );
-    if (route.startsWith('zh/portfolio/')) {
-      // Company details use the minimal header: only the menu button.
-      await expect(page.locator('.desktop-nav')).toBeHidden();
-      await expect(page.locator('.language-switch')).toBeHidden();
-      await expect(page.locator('[data-menu-open]')).toBeVisible();
-      continue;
-    }
     await expect(page.locator('.desktop-nav')).toBeVisible();
     await expect(page.locator('.language-switch')).toBeVisible();
     await expect(page.locator('[data-menu-open]')).toBeHidden();
@@ -73,6 +80,54 @@ test('all page templates share the same responsive top bar contract', async ({
     await expect(page.locator('[data-menu-open]')).toBeVisible();
   }
 });
+
+for (const locale of ['zh', 'en']) {
+  test(`${locale} page templates fold navigation immediately and keep the menu usable`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 1440, height: 600 });
+    for (const route of [
+      'portfolio',
+      'portfolio/zhipu-ai',
+      'team',
+      'team-alex',
+      'insights',
+      'portfolio-yuanmu',
+      'fellowship',
+      'legal',
+    ]) {
+      await page.goto(`${locale}/${route}.html`);
+      const header = page.locator('[data-header]');
+      const opener = page.locator('[data-menu-open]');
+      await expect(page.locator('.desktop-nav')).toBeVisible();
+      await expect(opener).toBeHidden();
+
+      await page.evaluate(() => scrollTo({ top: 1, behavior: 'instant' }));
+      await expect(header).toHaveClass(/is-minimal/);
+      await expect(page.locator('.desktop-nav')).toBeHidden();
+      await expect(page.locator('.language-switch')).toBeHidden();
+      await expect(opener).toBeVisible();
+
+      await opener.click();
+      await expect(page.locator('#site-menu')).toBeVisible();
+      await expect(opener).toHaveAttribute('aria-expanded', 'true');
+      await page.keyboard.press('Escape');
+      await expect(page.locator('#site-menu')).toBeHidden();
+      await expect(opener).toBeFocused();
+
+      await page.evaluate(() => scrollTo({ top: 100, behavior: 'instant' }));
+      await page.evaluate(() => scrollTo({ top: 1, behavior: 'instant' }));
+      await expect(page.locator('.desktop-nav')).toBeHidden();
+      await expect(opener).toBeVisible();
+
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+      await expect(header).not.toHaveClass(/is-minimal|is-scrolled/);
+      await expect(page.locator('.desktop-nav')).toBeVisible();
+      await expect(page.locator('.language-switch')).toBeVisible();
+      await expect(opener).toBeHidden();
+    }
+  });
+}
 
 test('compact desktop header controls share one vertical center', async ({
   page,
@@ -594,14 +649,24 @@ test('3D is deferred until visible, reacts to hover and pauses offscreen', async
     const surface = page.locator('[data-topology-drag]');
     const box = await surface.boundingBox();
     const rotation = await scene.getAttribute('data-rotation');
-    await page.mouse.move(
-      box!.x + box!.width * 0.8,
-      box!.y + box!.height * 0.5,
-    );
+    // Use the reserved padding, clear of the moving node and label targets.
+    const start = await surface.evaluate((element) => {
+      const bounds = element.getBoundingClientRect();
+      const top = Math.max(
+        bounds.top,
+        document.querySelector<HTMLElement>('[data-header]')!.offsetHeight,
+      );
+      for (const x of [innerWidth * 0.9, innerWidth * 0.8, innerWidth * 0.7])
+        for (const y of [top + 60, top + 100, top + 140])
+          if (!document.elementFromPoint(x, y)?.closest('a,button'))
+            return { x, y };
+      throw new Error('No background drag target is visible');
+    });
+    await page.mouse.move(start.x, start.y);
     await page.mouse.down();
     await page.mouse.move(
-      box!.x + box!.width * 0.62,
-      box!.y + box!.height * 0.36,
+      start.x - box!.width * 0.18,
+      start.y + box!.height * 0.14,
       { steps: 8 },
     );
     // Read the pose before release: afterwards it springs back to the front.

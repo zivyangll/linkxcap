@@ -74,34 +74,48 @@
   mix-blend-mode: screen;
 }
 
-/* Opening screen (desktop): the animated particle field replaces the paper
-   texture image. The field is the texture's 1231-wide slot scaled up 10%
-   and centred on the chapter diamond (.opening-track: 24.375%, 44.16% +
-   half of its 12u box), then lowered by 10% of its own height; the scene
-   clips the overflow. */
-.opening-particles {
+/* One viewport-fixed particle field behind every light home screen. Keep it
+   outside the scenes that ScrollTrigger pins and transforms. */
+.home-particles {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.385;
+}
+body.has-home-particles .home-particles:not([hidden]) {
+  display: block;
+}
+.home-particle-field {
+  position: absolute;
+  left: var(--particle-left, 24.375%);
+  top: var(--particle-top, 44.16%);
+  width: calc(1231 * 1.1 * var(--u));
+  aspect-ratio: 4164 / 3662;
+  translate: -50% -40%;
+}
+body.has-home-particles .home-story {
+  position: relative;
+  z-index: 1;
+}
+body.has-home-particles .home-story .paper-texture {
   display: none;
 }
-
-@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
-  .opening > .paper-texture {
-    display: none;
-  }
-
-  .opening-particles {
-    display: block;
-    position: absolute;
-    left: 24.375%;
-    top: calc(44.16% + 6 * var(--u));
-    width: calc(1231 * 1.1 * var(--u));
-    aspect-ratio: 4164 / 3662;
-    translate: -50% -40%;
-    pointer-events: none;
-    opacity: 0.385;
-  }
+body.has-home-particles
+  .home-story
+  :is(.opening, .hero, .about, .research, .philosophy-stage) {
+  background: transparent;
 }
 
 @media (max-width: 1023px), (hover: none), (pointer: coarse) {
+  .home-particle-field {
+    left: 50%;
+    top: 50svh;
+    width: calc(110svh * 4164 / 3662);
+  }
+
   /* The mask keeps the frame's proportions, follows the screen height and
      centres its ellipse (x = 498 of 1231) on the narrow viewport. */
   .paper-texture-frame {
