@@ -226,8 +226,10 @@ export function mountTopology(root: HTMLElement) {
       frontRotation.set(targetPitch, targetYaw, 0),
     );
   };
-  const renderPoint = (anchor: Anchor, target: Vector3) => {
-    if (anchor.pin) return target.copy(anchor.pin);
+  // `pinned` swaps in the on-screen replacement of a node that would
+  // otherwise leave the visible area; pose maths always uses the true point.
+  const renderPoint = (anchor: Anchor, target: Vector3, pinned = false) => {
+    if (pinned && anchor.pin) return target.copy(anchor.pin);
     target.copy(anchor.origin);
     // H5 always centres the selected sector, so its companies fan out around
     // it from the start rather than keeping the canvas-wide layout.
@@ -330,14 +332,19 @@ export function mountTopology(root: HTMLElement) {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     camera.updateMatrixWorld();
+    // The design is drawn at --u px per design pixel: width / 1920 up to a
+    // 1920 wide window, a fixed 1px beyond it. DOM nodes sit at that origin.
+    const unit =
+      parseFloat(getComputedStyle(stage).getPropertyValue('--u')) ||
+      width / 1920;
     const span = 2 * Math.tan((38 * Math.PI) / 360) * 1000;
     const toWorld = (element: HTMLElement, target: Vector3) => {
       const x = touch.matches
         ? (Number(element.dataset.mx) * width) / 360
-        : (Number(element.dataset.x) * width) / 1920;
+        : Number(element.dataset.x) * unit;
       const y = touch.matches
         ? (Number(element.dataset.my) * height) / 560
-        : (Number(element.dataset.y) * width) / 1920;
+        : Number(element.dataset.y) * unit;
       const z = Number(touch.matches ? element.dataset.mz : element.dataset.z);
       const perspective = (1000 - z) / 1000;
       return target.set(
@@ -352,10 +359,10 @@ export function mountTopology(root: HTMLElement) {
     anchors.forEach((anchor) => {
       anchor.x = touch.matches
         ? (Number(anchor.element.dataset.mx) * width) / 360
-        : (Number(anchor.element.dataset.x) * width) / 1920;
+        : Number(anchor.element.dataset.x) * unit;
       anchor.y = touch.matches
         ? (Number(anchor.element.dataset.my) * height) / 560
-        : (Number(anchor.element.dataset.y) * width) / 1920;
+        : Number(anchor.element.dataset.y) * unit;
       toWorld(anchor.element, anchor.origin).sub(homePosition);
     });
     const positions = baseGeometry.getAttribute('position');
@@ -386,11 +393,14 @@ export function mountTopology(root: HTMLElement) {
     const bounds = stage.getBoundingClientRect();
     const labelInset = touch.matches ? 4 : 18;
     // The part of the stage the viewer can currently see. Branch nodes and
-    // labels stay inside it instead of spilling past the window edges.
+    // labels stay inside it instead of spilling past the window edges or
+    // hiding behind the fixed header.
+    const headerBottom =
+      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0;
     const seen = {
       left: Math.max(bounds.left, 0),
       right: Math.min(bounds.right, innerWidth),
-      top: Math.max(bounds.top, 0),
+      top: Math.max(bounds.top, headerBottom),
       bottom: Math.min(bounds.bottom, innerHeight),
     };
     const hasView =
@@ -400,23 +410,35 @@ export function mountTopology(root: HTMLElement) {
       if (anchor.element.dataset.focusSector && anchor.sector !== active.sector)
         continue;
       const isBranch = !!anchor.element.dataset.focusSector;
+      const isSector = !!anchor.element.dataset.sector;
       anchor.pin = null;
       renderPoint(anchor, projected)
         .applyMatrix4(graph.matrixWorld)
         .project(camera);
       let finalX = ((projected.x + 1) * width) / 2;
       let finalY = ((1 - projected.y) * height) / 2;
-      if (isBranch && hasView) {
-        const labelWidth = anchor.label?.offsetWidth || 0;
-        const labelHeight = anchor.label?.offsetHeight || 0;
-        const side = anchor.element.dataset.labelSide;
+      if ((isBranch || isSector) && hasView) {
+        // A sector star is a ~50px glyph; its label is placed separately.
+        const labelWidth = isBranch ? anchor.label?.offsetWidth || 0 : 0;
+        const labelHeight = isBranch
+          ? anchor.label?.offsetHeight || 0
+          : touch.matches
+            ? 24
+            : 52;
+        const side = isBranch ? anchor.element.dataset.labelSide : '';
         const reach = labelWidth + (touch.matches ? 6 : 14);
+        const halfWidth = isSector ? (touch.matches ? 12 : 26) : 0;
         const minX =
-          view.left - bounds.left + labelInset + (side === 'left' ? reach : 0);
+          view.left -
+          bounds.left +
+          labelInset +
+          halfWidth +
+          (side === 'left' ? reach : 0);
         const maxX =
           view.right -
           bounds.left -
           labelInset -
+          halfWidth -
           (side === 'right' ? reach : 0);
         const minY = view.top - bounds.top + labelInset + labelHeight / 2;
         const maxY = view.bottom - bounds.top - labelInset - labelHeight / 2;
@@ -534,7 +556,7 @@ export function mountTopology(root: HTMLElement) {
           hub.origin.y,
           hub.origin.z,
         );
-        renderPoint(anchor, endpoint);
+        renderPoint(anchor, endpoint, true);
         basePositions.setXYZ(index * 2 + 1, endpoint.x, endpoint.y, endpoint.z);
       });
       basePositions.needsUpdate = true;
@@ -542,9 +564,9 @@ export function mountTopology(root: HTMLElement) {
     const branchPositions = branchGeometry.getAttribute('position');
     if (branchPositions) {
       const reveal = 1 - Math.pow(1 - growth, 3);
-      renderPoint(active, branchStart);
+      renderPoint(active, branchStart, true);
       companies.forEach((anchor, index) => {
-        renderPoint(anchor, branchEnd);
+        renderPoint(anchor, branchEnd, true);
         endpoint.copy(branchStart).lerp(branchEnd, reveal);
         branchPositions.setXYZ(
           index * 2,
@@ -784,6 +806,17 @@ export function mountTopology(root: HTMLElement) {
   visibility.observe(stage);
   const resize = new ResizeObserver(size);
   resize.observe(stage);
+  // Nodes are kept inside the visible part of the stage, which moves with the
+  // page; a paused graph has no frame loop, so redraw when the page scrolls.
+  let scrollFrame = 0;
+  const redrawOnScroll = () => {
+    if (scrollFrame || !visible) return;
+    scrollFrame = requestAnimationFrame(() => {
+      scrollFrame = 0;
+      draw();
+    });
+  };
+  window.addEventListener('scroll', redrawOnScroll, { passive: true });
   root.addEventListener('focushold', sync);
   touch.addEventListener('change', size);
   motion.addEventListener('change', size);
@@ -813,6 +846,8 @@ export function mountTopology(root: HTMLElement) {
     cancelAnimationFrame(frame);
     visibility.disconnect();
     resize.disconnect();
+    window.removeEventListener('scroll', redrawOnScroll);
+    cancelAnimationFrame(scrollFrame);
     motion.removeEventListener('change', size);
     touch.removeEventListener('change', size);
     root.removeEventListener('focushold', sync);

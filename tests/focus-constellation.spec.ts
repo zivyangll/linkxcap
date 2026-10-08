@@ -189,12 +189,13 @@ test('company labels preserve the hovered branch, and company links still naviga
   await expect(scene).toHaveAttribute('data-focus-held', 'true');
   await page.waitForTimeout(750);
   await expect(scene).toHaveAttribute('data-focus', 'physical');
-  await expect(link).toContainText(
-    content.companies.find((company) => company.slug === 'amio-robotics')!
-      .name_en,
-  );
+  // The first link follows the sector's company order in content.json.
+  const first = content.companies.find(
+    (company) => company.sector_id === 'physical',
+  )!;
+  await expect(link).toContainText(first.name_en);
   await link.locator('span').click();
-  await expect(page).toHaveURL(/\/en\/portfolio\/amio-robotics.html$/);
+  await expect(page).toHaveURL(new RegExp(`/en/portfolio/${first.slug}.html$`));
 });
 
 test('keyboard focus holds a sector without a background toggle', async ({

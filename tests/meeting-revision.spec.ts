@@ -11,10 +11,10 @@ test('philosophy top bar gains a scroll mask and collapses to the menu button af
   await expect(page.locator('[data-menu-open]')).toBeHidden();
   await page.evaluate(() => scrollTo(0, 240));
   await expect(header).toHaveClass(/is-scrolled/);
-  await expect(header).toHaveCSS('backdrop-filter', /blur\(16px\)/);
+  await expect(header).toHaveCSS('backdrop-filter', /blur\(7\.5px\)/);
   await expect(header).toHaveCSS(
     'background-color',
-    /rgba\(253, 251, 245, 0\.84\)/,
+    /rgba\(211, 211, 211, 0\.1\)/,
   );
   await expect(page.locator('.desktop-nav')).toBeVisible();
   await expect(page.locator('[data-menu-open]')).toBeHidden();
@@ -47,11 +47,18 @@ test('all page templates share the same responsive top bar contract', async ({
     await page.goto(route);
 
     const header = page.locator('[data-header]');
-    await expect(header).toHaveCSS('backdrop-filter', /blur\(16px\)/);
+    await expect(header).toHaveCSS('backdrop-filter', /blur\(7\.5px\)/);
     await expect(header).toHaveCSS(
       'background-color',
-      /rgba\(253, 251, 245, 0\.84\)/,
+      /rgba\(211, 211, 211, 0\.1\)/,
     );
+    if (route.startsWith('zh/portfolio/')) {
+      // Company details use the minimal header: only the menu button.
+      await expect(page.locator('.desktop-nav')).toBeHidden();
+      await expect(page.locator('.language-switch')).toBeHidden();
+      await expect(page.locator('[data-menu-open]')).toBeVisible();
+      continue;
+    }
     await expect(page.locator('.desktop-nav')).toBeVisible();
     await expect(page.locator('.language-switch')).toBeVisible();
     await expect(page.locator('[data-menu-open]')).toBeHidden();
@@ -310,10 +317,9 @@ for (const width of [390, 768, 1440])
       page.locator('[data-company-link="zhipu-ai"]'),
     ).toHaveAttribute('aria-current', 'page');
     await page.locator('[data-company-link=mosi]').click();
-    if (width < 1280) {
-      await page.locator('[data-menu-open]').click();
-      await page.locator('#site-menu [data-language=en]').click();
-    } else await page.locator('.language-switch [data-language=en]').click();
+    // Company details use the minimal header: language lives in the menu.
+    await page.locator('[data-menu-open]').click();
+    await page.locator('#site-menu [data-language=en]').click();
     await expect(page.locator('[data-company-title]')).toHaveText('Mosi');
     await page.reload();
     await expect(page.locator('[data-company-title]')).toHaveText('Mosi');
