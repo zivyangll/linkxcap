@@ -242,11 +242,17 @@ const titleParts = contactContent.signalTitle.zh
     max-width: calc(1180 * var(--u));
     min-width: min(100%, 320px);
     margin: 0 auto;
+    font-family: var(--serif);
     font-size: max(16px, calc(24 * var(--u)));
+    font-weight: 400;
     line-height: 1.9;
+    font-synthesis: none;
   }
   .fellowship-description p + p {
     margin-top: 1.4em;
+  }
+  .fellowship-description strong {
+    font-weight: inherit;
   }
   .fellowship-join {
     margin-top: clamp(80px, calc(180 * var(--u)), 240px);
@@ -289,13 +295,6 @@ const titleParts = contactContent.signalTitle.zh
     .fellowship-description {
       max-width: none;
       min-width: 0;
-      font-family: var(--serif);
-      font-weight: 400;
-      font-synthesis: none;
-    }
-
-    .fellowship-description strong {
-      font-weight: inherit;
     }
 
     .fellowship-join .eyebrow,

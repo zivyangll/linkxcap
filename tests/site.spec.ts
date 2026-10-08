@@ -219,6 +219,34 @@ test('English phone Fellow portrait and caption are vertically centered', async 
   expect(boxes.contentCenter).toBeCloseTo(boxes.mediaCenter, 0);
   expect(boxes.titleBottom).toBeLessThan(boxes.portraitTop);
 });
+for (const width of [390, 768, 1440]) {
+  test(`Fellowship copy uses one Source Han Serif weight at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('zh/fellowship.html');
+    await page.evaluate(() => document.fonts.ready);
+    const typography = await page
+      .locator('.fellowship-description')
+      .evaluate((root) => {
+        const elements = [root, ...root.querySelectorAll('p, strong')];
+        return elements.map((element) => {
+          const style = getComputedStyle(element);
+          return {
+            family: style.fontFamily,
+            weight: style.fontWeight,
+            synthesis: style.fontSynthesis,
+          };
+        });
+      });
+    expect(typography.length).toBeGreaterThan(5);
+    for (const style of typography) {
+      expect(style.family).toContain('LinkX Source Han Serif');
+      expect(style.weight).toBe('400');
+      expect(style.synthesis).toBe('none');
+    }
+  });
+}
 test('focus controls and reduced motion', async ({ page }) => {
   await page.goto('zh/index.html');
   await page.locator('[data-sector=physical]').click();
