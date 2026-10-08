@@ -175,7 +175,11 @@ export function mountTopology(root: HTMLElement) {
   const endpoint = new Vector3();
   const branchStart = new Vector3();
   const branchEnd = new Vector3();
-  const enabled = () => motion.matches && !lost && !disposed;
+  const enabled = () =>
+    motion.matches &&
+    !(touch.matches && root.querySelector('[data-h5-focus]')) &&
+    !lost &&
+    !disposed;
   const safePoint = new Vector3();
   const centreShift = new Vector3();
   const frontRotation = new Euler();

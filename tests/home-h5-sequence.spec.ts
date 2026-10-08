@@ -10,6 +10,25 @@ async function stageRange(page: Page) {
   }));
 }
 
+async function openingSample(page: Page, p: number) {
+  const opening = page.locator('.opening');
+  const range = await opening.evaluate((el) => ({
+    start: el.parentElement!.getBoundingClientRect().top + scrollY,
+    distance: el.parentElement!.offsetHeight - (el as HTMLElement).offsetHeight,
+  }));
+  await page.evaluate(
+    (top) => scrollTo({ top, behavior: 'instant' }),
+    range.start + range.distance * p,
+  );
+  const trail = page.locator('.opening .scroll-trail');
+  await expect
+    .poll(async () => Number(await trail.getAttribute('data-trail-progress')))
+    .toBeCloseTo(p, 2);
+  return trail.evaluate((canvas) =>
+    (canvas as HTMLCanvasElement).dataset.point!.split(',').map(Number),
+  );
+}
+
 async function sample(
   page: Page,
   range: { start: number; distance: number },
@@ -30,6 +49,7 @@ async function sample(
       world: canvas.dataset.worldPoint!.split(',').map(Number),
       arcBottom: canvas.dataset.arcBottom!.split(',').map(Number),
       markers: canvas.dataset.markerCount,
+      opacity: Number(canvas.dataset.nodeOpacity),
     };
   });
 }
@@ -42,38 +62,34 @@ test.describe('phone home Figma sequence', () => {
     reducedMotion: 'no-preference',
   });
 
-  test('the opening hands its node to a visible second screen at the same seam', async ({
+  test('the straight opening rail continues to mid-screen before its node fades', async ({
     page,
   }) => {
     await page.goto('zh/index.html');
+    const openingStart = await openingSample(page, 0.2);
+    const openingEnd = await openingSample(page, 0.8);
+    expect(openingEnd[1]).toBeGreaterThan(openingStart[1]);
+    expect(openingEnd[0]).toBeCloseTo(openingStart[0], 2);
     const range = await stageRange(page);
-    await sample(page, range, 0);
+    const heroStart = await sample(page, range, 0);
+    expect(heroStart.markers).toBe('1');
     await expect(page.locator('.opening .scroll-trail')).toHaveAttribute(
       'data-trail-progress',
       '1.000',
     );
-    const seam = await page.evaluate(() => {
-      const opening = document.querySelector<HTMLCanvasElement>(
-        '.opening .scroll-trail',
-      )!;
-      const next = document.querySelector<HTMLCanvasElement>(
-        '.philosophy-stage-canvas',
-      )!;
-      const [ox, oy] = opening.dataset.point!.split(',').map(Number);
-      const [nx, ny] = next.dataset.point!.split(',').map(Number);
-      return {
-        opening: [
-          ox + opening.getBoundingClientRect().x,
-          oy + opening.getBoundingClientRect().y,
-        ],
-        next: [
-          nx + next.getBoundingClientRect().x,
-          ny + next.getBoundingClientRect().y,
-        ],
-      };
-    });
-    expect(seam.next[0]).toBeCloseTo(seam.opening[0], 0);
-    expect(seam.next[1]).toBeCloseTo(seam.opening[1], 0);
+    const heroMoving = await sample(page, range, 0.1);
+    expect(heroMoving.point[0]).toBeCloseTo(heroStart.point[0], 2);
+    expect(heroMoving.point[1]).toBeGreaterThan(heroStart.point[1]);
+    const heroFading = await sample(page, range, 0.26);
+    expect(heroFading.point[0]).toBeCloseTo(heroStart.point[0], 2);
+    expect(heroFading.opacity).toBeGreaterThan(0);
+    expect(heroFading.opacity).toBeLessThan(1);
+    const heroMiddle = await sample(page, range, 0.3);
+    expect(heroMiddle.markers).toBe('0');
+    expect(heroMiddle.opacity).toBe(0);
+    await expect(page.locator('.hero .h5-hero-arc')).toBeHidden();
+    await expect(page.locator('.hero .h5-hero-guide')).toBeHidden();
+    await expect(page.locator('.hero .h5-arc-markers')).toBeHidden();
     await expect(page.locator('.h5-hero-title')).toHaveCSS('opacity', '1');
     await expect(page.locator('.hero-title--zh')).toHaveCSS('opacity', '1');
     await expect(page.locator('.h5-hero-title > span')).toHaveText([
@@ -110,6 +126,7 @@ test.describe('phone home Figma sequence', () => {
       'opacity',
       '1',
     );
+    await expect(page.locator('.h5-about-exit')).toHaveCount(0);
     await expect
       .poll(() =>
         page

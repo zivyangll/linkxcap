@@ -1,4 +1,5 @@
 import lottie from 'lottie-web/build/player/lottie_light';
+import { TOUCH_LAYOUT } from './motion-policy';
 
 export function mountStarfield(root: HTMLElement) {
   const container = root.querySelector<HTMLElement>('.focus-starfield');
@@ -21,9 +22,15 @@ export function mountStarfield(root: HTMLElement) {
 
   let visible = false;
   let disposed = false;
+  const touch = matchMedia(TOUCH_LAYOUT);
   const sync = () => {
     if (disposed) return;
-    if (visible && !document.hidden) animation.play();
+    if (
+      visible &&
+      !document.hidden &&
+      !(touch.matches && root.querySelector('[data-h5-focus]'))
+    )
+      animation.play();
     else animation.pause();
   };
   const observer = new IntersectionObserver(
@@ -42,6 +49,7 @@ export function mountStarfield(root: HTMLElement) {
     root.dataset.starfield = 'error';
   });
   document.addEventListener('visibilitychange', sync);
+  touch.addEventListener('change', sync);
   window.addEventListener('pagehide', (event) => {
     if (event.persisted) {
       animation.pause();
@@ -50,6 +58,7 @@ export function mountStarfield(root: HTMLElement) {
     disposed = true;
     observer.disconnect();
     document.removeEventListener('visibilitychange', sync);
+    touch.removeEventListener('change', sync);
     animation.destroy();
   });
   window.addEventListener('pageshow', (event) => {

@@ -1,4 +1,4 @@
-import { TOPOLOGY_MOTION } from './motion-policy';
+import { TOPOLOGY_MOTION, TOUCH_LAYOUT } from './motion-policy';
 
 // Heavy Focus backdrop images carry data-defer-src instead of src and load one
 // screen ahead of the section, so they never compete with the first screen.
@@ -28,12 +28,19 @@ export function initFocusStars() {
   const src = video?.dataset.src;
   if (!video || !src) return;
   const motion = matchMedia(TOPOLOGY_MOTION);
+  const touch = matchMedia(TOUCH_LAYOUT);
   const device = navigator as Navigator & {
     connection?: { saveData?: boolean };
   };
   let visible = false;
   const sync = () => {
-    const allowed = motion.matches && !device.connection?.saveData;
+    const allowed =
+      motion.matches &&
+      !(
+        touch.matches &&
+        video.closest('.focus')?.querySelector('[data-h5-focus]')
+      ) &&
+      !device.connection?.saveData;
     if (!allowed || !visible || document.hidden) {
       video.pause();
       return;
@@ -55,6 +62,7 @@ export function initFocusStars() {
   );
   observer.observe(video.closest('.focus') || video);
   motion.addEventListener('change', sync);
+  touch.addEventListener('change', sync);
   document.addEventListener('visibilitychange', sync);
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) sync();

@@ -1,0 +1,267 @@
+---
+import {
+  companies,
+  contactUrl,
+  homeContent,
+  pageUrl,
+  pick,
+  sectors,
+  url,
+  type Lang,
+} from '../lib/site';
+import { initialFocusSector } from '../lib/focus-layout';
+import '../styles/h5-focus-constellation.css';
+
+const { lang } = Astro.props as { lang: Lang };
+// Authored H5 slots, independent of the desktop camera and layout.
+const slots: Record<string, number> = {
+  chips: 0,
+  physical: 1,
+  frontiers: 2,
+  infrastructure: 3,
+  applications: 4,
+  foundation: 5,
+};
+const glyphs = [
+  'imgGroup459',
+  'imgGroup458',
+  'imgGroup456',
+  'imgGroup459',
+  'imgGroup458',
+  'imgGroup460',
+];
+const rays = [
+  '169',
+  '175',
+  '170',
+  '171',
+  '173',
+  '174',
+  '172',
+  '176',
+  '180',
+  '181',
+  '182',
+  '177',
+  '178',
+  '179',
+];
+const foundationOrder = [
+  'xmax-ai',
+  'lychee-ai',
+  'lingxin-zhiyu',
+  'mirros',
+  'chaoyan-intelligence',
+  'nexus',
+  'shengshu-technology',
+  'zhipu-ai',
+  'mosi',
+  'beingbeyond',
+  'modelbest',
+  'facemind',
+  'yuanhuan-intelligence',
+  'miji-intelligence',
+];
+const scenes = sectors.map((sector) => {
+  const members = companies.filter((company) => company.sector === sector.id);
+  if (sector.id === initialFocusSector)
+    members.sort(
+      (a, b) => foundationOrder.indexOf(a.id) - foundationOrder.indexOf(b.id),
+    );
+  return { sector, members };
+});
+const image = (name: string) => url(`assets/h5-focus/${name}.svg`);
+const companyLabel = (company: (typeof companies)[number]) => {
+  const name = pick(lang, company.name, company.nameEn);
+  return company.investmentYear ? `(${company.investmentYear}, ${name})` : name;
+};
+const title = homeContent.focus.title[lang];
+---
+
+<div
+  class="h5-focus"
+  data-h5-focus
+  data-h5-selection={initialFocusSector}
+  hidden
+  aria-label={homeContent.focus.ariaLabel[lang]}
+>
+  <div class="h5-focus-frame">
+    <div class="h5-focus-backdrop" aria-hidden="true">
+      <img
+        data-h5-focus-backdrop
+        src={url('assets/h5-focus/imgImage221.png')}
+        width="750"
+        height="1217"
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+    <h2 class="h5-focus-title" id="h5-focus-title">
+      {lang === 'zh' ? (
+        <>
+          <span lang="en">Focus Area</span>
+          <span>{title.join(' ')}</span>
+        </>
+      ) : (
+        <>
+          <span>{title.join(' ').split(' ').slice(0, 2).join(' ')}</span>
+          <span>{title.join(' ').split(' ').slice(2).join(' ')}</span>
+        </>
+      )}
+    </h2>
+    <p class="h5-focus-subtitle">{homeContent.focus.auxiliaryTitle[lang]}</p>
+
+    <div
+      class="h5-focus-nodes"
+      role="group"
+      aria-label={lang === 'zh' ? '选择关注领域' : 'Select a focus area'}
+    >
+      {sectors.map((sector) => (
+        <button
+          type="button"
+          class="h5-focus-node"
+          data-h5-sector={sector.id}
+          data-h5-slot={slots[sector.id]}
+          aria-pressed={sector.id === initialFocusSector}
+          aria-controls={`h5-sector-${sector.id}`}
+          aria-label={`${sector.en} / ${sector.zh}`}
+        >
+          <span class="h5-focus-glyph" aria-hidden="true">
+            <img
+              class="h5-focus-chevron h5-focus-chevron--horizontal"
+              src={image(glyphs[slots[sector.id]])}
+              alt=""
+              loading="lazy"
+            />
+            <img
+              class="h5-focus-chevron h5-focus-chevron--vertical"
+              src={image(
+                slots[sector.id] === 5 ? 'imgGroup461' : 'imgGroup457',
+              )}
+              alt=""
+              loading="lazy"
+            />
+            <i></i>
+          </span>
+          <span class="h5-focus-node-label">
+            <span lang="en">{sector.en}</span>
+            <span lang="zh">{sector.zh}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="h5-focus-results" aria-live="polite" aria-atomic="true">
+      {scenes.map(({ sector, members }) => (
+        <section
+          id={`h5-sector-${sector.id}`}
+          class="h5-focus-result"
+          data-h5-result={sector.id}
+          hidden={sector.id !== initialFocusSector}
+          aria-labelledby={`h5-sector-title-${sector.id}`}
+        >
+          <div class="h5-focus-details">
+            <h3 id={`h5-sector-title-${sector.id}`}>
+              {lang === 'zh' && <span lang="zh">{sector.zh}</span>}
+              <span lang="en">{sector.en}</span>
+            </h3>
+            <p>{sector.desc[lang]}</p>
+          </div>
+          <div class="h5-focus-company-map">
+            <div class="h5-focus-hub" aria-hidden="true">
+              <i></i>
+              <img
+                class="h5-focus-hub-corners h5-focus-hub-corners--a"
+                src={image('imgGroup454')}
+                alt=""
+                loading="lazy"
+              />
+              <img
+                class="h5-focus-hub-corners h5-focus-hub-corners--b"
+                src={image('imgGroup455')}
+                alt=""
+                loading="lazy"
+              />
+              <b></b>
+            </div>
+            <ul
+              class="h5-focus-companies"
+              aria-label={
+                lang === 'zh'
+                  ? `${sector.zh}投资企业`
+                  : `${sector.en} companies`
+              }
+            >
+              {members.slice(0, rays.length).map((company, index, list) => {
+                const slot =
+                  list.length === rays.length
+                    ? index
+                    : Math.round(
+                        (index * (rays.length - 1)) /
+                          Math.max(1, list.length - 1),
+                      );
+                return (
+                  <li class={`h5-focus-branch h5-focus-branch-${slot}`}>
+                    <span
+                      class={`h5-focus-ray h5-focus-ray-${slot}`}
+                      aria-hidden="true"
+                    >
+                      <img
+                        src={image(`imgVector${rays[slot]}`)}
+                        alt=""
+                        loading="lazy"
+                      />
+                    </span>
+                    <a
+                      class={`h5-focus-company h5-focus-company-${slot}`}
+                      data-h5-company={company.id}
+                      href={pageUrl(lang, `portfolio/${company.slug}`)}
+                    >
+                      <i aria-hidden="true"></i>
+                      <span>{companyLabel(company)}</span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+  {scenes.some(({ members }) => members.length > rays.length) && (
+    <div class="h5-focus-overflow" hidden>
+      {scenes
+        .filter(({ members }) => members.length > rays.length)
+        .map(({ sector, members }) => (
+          <ul
+            data-h5-overflow={sector.id}
+            hidden={sector.id !== initialFocusSector}
+          >
+            {members.slice(rays.length).map((company) => (
+              <li>
+                <a
+                  data-h5-company={company.id}
+                  href={pageUrl(lang, `portfolio/${company.slug}`)}
+                >
+                  {companyLabel(company)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        ))}
+    </div>
+  )}
+  <nav class="h5-focus-links">
+    <a href={contactUrl()}>{homeContent.focus.contactLink[lang]} ↗</a>
+    <a href="#about">{homeContent.focus.aboutLink[lang]} ↗</a>
+  </nav>
+</div>
+
+<script>
+  import { mountH5FocusConstellation } from '../scripts/h5-focus-constellation';
+  document
+    .querySelectorAll<HTMLElement>('[data-h5-focus]')
+    .forEach(mountH5FocusConstellation);
+</script>

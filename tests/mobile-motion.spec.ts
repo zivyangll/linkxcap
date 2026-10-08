@@ -32,8 +32,11 @@ async function sample(page: Page, progress: number) {
     point: (el.querySelector('canvas') as HTMLCanvasElement).dataset
       .point!.split(',')
       .map(Number),
+    world: (el.querySelector('canvas') as HTMLCanvasElement).dataset
+      .worldPoint!.split(',')
+      .map(Number),
     junction: (el.querySelector('canvas') as HTMLCanvasElement).dataset
-      .junctionPoint!.split(',')
+      .arcBottom!.split(',')
       .map(Number),
     markerCount: Number(
       (el.querySelector('canvas') as HTMLCanvasElement).dataset.markerCount,
@@ -87,22 +90,24 @@ for (const lang of ['zh', 'en']) {
 
       const stage = page.locator('[data-philosophy-stage]');
       const bounds = await stageBounds(stage);
-      let previous = await sample(page, 0.2);
+      // The first/second-screen node fades at mid-screen; the third-screen
+      // node starts a separate continuous descent.
+      let previous = await sample(page, 0.48);
       expect(previous.top).toBeCloseTo(bounds.top, 0);
-      for (const p of [0.48, 0.58, 0.68, 0.82, 0.97]) {
+      for (const p of [0.58, 0.68, 0.82, 0.97]) {
         const next = await sample(page, p);
         expect(next.top).toBeCloseTo(bounds.top, 0);
         expect(next.point[1] - next.aboutShift).toBeGreaterThanOrEqual(
           previous.point[1] - previous.aboutShift - 1,
         );
-        if (p === 0.68) {
+        if (p === 0.82) {
           const heading = await page.locator('.about-title').boundingBox();
           expect(heading!.y).toBeGreaterThan(72);
           expect(heading!.y + heading!.height).toBeLessThan(viewport.height);
         }
         if (p === 0.97) {
-          expect(next.markerCount).toBe(2);
-          expect(next.point[1]).toBeGreaterThan(next.junction[1]);
+          expect(next.markerCount).toBe(1);
+          expect(next.world[1]).toBeGreaterThan(next.junction[1]);
         }
         previous = next;
       }
@@ -127,8 +132,11 @@ for (const lang of ['zh', 'en']) {
       const title = await page.locator('.about-title').boundingBox();
       expect(text!.y).toBeGreaterThan(title!.y + title!.height + 15);
       expect(text!.y + text!.height).toBeLessThanOrEqual(viewport.height + 1);
-      expect(text!.x).toBeGreaterThanOrEqual(24);
-      expect(text!.x + text!.width).toBeLessThanOrEqual(viewport.width - 23);
+      const aboutInset = (43 * Math.min(viewport.width, 640)) / 750;
+      expect(text!.x).toBeGreaterThanOrEqual(aboutInset - 0.5);
+      expect(text!.x + text!.width).toBeLessThanOrEqual(
+        viewport.width - aboutInset + 0.5,
+      );
 
       await page.evaluate(
         (y) => scrollTo({ top: y, behavior: 'instant' }),
@@ -137,11 +145,11 @@ for (const lang of ['zh', 'en']) {
       await expect
         .poll(async () => (await stage.boundingBox())!.y)
         .toBeLessThan(bounds.top - 100);
-      await page.locator('[data-sector=physical]').click();
-      await expect(page.locator('[data-sector-panel=physical]')).toBeVisible();
+      await page.locator('[data-h5-sector=physical]').click();
+      await expect(page.locator('[data-h5-result=physical]')).toBeVisible();
       await expect(page.locator('[data-topology]')).toHaveAttribute(
         'data-renderer',
-        'webgl',
+        'static',
       );
       expect(errors).toEqual([]);
     });
@@ -157,7 +165,7 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
   const stage = page.locator('[data-philosophy-stage]');
   await expect
     .poll(async () => Number(await stage.getAttribute('data-motion-progress')))
-    .toBeGreaterThan(0.95);
+    .toBeGreaterThan(0.89);
   expect(
     Number(
       await page
@@ -165,7 +173,7 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
         .evaluate((copy) => getComputedStyle(copy).opacity),
     ),
   ).toBeGreaterThan(0.95);
-  await page.locator('.focus-links a[href="#about"]').click();
+  await page.locator('.h5-focus-links a[href="#about"]').click();
   // The previous readable pose can persist for a frame while native smooth
   // scrolling starts. Wait for the viewport as well as animation progress.
   await expect
@@ -173,7 +181,7 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
     .toBeCloseTo(0, 0);
   await expect
     .poll(async () => Number(await stage.getAttribute('data-motion-progress')))
-    .toBeCloseTo(0.97, 2);
+    .toBeCloseTo(0.9, 2);
   // A native smooth scroll and ScrollTrigger's scrub settle independently.
   // Require the viewport to stay at its final destination before reading bounds.
   await expect
@@ -190,7 +198,7 @@ test('H5 about deep link and return link land on readable copy, not the hidden o
         );
         return (
           Math.abs(scrollY - before) < 1 &&
-          Math.abs(progress - 0.97) < 0.005 &&
+          Math.abs(progress - 0.9) < 0.005 &&
           box.top > 72 &&
           box.bottom < innerHeight
         );

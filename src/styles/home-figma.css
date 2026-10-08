@@ -1,5 +1,6 @@
 /* Desktop-only additions stay out of the touch/H5 layout. */
 .chapter-desktop,
+.orbit-label-desktop,
 .hero-title-en,
 .about-arc,
 .about-rail,
@@ -24,6 +25,14 @@
 /* HOME desktop: 1:1 with the 1920 Figma frames (zh 2001:501, en 2001:500).
    The scroll choreography is untouched; poses and sizes are set here. */
 @media (min-width: 1024px) {
+  body .home-story .orbit-label > .orbit-label-touch {
+    display: none;
+  }
+  body .home-story .orbit-label > .orbit-label-desktop {
+    display: block;
+    position: static;
+    white-space: nowrap;
+  }
   /* Frame 1: opening. */
   body .home-story .opening .chapter {
     left: calc(346 * var(--u));

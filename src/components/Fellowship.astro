@@ -201,7 +201,7 @@ const titleParts = contactContent.signalTitle.zh
   <div class="fellowship-join">
     <p class="eyebrow">{fellowshipContent.joinLabel[lang]}</p>
     <h2 id="fellowship-join-title">{fellowshipContent.joinTitle[lang]}</h2>
-    <p>{fellowshipContent.joinCopy[lang]}</p>
+    <p lang={lang}>{fellowshipContent.joinCopy[lang]}</p>
     <a class="line-link" href={contactUrl()}>
       {fellowshipContent.cta[lang]}
       <Arrow />
@@ -263,6 +263,13 @@ const titleParts = contactContent.signalTitle.zh
     max-width: 642px;
     margin: auto;
     text-align: left;
+  }
+
+  @media (min-width: 1024px) {
+    .fellowship-join > p[lang='zh'] {
+      max-width: none;
+      white-space: nowrap;
+    }
   }
 
   @media (max-width: 767px) {

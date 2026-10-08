@@ -8,6 +8,7 @@ import {
   type Lang,
 } from '../lib/site';
 import FocusConstellation from './FocusConstellation.astro';
+import H5FocusConstellation from './H5FocusConstellation.astro';
 import PaperTexture from './PaperTexture.astro';
 import { initialFocusSector } from '../lib/focus-layout';
 import '../styles/home-mobile.css';
@@ -287,8 +288,13 @@ const openingBody = homeContent.opening.body[lang]
       </h2>
       <a class="orbit-label" href="#about">
         <i class="diamond" aria-hidden="true"></i>
-        <em>{homeContent.hero.orbitEyebrow[lang]}</em>
-        <span>{homeContent.hero.orbitLabel[lang]}</span>
+        <em class="orbit-label-touch">{homeContent.hero.orbitEyebrow[lang]}</em>
+        <span class="orbit-label-touch">
+          {homeContent.hero.orbitLabel[lang]}
+        </span>
+        <span class="orbit-label-desktop" lang="en">
+          {homeContent.hero.orbitLabel.en}
+        </span>
       </a>
       <a class="h5-open-signal" data-h5-only hidden href="#about">
         <em>open signal</em>
@@ -428,10 +434,6 @@ const openingBody = homeContent.opening.body[lang]
         hidden
         aria-hidden="true"
       ></i>
-      <div class="h5-about-exit" data-h5-only hidden aria-hidden="true">
-        <i class="h5-exit-outline"></i>
-        <i class="h5-exit-node"></i>
-      </div>
     </section>
   </div>
   <section
@@ -591,6 +593,7 @@ const openingBody = homeContent.opening.body[lang]
       ))}
     </div>
     <FocusConstellation lang={lang} />
+    <H5FocusConstellation lang={lang} />
     <nav class="focus-links">
       <a href={contactUrl()}>{homeContent.focus.contactLink[lang]} ↗</a>
       <a href="#about">{homeContent.focus.aboutLink[lang]} ↗</a>

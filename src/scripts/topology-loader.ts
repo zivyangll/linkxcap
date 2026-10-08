@@ -1,5 +1,6 @@
-import { TOPOLOGY_MOTION } from './motion-policy';
+import { TOPOLOGY_MOTION, TOUCH_LAYOUT } from './motion-policy';
 const motion = matchMedia(TOPOLOGY_MOTION);
+const touch = matchMedia(TOUCH_LAYOUT);
 const device = navigator as Navigator & {
   deviceMemory?: number;
   connection?: { saveData?: boolean };
@@ -12,6 +13,7 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-topology]')) {
     if (started) return;
     const allowed =
       motion.matches &&
+      !(root.querySelector('[data-h5-focus]') && touch.matches) &&
       !device.connection?.saveData &&
       (device.deviceMemory ?? 8) >= 4;
     root.dataset.renderer = 'static';
@@ -42,11 +44,13 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-topology]')) {
   };
   load();
   motion.addEventListener('change', load);
+  touch.addEventListener('change', load);
   window.addEventListener(
     'pagehide',
     () => {
       observer?.disconnect();
       motion.removeEventListener('change', load);
+      touch.removeEventListener('change', load);
     },
     { once: true },
   );

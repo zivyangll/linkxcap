@@ -216,8 +216,9 @@ test('07a route starts pale, activates behind the node, and keeps hero copy visi
     });
   });
   expect(copyGeometry).toEqual([{ horizontal: true, vertical: true }]);
-  await expect(page.locator('.orbit-label')).toContainText('Follow the stars');
-  await expect(page.locator('.orbit-label')).toContainText('First Light');
+  await expect(page.locator('.orbit-label-desktop')).toHaveText('First Light');
+  await expect(page.locator('.orbit-label-desktop')).toBeVisible();
+  await expect(page.locator('.orbit-label em')).toBeHidden();
 
   await setPhilosophyProgress(page, 0.8);
   expect(

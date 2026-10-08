@@ -5,6 +5,9 @@ const phase = (p: number, from: number, to: number) =>
   Math.max(0, Math.min(1, (p - from) / (to - from)));
 const smooth = (p: number) => p * p * (3 - 2 * p);
 const lerp = (a: number, b: number, p: number) => a + (b - a) * p;
+const H5_SEAM_RAIL_X = 120;
+const H5_TRAIL_DASH = 4;
+const H5_TRAIL_ACTIVE_COLOR = 'rgba(87,60,121,.95)';
 
 /** Phone-only poses from Figma 275:5492, 275:5555 and 275:5610. */
 export function mountH5HomeSequence(home: HTMLElement) {
@@ -40,7 +43,6 @@ export function mountH5HomeSequence(home: HTMLElement) {
   ];
   const aboutCopy = about.querySelector<HTMLElement>('.about-copy')!;
   const aboutGuide = about.querySelector<HTMLElement>('.h5-about-guide')!;
-  const aboutExit = about.querySelector<HTMLElement>('.h5-about-exit')!;
   const styled = [
     hero,
     north,
@@ -54,7 +56,6 @@ export function mountH5HomeSequence(home: HTMLElement) {
     ...aboutLines,
     aboutCopy,
     aboutGuide,
-    aboutExit,
   ];
   const originalStyles = styled.map((el) => el.getAttribute('style'));
   const progress = { value: 0 };
@@ -90,9 +91,10 @@ export function mountH5HomeSequence(home: HTMLElement) {
   const drawOpening = () => {
     const start = openingHeight * openingStart;
     const y = lerp(start, openingHeight, openingProgress.value);
+    const nodeX = openingRail;
     openingCtx.clearRect(0, 0, width, openingHeight);
     openingCtx.lineWidth = 1;
-    openingCtx.setLineDash([3, 5]);
+    openingCtx.setLineDash([H5_TRAIL_DASH * unit, H5_TRAIL_DASH * unit]);
     openingCtx.beginPath();
     openingCtx.moveTo(openingRail, start);
     openingCtx.lineTo(openingRail, openingHeight);
@@ -101,13 +103,16 @@ export function mountH5HomeSequence(home: HTMLElement) {
     openingCtx.beginPath();
     openingCtx.moveTo(openingRail, start);
     openingCtx.lineTo(openingRail, y);
-    openingCtx.strokeStyle = 'rgba(87,60,121,.95)';
+    openingCtx.strokeStyle = H5_TRAIL_ACTIVE_COLOR;
     openingCtx.stroke();
-    diamond(openingCtx, openingRail, y, 3.5);
-    openingCanvas.dataset.point = `${openingRail.toFixed(2)},${y.toFixed(2)}`;
+    diamond(openingCtx, nodeX, y, 3.5);
+    openingCanvas.dataset.point = `${nodeX.toFixed(2)},${y.toFixed(2)}`;
     openingCanvas.dataset.trailProgress = openingProgress.value.toFixed(3);
     openingCanvas.dataset.trailBaseColor = 'rgba(87,60,121,.18)';
-    openingCanvas.dataset.trailActiveColor = 'rgba(87,60,121,.95)';
+    openingCanvas.dataset.trailActiveColor = H5_TRAIL_ACTIVE_COLOR;
+    openingCanvas.dataset.trailDash = `${(H5_TRAIL_DASH * unit).toFixed(2)},${(
+      H5_TRAIL_DASH * unit
+    ).toFixed(2)}`;
   };
 
   const draw = () => {
@@ -128,12 +133,35 @@ export function mountH5HomeSequence(home: HTMLElement) {
       x: lerp(originalCircle.x, width / 2, arcCamera),
       y: lerp(originalCircle.y, -614 * unit, arcCamera),
     };
-    const startAngle = Math.atan2(78.485, 44.485 - 1216);
+    const heroRail = openingRail;
+    const fromCenter = {
+      x: heroRail - originalCircle.x,
+      y: -originalCircle.y,
+    };
+    const centerDistanceSquared = fromCenter.x ** 2 + fromCenter.y ** 2;
+    const tangentBase = radius ** 2 / centerDistanceSquared;
+    const tangentOffset =
+      (radius * Math.sqrt(Math.max(0, centerDistanceSquared - radius ** 2))) /
+      centerDistanceSquared;
+    const tangent = {
+      x:
+        originalCircle.x +
+        tangentBase * fromCenter.x +
+        tangentOffset * fromCenter.y,
+      y:
+        originalCircle.y +
+        tangentBase * fromCenter.y -
+        tangentOffset * fromCenter.x,
+    };
+    const tangentAngle = Math.atan2(
+      tangent.y - originalCircle.y,
+      tangent.x - originalCircle.x,
+    );
     const signalAngle = Math.atan2(782.485, 341.485 - 1216);
-    const arcProgress = smooth(phase(p, 0.08, 0.28));
+    const arcProgress = smooth(phase(p, 0.12, 0.28));
     const angle =
       p <= 0.3
-        ? lerp(startAngle, signalAngle, arcProgress)
+        ? lerp(tangentAngle, signalAngle, arcProgress)
         : lerp(signalAngle, Math.PI / 2, smooth(phase(p, 0.3, 0.46)));
     const cameraY = height * smooth(phase(p, 0.68, 0.86));
     const excess = Math.max(0, about.offsetHeight - height);
@@ -141,23 +169,16 @@ export function mountH5HomeSequence(home: HTMLElement) {
     const panY = cameraY + copyPan;
     let point: { x: number; y: number };
     let worldY: number;
-    if (p < 0.08) {
-      const lead = smooth(phase(p, 0, 0.08));
-      const y = 588.485 * unit * lead;
-      const joinY =
-        originalCircle.y -
-        Math.sqrt(
-          Math.max(0, radius ** 2 - (originalCircle.x - openingRail) ** 2),
-        );
+    const secondLineProgress = smooth(phase(p, 0, 0.3));
+    const secondLineOpacity = 1 - smooth(phase(p, 0.2, 0.3));
+    const secondLineVisible = p < 0.3 && secondLineOpacity > 0.001;
+    const secondLineEnd = height * 0.5;
+    if (p < 0.3) {
       point = {
-        x:
-          y <= joinY
-            ? openingRail
-            : originalCircle.x -
-              Math.sqrt(Math.max(0, radius ** 2 - (y - originalCircle.y) ** 2)),
-        y,
+        x: heroRail,
+        y: lerp(0, secondLineEnd, secondLineProgress),
       };
-      worldY = y;
+      worldY = point.y;
     } else if (p < 0.46) {
       point = {
         x: circle.x + Math.cos(angle) * radius,
@@ -185,8 +206,8 @@ export function mountH5HomeSequence(home: HTMLElement) {
       el.style.filter = `blur(${8 * (1 - incoming)}px)`;
     });
     heroArc.style.translate = `${circle.x - originalCircle.x}px ${circle.y - originalCircle.y}px`;
-    heroArc.style.opacity = String(1 - smooth(phase(p, 0.42, 0.46)));
-    heroGuides.forEach((el) => (el.style.opacity = String(1 - heroOut)));
+    heroArc.style.opacity = '0';
+    heroGuides.forEach((el) => (el.style.opacity = '0'));
     pose(north, -panY, 1);
     northArc.style.opacity = String(
       smooth(phase(p, 0.4, 0.46)) * (1 - smooth(phase(p, 0.7, 0.8))),
@@ -220,12 +241,22 @@ export function mountH5HomeSequence(home: HTMLElement) {
     pose(aboutCopy, 16 * unit * (1 - details), details);
     aboutCopy.style.filter = `blur(${4 * unit * (1 - details)}px)`;
     aboutGuide.style.opacity = String(smooth(phase(p, 0.74, 0.86)));
-    aboutExit.style.opacity = String(details);
 
     ctx.clearRect(0, 0, width, height);
     ctx.lineWidth = 1;
-    ctx.setLineDash([2 * unit, 4 * unit]);
-    if (p >= 0.66 && p < 0.86) {
+    ctx.setLineDash([H5_TRAIL_DASH * unit, H5_TRAIL_DASH * unit]);
+    if (secondLineVisible) {
+      ctx.beginPath();
+      ctx.moveTo(heroRail, 0);
+      ctx.lineTo(heroRail, secondLineEnd);
+      ctx.strokeStyle = `rgba(87,60,121,${0.18 * secondLineOpacity})`;
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(heroRail, 0);
+      ctx.lineTo(point.x, point.y);
+      ctx.strokeStyle = `rgba(87,60,121,${0.95 * secondLineOpacity})`;
+      ctx.stroke();
+    } else if (p >= 0.66 && p < 0.86) {
       // The camera moves to the next screen; the node's world Y always grows.
       // Only this connecting segment is drawn dynamically. Figma supplies the
       // static arc, tangent and gradient rails in each settled pose.
@@ -242,24 +273,20 @@ export function mountH5HomeSequence(home: HTMLElement) {
       ctx.moveTo(width / 2, 559 * unit - panY);
       ctx.lineTo(width / 2, point.y);
       ctx.stroke();
-    } else if (p < 0.08) {
-      ctx.strokeStyle = 'rgba(87,60,121,.4)';
-      ctx.beginPath();
-      ctx.moveTo(openingRail, 0);
-      ctx.lineTo(point.x, point.y);
-      ctx.stroke();
     }
     ctx.setLineDash([]);
-    diamond(
-      ctx,
-      point.x,
-      point.y,
-      p < 0.08 ? lerp(3.5, 6 * unit, smooth(phase(p, 0, 0.08))) : 6 * unit,
-    );
+    if (secondLineVisible) {
+      ctx.save();
+      ctx.globalAlpha = secondLineOpacity;
+      diamond(ctx, point.x, point.y, 6 * unit);
+      ctx.restore();
+    } else if (p >= 0.42) {
+      diamond(ctx, point.x, point.y, 6 * unit);
+    }
 
     stage.dataset.motionProgress = p.toFixed(4);
     stage.dataset.motionPhase =
-      p < 0.08
+      p < 0.12
         ? 'lead-in'
         : p < 0.46
           ? 'arc'
@@ -272,12 +299,20 @@ export function mountH5HomeSequence(home: HTMLElement) {
     canvas.dataset.point = `${point.x.toFixed(2)},${point.y.toFixed(2)}`;
     canvas.dataset.worldPoint = `${point.x.toFixed(2)},${worldY.toFixed(2)}`;
     canvas.dataset.arcBottom = `${circle.x.toFixed(2)},${(circle.y + radius).toFixed(2)}`;
-    canvas.dataset.markerCount = '1';
+    canvas.dataset.entryLineStart = `${heroRail.toFixed(2)},0.00`;
+    const nodeVisible = secondLineVisible || p >= 0.42;
+    canvas.dataset.markerCount = nodeVisible ? '1' : '0';
     canvas.dataset.nodeColor = '#000';
-    canvas.dataset.nodeOpacity = '1.000';
-    canvas.dataset.nodeActivation = '1.000';
+    canvas.dataset.nodeOpacity =
+      p < 0.3 ? secondLineOpacity.toFixed(3) : p >= 0.42 ? '1.000' : '0.000';
+    canvas.dataset.nodeActivation = nodeVisible ? '1.000' : '0.000';
     canvas.dataset.branchMarkerOpacity = '0.000';
-    canvas.dataset.trailProgress = phase(p, 0.08, 0.46).toFixed(3);
+    canvas.dataset.trailProgress =
+      p < 0.3 ? secondLineProgress.toFixed(3) : phase(p, 0.3, 0.46).toFixed(3);
+    canvas.dataset.trailActiveColor = H5_TRAIL_ACTIVE_COLOR;
+    canvas.dataset.trailDash = `${(H5_TRAIL_DASH * unit).toFixed(2)},${(
+      H5_TRAIL_DASH * unit
+    ).toFixed(2)}`;
     hero.inert = p > 0.42;
     about.inert = titleIn < 0.01;
     north.inert = p < 0.4 || p > 0.8;
@@ -298,8 +333,8 @@ export function mountH5HomeSequence(home: HTMLElement) {
     unit = Math.min(width, 640) / 750;
     inset = Math.max(0, (width - 640) / 2);
     openingHeight = opening.clientHeight;
+    openingRail = inset + H5_SEAM_RAIL_X * unit;
     const style = getComputedStyle(opening);
-    openingRail = parseFloat(style.paddingLeft) - 24;
     openingStart =
       parseFloat(style.getPropertyValue('--h5-trail-start')) || 0.362;
     const dpr = Math.min(devicePixelRatio || 1, 1.5);
@@ -457,12 +492,15 @@ export function mountH5HomeSequence(home: HTMLElement) {
       'point',
       'worldPoint',
       'arcBottom',
+      'entryLineStart',
       'markerCount',
       'nodeColor',
       'nodeOpacity',
       'nodeActivation',
       'branchMarkerOpacity',
       'trailProgress',
+      'trailActiveColor',
+      'trailDash',
     ])
       delete canvas.dataset[key];
     ctx.clearRect(0, 0, width, height);

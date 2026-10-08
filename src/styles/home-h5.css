@@ -11,7 +11,9 @@
     --k: calc(min(100vw, 640px) / 390);
     /* The opening rail and the philosophy rail sit at different x. The
        motion script reads each screen's padding-left minus 24px. */
-    --h5-opening-rail: calc(125 * var(--m));
+    --h5-opening-rail: calc(
+      max(0px, calc((100vw - 640px) / 2)) + 115 * var(--m)
+    );
     --h5-trail-start: 0.362;
     --mobile-rail: calc(44 * var(--m));
     --mobile-inset: calc(44 * var(--m) + 24px);
@@ -29,7 +31,7 @@
   /* ---------- 1 · Opening (275:5429 / 275:6606) ---------- */
   html body .home-story .opening {
     padding: calc(505 * var(--m)) var(--mobile-right) calc(80 * var(--m))
-      calc(var(--h5-opening-rail) + 24px);
+      calc(125 * var(--m) + 24px);
   }
   html body .home-story .opening :is(.chapter, .opening-title, .opening-copy) {
     width: auto;
@@ -269,124 +271,6 @@
     letter-spacing: -0.05em;
     color: #000;
   }
-
-  /* ---------- 5 · Focus area (275:5739 / 275:6830) ---------- */
-  html body .home-story .focus {
-    --focus-text-inset: calc(101 * var(--m));
-    gap: 0;
-    padding: calc(125 * var(--m)) 0 max(32px, env(safe-area-inset-bottom));
-  }
-  html body .home-story .focus .focus-title {
-    padding: 0 var(--mobile-right) 0 var(--focus-text-inset);
-    font: 400 calc(44 * var(--k)) / 1.2 var(--serif);
-    letter-spacing: -0.05em;
-    color: #fff;
-    text-align: left;
-  }
-  html body .home-story .focus .focus-title-kicker {
-    display: block;
-    font: inherit;
-    letter-spacing: inherit;
-  }
-  html body[data-lang='zh'] .home-story .focus .focus-title {
-    font-weight: 600;
-  }
-  html body .home-story .focus .focus-desktop-br {
-    display: inline;
-  }
-  html body .home-story .focus .focus-title > span {
-    display: block;
-    margin-top: calc(26 * var(--m));
-    font: 400 max(12px, calc(12 * var(--k))) / 1.2 var(--serif);
-    letter-spacing: -0.05em;
-    opacity: 0.4;
-    max-width: none;
-    color: #fff;
-  }
-  html body .home-story .focus .constellation {
-    margin-top: calc(40 * var(--m));
-    width: 100%;
-  }
-  html body .home-story .focus .focus-panels {
-    margin-top: calc(24 * var(--m));
-    padding: 0 var(--mobile-right) 0 var(--focus-text-inset);
-    text-align: left;
-  }
-  html body .home-story .focus .focus-panel h3 {
-    font-size: max(12px, calc(12 * var(--k)));
-    line-height: 1.5;
-    letter-spacing: -0.05em;
-    color: #fff;
-  }
-  html body .home-story .focus .focus-panel h3 span:first-child {
-    font-weight: 700;
-    letter-spacing: normal;
-  }
-  html body .home-story .focus .focus-panel h3 span:last-child {
-    margin: 0;
-    font-size: max(12px, calc(12 * var(--k)));
-    font-weight: 400;
-  }
-  html body .home-story .focus .focus-panel p {
-    max-width: calc(261 * var(--m));
-    margin: calc(14 * var(--m)) 0 0;
-    font-size: max(12px, calc(12 * var(--k)));
-    line-height: 1.5;
-    letter-spacing: -0.05em;
-    color: #d8d6cf;
-  }
-  html body .home-story .focus .focus-links {
-    gap: 12px 28px;
-    margin: calc(40 * var(--m)) 0 0;
-    padding: 0 var(--mobile-right) 0 var(--focus-text-inset);
-    font-size: 12px;
-    opacity: 0.6;
-  }
-  /* Node labels: Figma 275:6038 (sector, white 40%) and 275:6536 (company). */
-  html body .home-story .focus .sector-star .star-label {
-    max-width: none;
-    padding: 0;
-    background: none;
-    font-size: max(12px, calc(12 * var(--k)));
-    line-height: 1.4;
-    letter-spacing: -0.02em;
-    color: rgb(255 255 255 / 40%);
-  }
-  html body .home-story .focus .sector-star.is-active .star-label {
-    max-width: calc(280 * var(--m));
-    font-weight: 700;
-    color: #fff;
-  }
-  html body .home-story .focus .constellation-company-label {
-    max-width: none;
-    padding: 0;
-    background: none;
-    font-size: max(12px, calc(12 * var(--k)));
-    line-height: 1.5;
-    letter-spacing: -0.05em;
-    white-space: nowrap;
-    color: #b2a2ff;
-  }
-  html body .home-story .focus .constellation-company .constellation-dot {
-    width: max(3px, calc(4 * var(--m)));
-    height: max(3px, calc(4 * var(--m)));
-    left: calc(50% - max(3px, calc(4 * var(--m))) / 2);
-    top: calc(50% - max(3px, calc(4 * var(--m))) / 2);
-    background: #b2a2ff;
-    transform: none;
-  }
-  /* Review fixes: backdrop, panel heading, stats labels, research marker. */
-  html body .home-story .focus .focus-backdrop-nebula {
-    display: none;
-  }
-  html body[data-lang='en'] .home-story .focus .focus-panel h3 span {
-    margin: 0;
-    font-weight: 700;
-    letter-spacing: -0.05em;
-  }
-  html body[data-lang='zh'] .home-story .focus .focus-panel h3 span:last-child {
-    margin-left: 0;
-  }
 }
 
 /* A landscape phone scrolls the natural flow: the Figma top offsets would
@@ -419,10 +303,20 @@
   html body .home-story .h5-hero-arc {
     left: calc(var(--h5-frame-inset) + 23 * var(--m));
     top: calc(-683 * var(--m));
+    clip-path: inset(950px 0 0);
   }
   html body .home-story .h5-hero-guide {
-    left: calc(var(--h5-frame-inset) + 44 * var(--m));
-    top: calc(473 * var(--m));
+    left: calc(var(--h5-frame-inset) + 125 * var(--m));
+    top: 0;
+    clip-path: inset(0 0 807px);
+    transform: scale(calc(min(100vw, 640px) / 750px)) rotate(12deg);
+  }
+  html
+    body
+    .home-story
+    .hero
+    :is(.h5-hero-arc, .h5-hero-guide, .h5-arc-markers) {
+    display: none;
   }
   html
     body
@@ -472,8 +366,8 @@
     transform: translate(-50%, -50%) rotate(45deg);
   }
   html body .home-story .h5-arc-start {
-    left: calc(var(--h5-frame-inset) + 44.485 * var(--m));
-    top: calc(588.485 * var(--m));
+    left: calc(var(--h5-frame-inset) + 68.5 * var(--m));
+    top: calc(266.9 * var(--m));
   }
   html body .home-story .h5-arc-markers > .h5-rail-end {
     left: calc(var(--h5-frame-inset) + 43.485 * var(--m));
@@ -587,32 +481,6 @@
     left: 50%;
     top: calc(462.485 * var(--m));
   }
-  html body .home-story .h5-about-exit {
-    display: block;
-    position: relative;
-    flex: none;
-    align-self: center;
-    width: calc(49.841 * var(--m));
-    height: calc(49.841 * var(--m));
-    margin-top: calc(259 * var(--m));
-  }
-  html body .home-story .h5-about-exit > i {
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
-  html body .home-story .h5-exit-outline {
-    top: 50%;
-    width: calc(35.243 * var(--m));
-    height: calc(35.243 * var(--m));
-    border: 1px solid rgb(0 0 0 / 24%);
-  }
-  html body .home-story .h5-exit-node {
-    top: calc(38.724 * var(--m));
-    width: calc(15.832 * var(--m));
-    height: calc(15.832 * var(--m));
-    background: #000;
-  }
   html body .home-story.has-h5-sequence :is(.hero, .about) {
     overflow: visible;
   }
@@ -624,6 +492,9 @@
   }
   html body .home-story.has-h5-sequence .philosophy-stage-canvas {
     z-index: 3;
+  }
+  html body .home-story.has-h5-sequence .h5-hero-guide {
+    visibility: hidden;
   }
   html body .home-story.has-h5-sequence .h5-static-node {
     display: none;

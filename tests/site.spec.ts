@@ -215,7 +215,7 @@ test('core content and navigation remain available without JavaScript', async ({
   const page = await context.newPage();
   await page.goto(`${baseURL}zh/index.html`);
   await expect(page.locator('.opening-copy')).toContainText('共识之外');
-  await expect(page.locator('[data-sector-panel=frontiers]')).toBeVisible();
+  await expect(page.locator('[data-h5-result=foundation]')).toBeVisible();
   await page.locator('.noscript-nav a[href$="/zh/portfolio.html"]').click();
   await expect(page.locator('[data-company-card]')).toHaveCount(
     content.companies.length,

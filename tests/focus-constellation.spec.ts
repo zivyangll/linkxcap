@@ -26,30 +26,6 @@ async function openScene(page: Page, lang = 'zh') {
   await expect(page.locator('#focus')).toHaveAttribute('data-running', 'true');
   return page.locator('#focus');
 }
-// H5 centres the selected sector, so distant sectors can pan past the screen
-// edge; those are reached the way a visitor would, after the graph moves.
-async function tapSector(page: Page, id: string) {
-  const button = page.locator(`[data-sector="${id}"]`);
-  await page.locator('.constellation').scrollIntoViewIfNeeded();
-  await expect(page.locator('#focus')).not.toHaveAttribute(
-    'data-camera-state',
-    'settling',
-    { timeout: 10000 },
-  );
-  const box = await button.boundingBox();
-  const viewport = page.viewportSize()!;
-  if (
-    box &&
-    box.x >= 0 &&
-    box.y >= 0 &&
-    box.x + box.width <= viewport.width &&
-    box.y + box.height <= viewport.height
-  )
-    await button.tap();
-  else await button.dispatchEvent('click');
-  return button;
-}
-
 async function hoverNode(page: Page, id: string) {
   const button = page.locator(`[data-sector="${id}"]`);
   const box = (await button.boundingBox())!;
@@ -424,113 +400,9 @@ test('reduced motion has static connections, no automatic cycle and no Three.js 
   );
 });
 
-for (const width of [360, 768])
-  test(`touch focus controls remain usable at ${width}px with homepage motion enabled`, async ({
-    browser,
-    baseURL,
-  }) => {
-    const context = await browser.newContext({
-      viewport: { width, height: 900 },
-      hasTouch: true,
-      isMobile: true,
-      reducedMotion: 'no-preference',
-    });
-    const page = await context.newPage();
-    await page.goto(`${baseURL}zh/index.html`);
-    await expect(page.locator('[data-home]')).toHaveClass(/has-mobile-motion/);
-    for (const sector of content.sectors) {
-      const button = await tapSector(page, sector.id);
-      await expect(
-        page.locator(`[data-sector-panel="${sector.id}"]`),
-      ).toBeVisible();
-      await expect(button).toHaveAttribute('aria-pressed', 'true');
-    }
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= innerWidth,
-      ),
-    ).toBe(true);
-    await expect(page.locator('#focus')).toHaveAttribute(
-      'data-renderer',
-      'webgl',
-    );
-    await expect(page.locator('.topology-canvas')).toBeVisible();
-    await expect(page.locator('#focus')).toHaveAttribute(
-      'data-focus-pinned',
-      'true',
-    );
-    await context.close();
-  });
-
-for (const width of [360, 768])
-  test(`H5 ${width}px automatically connects companies and tapping locks then resumes the graph`, async ({
-    browser,
-    baseURL,
-  }) => {
-    const context = await browser.newContext({
-      viewport: { width, height: 900 },
-      hasTouch: true,
-      isMobile: true,
-      reducedMotion: 'no-preference',
-    });
-    const page = await context.newPage();
-    await page.goto(`${baseURL}zh/index.html`);
-    await expect(page.locator('[data-home]')).toHaveClass(/has-mobile-motion/);
-    await page.locator('.constellation').scrollIntoViewIfNeeded();
-    const scene = page.locator('#focus');
-    await expect(scene).toHaveAttribute('data-renderer', 'webgl');
-    const initial = await scene.getAttribute('data-focus');
-    await expect
-      .poll(() => scene.getAttribute('data-focus'), { timeout: 15000 })
-      .not.toBe(initial);
-    await page.locator('[data-sector=infrastructure]').tap();
-    await expect(scene).toHaveAttribute('data-focus-pinned', 'true');
-    await expect(scene).toHaveAttribute(
-      'data-highlighted-edges',
-      String(infrastructureCount),
-    );
-    await expect(scene).toHaveAttribute('data-branch-progress', '1.000');
-    await expect(scene).toHaveAttribute('data-running', 'false');
-    const overlaps = await page
-      .locator('.sector-star .star-label')
-      .evaluateAll((labels) => {
-        const boxes = labels.map((label) => label.getBoundingClientRect());
-        return boxes.flatMap((a, i) =>
-          boxes
-            .slice(i + 1)
-            .filter(
-              (b) =>
-                Math.min(a.right, b.right) > Math.max(a.left, b.left) &&
-                Math.min(a.bottom, b.bottom) > Math.max(a.top, b.top),
-            ),
-        );
-      });
-    expect(overlaps).toEqual([]);
-    const rotation = await scene.getAttribute('data-rotation');
-    const frames = await scene.getAttribute('data-render-frames');
-    await page.waitForTimeout(5500);
-    await expect(scene).toHaveAttribute('data-focus', 'infrastructure');
-    await expect(scene).toHaveAttribute('data-rotation', rotation!);
-    await expect(scene).toHaveAttribute('data-render-frames', frames!);
-    const box = (await page.locator('.constellation').boundingBox())!;
-    const canvas = await page.locator('.topology-canvas').evaluate((node) => ({
-      width: (node as HTMLCanvasElement).width,
-      height: (node as HTMLCanvasElement).height,
-    }));
-    expect(canvas.width * canvas.height).toBeLessThanOrEqual(910000);
-    expect(box.width).toBeLessThanOrEqual(width);
-    await page.locator('[data-sector=infrastructure]').tap();
-    await expect(scene).toHaveAttribute('data-focus-pinned', 'false');
-    await expect(scene).toHaveAttribute('data-running', 'true');
-    await expect
-      .poll(() => scene.getAttribute('data-rotation'))
-      .not.toBe(rotation);
-    await context.close();
-  });
-
 for (const width of [360, 390, 768]) {
-  for (const lang of ['zh', 'en']) {
-    test(`mobile ${lang} graph shows every full label at ${width}px without overlap`, async ({
+  for (const lang of ['zh', 'en'] as const) {
+    test(`H5 ${lang} Figma map selects every sector and preserves all companies at ${width}px`, async ({
       browser,
       baseURL,
     }) => {
@@ -538,81 +410,181 @@ for (const width of [360, 390, 768]) {
         viewport: { width, height: 900 },
         hasTouch: true,
         isMobile: true,
-        reducedMotion: 'no-preference',
+        reducedMotion: 'reduce',
       });
       const page = await context.newPage();
+      const errors: string[] = [];
+      page.on('pageerror', (error) => errors.push(error.message));
       await page.goto(`${baseURL}${lang}/index.html`);
-      await page.locator('.constellation').scrollIntoViewIfNeeded();
+      await page.evaluate(() => document.fonts.ready);
+      const map = page.locator('[data-h5-focus]');
+      await map.scrollIntoViewIfNeeded();
+      await expect(map).toBeVisible();
+      await expect(page.locator('.constellation')).toBeHidden();
       for (const sector of content.sectors) {
-        await tapSector(page, sector.id);
-        await expect(page.locator('#focus')).toHaveAttribute(
-          'data-branch-progress',
-          '1.000',
+        const button = map.locator(`[data-h5-sector="${sector.id}"]`);
+        await button.tap();
+        await expect(button).toHaveAttribute('aria-pressed', 'true');
+        await expect(button).toHaveAttribute('data-h5-slot', '5');
+        await expect(map.locator('[aria-pressed=true]')).toHaveCount(1);
+        const result = map.locator(`[data-h5-result="${sector.id}"]`);
+        await expect(result).toBeVisible();
+        await expect(result.locator('h3')).toContainText(sector.name_en);
+        await expect(result.locator('.h5-focus-details p')).toHaveText(
+          lang === 'zh' ? sector.description_cn : sector.description_en,
         );
-        const metrics = await page
-          .locator('.constellation')
-          .evaluate((root) => {
-            const rootBox = root.getBoundingClientRect();
-            const labels = [
-              ...root.querySelectorAll<HTMLElement>(
-                '.sector-star .star-label, .constellation-scene:not([hidden]) .constellation-company-label',
-              ),
-            ].map((element) => ({
-              // The selected sector and its companies are the centred branch.
-              branch:
-                element.closest(
-                  '.sector-star.is-active, .constellation-scene',
-                ) !== null,
-              text: element.textContent,
-              display: getComputedStyle(element).display,
-              clipped:
-                element.scrollWidth > element.clientWidth + 1 ||
-                element.scrollHeight > element.clientHeight + 1,
-              box: element.getBoundingClientRect(),
-            }));
-            const overlaps = labels.flatMap((a, index) =>
+        const expected = content.companies.filter(
+          (company) => company.sector_id === sector.id,
+        );
+        const links = map.locator(
+          '.h5-focus-result:not([hidden]) [data-h5-company], [data-h5-overflow]:not([hidden]) [data-h5-company]',
+        );
+        await expect(links).toHaveCount(expected.length);
+        for (const company of expected) {
+          const link = links.filter({
+            hasText: lang === 'zh' ? company.name_cn : company.name_en,
+          });
+          await expect(link).toHaveCount(1);
+          await expect(link).toHaveAttribute(
+            'href',
+            `/linkxcap/${lang}/portfolio/${company.slug}.html`,
+          );
+          if (company.investment_year)
+            await expect(link).toContainText(company.investment_year);
+        }
+        const metrics = await map.evaluate((root) => {
+          const area = root.getBoundingClientRect();
+          const labels = [
+            ...root.querySelectorAll<HTMLElement>(
+              '.h5-focus-node[aria-pressed=false] .h5-focus-node-label, .h5-focus-result:not([hidden]) .h5-focus-company span',
+            ),
+          ].map((el) => ({
+            text: el.textContent,
+            box: el.getBoundingClientRect(),
+          }));
+          return {
+            outside: labels.filter(
+              ({ box }) =>
+                box.left < area.left - 1 || box.right > area.right + 1,
+            ),
+            overlaps: labels.flatMap((a, i) =>
               labels
-                .slice(index + 1)
+                .slice(i + 1)
                 .filter(
                   (b) =>
-                    (a.branch || b.branch) &&
                     Math.min(a.box.right, b.box.right) >
                       Math.max(a.box.left, b.box.left) + 1 &&
                     Math.min(a.box.bottom, b.box.bottom) >
                       Math.max(a.box.top, b.box.top) + 1,
                 )
                 .map((b) => [a.text, b.text]),
-            );
-            return {
-              count: labels.length,
-              hidden: labels.filter(
-                ({ display, box }) =>
-                  display === 'none' || box.width === 0 || box.height === 0,
-              ),
-              clipped: labels.filter((label) => label.clipped),
-              outside: labels.filter(
-                ({ branch, box }) =>
-                  branch &&
-                  (box.left < rootBox.left - 1 ||
-                    box.top < rootBox.top - 1 ||
-                    box.right > rootBox.right + 1 ||
-                    box.bottom > rootBox.bottom + 1),
-              ),
-              overlaps,
-            };
-          });
-        expect(metrics.count).toBe(
-          content.sectors.length +
-            content.companies.filter(
-              (company) => company.sector_id === sector.id,
-            ).length,
-        );
-        expect(metrics.hidden).toEqual([]);
-        expect(metrics.clipped).toEqual([]);
+            ),
+            overflow: document.documentElement.scrollWidth > innerWidth,
+          };
+        });
         expect(metrics.outside).toEqual([]);
         expect(metrics.overlaps).toEqual([]);
+        expect(metrics.overflow).toBe(false);
       }
+      const visibleImages = map.locator(
+        '.h5-focus-result:not([hidden]) img, .h5-focus-nodes img, [data-h5-focus-backdrop]',
+      );
+      await expect
+        .poll(() =>
+          visibleImages.evaluateAll((images) =>
+            images.every(
+              (image) =>
+                (image as HTMLImageElement).complete &&
+                (image as HTMLImageElement).naturalWidth > 0,
+            ),
+          ),
+        )
+        .toBe(true);
+      const link = map
+        .locator('.h5-focus-result:not([hidden]) [data-h5-company]')
+        .first();
+      const href = await link.getAttribute('href');
+      await link.locator('span').tap();
+      await expect(page).toHaveURL(new URL(href!, baseURL).href);
+      expect(errors).toEqual([]);
       await context.close();
     });
   }
 }
+
+test('H5 selection stays fixed while ambience plays, and reduced motion stops it', async ({
+  browser,
+  baseURL,
+}) => {
+  const context = await browser.newContext({
+    viewport: { width: 390, height: 900 },
+    hasTouch: true,
+    isMobile: true,
+    reducedMotion: 'no-preference',
+  });
+  const page = await context.newPage();
+  const heavy: string[] = [];
+  page.on('request', (request) => {
+    if (
+      /(?:topology\..*\.js|starfield-lottie\..*\.js|linkx-twinkling-starfield-transparent\.json|focusStars)/.test(
+        request.url(),
+      )
+    )
+      heavy.push(request.url());
+  });
+  await page.goto(`${baseURL}zh/index.html`);
+  const map = page.locator('[data-h5-focus]');
+  await map.scrollIntoViewIfNeeded();
+  await map.locator('[data-h5-sector=infrastructure]').tap();
+  await expect(map).toHaveAttribute('data-h5-selection', 'infrastructure');
+  await expect(map).toHaveAttribute('data-h5-animating', 'true');
+  const graph = map.locator(
+    '[data-h5-result=infrastructure] .h5-focus-company-map',
+  );
+  const pose = await graph.evaluate((el) => getComputedStyle(el).transform);
+  await expect
+    .poll(() => graph.evaluate((el) => getComputedStyle(el).transform))
+    .not.toBe(pose);
+  await page.waitForTimeout(5400);
+  await expect(map).toHaveAttribute('data-h5-selection', 'infrastructure');
+  expect(heavy).toEqual([]);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(graph).toHaveCSS('animation-name', 'none');
+  await expect
+    .poll(() =>
+      map
+        .locator('[data-h5-sector=infrastructure]')
+        .evaluate((el) => parseFloat(getComputedStyle(el).transitionDuration)),
+    )
+    .toBeLessThan(0.001);
+  const button = map.locator('[data-h5-sector=chips]');
+  await button.focus();
+  await page.keyboard.press('Enter');
+  await expect(map).toHaveAttribute('data-h5-selection', 'chips');
+  await context.close();
+});
+
+test('H5 and PC retain separate selections when switching the viewport', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto('en/index.html');
+  const map = page.locator('[data-h5-focus]');
+  await map.scrollIntoViewIfNeeded();
+  await map.locator('[data-h5-sector=chips]').click();
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(map).toBeHidden();
+  await expect(page.locator('.constellation')).toBeVisible();
+  await expect(page.locator('#focus')).toHaveAttribute(
+    'aria-labelledby',
+    'focus-title',
+  );
+  await expect(page.locator('[data-sector=foundation]')).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  );
+  await page.setViewportSize({ width: 390, height: 900 });
+  await expect(map).toBeVisible();
+  await expect(map).toHaveAttribute('data-h5-selection', 'chips');
+  await expect(page.locator('.constellation')).toBeHidden();
+});
