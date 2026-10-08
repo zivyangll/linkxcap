@@ -67,7 +67,7 @@
       top: calc(27 * var(--u));
       margin: 0;
       gap: calc(19 * var(--u));
-      font-size: calc(16 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       font-weight: 500;
       line-height: calc(23 * var(--u));
     }
@@ -80,7 +80,7 @@
       right: calc(60 * var(--u));
       top: calc(27 * var(--u));
       gap: calc(60 * var(--u));
-      font-size: calc(16 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: calc(23 * var(--u));
     }
     .desktop-nav a {
@@ -177,7 +177,7 @@
       width: calc(100 * var(--u));
       height: calc(42 * var(--u));
       display: block;
-      font-size: calc(15.615 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: normal;
       text-align: center;
     }
@@ -238,7 +238,7 @@
       left: calc(564 * var(--u));
       top: calc(616 * var(--u));
       width: calc(79 * var(--u));
-      font-size: calc(15.615 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: calc(19.98 * var(--u));
       text-align: right;
     }
@@ -251,7 +251,7 @@
       left: calc(841 * var(--u));
       top: calc(715 * var(--u));
       width: calc(742 * var(--u));
-      font-size: calc(20 * var(--u));
+      font-size: max(12px, calc(20 * var(--u)));
       line-height: 1.5;
       letter-spacing: -0.05em;
     }
@@ -496,8 +496,14 @@
       width: calc(763 * var(--u));
       padding: 0;
       color: #000;
-      background: rgb(236 234 227 / 40%);
+      /* Mostly opaque so the panel reads the same over the dark star map
+         and the light screens; the blur still lives on ::backdrop below. */
+      background: rgb(236 234 227 / 70%);
       backdrop-filter: blur(25px);
+      /* Mask over everything outside the panel. A shadow is not cut by the
+         ::backdrop clip below, and it is not drawn under the panel, so the
+         panel still sees the blurred page. */
+      box-shadow: 0 0 0 100vmax rgb(23 16 26 / 15%);
     }
     .site-menu::backdrop {
       background: transparent;
@@ -508,7 +514,7 @@
       left: calc(69 * var(--u));
       top: calc(30 * var(--u));
       width: calc(643 * var(--u));
-      font-size: calc(24 * var(--u));
+      font-size: max(12px, calc(24 * var(--u)));
       line-height: 1.2;
       font-weight: 500;
     }
@@ -548,10 +554,10 @@
       left: calc(2.5 * var(--u));
     }
     .site-menu nav a span {
-      font-size: calc(30 * var(--u));
+      font-size: max(12px, calc(32 * var(--u)));
     }
     .site-menu nav a small {
-      font-size: calc(20 * var(--u));
+      font-size: max(12px, calc(20 * var(--u)));
     }
     .site-menu nav .arrow {
       display: none;
@@ -575,24 +581,24 @@
     }
     .menu-contact h2 {
       margin: 0 0 calc(30 * var(--u));
-      font-size: calc(16 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: 1.325;
       opacity: 0.5;
       font-weight: 500;
     }
     .menu-contact p {
-      font-size: calc(14 * var(--u));
+      font-size: max(12px, calc(14 * var(--u)));
       line-height: 1.2;
       margin: 0 0 calc(2 * var(--u));
       opacity: 0.5;
     }
     .menu-contact p[lang='en'] {
-      font-size: calc(12 * var(--u));
+      font-size: max(12px, calc(12 * var(--u)));
       max-width: calc(630 * var(--u));
     }
     .menu-contact .line-link {
       margin-top: calc(30 * var(--u));
-      font-size: calc(16 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: 1.2;
       padding: 0 0 calc(12 * var(--u));
       min-height: 0;
@@ -607,7 +613,7 @@
       grid-column: 2;
       grid-row: 2;
       margin: 0;
-      font-size: calc(12 * var(--u));
+      font-size: max(12px, calc(12 * var(--u)));
     }
     .menu-bottom {
       grid-column: 1;
@@ -629,7 +635,7 @@
       margin: max(10px, calc(20 * var(--u))) 0 0;
       grid-template-columns: 1fr auto;
       gap: calc(4 * var(--u)) calc(20 * var(--u));
-      font-size: calc(10 * var(--u));
+      font-size: max(12px, calc(12 * var(--u)));
       line-height: 1.4;
       opacity: 0.5;
     }
@@ -694,7 +700,7 @@
     pointer-events: auto;
     white-space: pre;
     color: #b2a2ff;
-    font: calc(15.414 * var(--u))/1.5 var(--serif);
+    font: max(12px, calc(16 * var(--u)))/1.5 var(--serif);
     letter-spacing: -0.05em;
   }
   .quiet-dot {
@@ -841,7 +847,7 @@
       top: calc((var(--ly) - var(--sy) + var(--radius)) * var(--u));
       margin: 0;
       display: block;
-      font: calc(15.615 * var(--u))/normal var(--sans);
+      font: max(12px, calc(16 * var(--u)))/normal var(--sans);
       color: rgb(255 255 255 / 30%);
       white-space: nowrap;
     }
@@ -861,7 +867,7 @@
       left: calc((var(--alx) - var(--ax) + var(--radius)) * var(--u));
       top: calc((var(--aly) - var(--ay) + var(--radius)) * var(--u));
       color: #b2a2ff;
-      font: calc(20 * var(--u))/1.5 var(--serif);
+      font: max(12px, calc(20 * var(--u)))/1.5 var(--serif);
     }
     .sector-star.is-active .star-label span[lang='zh'] {
       top: 0;
@@ -891,13 +897,13 @@
       display: block;
       padding: 0;
       min-height: 0;
-      font-size: calc(12 * var(--u));
+      font-size: max(12px, calc(12 * var(--u)));
       line-height: 1.2;
       font-weight: 500;
       opacity: var(--nav-opacity);
     }
     .company-navigator a[aria-current] {
-      font-size: calc(20 * var(--u));
+      font-size: max(12px, calc(20 * var(--u)));
       font-weight: 900;
     }
     .company-navigator a[aria-current]::before {
@@ -923,36 +929,36 @@
       margin-bottom: calc(8 * var(--u));
     }
     .design-bio .person-en {
-      font-size: calc(24 * var(--u));
+      font-size: max(12px, calc(24 * var(--u)));
       line-height: 1.2;
       margin-bottom: calc(40 * var(--u));
     }
     .design-bio .person-role {
-      font-size: calc(18 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: 1.2;
       margin-bottom: calc(40 * var(--u));
       font-weight: 500;
     }
     .design-bio-copy {
-      font-size: calc(18 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: 1.2;
       width: calc(435 * var(--u));
       font-weight: 500;
     }
     .featured-heading {
       margin: calc(80 * var(--u)) 0 calc(40 * var(--u));
-      font-size: calc(18 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       line-height: 1.2;
       font-weight: 500;
     }
     .featured-investments {
       grid-template-columns: calc(63 * var(--u)) repeat(3, calc(80 * var(--u)));
       gap: calc(36 * var(--u)) calc(50 * var(--u));
-      font-size: calc(20 * var(--u));
+      font-size: max(12px, calc(20 * var(--u)));
       line-height: 1.2;
     }
     .featured-investments span {
-      font-size: calc(12 * var(--u));
+      font-size: max(12px, calc(12 * var(--u)));
       margin-top: calc(8 * var(--u));
     }
     .profile-detail-link {
@@ -1025,7 +1031,7 @@
       left: calc(810 * var(--u));
       top: calc(2141 * var(--u));
       margin: 0;
-      font-size: calc(17.904 * var(--u));
+      font-size: max(12px, calc(16 * var(--u)));
       letter-spacing: -0.05em;
     }
     .contact-hero {

@@ -233,7 +233,7 @@
   z-index: 1;
 }
 .network-heading h1 {
-  font-size: clamp(42px, 4.3vw, 82px);
+  font-size: clamp(44px, 4.3vw, 81px);
   line-height: 1.13;
   font-weight: 400;
 }
@@ -274,7 +274,7 @@
   position: absolute;
   right: -7px;
   top: 0;
-  font: 10px var(--sans);
+  font: 12px var(--sans);
   opacity: 0.35;
 }
 .network-logo .company-logo {
@@ -408,14 +408,14 @@
   opacity: var(--rail-opacity, 1);
   transform: translateX(var(--rail-x, 0px));
   filter: blur(var(--rail-blur, 0px));
-  font-size: clamp(11px, 0.85vw, 16px);
+  font-size: clamp(12px, 0.85vw, 16px);
   line-height: 1.5;
   font-weight: 400;
   scroll-snap-align: center;
 }
 .company-browser .company-navigator a[aria-current] {
   color: #090909;
-  font-size: clamp(14px, 1.15vw, 22px);
+  font-size: clamp(14px, 1.25vw, 24px);
   opacity: 1;
   padding-left: calc(32% + 76px);
 }
@@ -449,7 +449,7 @@
 }
 .company-scroll-hint {
   color: #8b838e;
-  font: 11px var(--sans);
+  font: 12px var(--sans);
   text-align: center;
   letter-spacing: 0.08em;
 }
@@ -486,7 +486,7 @@
   max-width: 670px;
   padding-top: 10px;
   color: #655f65;
-  font-size: clamp(13px, 1.04vw, 20px);
+  font-size: clamp(14px, 1.042vw, 20px);
   line-height: 1.55;
 }
 .team-explorer {
@@ -537,11 +537,11 @@
 .member-caption strong {
   display: block;
   font-weight: 500;
-  font-size: clamp(20px, 1.8vw, 34px);
+  font-size: clamp(20px, 1.8vw, 32px);
 }
 .member-caption > span {
   display: block;
-  font: 13px var(--sans);
+  font: 14px var(--sans);
   margin-top: 8px;
   color: #827984;
 }
@@ -564,7 +564,7 @@
   display: none;
 }
 .member-bio h2 {
-  font-size: clamp(36px, 3vw, 60px);
+  font-size: clamp(32px, 8.205vw, 60px);
   font-weight: 400;
   margin: 24px 0 8px;
 }
@@ -576,12 +576,12 @@
   margin: 24px 0;
 }
 .member-copy {
-  font-size: clamp(15px, 1.1vw, 20px);
+  font-size: clamp(16px, 1.1vw, 20px);
   line-height: 1.8;
 }
 .member-bio .line-link {
   margin-top: 40px;
-  font-size: 15px;
+  font-size: 16px;
 }
 /* Fellow B: original guide assets and arc; video expands from node 1811. */
 .fellow-intro {
@@ -609,7 +609,7 @@
   top: calc(414 * var(--u));
   width: max-content;
   height: auto;
-  font-size: calc(108.717 * var(--u));
+  font-size: max(12px, calc(112 * var(--u)));
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.05em;
@@ -624,7 +624,7 @@
   top: calc(414 * var(--u));
   transform: translateX(-50%);
   white-space: nowrap;
-  font-size: calc(108.717 * var(--u));
+  font-size: max(12px, calc(112 * var(--u)));
   font-weight: 500;
   letter-spacing: -0.05em;
   line-height: 1.2;
@@ -646,7 +646,7 @@
 .fellow-intro .next-zh,
 .fellow-intro .next-en {
   z-index: 1;
-  font-size: calc(52 * var(--u));
+  font-size: max(12px, calc(60 * var(--u)));
   line-height: 1.15;
   text-align: center;
   white-space: nowrap;
@@ -712,13 +712,13 @@
   z-index: 2;
 }
 .fellow-media-title h2 {
-  font-size: calc(63.557 * var(--u));
+  font-size: max(12px, calc(60 * var(--u)));
   line-height: 1.2;
   font-weight: 500;
   letter-spacing: -0.05em;
 }
 .fellow-media-title p {
-  font-size: calc(56.133 * var(--u));
+  font-size: max(12px, calc(60 * var(--u)));
   line-height: 1.2;
   margin-top: calc(20 * var(--u));
 }
@@ -753,13 +753,13 @@
   }
 }
 .contact-invitation h2 {
-  font-size: calc(40 * var(--u));
+  font-size: max(12px, calc(44 * var(--u)));
   line-height: 1.2;
   font-weight: 500;
 }
 .contact-invitation h2 span {
   display: block;
-  font-size: calc(52.25 * var(--u));
+  font-size: max(12px, calc(60 * var(--u)));
   margin-top: 4px;
 }
 @media (max-width: 1023px) {
@@ -795,7 +795,7 @@
     margin-bottom: 24px;
   }
   .company-browser .company-content h1 {
-    font-size: 40px;
+    font-size: 44px;
   }
   .company-browser .company-sector {
     font-size: 14px;
@@ -803,12 +803,12 @@
     margin: 14px 0 30px;
   }
   .company-browser .company-description p {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.6;
   }
   .company-browser .website-link {
     margin-top: 30px;
-    font-size: 18px;
+    font-size: 16px;
   }
   .company-rail-shell {
     position: relative;
@@ -822,7 +822,7 @@
     padding-block: 202px;
   }
   .company-browser .company-navigator a {
-    font-size: 11px;
+    font-size: 12px;
   }
   .company-browser .company-navigator a[aria-current] {
     font-size: 14px;
@@ -850,7 +850,7 @@
   .fellow-intro .next-title-fill,
   .fellow-intro .next-title-outline--text {
     top: 240px;
-    font-size: 8vw;
+    font-size: clamp(32px, 8.205vw, 60px);
   }
   .fellow-intro .next-title-outline {
     top: 240px;
@@ -874,7 +874,7 @@
     top: 100px;
   }
   .fellow-media-title h2 {
-    font-size: 42px;
+    font-size: 44px;
   }
   .fellow-media-title p {
     font-size: 32px;
@@ -892,7 +892,7 @@
     height: 690px;
   }
   .contact-invitation h2 {
-    font-size: 36px;
+    font-size: 32px;
   }
   .contact-invitation h2 span {
     font-size: 44px;
@@ -915,7 +915,7 @@
     margin: 0;
   }
   .network-heading h1 {
-    font-size: 42px;
+    font-size: 44px;
   }
   .network-stage {
     height: auto;
@@ -933,7 +933,7 @@
     inset: auto;
     transform: none;
     width: 100%;
-    font-size: 13px;
+    font-size: 14px;
     padding: 16px 0;
   }
   .network-logo {
@@ -958,7 +958,7 @@
     min-height: 420px;
   }
   .company-browser .company-content h1 {
-    font-size: clamp(30px, 10.5vw, 44px);
+    font-size: clamp(32px, 11.282vw, 44px);
     overflow-wrap: anywhere;
   }
   .company-browser .company-description p {
@@ -987,7 +987,7 @@
   .team-review-heading > p {
     margin-top: 30px;
     line-height: 1.65;
-    font-size: 13px;
+    font-size: 14px;
   }
   .team-explorer {
     display: block;
@@ -997,10 +997,10 @@
     gap: 16px;
   }
   .member-caption strong {
-    font-size: 18px;
+    font-size: 16px;
   }
   .member-caption > span {
-    font-size: 11px;
+    font-size: 12px;
   }
   .member-portrait[aria-expanded='true'] {
     outline-offset: 5px;
@@ -1013,7 +1013,7 @@
     font-size: 16px;
   }
   .member-bio h2 {
-    font-size: 36px;
+    font-size: 32px;
   }
   .fellow-intro {
     min-height: 660px;
@@ -1022,7 +1022,7 @@
   .fellow-intro .next-title-fill,
   .fellow-intro .next-title-outline--text {
     top: 220px;
-    font-size: clamp(38px, 10vw, 60px);
+    font-size: clamp(44px, 11.282vw, 60px);
   }
   .fellow-intro .next-title-outline {
     top: 220px;
@@ -1055,10 +1055,10 @@
     top: 90px;
   }
   .fellow-media-title h2 {
-    font-size: 36px;
+    font-size: 32px;
   }
   .fellow-media-title p {
-    font-size: 28px;
+    font-size: 32px;
   }
   .fellow-media-figure {
     left: 50%;
@@ -1073,7 +1073,7 @@
     width: 84%;
     bottom: 60px;
     line-height: 1.7;
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1148,7 +1148,7 @@
   transform: translateX(-50%);
   width: calc(733 * var(--u));
   text-align: center;
-  font-size: calc(14 * var(--u));
+  font-size: max(12px, calc(14 * var(--u)));
   line-height: 1.5;
   z-index: 1;
   opacity: 0;
@@ -1255,7 +1255,7 @@
 @media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
   /* About now carries three full paragraphs inside the pinned scene. */
   .home-story .about-copy {
-    font-size: calc(18 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
     line-height: 1.5;
   }
 
@@ -1265,24 +1265,24 @@
 
   body[data-lang='en'] .home-story .about-copy {
     width: 48%;
-    font-size: calc(17 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
   }
 
   body[data-lang='zh'] .home-story .research h2 {
-    font-size: calc(50 * var(--u));
+    font-size: max(12px, calc(44 * var(--u)));
     line-height: 1.2;
   }
 
   body[data-lang='zh'] .home-story .focus-title > span {
     width: calc(520 * var(--u));
-    font-size: clamp(28px, calc(40 * var(--u)), 40px);
+    font-size: clamp(32px, calc(44 * var(--u)), 44px);
     line-height: 1.3;
     letter-spacing: -0.04em;
   }
 
   body[data-lang='en'] .home-story .research h2 {
     width: calc(480 * var(--u));
-    font-size: clamp(30px, calc(42 * var(--u)), 42px);
+    font-size: clamp(32px, calc(44 * var(--u)), 44px);
     line-height: 1.18;
   }
 
@@ -1294,7 +1294,7 @@
 
   body[data-lang='en'] .home-story .focus-title > span {
     width: calc(520 * var(--u));
-    font-size: clamp(28px, calc(40 * var(--u)), 40px);
+    font-size: clamp(32px, calc(44 * var(--u)), 44px);
     line-height: 1.2;
     letter-spacing: -0.04em;
   }
@@ -1304,7 +1304,7 @@
   .site-header .language-switch,
   .site-header.is-minimal .language-switch {
     gap: clamp(18px, 1.25vw, 28px);
-    font-size: clamp(18px, 1vw, 22px);
+    font-size: clamp(16px, 4.103vw, 24px);
     line-height: 1.35;
   }
 }
@@ -1313,7 +1313,7 @@
   .site-header .language-switch,
   .site-header.is-minimal .language-switch {
     gap: clamp(14px, 4vw, 20px);
-    font-size: clamp(15px, 4vw, 17px);
+    font-size: clamp(16px, 4.103vw, 16px);
     line-height: 1.35;
   }
 }
@@ -1560,7 +1560,7 @@
     border: 1px solid rgb(29 29 29 / 18%);
     border-radius: 2px;
     filter: none !important;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.35;
     opacity: 0.62;
     transform: none !important;
@@ -1630,7 +1630,7 @@
 
   .fellow-intro .next-title-fill,
   .fellow-intro .next-title-outline--text {
-    font-size: clamp(38px, 11vw, 48px);
+    font-size: clamp(44px, 11.282vw, 44px);
     white-space: normal;
   }
 
@@ -1647,7 +1647,7 @@
 
   .fellow-intro .next-zh,
   .fellow-intro .next-en {
-    font-size: clamp(28px, 9vw, 38px);
+    font-size: clamp(32px, 8.205vw, 44px);
     white-space: normal;
   }
 
@@ -1668,7 +1668,7 @@
     grid-area: 4 / 1;
     width: 100%;
     margin: 0;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.6;
     white-space: normal;
     opacity: 1;
@@ -1696,12 +1696,12 @@
   }
 
   .fellow-media-title h2 {
-    font-size: clamp(34px, 10vw, 42px);
+    font-size: clamp(32px, 11.282vw, 44px);
   }
 
   .fellow-media-title p {
     margin-top: 12px;
-    font-size: clamp(27px, 8vw, 34px);
+    font-size: clamp(24px, 8.205vw, 32px);
   }
 
   .fellow-media-figure {

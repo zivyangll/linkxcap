@@ -38,6 +38,11 @@ async function sample(page: Page, progress: number) {
     markerCount: Number(
       (el.querySelector('canvas') as HTMLCanvasElement).dataset.markerCount,
     ),
+    // About pans its excess copy up (and the point with it) when the text is
+    // taller than the screen; that designed shift is not path regression.
+    aboutShift: new DOMMatrix(
+      getComputedStyle(el.querySelector('.about')!).transform,
+    ).m42,
   }));
 }
 
@@ -87,7 +92,9 @@ for (const lang of ['zh', 'en']) {
       for (const p of [0.48, 0.58, 0.68, 0.82, 0.97]) {
         const next = await sample(page, p);
         expect(next.top).toBeCloseTo(bounds.top, 0);
-        expect(next.point[1]).toBeGreaterThanOrEqual(previous.point[1] - 1);
+        expect(next.point[1] - next.aboutShift).toBeGreaterThanOrEqual(
+          previous.point[1] - previous.aboutShift - 1,
+        );
         if (p === 0.68) {
           const heading = await page.locator('.about-title').boundingBox();
           expect(heading!.y).toBeGreaterThan(72);

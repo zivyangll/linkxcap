@@ -20,13 +20,13 @@ body .team-review {
 }
 
 .team-review .team-review-title .page-title {
-  font-size: clamp(28px, 7.6vw, 44px);
+  font-size: clamp(32px, 8.205vw, 44px);
   text-wrap: balance;
 }
 
 .team-review .team-review-title .page-title span[lang='en'] {
   margin-top: 0.15em;
-  font-size: 0.6em;
+  font-size: 20px;
 }
 
 .team-review .team-review-heading > p {
@@ -34,7 +34,7 @@ body .team-review {
   margin-top: 32px;
   padding: 0;
   color: #111;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.55;
 }
 
@@ -148,7 +148,7 @@ body .team-review {
 
 .team-review .team-bio h2 {
   margin: 0;
-  font-size: clamp(34px, 10vw, 40px);
+  font-size: clamp(32px, 11.282vw, 44px);
   font-weight: 500;
   line-height: 1.2;
 }
@@ -156,7 +156,7 @@ body .team-review {
 .team-review .member-en {
   margin-top: 8px;
   color: #111;
-  font-size: 22px;
+  font-size: 24px;
   line-height: 1.2;
 }
 
@@ -176,7 +176,7 @@ body .team-review {
 }
 
 .team-review .member-copy {
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .team-review .member-copy-group {
@@ -226,7 +226,7 @@ body .team-review {
     display: flex;
     flex-direction: column;
     margin: 0;
-    font-size: calc(52.25 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
@@ -238,7 +238,7 @@ body .team-review {
 
   .team-review .team-desktop-title span[lang='en'] {
     margin-bottom: calc(11.92 * var(--u));
-    font-size: calc(20.901 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 500;
   }
 
@@ -246,7 +246,7 @@ body .team-review {
     position: absolute;
     left: calc(991 * var(--u));
     top: calc(208 * var(--u));
-    font-size: calc(30 * var(--u));
+    font-size: max(12px, calc(32 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     text-wrap: nowrap;
@@ -279,7 +279,7 @@ body .team-review {
     max-width: none;
     margin: 0;
     padding: 0;
-    font-size: calc(14 * var(--u));
+    font-size: max(12px, calc(14 * var(--u)));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
@@ -397,12 +397,12 @@ body .team-review {
   }
 
   .team-review .member-caption strong {
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
   }
 
   .team-review .member-caption > span {
     margin-top: calc(8 * var(--u));
-    font-size: calc(16 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
   }
 
   .team-review .team-bio {
@@ -437,12 +437,12 @@ body .team-review {
   }
 
   .team-review .team-bio h2 {
-    font-size: calc(40 * var(--u));
+    font-size: max(12px, calc(44 * var(--u)));
   }
 
   .team-review .member-en {
     margin-top: calc(8 * var(--u));
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
   }
 
   .team-review .team-bio-summary {
@@ -450,13 +450,13 @@ body .team-review {
   }
 
   body[data-lang='en'] .team-review .member-copy {
-    font-size: calc(16 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
   }
 
   .team-review .member-role,
   .team-review .member-copy,
   .team-review .team-bio-featured > p:first-child {
-    font-size: calc(18 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
     line-height: 1.2;
   }
 

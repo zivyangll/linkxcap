@@ -163,17 +163,17 @@
     object-fit: contain;
   }
   .focus-links {
-    font-size: max(12px, calc(15 * var(--u)));
+    font-size: max(12px, calc(16 * var(--u)));
   }
   .contact-details h2 {
-    font-size: max(24px, calc(37 * var(--u)));
+    font-size: max(24px, calc(32 * var(--u)));
   }
   .contact-hero .line-link {
-    font-size: max(12px, calc(15 * var(--u)));
+    font-size: max(12px, calc(16 * var(--u)));
   }
   .insights-copyright,
   .fellow-media-caption {
-    font-size: max(11px, calc(13 * var(--u)));
+    font-size: max(12px, calc(14 * var(--u)));
   }
 }
 body .team-review .team-bio {
@@ -349,7 +349,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     height: auto;
     min-height: 44px;
     padding: 12px 4px;
-    font-size: 13px;
+    font-size: 14px;
     opacity: 1;
     filter: none;
     transform: none;
@@ -392,13 +392,13 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
 
   .contact-hero .contact-invitation h2 {
-    font-size: 28px;
+    font-size: 32px;
   }
   .contact-hero .contact-invitation h2 span {
-    font-size: 34px;
+    font-size: 32px;
   }
   .contact-hero .contact-copy {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.55;
   }
   .contact-hero .contact-copy p[lang='en'] {
@@ -406,7 +406,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     line-height: 1.5;
   }
   .contact-hero .contact-invitation .line-link {
-    font-size: 13px;
+    font-size: 14px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -457,7 +457,7 @@ body .team-review .team-bio::-webkit-scrollbar {
 @media (min-width: 1024px) {
   .site-menu .menu-contact h2 {
     margin-bottom: calc(28 * var(--u));
-    font-size: max(18px, calc(21 * var(--u)));
+    font-size: max(16px, calc(20 * var(--u)));
     line-height: 1.25;
     opacity: 0.68;
   }
@@ -467,19 +467,19 @@ body .team-review .team-bio::-webkit-scrollbar {
     opacity: 0.62;
   }
   .site-menu .menu-contact p[lang='en'] {
-    font-size: max(13px, calc(14 * var(--u)));
+    font-size: max(14px, calc(14 * var(--u)));
   }
   .site-menu .menu-contact .line-link {
-    font-size: max(15px, calc(18 * var(--u)));
+    font-size: max(16px, calc(16 * var(--u)));
   }
   .site-menu .menu-language {
-    font-size: max(13px, calc(15 * var(--u)));
+    font-size: max(14px, calc(16 * var(--u)));
   }
   .home-story .opening-copy {
     font-weight: 500;
   }
   .home-story .chapter {
-    font-size: calc(15.615 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
   }
   .home-story.has-philosophy-motion .about-title {
     top: calc(540 * var(--u));
@@ -489,7 +489,7 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
 
   body.portfolio-view .language-switch {
-    font-size: max(12px, calc(13 * var(--u)));
+    font-size: max(12px, calc(14 * var(--u)));
     line-height: 1.35;
   }
   .portfolio-page {
@@ -511,7 +511,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     margin: 0;
     transform: translateY(-50%);
     color: rgb(29 29 29 / 24%);
-    font-size: max(11px, calc(14 * var(--u)));
+    font-size: max(12px, calc(14 * var(--u)));
     line-height: 1.45;
     white-space: nowrap;
   }
@@ -563,7 +563,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     margin: 0;
     display: flex;
     flex-direction: column;
-    font-size: calc(52.25 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
@@ -574,7 +574,7 @@ body .team-review .team-bio::-webkit-scrollbar {
   body .portfolio-page > .page-title span[lang='en'] {
     order: -1;
     margin: 0 0 calc(11.92 * var(--u));
-    font-size: calc(20.901 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
   }
@@ -589,7 +589,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     top: calc(211 * var(--u));
     margin: 0;
     text-align: right;
-    font-size: calc(30 * var(--u));
+    font-size: max(12px, calc(32 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
@@ -597,7 +597,7 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body[data-lang='en'] .portfolio-page > .portfolio-intro {
     top: calc(198 * var(--u));
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
   }
   body .portfolio-page > .portfolio-filters {
     top: calc(349 * var(--u));
@@ -608,7 +608,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     align-items: center;
     gap: calc(20 * var(--u));
     color: rgb(0 0 0 / 20%);
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
     letter-spacing: -0.05em;
     line-height: normal;
   }
@@ -616,7 +616,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     top: calc(413 * var(--u));
   }
   body[data-lang='en'] .portfolio-page > .portfolio-filters button {
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
   }
   body .portfolio-page > .portfolio-filters button:is(:hover, :focus-visible),
   body .portfolio-page > .portfolio-filters button[aria-pressed='true'] {
@@ -632,13 +632,13 @@ body .team-review .team-bio::-webkit-scrollbar {
     margin-bottom: calc(8 * var(--u));
   }
   body .portfolio-page .company-caption h2 {
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
     line-height: 1.2;
   }
   body .portfolio-page .company-caption p {
     margin-top: calc(8 * var(--u));
-    font-size: calc(8 * var(--u));
+    font-size: max(12px, calc(12 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
     letter-spacing: calc(8 * var(--u));
@@ -770,7 +770,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     margin: 0;
     transform: translateX(-50%);
     white-space: nowrap;
-    font-size: calc(112.041 * var(--u));
+    font-size: max(12px, calc(112 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -788,7 +788,7 @@ body .team-review .team-bio::-webkit-scrollbar {
   body .fellow-intro .next-title-outline--text,
   body .fellow-intro .next-title-fill {
     top: calc(350 * var(--u));
-    font-size: calc(112.041 * var(--u));
+    font-size: max(12px, calc(112 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -796,7 +796,7 @@ body .team-review .team-bio::-webkit-scrollbar {
   body[data-lang='zh'] .fellow-intro .next-title-outline--text,
   body[data-lang='zh'] .fellow-intro .next-title-fill {
     top: calc(508 * var(--u));
-    font-size: calc(97.613 * var(--u));
+    font-size: max(12px, calc(112 * var(--u)));
     font-weight: 600;
   }
 
@@ -807,14 +807,14 @@ body .team-review .team-bio::-webkit-scrollbar {
   body .fellow-intro .next-zh,
   body .fellow-intro .next-en {
     top: calc(493 * var(--u));
-    font-size: calc(60.879 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.05em;
   }
   body[data-lang='zh'] .fellow-intro .next-zh {
     top: calc(649 * var(--u));
-    font-size: calc(28.995 * var(--u));
+    font-size: max(12px, calc(32 * var(--u)));
   }
 
   /* Guides: dashed verticals that sit under the title block. */
@@ -871,22 +871,22 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   .fellow-media-title h2 {
     top: calc(308 * var(--u));
-    font-size: calc(54.867 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 500;
   }
   .fellow-media-title p {
     top: calc(378.03 * var(--u));
-    font-size: calc(29.813 * var(--u));
+    font-size: max(12px, calc(32 * var(--u)));
     font-weight: 600;
   }
   body[data-lang='zh'] .fellow-media-title h2 {
     top: calc(282.36 * var(--u));
-    font-size: calc(63.635 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 600;
   }
   body[data-lang='zh'] .fellow-media-title p {
     top: calc(368 * var(--u));
-    font-size: calc(31.298 * var(--u));
+    font-size: max(12px, calc(32 * var(--u)));
   }
   .fellow-media-figure {
     left: calc(50% - 508 * var(--u));
@@ -897,18 +897,18 @@ body .team-review .team-bio::-webkit-scrollbar {
 
   /* Frame 4: invitation block. */
   .contact-hero .contact-invitation h2 {
-    font-size: calc(40 * var(--u));
+    font-size: max(12px, calc(44 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
   }
   .contact-hero .contact-invitation h2 span {
     margin-top: calc(4 * var(--u));
-    font-size: calc(52.25 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
   }
   body[data-lang='en'] .contact-hero .contact-invitation h2 {
-    font-size: calc(18 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
     font-weight: 900;
   }
   body[data-lang='en'] .contact-hero .contact-invitation h2 span {
@@ -919,22 +919,22 @@ body .team-review .team-bio::-webkit-scrollbar {
   .contact-hero .contact-copy {
     width: calc(420 * var(--u));
     margin: calc(58 * var(--u)) auto calc(100 * var(--u));
-    font-size: calc(16 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
   }
   body[data-lang='en'] .contact-hero .contact-copy {
     width: calc(360 * var(--u));
-    font-size: calc(14 * var(--u));
+    font-size: max(12px, calc(14 * var(--u)));
   }
   .contact-hero .contact-copy p[lang='en'] {
     margin-top: calc(8 * var(--u));
-    font-size: calc(14 * var(--u));
+    font-size: max(12px, calc(14 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
   }
   .contact-hero .contact-invitation .line-link {
-    font-size: calc(16 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
     font-weight: 500;
   }
 }

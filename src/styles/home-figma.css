@@ -30,7 +30,7 @@
     top: calc(478 * var(--u));
     width: calc(75 * var(--u));
     text-align: center;
-    font-size: calc(14 * var(--u));
+    font-size: max(12px, calc(16 * var(--u)));
     line-height: 1;
     white-space: nowrap;
   }
@@ -38,8 +38,8 @@
     left: calc(-5.5 * var(--u));
     top: calc(-10.5 * var(--u));
   }
-  /* The chapter label rests at 40% like the frame; the shared arrive
-     keyframes would end at full opacity. */
+  /* The chapter label shares the orbit label's type; its own arrive
+     keyframes keep the node label in step with the opening copy. */
   body .home-story .opening .chapter {
     animation-name: home-chapter-arrive;
   }
@@ -50,7 +50,7 @@
       translate: 0 18px;
     }
     to {
-      opacity: 0.4;
+      opacity: 1;
       filter: blur(0);
       translate: 0 0;
     }
@@ -58,7 +58,7 @@
   body .home-story .opening-title {
     left: calc(514 * var(--u));
     top: calc(424 * var(--u));
-    font-size: calc(107.965 * var(--u));
+    font-size: max(12px, calc(112 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -66,7 +66,7 @@
   }
   body[data-lang='zh'] .home-story .opening-title {
     top: calc(427 * var(--u));
-    font-size: calc(81.333 * var(--u));
+    font-size: max(12px, calc(81.333 * var(--u)));
   }
   body .home-story .opening-title-line {
     display: block;
@@ -82,7 +82,7 @@
     left: calc(1086 * var(--u));
     top: calc(484 * var(--u));
     width: auto;
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 400;
     line-height: calc(29 * var(--u));
     letter-spacing: -0.05em;
@@ -91,7 +91,7 @@
   body[data-lang='zh'] .home-story .opening-copy {
     left: calc(1148 * var(--u));
     top: calc(452 * var(--u));
-    font-size: calc(28.339 * var(--u));
+    font-size: max(12px, calc(32 * var(--u)));
     line-height: calc(39.625 * var(--u));
   }
 
@@ -138,7 +138,7 @@
   body .home-story .hero-title {
     left: calc(546 * var(--u));
     top: calc(93 * var(--u));
-    font-size: calc(81.333 * var(--u));
+    font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -159,6 +159,16 @@
   body .home-story .orbit-label {
     left: calc(706.5 * var(--u));
     top: calc(876 * var(--u));
+  }
+  /* English runs wider in upright sans than it did in italic serif: the
+     box grows to the left and the node keeps its place, so the label ends
+     clear of it. */
+  body[data-lang='en'] .home-story .orbit-label {
+    left: calc(680.5 * var(--u));
+    width: calc(128 * var(--u));
+  }
+  body[data-lang='en'] .home-story .orbit-label .diamond {
+    left: calc(135 * var(--u));
   }
   body[data-lang='zh'] .home-story .orbit-label {
     left: calc(651.5 * var(--u));
@@ -181,7 +191,7 @@
     top: calc(263 * var(--u));
     width: 100%;
     text-align: center;
-    font-size: calc(81.333 * var(--u));
+    font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -195,7 +205,7 @@
     top: calc(537 * var(--u));
     width: calc(1000 * var(--u));
     text-align: center;
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
@@ -241,11 +251,10 @@
     width: 100%;
     height: 100%;
     font-family: var(--serif);
-    font-size: calc(81.333 * var(--u));
+    font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.05em;
-    text-transform: lowercase;
     white-space: nowrap;
     pointer-events: none;
   }
@@ -332,7 +341,7 @@
     left: calc(423 * var(--u));
     top: calc(200 * var(--u));
     width: auto;
-    font-size: calc(62.718 * var(--u));
+    font-size: max(12px, calc(60 * var(--u)));
     font-weight: 500;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -355,7 +364,7 @@
     left: calc(423 * var(--u));
     top: calc(390 * var(--u));
     width: calc(813 * var(--u));
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
@@ -397,14 +406,14 @@
     left: calc(1585 * var(--u));
   }
   body .home-story[data-home] .research-stats strong {
-    font-size: calc(81.333 * var(--u));
+    font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.05em;
   }
   body .home-story[data-home] .research-stats span {
     margin-top: calc(12 * var(--u));
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     line-height: 1.5;
     letter-spacing: -0.05em;
     white-space: nowrap;
@@ -415,7 +424,7 @@
     top: calc(905 * var(--u));
     width: auto;
     margin: 0;
-    font-size: calc(13 * var(--u));
+    font-size: max(12px, calc(14 * var(--u)));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
@@ -525,7 +534,7 @@
   body .home-story[data-home] .focus .focus-title {
     left: calc(137 * var(--u));
     top: calc(190 * var(--u));
-    font-size: calc(81.333 * var(--u));
+    font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -544,7 +553,7 @@
     display: block;
     width: calc(302 * var(--u));
     margin-top: calc(23.8 * var(--u));
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
     letter-spacing: -0.05em;
@@ -559,7 +568,7 @@
   body .home-story[data-home] .focus .focus-hint {
     left: calc(137 * var(--u));
     top: calc(519.15 * var(--u));
-    font: 400 calc(15.484 * var(--u)) / 1.2 var(--serif);
+    font: 400 max(12px, calc(16 * var(--u))) / 1.2 var(--serif);
     letter-spacing: -0.05em;
     opacity: 0.4;
     white-space: nowrap;
@@ -594,7 +603,7 @@
     .focus-panel
     h3
     span:first-child {
-    font-size: calc(23.862 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
     letter-spacing: 0.89em;
     white-space: nowrap;
@@ -605,20 +614,20 @@
     .focus-panel
     h3
     span:last-child {
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 400;
     letter-spacing: -0.05em;
   }
   body[data-lang='en'] .home-story[data-home] .focus .focus-panel h3 span {
     margin: 0;
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
     letter-spacing: 0;
   }
   body .home-story[data-home] .focus .focus-panel p {
     width: auto;
     margin: calc(53.2 * var(--u)) 0 0;
-    font-size: calc(20 * var(--u));
+    font-size: max(12px, calc(20 * var(--u)));
     font-weight: 400;
     line-height: 1.5;
     letter-spacing: -0.05em;
@@ -632,7 +641,7 @@
   /* Sector nodes. */
   body .home-story[data-home] .focus .sector-star .star-label {
     gap: calc(6 * var(--u));
-    font: 400 calc(15.615 * var(--u)) / normal var(--sans);
+    font: 400 max(12px, calc(16 * var(--u))) / normal var(--sans);
     color: rgb(255 255 255 / 40%);
   }
   body
@@ -649,7 +658,7 @@
     right: auto;
     transform: none;
     gap: 0;
-    font: 400 calc(20 * var(--u)) / 1.5 var(--serif);
+    font: 400 max(12px, calc(20 * var(--u))) / 1.5 var(--serif);
     color: #fff;
     text-align: left;
   }
@@ -679,7 +688,7 @@
     .sector-star.is-active
     .star-label {
     left: calc(50% + 104.3 * var(--u));
-    font-size: calc(24 * var(--u));
+    font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
   }
   body[data-lang='en']
@@ -706,7 +715,7 @@
   body .home-story[data-home] .focus .constellation-company-label {
     left: calc(50% + 10 * var(--u));
     max-width: none;
-    font: 400 calc(15.414 * var(--u)) / 1.5 var(--serif);
+    font: 400 max(12px, calc(16 * var(--u))) / 1.5 var(--serif);
     letter-spacing: -0.05em;
     white-space: nowrap;
     display: block;

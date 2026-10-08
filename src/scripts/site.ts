@@ -16,11 +16,16 @@ menuOpener?.addEventListener('click', () => {
 document
   .querySelector('[data-menu-close]')
   ?.addEventListener('click', () => menu?.close());
-menu?.addEventListener('click', (event) => {
-  if (event.target === menu) {
-    const rect = menu.getBoundingClientRect();
-    if ((event as MouseEvent).clientX < rect.left) menu.close();
-  }
+// A click anywhere outside the panel closes it. This listens on the document:
+// on desktop the ::backdrop is clipped to the panel, so a click on the blank
+// area never reaches the dialog itself.
+document.addEventListener('click', (event) => {
+  if (!menu?.open) return;
+  if ((event.target as Element | null)?.closest('[data-menu-open]')) return;
+  const rect = menu.getBoundingClientRect();
+  const { clientX: x, clientY: y } = event;
+  if (x < rect.left || x > rect.right || y < rect.top || y > rect.bottom)
+    menu.close();
 });
 menu?.addEventListener('close', () => {
   document.body.classList.remove('menu-open');

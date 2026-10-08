@@ -132,13 +132,13 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     letter-spacing: 0.12em;
   }
   .insights-heading-title p {
-    font-size: clamp(28px, 7.6vw, 44px);
+    font-size: clamp(32px, 8.205vw, 44px);
     font-weight: 600;
     line-height: 1.2;
   }
   .insights-headline {
     margin-top: 32px;
-    font-size: clamp(20px, 5vw, 26px);
+    font-size: clamp(20px, 5vw, 24px);
     font-weight: 600;
     line-height: 1.2;
   }
@@ -148,7 +148,7 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
   .insights-intro {
     margin-top: 16px;
     max-width: 44rem;
-    font-size: 13px;
+    font-size: 14px;
     line-height: 1.55;
   }
   @media (min-width: 1024px) {
@@ -167,13 +167,13 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     }
     .insights-heading-title span {
       margin-bottom: calc(11.92 * var(--u));
-      font-size: calc(20.901 * var(--u));
+      font-size: max(12px, calc(20 * var(--u)));
       font-weight: 500;
       letter-spacing: 0;
       line-height: 1.2;
     }
     .insights-heading-title p {
-      font-size: calc(52.25 * var(--u));
+      font-size: max(12px, calc(60 * var(--u)));
     }
     .insights-heading-copy {
       position: absolute;
@@ -188,7 +188,7 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     }
     .insights-headline {
       margin: 0;
-      font-size: calc(30 * var(--u));
+      font-size: max(12px, calc(32 * var(--u)));
       white-space: nowrap;
     }
     .insights-headline span {
@@ -197,7 +197,7 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     .insights-intro {
       margin-top: calc(11 * var(--u));
       max-width: none;
-      font-size: calc(14 * var(--u));
+      font-size: max(12px, calc(14 * var(--u)));
       line-height: 1.5;
       letter-spacing: -0.05em;
     }

@@ -203,7 +203,13 @@ const menuSocials = [
 <noscript>
   <nav class="noscript-nav">
     {navigation.map((item) => (
-      <a href={pageUrl(lang, item.page)}>{lang === 'zh' ? item.zh : item.en}</a>
+      <a
+        href={
+          item.page === 'contact' ? contactUrl(lang) : pageUrl(lang, item.page)
+        }
+      >
+        {lang === 'zh' ? item.zh : item.en}
+      </a>
     ))}
   </nav>
 </noscript>

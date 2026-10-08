@@ -249,7 +249,7 @@ test('desktop chapter label clears its diamond and the orbit label stays left of
       await page.goto(`${locale}/index.html`);
       await page.evaluate(() => document.fonts.ready);
       const stage = page.locator('[data-philosophy-stage]');
-      // Figma: the chapter label is 14px, the orbit label 15.6px.
+      // Both node labels share one type style (docs/15): 16px upright sans.
       const sizes = await page
         .locator('.chapter, .orbit-label')
         .evaluateAll((elements) =>

@@ -38,8 +38,11 @@ const pages = htmlFiles.filter((f) => /^dist\/(zh|en)\//.test(f));
 const insightFiles = (await fs.readdir('src/content/insights')).filter((file) =>
   file.endsWith('.md'),
 );
+// Per language: home, the five section pages (portfolio, team, insights,
+// fellowship, legal; contact now lives on Fellowship), every company and
+// every team member.
 const expectedPages =
-  2 * (1 + 6 + content.companies.length + content.team.length) +
+  2 * (1 + 5 + content.companies.length + content.team.length) +
   insightFiles.length;
 assert.equal(
   pages.length,
