@@ -151,6 +151,9 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     line-height: 1.55;
   }
   @media (min-width: 1024px) {
+    .insights-page {
+      padding-inline: calc(198 * var(--u));
+    }
     .insights-heading {
       position: relative;
       height: calc(428 * var(--u));
@@ -158,8 +161,8 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     }
     .insights-heading-title {
       position: absolute;
-      left: calc(180 * var(--u));
-      top: calc(174 * var(--u));
+      left: var(--section-title-left);
+      top: var(--section-title-top);
       display: flex;
       flex-direction: column;
       white-space: nowrap;
@@ -176,14 +179,9 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
     }
     .insights-heading-copy {
       position: absolute;
-      left: calc(1200 * var(--u));
-      top: calc(222 * var(--u));
-      width: calc(575 * var(--u));
-    }
-    body[data-lang='en'] .insights-heading-copy {
-      left: calc(991 * var(--u));
-      top: calc(208 * var(--u));
-      width: calc(784 * var(--u));
+      left: var(--section-copy-left);
+      top: var(--section-copy-top);
+      width: var(--section-copy-width);
     }
     .insights-headline {
       margin: 0;
@@ -194,7 +192,7 @@ const orbitDots = Array.from({ length: 32 }, (_, index) => {
       display: none;
     }
     .insights-intro {
-      margin-top: calc(11 * var(--u));
+      margin-top: var(--section-intro-gap);
       max-width: none;
       font-size: max(12px, calc(14 * var(--u)));
       line-height: 1.5;

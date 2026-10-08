@@ -118,9 +118,12 @@ const menuSocials = [
         <i class="menu-current diamond" aria-hidden="true"></i>
         {/* Figma 100:261: English name first, Chinese after it. */}
         <span lang="en">{item.en}</span>
-        {lang === 'zh' && item.zh !== item.en && (
-          <small lang="zh">{item.zh}</small>
-        )}
+        {lang === 'zh' &&
+          (item.zh !== item.en || item.page === 'fellowship') && (
+            <small lang="zh">
+              {item.page === 'fellowship' ? '伙伴' : item.zh}
+            </small>
+          )}
         <Arrow />
       </a>
     ))}

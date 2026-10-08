@@ -22,8 +22,16 @@
     padding: 0;
   }
   button,
-  input {
+  input,
+  select,
+  textarea {
     font: inherit;
+  }
+  code,
+  kbd,
+  samp,
+  pre {
+    font-family: inherit;
   }
   button,
   a {
@@ -60,8 +68,8 @@
     --purple: #573c79;
     --light-purple: #b2a2ff;
     --line: rgba(29, 29, 29, 0.22);
-    --serif: 'LinkX Serif', 'Songti SC', 'STSong', serif;
-    --sans: 'IPAexGothic', 'LinkX Sans', Arial, sans-serif;
+    --serif: var(--site-font);
+    --sans: var(--site-font);
     --u: calc(100vw / 1920);
     --header: calc(79 * var(--u));
     --page-gutter: 9.375vw;

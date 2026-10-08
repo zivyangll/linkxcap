@@ -58,15 +58,15 @@ npm test
 
 ### 字体更新
 
-中文统一使用系统默认字体（宋体 / 黑体回退），不再内嵌中文字库。`public/fonts/` 只保留拉丁字母、数字和标点的子集（Source Han Serif / LXGW Neo XiHei 的拉丁部分、Source Serif 4 斜体），许可证在 `public/licenses/`。
+全站中英文、PC 和 H5 统一使用自托管的思源宋体（Source Han Serif SC）。`public/fonts/` 包含拉丁和中文两个 WOFF2 子集，保留 250–900 可变字重；文件名包含内容哈希以更新浏览器缓存。许可证在 `public/licenses/`。
 
-修改文案不需要重新生成字体。仅在调整拉丁字体子集时：
+修改文案后重新生成字体子集：
 
-1. 将官方原始字体放入 `.cache/fonts/SourceHanSerifSC-VF.otf` 和 `.cache/fonts/LXGWNeoXiHei.ttf`。
+1. 将官方原始字体放入 `.cache/fonts/SourceHanSerifSC-VF.otf`。
 2. 在安装 `fonttools[woff]` 的 Python 环境运行 `python scripts/subset-fonts.py`。
 3. 重建并检查，生成字体和 `src/data/fonts.json` 一起提交。
 
-字体来源和使用范围见 [实现与维护说明](docs/04-实现与维护说明.md)。
+字体来源和使用范围见 [字体说明](public/licenses/FONT-NOTICE.md)。
 
 ## GitHub Pages
 

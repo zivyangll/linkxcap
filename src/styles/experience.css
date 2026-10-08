@@ -548,9 +548,8 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
 }
 
-/* Portfolio desktop: 1:1 with the 1920 Figma frames (zh 272:596, en 275:3141).
-   The heading, intro and filters are placed on the design's coordinates; the
-   grid then starts at 427 (zh) / 493 (en). Logic and markup are untouched. */
+/* Portfolio shares the desktop section heading coordinates with Team and
+   Insights; the grid starts at 427 (zh) / 493 (en). */
 @media (min-width: 1024px) {
   body .portfolio-page {
     padding-top: calc(427 * var(--u));
@@ -560,8 +559,8 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body .portfolio-page > .page-title {
     position: absolute;
-    left: calc(180 * var(--u));
-    top: calc(174 * var(--u));
+    left: var(--section-title-left);
+    top: var(--section-title-top);
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -569,9 +568,6 @@ body .team-review .team-bio::-webkit-scrollbar {
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
-  }
-  body[data-lang='en'] .portfolio-page > .page-title {
-    top: calc(191 * var(--u));
   }
   body .portfolio-page > .page-title span[lang='en'] {
     order: -1;
@@ -587,19 +583,22 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body .portfolio-page > .portfolio-intro {
     position: absolute;
-    right: calc(159 * var(--u));
-    top: calc(211 * var(--u));
+    left: var(--section-copy-left);
+    top: var(--section-copy-top);
+    width: var(--section-copy-width);
     margin: 0;
-    text-align: right;
-    font-size: max(12px, calc(32 * var(--u)));
+    text-align: left;
+    font-size: var(--section-headline-size);
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
     color: #000;
   }
-  body[data-lang='en'] .portfolio-page > .portfolio-intro {
-    top: calc(198 * var(--u));
-    font-size: max(12px, calc(20 * var(--u)));
+  body .portfolio-page > .portfolio-intro > br {
+    display: none;
+  }
+  body .portfolio-page .portfolio-intro-line {
+    display: block;
   }
   body .portfolio-page > .portfolio-filters {
     top: calc(349 * var(--u));
@@ -748,6 +747,7 @@ body .team-review .team-bio::-webkit-scrollbar {
 @media (min-width: 1024px) {
   body[data-lang='zh'] .fellow-intro {
     --signal-lift: calc(60.07 * var(--u));
+    --fellow-title-row-offset: 20px;
   }
   body[data-lang='en'] .fellow-intro {
     --signal-lift: calc(101.07 * var(--u));
@@ -797,8 +797,8 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body[data-lang='zh'] .fellow-intro .next-title-outline--text,
   body[data-lang='zh'] .fellow-intro .next-title-fill {
-    /* Each script fills the same y 489.85–618.82 ink box. */
-    top: calc(489.85 * var(--u));
+    /* Move the mixed title and its guides together; Latin aligns by baseline. */
+    top: calc(489.85 * var(--u) + var(--fellow-title-row-offset));
     height: calc(128.97 * var(--u));
     display: flex;
     align-items: flex-start;
@@ -831,13 +831,13 @@ body .team-review .team-bio::-webkit-scrollbar {
     letter-spacing: -0.05em;
   }
   body[data-lang='zh'] .fellow-intro .next-zh {
-    top: calc(649 * var(--u));
+    top: calc(649 * var(--u) + 30px);
     font-size: max(12px, calc(32 * var(--u)));
   }
 
   /* Guides: dashed verticals that sit under the title block. */
   .fellow-intro .signal-guide-dash {
-    top: calc(50% + 262.76 * var(--u));
+    top: calc(50% + 262.76 * var(--u) + var(--fellow-title-row-offset, 0px));
     width: calc(2.53 * var(--u));
     height: calc(556 * var(--u));
     background: linear-gradient(to top, #d9d7d4, #f8f6f2);

@@ -1,5 +1,6 @@
 ---
 import { pageUrl, siteContent } from '../lib/site';
+import FontFaces from '../components/FontFaces.astro';
 ---
 
 <!doctype html>
@@ -10,6 +11,7 @@ import { pageUrl, siteContent } from '../lib/site';
     <meta name="robots" content="noindex,follow" />
     <title>{siteContent.redirectPage.title}</title>
     <meta http-equiv="refresh" content={`0;url=${pageUrl('zh')}`} />
+    <FontFaces />
   </head>
   <body>
     <a href={pageUrl('zh')}>{siteContent.redirectPage.zhLink}</a>

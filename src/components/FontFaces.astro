@@ -1,0 +1,19 @@
+---
+import fonts from '../data/fonts.json';
+import { url } from '../lib/site';
+import '../styles/fonts.css';
+const { lang = 'zh' } = Astro.props as { lang?: 'zh' | 'en' };
+---
+
+<style is:inline set:html={fonts.css.replaceAll('__BASE__', url())}></style>
+{fonts.report
+  .filter((font) => lang === 'zh' || font.file.includes('-latin-'))
+  .map((font) => (
+    <link
+      rel="preload"
+      href={url(`fonts/${font.file}`)}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  ))}

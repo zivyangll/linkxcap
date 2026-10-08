@@ -420,30 +420,22 @@
       "existing_site_url": "",
       "fonts_heading_cn": "字体许可",
       "fonts_heading_en": "Font Licenses",
-      "fonts_body_cn": "网站使用由 Source Han Serif SC、Source Serif 4 和 LXGW Neo XiHei 衍生的本地字体子集。各字体的许可文本见下方链接。",
-      "fonts_body_en": "This site uses locally hosted font subsets derived from Source Han Serif SC, Source Serif 4 and LXGW Neo XiHei. Their license texts are linked below.",
+      "fonts_body_cn": "网站所有中英文文字统一使用由思源宋体（Source Han Serif SC）衍生的本地字体子集。字体的许可文本见下方链接。",
+      "fonts_body_en": "All Chinese and English text on this site uses locally hosted font subsets derived from Source Han Serif SC. Its license text is linked below.",
       "font_licenses": [
         {
           "label": "Source Han Serif · SIL OFL 1.1",
           "path": "licenses/Source-Han-Serif.txt"
-        },
-        {
-          "label": "Source Serif 4 · SIL OFL 1.1",
-          "path": "licenses/Source-Serif-4.txt"
-        },
-        {
-          "label": "LXGW Neo XiHei · IPA Font License 1.0",
-          "path": "licenses/LXGW-Neo-XiHei.txt"
         }
       ],
-      "restore_heading_cn": "原始 IPA 字体",
-      "restore_heading_en": "Original IPA Font",
-      "restore_body_cn": "如需使用原始 IPAexGothic 字体，可从字体发布方获取；安装后重新加载本页。",
-      "restore_body_en": "To use the original IPAexGothic font, obtain it from its publisher and reload this page after installation.",
-      "font_download_cn": "获取 IPAexGothic",
-      "font_download_en": "Get IPAexGothic",
-      "font_download_url": "https://moji.or.jp/ipafont/ipafontdownload/",
-      "font_download_name": "IPAexGothic",
+      "restore_heading_cn": "原始思源宋体",
+      "restore_heading_en": "Original Source Han Serif",
+      "restore_body_cn": "思源宋体由 Adobe 发布，网站使用自托管字体，无需在设备上安装。原始字体可从发布方获取。",
+      "restore_body_en": "Source Han Serif is published by Adobe. This site hosts its fonts locally, so no device installation is needed. The original font is available from its publisher.",
+      "font_download_cn": "获取思源宋体",
+      "font_download_en": "Get Source Han Serif",
+      "font_download_url": "https://github.com/adobe-fonts/source-han-serif",
+      "font_download_name": "Source Han Serif SC",
       "font_notice_cn": "字体来源与替换说明",
       "font_notice_en": "Font sources and replacement instructions",
       "font_notice_path": "licenses/FONT-NOTICE.md"

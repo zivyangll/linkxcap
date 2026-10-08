@@ -1,0 +1,12 @@
+:root {
+  --site-font: 'LinkX Source Han Serif', 'Source Han Serif SC', serif;
+  font-family: var(--site-font);
+}
+
+/* Also covers controls created dynamically by the content editor. */
+button,
+input,
+select,
+textarea {
+  font-family: var(--site-font);
+}

@@ -614,7 +614,7 @@
     span:first-child {
     font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: normal;
     white-space: nowrap;
   }
   body[data-lang='zh']

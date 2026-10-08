@@ -46,7 +46,7 @@ const titleParts = contactContent.signalTitle.zh
       <img
         class="signal-guide-h"
         src={asset('1617', y === 407.66 ? 'imgVector44' : 'imgVector34')}
-        style={`top:calc(${y} * var(--u));`}
+        style={`top:calc(${y} * var(--u)${lang === 'zh' && y >= 489.85 ? ' + var(--fellow-title-row-offset, 0px)' : ''});`}
         alt=""
       />
     ))}
@@ -269,14 +269,7 @@ const titleParts = contactContent.signalTitle.zh
     .fellowship-description {
       max-width: none;
       min-width: 0;
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        'Segoe UI',
-        'PingFang SC',
-        'Microsoft YaHei',
-        sans-serif;
+      font-family: var(--serif);
       font-weight: 400;
       font-synthesis: none;
     }

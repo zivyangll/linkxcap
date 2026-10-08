@@ -221,8 +221,8 @@ body .team-review {
 
   .team-review .team-desktop-title {
     position: absolute;
-    left: calc(180 * var(--u));
-    top: calc(191 * var(--u));
+    left: var(--section-title-left);
+    top: var(--section-title-top);
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -230,10 +230,6 @@ body .team-review {
     font-weight: 600;
     line-height: 1.2;
     white-space: nowrap;
-  }
-
-  body[data-lang='zh'] .team-review .team-desktop-title {
-    top: calc(174 * var(--u));
   }
 
   .team-review .team-desktop-title span[lang='en'] {
@@ -244,17 +240,12 @@ body .team-review {
 
   .team-review .team-review-title .page-title {
     position: absolute;
-    left: calc(991 * var(--u));
-    top: calc(208 * var(--u));
+    left: var(--section-copy-left);
+    top: var(--section-copy-top);
     font-size: max(12px, calc(32 * var(--u)));
     font-weight: 600;
     line-height: 1.2;
     text-wrap: nowrap;
-  }
-
-  body[data-lang='zh'] .team-review .team-review-title .page-title {
-    left: calc(1200 * var(--u));
-    top: calc(222 * var(--u));
   }
 
   body[data-lang='zh']
@@ -273,9 +264,12 @@ body .team-review {
 
   .team-review .team-review-heading > p {
     position: absolute;
-    left: calc(991 * var(--u));
-    top: calc(255 * var(--u));
-    width: calc(784 * var(--u));
+    left: var(--section-copy-left);
+    top: calc(
+      var(--section-copy-top) + var(--section-headline-size) * 1.2 +
+        var(--section-intro-gap)
+    );
+    width: var(--section-copy-width);
     max-width: none;
     margin: 0;
     padding: 0;
@@ -285,12 +279,6 @@ body .team-review {
     letter-spacing: -0.05em;
     text-align: left;
     white-space: pre-line;
-  }
-
-  body[data-lang='zh'] .team-review .team-review-heading > p {
-    left: calc(1200 * var(--u));
-    top: calc(269 * var(--u));
-    width: calc(575 * var(--u));
   }
 
   .team-review .team-review-heading > p .intro-paragraph + .intro-paragraph {

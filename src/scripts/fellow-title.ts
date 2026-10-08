@@ -1,6 +1,5 @@
-// Fit visible glyphs, including the English descender, to the title's two
-// guides. Font metrics are measured after loading so Chinese fallback fonts
-// on different operating systems share the same visible top and bottom.
+// Fit Chinese ink to both guides and align the Latin baseline to the lower
+// guide. Keep the existing type sizes; Latin descenders extend below the line.
 export function fitFellowTitle() {
   const titles = [
     ...document.querySelectorAll<HTMLElement>(
@@ -39,8 +38,11 @@ export function fitFellowTitle() {
       const box = part.getBoundingClientRect();
       const scale = box.height / parseFloat(getComputedStyle(part).height);
       const baseline = (probe.getBoundingClientRect().top - box.top) / scale;
-      const offset =
-        (context.measureText(text).actualBoundingBoxAscent - baseline) / unit;
+      const target =
+        part.dataset.titleScript === 'en'
+          ? 128.97 * unit
+          : context.measureText(text).actualBoundingBoxAscent;
+      const offset = (target - baseline) / unit;
       probe.remove();
       for (const title of titles) {
         const twin =

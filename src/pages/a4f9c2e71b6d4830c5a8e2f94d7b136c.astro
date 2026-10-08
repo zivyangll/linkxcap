@@ -1,6 +1,7 @@
 ---
 import { url } from '../lib/site';
 import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
+import FontFaces from '../components/FontFaces.astro';
 ---
 
 <!doctype html>
@@ -11,6 +12,7 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
     <meta name="robots" content="noindex,nofollow" />
     <meta name="referrer" content="no-referrer" />
     <title>内容配置编辑器 · LinkX Capital</title>
+    <FontFaces />
   </head>
   <body data-editor-state="blocked" data-config-url={url(CONTENT_DATA_FILE)}>
     <main>
@@ -141,14 +143,7 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
 
 <style>
   :root {
-    font-family:
-      Inter,
-      ui-sans-serif,
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
+    font-family: var(--site-font);
     color: #171719;
     background: #f2f3f5;
     font-synthesis: none;
@@ -185,7 +180,7 @@ import { CONTENT_DATA_FILE } from '../lib/content-editor-route';
     background: #dadae2;
   }
   code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-family: inherit;
   }
   main {
     width: min(1500px, 100%);

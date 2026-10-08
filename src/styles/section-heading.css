@@ -1,0 +1,36 @@
+/* Shared desktop coordinates keep the three section introductions stationary
+   when navigating, including on screens wider than the 1920px composition. */
+@media (min-width: 1024px) {
+  body :is(.portfolio-page, .team-review, .insights-page) {
+    width: min(100%, 1920px);
+    margin-inline: auto;
+    --section-title-left: calc(180 * var(--u));
+    --section-title-top: calc(174 * var(--u));
+    --section-title-size: max(12px, calc(60 * var(--u)));
+    --section-eyebrow-height: calc(max(12px, 20 * var(--u)) * 1.2);
+    --section-title-gap: calc(11.92 * var(--u));
+    --section-title-center: calc(
+      var(--section-title-top) + var(--section-eyebrow-height) +
+        var(--section-title-gap) + var(--section-title-size) * 0.6
+    );
+    --section-headline-size: max(12px, calc(32 * var(--u)));
+    --section-copy-left: calc(1200 * var(--u));
+    --section-copy-width: calc(575 * var(--u));
+    --section-copy-top: calc(
+      var(--section-title-center) - var(--section-headline-size) * 0.6
+    );
+    --section-intro-gap: calc(11 * var(--u));
+  }
+
+  body[data-lang='en'] :is(.portfolio-page, .team-review, .insights-page) {
+    --section-title-top: calc(191 * var(--u));
+    --section-eyebrow-height: 0px;
+    --section-title-gap: 0px;
+    --section-copy-left: calc(991 * var(--u));
+    --section-copy-width: calc(784 * var(--u));
+  }
+
+  body[data-lang='en'] .portfolio-page {
+    --section-headline-size: max(12px, calc(20 * var(--u)));
+  }
+}
