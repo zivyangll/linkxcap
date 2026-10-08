@@ -169,6 +169,7 @@ export function mountTopology(root: HTMLElement) {
   let initialPose = true;
   let entered = false;
   let readingInset = 0;
+  let desktopLayoutReady = false;
   const homePosition = new Vector3();
   const targetPosition = new Vector3();
   const projected = new Vector3();
@@ -183,15 +184,41 @@ export function mountTopology(root: HTMLElement) {
   const safePoint = new Vector3();
   const centreShift = new Vector3();
   const frontRotation = new Euler();
-  const desktopNodeArea = () => {
+  const desktopLayoutHeld = () => {
+    if (touch.matches) return false;
     const bounds = stage.getBoundingClientRect();
-    const left = Math.max(bounds.left, innerWidth / 4);
-    const right = Math.min(bounds.right, innerWidth);
-    const top = Math.max(
-      bounds.top,
-      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0,
+    const headerBottom =
+      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0;
+    return (
+      Math.min(bounds.bottom, innerHeight) -
+        Math.max(bounds.top, headerBottom) <=
+      innerHeight / 2
     );
-    const bottom = Math.min(bounds.bottom, innerHeight);
+  };
+  const visibleNodeArea = () => {
+    const bounds = stage.getBoundingClientRect();
+    const headerBottom =
+      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0;
+    // Desktop keeps a viewport-sized layout even while the stage is partly
+    // offscreen. Clipping reveals/hides nodes; shrinking this area before the
+    // half-screen hold would squeeze them into the last visible strip.
+    const viewportTop = Math.max(
+      bounds.top,
+      Math.min(0, bounds.bottom - innerHeight),
+    );
+    return {
+      left: Math.max(bounds.left, touch.matches ? 0 : innerWidth / 4),
+      right: Math.min(bounds.right, innerWidth),
+      top: touch.matches
+        ? Math.max(bounds.top, headerBottom)
+        : viewportTop + headerBottom,
+      bottom: touch.matches
+        ? Math.min(bounds.bottom, innerHeight)
+        : Math.min(bounds.bottom, viewportTop + innerHeight),
+    };
+  };
+  const desktopNodeArea = () => {
+    const { left, right, top, bottom } = visibleNodeArea();
     // Short windows retain a usable core when two 150px margins cannot fit.
     const padX = Math.min(
       SAFE_AREA_MARGIN,
@@ -268,8 +295,7 @@ export function mountTopology(root: HTMLElement) {
       return;
     }
     const bounds = stage.getBoundingClientRect();
-    const top = Math.max(bounds.top, readingInset);
-    const bottom = Math.min(bounds.bottom, innerHeight);
+    const { top, bottom } = visibleNodeArea();
     const targetX = innerWidth * 0.75 - bounds.left;
     const targetY =
       bottom > top
@@ -426,6 +452,7 @@ export function mountTopology(root: HTMLElement) {
       return;
     }
     const box = stage.getBoundingClientRect();
+    desktopLayoutReady = false;
     width = box.width;
     height = box.height;
     if (!width || !height) return;
@@ -508,6 +535,9 @@ export function mountTopology(root: HTMLElement) {
   }
   function draw() {
     if (!enabled() || !width) return;
+    const layoutHeld = desktopLayoutHeld();
+    root.dataset.layoutHeld = String(layoutHeld);
+    if (layoutHeld && desktopLayoutReady) return;
     if (initialPose) {
       placeInitialSector();
       if (
@@ -526,14 +556,7 @@ export function mountTopology(root: HTMLElement) {
     // The part of the stage the viewer can currently see. Branch nodes and
     // labels stay inside it instead of spilling past the window edges or
     // hiding behind the fixed header.
-    const headerBottom =
-      document.querySelector<HTMLElement>('[data-header]')?.offsetHeight ?? 0;
-    const seen = {
-      left: Math.max(bounds.left, touch.matches ? 0 : innerWidth / 4),
-      right: Math.min(bounds.right, innerWidth),
-      top: Math.max(bounds.top, headerBottom),
-      bottom: Math.min(bounds.bottom, innerHeight),
-    };
+    const seen = visibleNodeArea();
     const hasView =
       seen.right - seen.left > 120 && seen.bottom - seen.top > 120;
     const view = hasView ? (touch.matches ? seen : desktopNodeArea()) : bounds;
@@ -791,6 +814,7 @@ export function mountTopology(root: HTMLElement) {
       branchPositions.needsUpdate = true;
     }
     renderer.render(scene, camera);
+    desktopLayoutReady = !touch.matches;
     root.dataset.rotation = `${graph.rotation.x.toFixed(3)},${graph.rotation.y.toFixed(3)}`;
     root.dataset.branchProgress = growth.toFixed(3);
     root.dataset.renderFrames = String(
@@ -804,6 +828,13 @@ export function mountTopology(root: HTMLElement) {
       const elapsed = time - last;
       const delta = Math.min(elapsed, 100);
       last = time;
+      // Freeze the pose, branch growth and cycle clock together while less
+      // than half the viewport is available; resume from the same frame.
+      if (desktopLayoutHeld()) {
+        draw();
+        frame = requestAnimationFrame(tick);
+        return;
+      }
       growth = Math.min(1, growth + elapsed / BRANCH_MS);
       if (correcting && !dragging) {
         const correction = 1 - Math.pow(0.001, delta / 520);

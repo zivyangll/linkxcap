@@ -34,6 +34,133 @@ async function hoverNode(page: Page, id: string) {
   return button;
 }
 
+test('desktop partial views hold the graph until more than half a screen is visible', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('zh/index.html');
+  await expect(page.locator('[data-home]')).toHaveClass(
+    /has-philosophy-motion/,
+  );
+  await page.evaluate(() => document.fonts.ready);
+  const scene = page.locator('#focus');
+  const reveal = async (height: number) => {
+    await scene.evaluate((element, visibleHeight) => {
+      scrollTo({
+        top:
+          element.getBoundingClientRect().top +
+          scrollY -
+          innerHeight +
+          visibleHeight,
+        behavior: 'instant',
+      });
+    }, height);
+  };
+  const pose = () =>
+    scene.evaluate((element) => ({
+      focus: element.dataset.focus,
+      rotation: element.dataset.rotation,
+      growth: element.dataset.branchProgress,
+      nodes: [
+        ...element.querySelectorAll<HTMLElement>('[data-topology-anchor]'),
+      ].map((node) => ({
+        key: node.dataset.topologyAnchor,
+        translate: node.style.translate,
+        label: node.querySelector<HTMLElement>(
+          '.star-label, .constellation-company-label',
+        )?.style.translate,
+      })),
+    }));
+
+  // Enter directly into a thin preview before the first full presentation.
+  await reveal(300);
+  await expect(scene).toHaveAttribute('data-running', 'true');
+  await expect(scene).toHaveAttribute('data-layout-held', 'true');
+  const opening = await pose();
+  const spread = await scene.locator('.sector-star').evaluateAll((nodes) => {
+    const ys = nodes.map((node) => node.getBoundingClientRect().y);
+    return Math.max(...ys) - Math.min(...ys);
+  });
+  expect(spread).toBeGreaterThan(200);
+  await reveal(450);
+  await page.waitForTimeout(650);
+  expect(await pose()).toEqual(opening);
+
+  await reveal(600);
+  await expect(scene).toHaveAttribute('data-layout-held', 'false');
+  await expect(scene).toHaveAttribute('data-branch-progress', '1.000');
+  expect(await pose()).not.toEqual(opening);
+
+  // Returning to a partial view preserves the last expanded frame as well.
+  await reveal(400);
+  await expect(scene).toHaveAttribute('data-layout-held', 'true');
+  const expanded = await pose();
+  await reveal(250);
+  await page.waitForTimeout(5500);
+  expect(await pose()).toEqual(expanded);
+  const heldFrames = Number(await scene.getAttribute('data-render-frames'));
+  await reveal(700);
+  await expect(scene).toHaveAttribute('data-layout-held', 'false');
+  await expect
+    .poll(async () => Number(await scene.getAttribute('data-render-frames')))
+    .toBeGreaterThan(heldFrames);
+});
+
+test('scrolling back gradually does not freeze an already compressed desktop graph', async ({
+  page,
+}) => {
+  const scene = await openScene(page);
+  await scene.evaluate((element) =>
+    element.dispatchEvent(
+      new CustomEvent('focusselect', { detail: 'embodied' }),
+    ),
+  );
+  await scene.evaluate((element) =>
+    element.dispatchEvent(
+      new CustomEvent('focusfront', { detail: { immediate: true } }),
+    ),
+  );
+  await expect(scene).toHaveAttribute('data-branch-progress', '1.000');
+  const spread = () =>
+    scene.locator('.sector-star').evaluateAll((nodes) => {
+      const ys = nodes.map((node) => node.getBoundingClientRect().y);
+      return Math.max(...ys) - Math.min(...ys);
+    });
+  const fullSpread = await spread();
+  // Exercise each intermediate layout rather than jumping over the squeeze.
+  for (const height of [850, 750, 650, 550, 500, 460, 440, 400]) {
+    await scene.evaluate(
+      (element, visibleHeight) =>
+        scrollTo({
+          top:
+            element.getBoundingClientRect().top +
+            scrollY -
+            innerHeight +
+            visibleHeight,
+          behavior: 'instant',
+        }),
+      height,
+    );
+    await page.waitForTimeout(100);
+    expect(await spread()).toBeGreaterThan(fullSpread * 0.75);
+  }
+  await expect(scene).toHaveAttribute('data-layout-held', 'true');
+  const positions = await scene
+    .locator('.sector-star')
+    .evaluateAll((nodes) =>
+      nodes.map((node) => (node as HTMLElement).style.translate),
+    );
+  await page.waitForTimeout(650);
+  expect(
+    await scene
+      .locator('.sector-star')
+      .evaluateAll((nodes) =>
+        nodes.map((node) => (node as HTMLElement).style.translate),
+      ),
+  ).toEqual(positions);
+});
+
 for (const width of [1440, 2048])
   test(`refresh starts with Foundation at the right viewport centre at ${width}px`, async ({
     page,
