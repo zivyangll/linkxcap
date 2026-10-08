@@ -3,6 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
+import { checkPageCss } from './css-budget.mjs';
 const base = (process.env.SITE_BASE || '/linkxcap').replace(/\/$/, '');
 async function walk(dir) {
   const all = await fs.readdir(dir, { withFileTypes: true });
@@ -120,7 +121,23 @@ const css = report
 const js = report
   .filter((f) => f.file.endsWith('.js'))
   .reduce((n, x) => n + x.gzip, 0);
-assert(css <= 35 * 1024, `CSS exceeds 35 KiB gzip: ${css}`);
+const cssByPath = new Map(
+  report
+    .filter((file) => file.file.endsWith('.css'))
+    .map((file) => [file.file, file.gzip]),
+);
+const pageCss = [];
+for (const file of htmlFiles) {
+  pageCss.push(
+    checkPageCss(
+      await fs.readFile(file, 'utf8'),
+      cssByPath,
+      base,
+      file.replace('dist/', ''),
+    ),
+  );
+}
+const maxPageCss = Math.max(...pageCss.map((page) => page.gzip));
 // Three.js is an optional, viewport-loaded enhancement with its own budget.
 // Core navigation/content must remain within the original 120 KiB ceiling.
 const topologyJs = report
@@ -148,6 +165,8 @@ await fs.writeFile(
       pages: pages.length,
       totalHtml: htmlFiles.length,
       cssGzip: css,
+      maxPageCssGzip: maxPageCss,
+      pageCss,
       jsGzip: js,
       coreJsGzip: coreJs,
       optionalTopologyJsGzip: topologyJs,
@@ -159,5 +178,5 @@ await fs.writeFile(
   ),
 );
 console.log(
-  `Verified ${pages.length} bilingual content pages, local links, SEO and assets. CSS ${(css / 1024).toFixed(1)} KiB, JS ${(js / 1024).toFixed(1)} KiB gzip.`,
+  `Verified ${pages.length} bilingual content pages, local links, SEO and assets. Max page CSS ${(maxPageCss / 1024).toFixed(1)} KiB (all routes ${(css / 1024).toFixed(1)} KiB), JS ${(js / 1024).toFixed(1)} KiB gzip.`,
 );

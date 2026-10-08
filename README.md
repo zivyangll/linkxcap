@@ -18,7 +18,7 @@ npx playwright install chromium webkit
 npm test
 ```
 
-`build` 同时执行类型检查、70 个内容页面的路由／资源／SEO 校验，以及压缩体积预算检查。`dist/` 是可直接部署的纯静态成品。Node.js 22.12+；锁文件已提交。
+`build` 同时执行类型检查、所有内容页面的路由／资源／SEO 校验，以及压缩体积预算检查。每页实际加载的 CSS（外部样式表和内联样式）须不超过 35 KiB gzip；各独立页面的 CSS 不相加判定，站点总量仍记录在 `.cache/build-report.json`。`dist/` 是可直接部署的纯静态成品。Node.js 22.12+；锁文件已提交。
 
 ## 页面范围
 
