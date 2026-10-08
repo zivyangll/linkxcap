@@ -3,10 +3,12 @@ import { createHash } from 'node:crypto';
 import Header from '../components/Header.astro';
 import { url, pageUrl, preview, siteContent, ui, type Lang } from '../lib/site';
 import fonts from '../data/fonts.json';
+import h5Fonts from '../data/h5-fonts.json';
 import '../styles/global.css';
 import '../styles/figma-desktop.css';
 import '../styles/meeting-revision.css';
 import '../styles/experience.css';
+import '../styles/h5-fonts.css';
 interface Props {
   lang: Lang;
   page?: string;
@@ -29,6 +31,7 @@ const fontVersion = createHash('sha256')
 const fontCss = fonts.css
   .replaceAll('__BASE__', url())
   .replaceAll('.woff2")', `.woff2?v=${fontVersion}")`);
+const h5FontCss = h5Fonts.css.replaceAll('__BASE__', url());
 const absolute = (path: string) => new URL(path, Astro.site).href;
 const canonical = absolute(pageUrl(lang, page));
 ---
@@ -72,6 +75,19 @@ const canonical = absolute(pageUrl(lang, page));
       crossorigin
     />
     <style is:inline set:html={fontCss}></style>
+    {h5Fonts.report
+      .filter((font) => lang === 'zh' || font.file.includes('-latin-'))
+      .map((font) => (
+        <link
+          rel="preload"
+          href={url(`fonts/${font.file}`)}
+          as="font"
+          type="font/woff2"
+          crossorigin
+          media="(max-width: 767px)"
+        />
+      ))}
+    <style is:inline set:html={h5FontCss}></style>
   </head>
   <body
     class={bodyClass}

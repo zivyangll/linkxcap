@@ -797,10 +797,25 @@ body .team-review .team-bio::-webkit-scrollbar {
   }
   body[data-lang='zh'] .fellow-intro .next-title-outline--text,
   body[data-lang='zh'] .fellow-intro .next-title-fill {
-    /* Lifted so the characters' bottom edge sits on the y 618.82 guide. */
-    top: calc(484 * var(--u));
+    /* Each script fills the same y 489.85–618.82 ink box. */
+    top: calc(489.85 * var(--u));
+    height: calc(128.97 * var(--u));
+    display: flex;
+    align-items: flex-start;
+    transition: none;
     font-size: max(12px, calc(112 * var(--u)));
     font-weight: 600;
+  }
+  .fellow-intro .next-title-part {
+    position: relative;
+    top: calc(var(--title-ink-y, 0) * var(--u));
+    font-size: calc(var(--title-ink-size, 137.2) * var(--u));
+    line-height: 1;
+    white-space: pre;
+    transition: none;
+  }
+  .fellow-intro .next-title-part[data-title-script='en'] {
+    --title-ink-size: 120.09;
   }
 
   /* The subtitle has no outline stage: it joins when the title turns solid. */

@@ -532,8 +532,8 @@ export function mountTopology(root: HTMLElement) {
     };
     const hasView =
       seen.right - seen.left > 120 && seen.bottom - seen.top > 120;
-    const view = hasView ? seen : bounds;
-    const nodeView = touch.matches || !hasView ? view : desktopNodeArea();
+    const view = hasView ? (touch.matches ? seen : desktopNodeArea()) : bounds;
+    const nodeView = view;
     const sectorPositions: { x: number; y: number }[] = [];
     // Keep the selected node in place, then leave each other sector a clear
     // mouse target when several projected nodes meet the same padded edge.

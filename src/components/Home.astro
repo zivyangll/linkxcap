@@ -34,6 +34,16 @@ const openingTitle =
 // en breaks "Backing" onto its own line (three lines in the frame).
 const heroLines =
   lang === 'zh' ? homeContent.hero.title.zh : homeContent.hero.title.en;
+const h5HeroWords = homeContent.hero.title.en.join(' ').split(/\s+/);
+const h5HeroLines = [
+  h5HeroWords.slice(0, 2).join(' '),
+  h5HeroWords.slice(2, 4).join(' '),
+  h5HeroWords.slice(4).join(' '),
+];
+const h5NorthLines =
+  lang === 'zh'
+    ? homeContent.about.label.zh.at(-1)!.split('，')
+    : homeContent.about.label.en;
 const heroLead = lang === 'zh' ? '' : heroLines[0].split(' ')[0];
 const heroRest = (line: string, index: number) =>
   lang !== 'zh' && index === 0 ? line.slice(heroLead.length).trim() : line;
@@ -164,6 +174,29 @@ const openingBody = homeContent.opening.body[lang]
       data-minimal-header
       aria-labelledby="hero-title"
     >
+      <div class="h5-art h5-hero-arc" data-h5-only hidden aria-hidden="true">
+        <img
+          src={asset('h5-5492', 'imgEllipse1')}
+          loading="lazy"
+          width="2386"
+          height="2386"
+          alt=""
+        />
+      </div>
+      <div class="h5-art h5-hero-guide" data-h5-only hidden aria-hidden="true">
+        <img
+          src={asset('h5-5492', 'imgVector30')}
+          loading="lazy"
+          width="1"
+          height="1080"
+          alt=""
+        />
+      </div>
+      <div class="h5-arc-markers" data-h5-only hidden aria-hidden="true">
+        <i class="h5-static-node h5-arc-start"></i>
+        <i class="h5-rail-end"></i>
+        <i class="h5-open-node"></i>
+      </div>
       {/* Figma 3348 Ellipse 1: the dashed left arc of the orbit (130.7° to
           278.2°). Inline so it needs no 100 KB raster on a slow network. */}
       <svg
@@ -224,6 +257,17 @@ const openingBody = homeContent.opening.body[lang]
           ))}
         </p>
       )}
+      <p
+        class="h5-hero-title"
+        data-h5-only
+        hidden
+        lang="en"
+        aria-hidden={lang === 'zh' ? 'true' : undefined}
+      >
+        {h5HeroLines.map((line) => (
+          <span>{line}</span>
+        ))}
+      </p>
       <h2
         id="hero-title"
         class:list={['hero-title', { 'hero-title--zh': lang === 'zh' }]}
@@ -246,6 +290,53 @@ const openingBody = homeContent.opening.body[lang]
         <em>{homeContent.hero.orbitEyebrow[lang]}</em>
         <span>{homeContent.hero.orbitLabel[lang]}</span>
       </a>
+      <a class="h5-open-signal" data-h5-only hidden href="#about">
+        <em>open signal</em>
+        <span>{homeContent.hero.orbitLabel[lang]}</span>
+      </a>
+    </section>
+    <section
+      class="h5-north-star"
+      data-h5-only
+      hidden
+      aria-label={h5NorthLines.join('，')}
+    >
+      <div class="h5-art h5-bottom-arc" aria-hidden="true">
+        <img
+          src={asset('h5-5555', 'imgEllipse1')}
+          loading="lazy"
+          width="2406"
+          height="2406"
+          alt=""
+        />
+      </div>
+      <div class="h5-art h5-drop-guide" aria-hidden="true">
+        <img
+          src={asset('h5-5555', 'imgVector30')}
+          loading="lazy"
+          width="22"
+          height="730"
+          alt=""
+        />
+      </div>
+      <div class="h5-art h5-tangent-guide" aria-hidden="true">
+        <img
+          src={asset('h5-5555', 'imgVector31')}
+          loading="lazy"
+          width="1"
+          height="1920"
+          alt=""
+        />
+      </div>
+      <i class="h5-static-node h5-north-node" aria-hidden="true"></i>
+      {h5NorthLines.map((line) => (
+        <p class="h5-north-line">
+          <span class="h5-north-soft">{line}</span>
+          <span class="h5-north-sharp" aria-hidden="true">
+            {line}
+          </span>
+        </p>
+      ))}
     </section>
     <section
       class="story-scene about"
@@ -322,6 +413,25 @@ const openingBody = homeContent.opening.body[lang]
           <span class="intro-paragraph">{paragraph}</span>
         ))}
       </p>
+      <div class="h5-art h5-about-guide" data-h5-only hidden aria-hidden="true">
+        <img
+          src={asset('h5-5610', 'imgVector30')}
+          loading="lazy"
+          width="22"
+          height="730"
+          alt=""
+        />
+      </div>
+      <i
+        class="h5-static-node h5-about-node"
+        data-h5-only
+        hidden
+        aria-hidden="true"
+      ></i>
+      <div class="h5-about-exit" data-h5-only hidden aria-hidden="true">
+        <i class="h5-exit-outline"></i>
+        <i class="h5-exit-node"></i>
+      </div>
     </section>
   </div>
   <section
@@ -499,7 +609,11 @@ const openingBody = homeContent.opening.body[lang]
   // on a 3G link cost several seconds.
   import { DESKTOP_MOTION, MOBILE_MOTION } from '../scripts/motion-policy';
   import { initHome, initHomeParticles } from '../scripts/home';
-  import { initMobileHome } from '../scripts/home-mobile-motion';
+  import {
+    initH5HomeLayout,
+    initMobileHome,
+  } from '../scripts/home-mobile-motion';
+  initH5HomeLayout();
   initHomeParticles();
   const desktop = matchMedia(DESKTOP_MOTION);
   let started = false;

@@ -7,6 +7,7 @@ removed for transfer size. Subset generation is in `scripts/subset-fonts.py`.
 | Distributed family | Upstream source | License |
 | --- | --- | --- |
 | LinkX Serif | https://github.com/adobe-fonts/source-han-serif | SIL OFL 1.1 (Source-Han-Serif.txt) |
+| LinkX H5 Songti (mobile Chinese and Latin, variable weights) | https://github.com/adobe-fonts/source-han-serif | SIL OFL 1.1 (Source-Han-Serif.txt) |
 | LinkX Web Italic | https://github.com/adobe-fonts/source-serif | SIL OFL 1.1 (Source-Serif-4.txt) |
 | LinkX Sans | https://github.com/lxgw/LxgwNeoXiHei | IPA Font License 1.0 (LXGW-Neo-XiHei.txt) |
 
@@ -25,6 +26,12 @@ Preserve the original name, bytes and included IPA license when redistributing i
 
 The derived fonts are provided under the same licenses as their upstreams.
 No exclusive ownership is claimed over the upstream glyph designs.
+
+The mobile subsets retain the Source Han Serif SC variable weight axis and
+include the Chinese and Latin characters used by the site. Regenerate them
+after changing copy with `scripts/subset-h5-fonts.py` (requires fonttools and
+brotli). Their font-face declarations and family overrides apply only at
+viewport widths up to 767px; desktop font files and declarations are unchanged.
 
 如果希望恢复原始字体，请下载并安装 IPAexGothic，重新加载网页即可。
 网页字体规则优先调用本地已安装的原始 IPA 字体。

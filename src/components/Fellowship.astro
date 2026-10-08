@@ -13,6 +13,10 @@ const emphasis = (paragraph: string) =>
   paragraph
     .split('**')
     .map((text, index) => ({ text, strong: index % 2 === 1 }));
+const titleParts = contactContent.signalTitle.zh
+  .split(/([A-Za-z]+(?:\s+[A-Za-z]+)*)/)
+  .filter((text) => text.trim())
+  .map((text) => ({ text, script: /[A-Za-z]/.test(text) ? 'en' : 'zh' }));
 ---
 
 <section
@@ -72,10 +76,28 @@ const emphasis = (paragraph: string) =>
     </div>
   )}
   <span class="next-title-outline next-title-outline--text" aria-hidden="true">
-    {contactContent.signalTitle[lang]}
+    {lang === 'zh'
+      ? titleParts.map(({ text, script }) => (
+          <span
+            class="next-title-part"
+            data-title-script={script}
+            lang={script}
+            set:text={text}
+          />
+        ))
+      : contactContent.signalTitle[lang]}
   </span>
   <h1 id="next-title" class="next-title-fill">
-    {contactContent.signalTitle[lang]}
+    {lang === 'zh'
+      ? titleParts.map(({ text, script }) => (
+          <span
+            class="next-title-part"
+            data-title-script={script}
+            lang={script}
+            set:text={text}
+          />
+        ))
+      : contactContent.signalTitle[lang]}
   </h1>
   {lang === 'zh' ? (
     <>
@@ -189,6 +211,8 @@ const emphasis = (paragraph: string) =>
 
 <script>
   import { DESKTOP_MOTION } from '../scripts/motion-policy';
+  import { fitFellowTitle } from '../scripts/fellow-title';
+  fitFellowTitle();
   import('../scripts/fellow')
     .then((module) => module.initFellowPortrait())
     .catch(() => {

@@ -540,7 +540,7 @@
   }
   body .home-story[data-home] .focus .focus-title {
     left: var(--focus-text-inset);
-    top: calc(190 * var(--u));
+    top: calc(190 * var(--u) + 100px);
     font-size: max(12px, calc(81.333 * var(--u)));
     font-weight: 400;
     line-height: 1.2;
@@ -591,7 +591,7 @@
     .focus.has-selection
     .focus-panels {
     left: var(--focus-text-inset);
-    top: calc(610 * var(--u));
+    top: calc(610 * var(--u) + 100px);
     width: calc(385 * var(--u));
     min-height: 0;
     text-align: left;
@@ -614,7 +614,7 @@
     span:first-child {
     font-size: max(12px, calc(24 * var(--u)));
     font-weight: 700;
-    letter-spacing: 0.89em;
+    letter-spacing: 0.1em;
     white-space: nowrap;
   }
   body[data-lang='zh']

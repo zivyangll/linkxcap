@@ -1,6 +1,7 @@
 import { MOBILE_MOTION } from './motion-policy';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { mountH5HomeSequence } from './home-h5-sequence';
 
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const phase = (value: number, from: number, to: number) =>
@@ -12,8 +13,13 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 export function mountMobileHomeMotion(home: HTMLElement) {
   const media = gsap.matchMedia();
   media.add(
-    { portrait: '(min-height: 600px)', short: '(max-height: 599px)' },
+    {
+      phone: '(max-width: 767px) and (min-height: 600px)',
+      portrait: '(min-height: 600px)',
+      short: '(max-height: 599px)',
+    },
     ({ conditions }) => {
+      if (conditions?.phone) return mountH5HomeSequence(home);
       if (!conditions?.portrait) {
         // No overlaid scenes on landscape/short screens: each paragraph must
         // remain in normal flow until it has been read.
@@ -532,6 +538,23 @@ export function mountMobileHomeMotion(home: HTMLElement) {
     },
   );
   return () => media.revert();
+}
+
+export function initH5HomeLayout() {
+  const media = gsap.matchMedia();
+  media.add('(max-width: 767px)', () => {
+    const home = document.querySelector<HTMLElement>('[data-home]')!;
+    const elements = document.querySelectorAll<HTMLElement>(
+      '[data-home] [data-h5-only]',
+    );
+    home.classList.add('has-h5-layout');
+    elements.forEach((element) => (element.hidden = false));
+    return () => {
+      elements.forEach((element) => (element.hidden = true));
+      home.classList.remove('has-h5-layout');
+    };
+  });
+  window.addEventListener('pagehide', () => media.revert(), { once: true });
 }
 
 export function initMobileHome() {

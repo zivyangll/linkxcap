@@ -171,7 +171,7 @@ for (const width of [1440, 2048])
         for (let frame = 0; frame < 12; frame++) {
           await new Promise(requestAnimationFrame);
           for (const node of element.querySelectorAll<HTMLElement>(
-            '.sector-star, .constellation-scene:not([hidden]) .constellation-company',
+            '.sector-star, .sector-star .star-label, .constellation-scene:not([hidden]) .constellation-company, .constellation-scene:not([hidden]) .constellation-company-label',
           )) {
             const box = node.getBoundingClientRect();
             if (

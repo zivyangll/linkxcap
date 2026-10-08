@@ -1906,9 +1906,23 @@
     font-family: var(--serif);
     font-size: 12px;
     font-weight: 400;
-    line-height: 1.55;
+    line-height: 1.6;
     letter-spacing: 0;
-    opacity: 0.8;
+    opacity: 0.5;
+  }
+
+  body[data-lang='zh']
+    .team-review
+    .team-review-heading
+    > p
+    > .intro-paragraph
+    + .intro-paragraph,
+  body[data-lang='zh']
+    .insights-page
+    .insights-intro
+    > .intro-paragraph
+    + .intro-paragraph {
+    margin-top: 0;
   }
 }
 
@@ -1920,5 +1934,22 @@
 
   .portfolio-page .portfolio-card .company-caption > p {
     display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-menu nav a[data-h5-label] > span {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .site-menu nav a[data-h5-label]::after {
+    content: attr(data-h5-label);
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 14px;
+    white-space: nowrap;
+    text-align: right;
+    padding-right: 20px;
   }
 }

@@ -110,5 +110,17 @@
   },
   "fellow": {
     "groupPortrait": "/assets/figma/c812b11cb1ebb196.webp"
+  },
+  "h5-5492": {
+    "imgEllipse1": "/assets/figma/49c0ac5cbcfd1426.webp",
+    "imgVector30": "/assets/figma/92fe4cf0dd84d684.svg"
+  },
+  "h5-5555": {
+    "imgEllipse1": "/assets/figma/394bffe32cfb940c.svg",
+    "imgVector30": "/assets/figma/cede725c61c6b4e4.svg",
+    "imgVector31": "/assets/figma/56a88ed877709b60.svg"
+  },
+  "h5-5610": {
+    "imgVector30": "/assets/figma/170a9252f5315cc4.svg"
   }
 }

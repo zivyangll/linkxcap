@@ -1,0 +1,13 @@
+@media (max-width: 767px) {
+  :root {
+    --h5-font:
+      'LinkX H5 Songti', 'Source Han Serif SC', 'Noto Serif CJK SC', serif;
+    --serif: var(--h5-font);
+    --sans: var(--h5-font);
+  }
+
+  /* Fellowship previously used a system font independent of the site tokens. */
+  body[data-lang] .fellowship-description {
+    font-family: var(--h5-font);
+  }
+}

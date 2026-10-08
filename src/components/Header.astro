@@ -111,6 +111,9 @@ const menuSocials = [
       <a
         href={pageUrl(lang, item.page)}
         aria-current={active === item.page ? 'page' : undefined}
+        data-h5-label={
+          lang === 'zh' && item.page === 'fellowship' ? '伙伴' : undefined
+        }
       >
         <i class="menu-current diamond" aria-hidden="true"></i>
         {/* Figma 100:261: English name first, Chinese after it. */}

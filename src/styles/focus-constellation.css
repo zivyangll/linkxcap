@@ -51,6 +51,21 @@
   --node-tile: calc(51 * var(--u));
   --node-arm: calc(9.57 * var(--u));
   --node-stroke: max(1px, calc(1.6 * var(--u)));
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: block;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 2;
+}
+.home-story .focus .sector-star .star-glyph {
+  width: 44px;
+  height: 44px;
+  scale: 1;
+  filter: none;
 }
 .home-story .focus .star-glyph .diamond {
   display: block;
@@ -149,33 +164,15 @@
     left: calc(106 * var(--u));
     top: calc(700 * var(--u));
   }
-  .home-story .focus .focus-panel h3 span:first-child {
-    white-space: normal;
-  }
   .home-story .focus .sector-star {
-    position: absolute;
     left: calc(var(--sx) * var(--u));
     top: calc(var(--sy) * var(--u));
-    width: 44px;
-    height: 44px;
-    min-height: 44px;
-    padding: 0;
-    display: block;
-    transform: translate(-50%, -50%);
     overflow: visible;
     border: 0;
     background: transparent;
-    border-radius: 50%;
-    z-index: 2;
   }
   .home-story .focus .sector-star.is-active {
     z-index: 4;
-  }
-  .home-story .focus .sector-star .star-glyph {
-    width: 44px;
-    height: 44px;
-    scale: 1;
-    filter: none;
   }
   .home-story .focus .sector-star .star-label {
     --label-gap: calc(43 * var(--u));
@@ -341,25 +338,10 @@
     top: var(--my);
   }
   .home-story .focus .sector-star {
-    position: absolute;
-    display: block;
     left: var(--mx);
     top: var(--my);
-    width: 44px;
-    height: 44px;
-    min-height: 44px;
     max-width: none;
-    padding: 0;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    z-index: 2;
     touch-action: pan-y;
-  }
-  .home-story .focus .sector-star .star-glyph {
-    width: 44px;
-    height: 44px;
-    scale: 1;
-    filter: none;
   }
   /* Same node design at touch size: Figma proportions from a 7px diamond. */
   .home-story .focus .sector-star {
