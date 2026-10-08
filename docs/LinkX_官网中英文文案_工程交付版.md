@@ -664,7 +664,7 @@ The Fellowship does not require full-time participation. Fellows are also encour
 
 | **新站字段 / 占位** | **中文** | **English** |
 | --- | --- | --- |
-| 大标题 signalTitle | 从一次对话开始 | Start a Conversation |
+| 大标题 signalTitle | 星连 Fellowship 计划 | A Constellation of Minds |
 | 副标题 signalSubtitle | 研究、创业与新的可能 | Research, ventures and new possibilities |
 | 画面叠字 definition | 重要的事，往往始于一次相遇。 | Important things often begin with a conversation. |
 | 品牌画面文字 videoPlaceholder | 让想法迈出下一步 | Take the next step with an idea |
