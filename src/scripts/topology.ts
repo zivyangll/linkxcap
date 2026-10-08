@@ -308,15 +308,6 @@ export function mountTopology(root: HTMLElement) {
       -active.origin.y,
       homePosition.z,
     );
-    if (!touch.matches) {
-      targetPosition.add(
-        centreOffset(
-          targetPosition,
-          frontRotation.set(targetPitch, targetYaw, 0),
-          centreShift,
-        ),
-      );
-    }
     keepActiveInSafeArea(
       targetPosition,
       frontRotation.set(targetPitch, targetYaw, 0),
@@ -508,15 +499,15 @@ export function mountTopology(root: HTMLElement) {
       graph.rotation.set(pitch, yaw, 0);
       graph.position.copy(targetPosition);
     }
-    if (initialPose) placeInitialSector();
     draw();
     sync();
   }
   function draw() {
     if (!enabled() || !width) return;
-    if (initialPose && !entered) {
+    if (initialPose) {
       placeInitialSector();
       if (
+        !entered &&
         root.getBoundingClientRect().top <= readingInset + 1 &&
         stage.getBoundingClientRect().bottom > readingInset
       ) {
@@ -1023,6 +1014,9 @@ export function mountTopology(root: HTMLElement) {
   const visibility = new IntersectionObserver(
     ([entry]) => {
       visible = entry.isIntersecting;
+      if (visible && initialPose && width) {
+        draw();
+      }
       sync();
     },
     { threshold: 0.02 },
@@ -1037,7 +1031,6 @@ export function mountTopology(root: HTMLElement) {
     if (scrollFrame || !visible) return;
     scrollFrame = requestAnimationFrame(() => {
       scrollFrame = 0;
-      if (initialPose) placeInitialSector();
       draw();
     });
   };

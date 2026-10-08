@@ -150,11 +150,7 @@
     top: calc(700 * var(--u));
   }
   .home-story .focus .focus-panel h3 span:first-child {
-    letter-spacing: 0.42em;
     white-space: normal;
-  }
-  .home-story .focus .focus-panel h3 span:last-child {
-    letter-spacing: -0.03em;
   }
   .home-story .focus .sector-star {
     position: absolute;
@@ -309,20 +305,6 @@
     }
   }
 }
-@media (max-width: 1023px), (hover: none), (pointer: coarse) {
-  .home-story
-    .focus
-    :is(.constellation-fallback, .constellation-hub, .constellation-scene) {
-    display: none;
-  }
-  .home-story .focus .sector-star .star-label {
-    color: #b7accd;
-  }
-  .home-story .focus .sector-star.is-active .star-label {
-    color: #ede6ff;
-  }
-}
-
 /* The canvas belongs to the constellation itself, on both PC and H5. */
 .home-story .focus .constellation-fallback--mobile {
   display: none;
