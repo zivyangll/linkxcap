@@ -433,6 +433,10 @@
     color: #000;
     z-index: 2;
   }
+  html body[data-lang='zh'] .home-story .h5-north-line {
+    font-size: calc(68.539 * var(--m));
+    font-weight: 600;
+  }
   html body .home-story .h5-north-line:nth-of-type(2) {
     left: calc(50% + 77 * var(--m));
     top: calc(908 * var(--m));
@@ -515,6 +519,9 @@
     inset: auto;
     transform: none;
     font-size: calc(62.97 * var(--m));
+  }
+  html body[data-lang='zh'] .home-story .h5-north-line {
+    font-size: calc(68.539 * var(--m));
   }
   html body .home-story .h5-north-line:nth-of-type(2) {
     position: relative;

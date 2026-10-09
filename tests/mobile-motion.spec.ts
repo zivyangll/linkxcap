@@ -228,6 +228,30 @@ for (const viewport of [
     });
     expect(type.north).toEqual(type.hero);
   });
+
+  test(`H5 Chinese north-star title matches the Chinese hero type at ${viewport.height}px tall`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('zh/index.html');
+    await page.evaluate(() => document.fonts.ready);
+    const type = await page.evaluate(() => {
+      const read = (selector: string) => {
+        const style = getComputedStyle(document.querySelector(selector)!);
+        return {
+          size: style.fontSize,
+          weight: style.fontWeight,
+          lineHeight: style.lineHeight,
+          family: style.fontFamily,
+        };
+      };
+      return {
+        hero: read('.hero-title--zh'),
+        north: read('.h5-north-line'),
+      };
+    });
+    expect(type.north).toEqual(type.hero);
+  });
 }
 
 test('H5 about deep link and return link land on readable copy, not the hidden overlapping scene', async ({
