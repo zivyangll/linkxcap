@@ -201,6 +201,35 @@ for (const lang of ['zh', 'en']) {
   }
 }
 
+for (const viewport of [
+  { width: 390, height: 844 },
+  { width: 390, height: 568 },
+]) {
+  test(`H5 English north-star title matches the hero type at ${viewport.height}px tall`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('en/index.html');
+    await page.evaluate(() => document.fonts.ready);
+    const type = await page.evaluate(() => {
+      const read = (selector: string) => {
+        const style = getComputedStyle(document.querySelector(selector)!);
+        return {
+          size: style.fontSize,
+          weight: style.fontWeight,
+          lineHeight: style.lineHeight,
+          family: style.fontFamily,
+        };
+      };
+      return {
+        hero: read('.h5-hero-title'),
+        north: read('.h5-north-line'),
+      };
+    });
+    expect(type.north).toEqual(type.hero);
+  });
+}
+
 test('H5 about deep link and return link land on readable copy, not the hidden overlapping scene', async ({
   page,
 }) => {

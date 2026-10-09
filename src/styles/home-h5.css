@@ -428,7 +428,7 @@
     width: max-content;
     margin: 0;
     transform: translateX(-50%);
-    font: 600 calc(81.333 * var(--m)) / 1.2 var(--serif);
+    font: 400 calc(62.97 * var(--m)) / 1.2 var(--serif);
     letter-spacing: -0.05em;
     color: #000;
     z-index: 2;
@@ -514,7 +514,7 @@
     position: relative;
     inset: auto;
     transform: none;
-    font-size: 28px;
+    font-size: calc(62.97 * var(--m));
   }
   html body .home-story .h5-north-line:nth-of-type(2) {
     position: relative;
