@@ -93,9 +93,8 @@ export function initFellow() {
         '.fellow-intro .next-subtitle-fill, .fellow-intro .next-subtitle-outline',
         {
           scale: zh ? 1.0794 : 0.4897,
-          // 10 design px higher than the Figma pose so the portrait, which keeps
-          // growing to 1.6x, does not run into the subtitle.
-          y: () => unit() * (zh ? -291 : -125),
+          // Raise the Chinese portrait-frame subtitle by a further 10px.
+          y: () => (zh ? unit() * -291 - 10 : unit() * -125),
           transformOrigin: '50% 0%',
           duration: 0.45,
         },

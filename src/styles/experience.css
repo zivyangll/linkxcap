@@ -903,7 +903,7 @@ body .team-review .team-bio::-webkit-scrollbar {
     font-weight: 600;
   }
   body[data-lang='zh'] .fellow-media-title p {
-    top: calc(368 * var(--u));
+    top: calc(368 * var(--u) - 10px);
     font-size: max(12px, calc(32 * var(--u)));
   }
   .fellow-media-figure {
