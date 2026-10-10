@@ -6,6 +6,20 @@
 
 SEO/GEO 的设计见 [SEO 方案](seo.md) 和 [GEO 方案](geo.md)。
 
+## 一键部署
+
+日常部署更新用 Claude Code 的项目 skill **`deploy-oss`**（`.claude/skills/deploy-oss/SKILL.md`），对 Claude 说“部署正式站”或输入 `/deploy-oss` 即可。它调用 `scripts/deploy-oss.sh`（也可以手动运行，或 `npm run deploy:oss -- <参数>`）：
+
+| 命令 | 作用 |
+| --- | --- |
+| `scripts/deploy-oss.sh --dry-run` | 检查 ossutil 与 Bucket 访问、正式构建、检查产物，预演上传，不改线上 |
+| `scripts/deploy-oss.sh` | 构建、备份 Bucket 到 `.cache/oss-backups/`、按缓存策略上传、验证线上 |
+| `scripts/deploy-oss.sh --verify-only` | 只验证线上与本地 `dist/` 是否一致、设置是否正确 |
+| `scripts/deploy-oss.sh --prune --dry-run` | 列出将删除的旧文件 |
+| `scripts/deploy-oss.sh --prune --yes` | 线上验证通过后删除旧文件（需人工确认列表后执行） |
+
+首次使用前需要安装 ossutil 2.x、自己运行 `ossutil config`，并按第 1.3 节调整静态页面设置。下文是手动步骤和背景说明。
+
 ## 1. 现有配置（2026-10-10 核对）
 
 ### 1.1 Bucket
