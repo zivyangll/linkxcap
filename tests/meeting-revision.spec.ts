@@ -622,9 +622,11 @@ test('Fellow arc moves and the group portrait replaces the video', async ({
     Math.abs(figure.width / (await figureScale()) - (1016 * 1440) / 1920),
   ).toBeLessThan(1);
   expect(Math.abs(figure.x + figure.width / 2 - 720)).toBeLessThan(1);
-  // Scrolling on keeps enlarging the portrait beyond its Figma size.
+  // Scrolling on keeps enlarging the portrait beyond its Figma size, up to
+  // 150%.
   await page.evaluate(() => scrollTo(0, innerHeight * 1.3));
-  await expect.poll(figureScale).toBeGreaterThan(1.5);
+  await expect.poll(figureScale).toBeGreaterThan(1.49);
+  expect(await figureScale()).toBeLessThanOrEqual(1.5);
 });
 
 test('English Fellow subtitle changes from outline to fill without overlapping its copy', async ({

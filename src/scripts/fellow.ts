@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { DESKTOP_MOTION } from './motion-policy';
 // The group portrait keeps growing past its Figma size while scrolling.
-const PORTRAIT_MAX_SCALE = 1.6;
+const PORTRAIT_MAX_SCALE = 1.5;
 export function initFellow() {
   gsap.registerPlugin(ScrollTrigger);
   if (!document.querySelector('[data-fellow-media]')) return;
