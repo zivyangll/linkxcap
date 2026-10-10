@@ -1397,7 +1397,7 @@
   .site-header.is-minimal .language-switch {
     display: flex;
     left: auto;
-    right: calc(max(24px, calc(44 * var(--u))) + 48px + 25px);
+    right: calc(max(24px, 44 * var(--u)) + 73px);
   }
 
   .site-header .language-switch a:first-child {
