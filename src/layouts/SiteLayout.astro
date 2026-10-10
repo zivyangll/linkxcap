@@ -1,7 +1,16 @@
 ---
 import Header from '../components/Header.astro';
 import FontFaces from '../components/FontFaces.astro';
-import { url, pageUrl, preview, siteContent, ui, type Lang } from '../lib/site';
+import {
+  url,
+  pageUrl,
+  preview,
+  siteContent,
+  socials,
+  organizationId as organizationIdFor,
+  ui,
+  type Lang,
+} from '../lib/site';
 import '../styles/global.css';
 import '../styles/figma-desktop.css';
 import '../styles/meeting-revision.css';
@@ -13,6 +22,11 @@ interface Props {
   title: string;
   description?: string;
   bodyClass?: string;
+  /** Extra schema.org nodes for this page (an article, person, company). */
+  schema?: Record<string, unknown>[];
+  ogType?: 'website' | 'article';
+  /** Error pages are not landing pages: no canonical, alternates or index. */
+  notFound?: boolean;
 }
 const {
   lang,
@@ -20,9 +34,54 @@ const {
   title,
   description = siteContent.metaDescription[lang],
   bodyClass = '',
+  schema = [],
+  ogType = 'website',
+  notFound = false,
 } = Astro.props;
 const absolute = (path: string) => new URL(path, Astro.site).href;
 const canonical = absolute(pageUrl(lang, page));
+const home = absolute(url(''));
+const organizationId = organizationIdFor(Astro.site);
+// One organisation and website entity shared by every page; each page adds
+// its own WebPage plus whatever it describes. Only published facts are used.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': organizationId,
+      name: siteContent.brand,
+      alternateName: siteContent.brandZh,
+      legalName: siteContent.companyLegalName.zh,
+      url: absolute(pageUrl(lang)),
+      logo: absolute(url('apple-touch-icon.png')),
+      email: siteContent.email,
+      description: siteContent.metaDescription[lang],
+      sameAs: socials.map((social) => social.href),
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${home}#website`,
+      url: home,
+      name: lang === 'zh' ? siteContent.brandZh : siteContent.brand,
+      inLanguage: ['zh-CN', 'en'],
+      publisher: { '@id': organizationId },
+    },
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      description,
+      inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+      isPartOf: { '@id': `${home}#website` },
+      about: { '@id': organizationId },
+    },
+    ...schema,
+  ],
+};
+// Keep "</script>" in copy from closing the JSON-LD block.
+const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
@@ -34,22 +93,30 @@ const canonical = absolute(pageUrl(lang, page));
     <meta name="theme-color" content="#fdfbf5" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    {preview && <meta name="robots" content="noindex,follow" />}
-    <link rel="canonical" href={canonical} />
-    <link
-      rel="alternate"
-      hreflang="zh-CN"
-      href={absolute(pageUrl('zh', page))}
-    />
-    <link rel="alternate" hreflang="en" href={absolute(pageUrl('en', page))} />
-    <link
-      rel="alternate"
-      hreflang="x-default"
-      href={absolute(pageUrl('zh', page))}
-    />
+    {(preview || notFound) && <meta name="robots" content="noindex,follow" />}
+    {!notFound && (
+      <>
+        <link rel="canonical" href={canonical} />
+        <link
+          rel="alternate"
+          hreflang="zh-CN"
+          href={absolute(pageUrl('zh', page))}
+        />
+        <link
+          rel="alternate"
+          hreflang="en"
+          href={absolute(pageUrl('en', page))}
+        />
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={absolute(pageUrl('zh', page))}
+        />
+      </>
+    )}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={absolute(siteContent.ogImageUrl)} />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
@@ -57,6 +124,7 @@ const canonical = absolute(pageUrl(lang, page));
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
     <FontFaces lang={lang} />
+    <script type="application/ld+json" set:html={jsonLdText}></script>
   </head>
   <body
     class={bodyClass}

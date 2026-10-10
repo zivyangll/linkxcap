@@ -1,6 +1,16 @@
 # 星连资本官网 GEO 实施方案与 AI 平台验证清单
 
-更新日期：2026-10-06。状态：**方案文档，尚未实施机器人规则、内容增强或线上发布**。
+更新日期：2026-10-10。状态：**网站侧已实施 robots、`llms.txt` 与结构化数据；线上发布见 [OSS 部署文档](16-阿里云OSS部署与上线.md)，AI 平台实测在上线后进行**。
+
+## 0. 实施状态（2026-10-10）
+
+| 项目 | 状态 |
+| --- | --- |
+| robots | 已实施（4.2）：全部允许；`OAI-SearchBot`、`ChatGPT-User`、`Claude-SearchBot`、`Claude-User`、`PerplexityBot`、`Perplexity-User` 单列放行。训练类机器人（`GPTBot`、`ClaudeBot`、`Google-Extended`）沿用 `*` 组，即**允许**；如需禁止训练，在 `src/pages/robots.txt.ts` 增加对应分组 `Disallow: /` |
+| `llms.txt` | 已实施（3.4）：`https://www.linkxcap.com/llms.txt`，由站内数据生成 |
+| 实体与结构化数据 | 已实施：全站统一 `https://www.linkxcap.com/#organization`（星连资本 / LinkX Capital，法定主体、邮箱、官方社交账号）；文章、团队成员、公司详情各自标注 |
+| 静态正文 | 公司、团队、文章、方向均为静态 HTML，可直接读取 |
+| 待办 | 上线后在各平台按第 7 节实测并记录；CDN/WAF 若开启，按 4.3 核对不拦截合法抓取 |
 
 正式域名：`https://www.linkxcap.com/`；托管：阿里云；现有中英文内容已审核。搜索基础、构建参数及上线操作见 [SEO方案](seo.md)。本文件负责 ChatGPT、Claude/Claude Code、Gemini、WorkBuddy、豆包及其他常见 AI 平台的自然发现、网页读取、事实理解和引用。
 
@@ -64,17 +74,17 @@ DeepSeek、Kimi、Grok等未确认项，后续根据官方资料与实际日志�
 | 公司详情 | 公司名、投资年份（有值时）、方向、已审核简介及官网链接 | 同一公司配置，避免Three.js单独维护年份/关系 |
 | 团队详情 | 姓名、英文名、职务、已审核介绍 | 团队配置 |
 | 洞察文章 | 完整静态正文、日期、作者/来源、清楚主题 | Markdown及frontmatter |
-| 联系页 | 明确邮箱、相关机构关系和公众号图片说明 | 现有联系配置 |
+| Fellowship（含联系方式） | 明确邮箱、相关机构关系和公众号图片说明；旧 `contact.html` 跳转至此 | 现有联系配置 |
 
 品牌统一以当前配置的 `site.brand_cn` / `site.brand_en` 为准，即“星连资本 / LinkX Capital”。历史材料中的 Link-X Capital 等拼写，只有确认是同一机构的真实别名时才进入 `alternateName`，不改掉已审核的主品牌名。避免网站、公众号、公司投资组合和英文介绍各写一套名称。法定主体名与品牌名分开，不虚构法定英文名。
 
-六个方向按 V6 的行业标签配置读取；首页每家公司只使用行业标签 1，投资组合筛选使用全部标签：
+六个方向按 V6 的行业标签配置读取，顺序以文案交付版为准；首页每家公司只使用行业标签 1，投资组合筛选使用全部标签：
 
 | 配置方向ID | 中文 | 英文 |
 | --- | --- | --- |
 | `foundation` | 基础模型与学习范式 | Foundation Models & Learning |
-| `infrastructure` | AI 基础设施 | AI Infrastructure |
 | `chips` | 芯片 | Chips |
+| `infrastructure` | AI 基础设施 | AI Infrastructure |
 | `applications` | AI 原生应用 | AI-Native Applications |
 | `physical` | 具身智能 | Embodied AI |
 | `frontiers` | 科学智能 | AI for Science |
@@ -102,9 +112,11 @@ Google的AI搜索仍强调常规搜索可访问性与内容价值；没有专用
 
 结构化数据复用SEO方案的 Organization/WebSite/Article/Person；可见问答不意味着本站有资格获得FAQ特殊搜索展示。
 
-### 3.4 可选 `llms.txt`
+### 3.4 `llms.txt`（已实施）
 
-计划在根部生成 `/llms.txt`，作为简洁的品牌及重点内容导航；这是开放提议格式，不是主流AI平台通用收录协议，也不是保证排名或引用的必要条件。[格式提议](https://llmstxt.org/)
+已在根部生成 `/llms.txt`（`src/pages/llms.txt.ts`）。内容全部来自站内数据：机构中英文简介、运营主体与邮箱、中英文官方页面、六个方向及简介、按方向列出的公司（名称 + 详情页链接，不含正文）、团队成员与职务、洞察文章（标题、日期、链接）、sitemap。公司或文章增删后重新构建即同步更新。
+
+以下为最初的方案说明：在根部生成 `/llms.txt`，作为简洁的品牌及重点内容导航；这是开放提议格式，不是主流AI平台通用收录协议，也不是保证排名或引用的必要条件。[格式提议](https://llmstxt.org/)
 
 建议包含：品牌标题、已审核一句话介绍、中英文首页、投资组合、团队、洞察、联系页，以及 sitemap。URL均从共享清单生成，过滤编辑器、预览和失效页面；不在文件里堆入所有公司全文或优先推荐指令。
 
@@ -122,8 +134,8 @@ Google的AI搜索仍强调常规搜索可访问性与内容价值；没有专用
 - [Portfolio](https://www.linkxcap.com/en/portfolio.html)
 - [洞察](https://www.linkxcap.com/zh/insights.html)
 - [Insights](https://www.linkxcap.com/en/insights.html)
-- [联系我们](https://www.linkxcap.com/zh/contact.html)
-- [Contact](https://www.linkxcap.com/en/contact.html)
+- [Fellowship](https://www.linkxcap.com/zh/fellowship.html)
+- [Fellowship](https://www.linkxcap.com/en/fellowship.html)
 
 ## 网站索引
 - [Sitemap](https://www.linkxcap.com/sitemap.xml)
@@ -157,15 +169,18 @@ Claude Code官方文档说明 WebSearch 搜索后可通过 WebFetch 读取页面
 
 ### 4.2 生产规则示意
 
-以下是**待实现模板**，不是当前线上robots。仅适用于生产公开内容，内部编辑器已从生产构建移除。搜索明确放行；训练策略应在实现时依据实际内容使用选择单独生成，不把“内容审核完成”自动解释成训练授权。
+以下为**已实施**的规则（`src/pages/robots.txt.ts`），在原模板基础上加入用户触发读取机器人。内部编辑器已从生产构建移除。搜索明确放行；训练策略应在实现时依据实际内容使用选择单独生成，不把“内容审核完成”自动解释成训练授权。
 
 ```text
 User-agent: *
 Allow: /
 
 User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
 User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: PerplexityBot
+User-agent: Perplexity-User
 Allow: /
 
 Sitemap: https://www.linkxcap.com/sitemap.xml
@@ -250,7 +265,7 @@ GEO新增正文不能以机器人需求破坏现有设计。文案区通过正�
 
 ### 7.3 记录格式
 
-后续实施可新增 `docs/verification/geo/` 保存人工记录；本轮只规划，未宣称完成平台测试。记录至少包含：
+上线后在 `docs/verification/geo/` 保存人工记录；截至 2026-10-10 尚未上线，未进行平台测试。记录至少包含：
 
 | 字段 | 要求 |
 | --- | --- |

@@ -16,6 +16,9 @@ export type Lang = 'zh' | 'en';
 export const languages: Lang[] = ['zh', 'en'];
 export const base = import.meta.env.BASE_URL.replace(/\/$/, '') + '/';
 export const url = (path = '') => base + path.replace(/^\//, '');
+// schema.org ids shared by every page's JSON-LD.
+export const organizationId = (site: URL | undefined) =>
+  `${new URL(url(), site).href}#organization`;
 export const contentAsset = (filename: string) =>
   filename ? url(`assets/${encodeURIComponent(filename)}`) : '';
 export const companyLogoAsset = (filename: string) =>

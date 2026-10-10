@@ -1,6 +1,23 @@
 # 星连资本官网 SEO 实施方案与阿里云上线清单
 
-更新日期：2026-10-06。状态：**方案文档，尚未实施本方案中的代码、云配置或发布操作**。
+更新日期：2026-10-10。状态：**上线必需的代码部分已实施；阿里云发布、站长平台和线上 HTTP 验证按 [OSS 部署文档](16-阿里云OSS部署与上线.md) 执行**。
+
+## 0. 实施状态（2026-10-10）
+
+| 项目 | 状态 | 位置 |
+| --- | --- | --- |
+| 正式构建参数 | 已实施：`npm run build:production`（正式域名、根路径、production 模式） | `package.json` |
+| 预览/正式隔离 | 已实施：预览带 `noindex`，正式不带；正式构建删除内容编辑页及其脚本、数据 | `scripts/strip-internal.mjs` |
+| 结构化数据 | 已实施：每页 Organization + WebSite + WebPage；文章 Article、团队成员 Person、公司详情 Organization（不标投资关系） | `SiteLayout.astro`、`[lang]/[...page].astro` |
+| 分享标签 | 已实施：文章 `og:type=article`，其余 `website` | `SiteLayout.astro` |
+| sitemap | 已实施：中英文互链 + `x-default`；文章使用发布日期作为 `lastmod`，其余页面不写构建时间 | `src/pages/sitemap.xml.ts` |
+| robots | 已实施：全部允许，并单独列出 AI 搜索/用户读取机器人；指向正式 sitemap | `src/pages/robots.txt.ts`，详见 GEO |
+| llms.txt | 已实施：由站内数据生成 | `src/pages/llms.txt.ts`，详见 GEO |
+| 旧站地址 | 已实施：3 个旧地址生成跳转页（见 3.3） | `src/pages/[lang]/[legacy].astro` |
+| 404 页 | 已实施：`noindex`，不输出 canonical/hreflang；OSS「默认 404 页」设为 `404.html` 返回真实 404 | `src/pages/404.astro` |
+| 构建校验 | 已实施：robots/sitemap/llms 存在；正式构建无 noindex、无预览域名、无编辑器 | `scripts/verify-build.mjs` |
+| 托管 | 确定：与旧官网一致的 OSS 静态网站托管 | [部署文档](16-阿里云OSS部署与上线.md) |
+| 待办 | 上传 OSS、CDN 刷新、站长平台验证与提交 sitemap、`linkxcap.com` → www 跳转（需 CDN）、统计 | 部署文档第 6–9 步 |
 
 本文负责搜索引擎优化、双语页面、正式域名和部署；AI 平台的自然发现与引用见 [GEO 方案](geo.md)。后续实现以本文任务清单为依据，不把“计划”作为“已完成”。
 
@@ -9,18 +26,18 @@
 | 项目 | 确认结果 |
 | --- | --- |
 | 正式域名 | `https://www.linkxcap.com/` |
-| 托管平台 | 阿里云；具体使用 ECS/Nginx、OSS/CDN 或 ESA，按现有账户资源确定 |
+| 托管平台 | 阿里云 OSS 静态网站托管，与旧官网一致（旧站响应头 `Server: AliyunOSS`） |
 | 内容状态 | 用户已确认全部内容审核完成；沿用现有中英文内容，不再重复要求审核 |
 | 网站形态 | Astro 静态生成，中英文独立 HTML；动画、视频和 Three.js 是体验增强 |
 | 现有预览环境 | GitHub Pages 的 `/linkxcap` 子路径，继续与生产环境分开 |
-| 本轮范围 | 完善方案和操作清单；不修改 DNS、不部署生产、不直接实现 SEO/GEO 功能 |
+| 本轮范围 | 2026-10-10 已实施代码部分；DNS 不变（沿用旧站域名绑定），发布由管理员按部署文档执行 |
 | 成功目标 | 公开页面可抓取、可索引，中文与英文地址一致可核验；上线后能够追踪搜索表现 |
 
 SEO 提供被搜索和被理解的基础。索引时间、排名、富媒体结果和 AI 引用由平台决定，不能写成网站改造后的保证。
 
 ## 2. 当前代码核对
 
-以下是本次读取代码的结果，不代表正式服务器已经使用相同配置。
+以下是 2026-10-06 读取代码的结果（实施结果见第 0 节），不代表正式服务器已经使用相同配置。
 
 | 位置 | 已有能力 | 后续处理 |
 | --- | --- | --- |
@@ -38,7 +55,7 @@ SEO 提供被搜索和被理解的基础。索引时间、排名、富媒体结�
 | `.github/workflows/pages.yml` | main 推送后发布 GitHub 预览 | 阿里云发布使用独立环境与流程，不覆盖预览规则 |
 | `scripts/verify-build.mjs` | 基础页面、链接和资源验证 | 补充本文的 SEO 针对性检查 |
 
-当前数据为 76 家公司、6 名团队成员、6 篇双语洞察文章；按现有路由共生成 **190 个中英文内容页面**：`2 × (7 + 76 + 6) + 12`。根入口、404、编辑器不计入。后续 sitemap 应以实际可索引清单生成，不把 190 写死；如果某个现有路由调整为重定向，也要从清单移除。
+当前数据（2026-10-10）为 56 家公司（以 `docs/被投企业汇总_V6.csv` 为准）、6 名团队成员、5 篇双语洞察文章；共生成 **146 个中英文内容页面**：`2 × (6 + 56 + 6) + 10`（6 = 首页、投资组合、团队、洞察、Fellowship、法律声明；联系方式已并入 Fellowship）。根入口、404、旧地址跳转页、编辑器不计入。后续 sitemap 应以实际可索引清单生成，不把 190 写死；如果某个现有路由调整为重定向，也要从清单移除。
 
 本方案不改变已审核的投资年份、公司方向、团队介绍和业务事实。缺少可选字段时省略对应标记，不用当前年份或推测值补齐投资年份。
 
@@ -67,7 +84,7 @@ SEO 提供被搜索和被理解的基础。索引时间、排名、富媒体结�
 SITE_URL=https://www.linkxcap.com SITE_BASE=/ PUBLIC_CONTENT_MODE=production npm run build
 ```
 
-这是后续生产实现和构建使用的命令，本轮未执行生产部署。生产构建还必须加入“编辑器与内部数据不进入公开产物”的逻辑，不能只设置环境变量就视为安全发布完成。
+已封装为 `npm run build:production`。正式构建会自动删除内容编辑页（`a4f9c2e71b6d4830c5a8e2f94d7b136c.*`）及其 `_astro` 脚本和样式，并在校验中确认没有发布。
 
 GitHub 预览保持：
 
@@ -78,6 +95,18 @@ SITE_URL=https://zivyangll.github.io SITE_BASE=/linkxcap PUBLIC_CONTENT_MODE=pre
 生产 HTML、sitemap、JSON-LD、分享图 URL、内部链接不得残留 `127.0.0.1`、GitHub 域名或 `/linkxcap/` 前缀。预览公开 HTML 保持 noindex，允许机器人读取该标记；需要隐藏的预览使用访问控制。
 
 ### 3.3 上线前盘点旧站
+
+2026-10-10 核对旧站 sitemap（共 34 个地址，主机写作 `https://linkxcap.com`）。与新站对照结果：
+
+| 旧 URL（中英文各一） | 新 URL | 处理 |
+| --- | --- | --- |
+| `/zh/`、`/en/` | 同地址（OSS 子目录首页 → `index.html`） | 保留 |
+| `team`、`insights`、`portfolio`、`legal`、5 篇文章、`team-alex/leo/wenjue` | 同地址 | 直接替换 |
+| `/zh/contact.html` | `/zh/fellowship.html` | 跳转页（联系方式已并入 Fellowship） |
+| `/zh/portfolio-1.html` | `/zh/portfolio.html` | 跳转页 |
+| `/zh/team-elliot.html` | `/zh/team-elliott.html` | 跳转页（新站修正了拼写） |
+
+OSS 不能按路径返回 301，跳转页使用 0 秒 meta refresh 加 canonical 指向新页，搜索引擎按跳转处理。跳转页不进入 sitemap，也不计入内容页。标准主机改为 `https://www.linkxcap.com`；`linkxcap.com` → www 的 301 需要在 CDN 上配置（纯 OSS 无法按域名跳转）。
 
 正式域名不能当作从未使用过的新域名处理。发布前导出现有站点 URL、搜索平台已索引页面、常见访问路径和旧 sitemap，建立迁移表：
 
@@ -178,7 +207,9 @@ robots 的 Disallow 不是密码保护，也不是可靠的去索引方法。需
 
 ## 7. 阿里云托管与发布设计
 
-### 7.1 复用现有资源，确认服务后选择部署路径
+### 7.1 部署路径
+
+**已确定**：与旧官网一致，使用 OSS 静态网站托管；步骤见 [OSS 部署文档](16-阿里云OSS部署与上线.md)。下表保留作为日后迁移参考。
 
 | 路径 | 适用场景 | 必须确认的能力 |
 | --- | --- | --- |
@@ -189,7 +220,9 @@ Astro 交付 `dist/`，生产不运行开发服务，也不需要常驻 Node 来
 
 阿里云托管不自动提升千问、豆包或国内 AI 引用率。部署选型依据访问、成本和运维能力，不因 GEO 自动采购额外云产品。
 
-### 7.2 发布流程（待实现）
+### 7.2 发布流程
+
+实际操作见 [OSS 部署文档](16-阿里云OSS部署与上线.md)；以下为通用原则。
 
 1. 保留现有 GitHub 预览流程；新增阿里云生产环境、正式参数和人工可触发的发布入口。
 2. 使用项目要求的 Node 版本（当前 ≥22.12），执行 `npm ci` 和生产构建。

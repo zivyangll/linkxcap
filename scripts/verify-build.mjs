@@ -35,7 +35,14 @@ for (const file of [
   );
 }
 const htmlFiles = files.filter((f) => f.endsWith('.html'));
-const pages = htmlFiles.filter((f) => /^dist\/(zh|en)\//.test(f));
+// Old-site addresses that forward to their new page are not content pages.
+const legacyRedirects = [];
+for (const file of htmlFiles)
+  if ((await fs.readFile(file, 'utf8')).includes('data-legacy-redirect'))
+    legacyRedirects.push(file);
+const pages = htmlFiles.filter(
+  (f) => /^dist\/(zh|en)\//.test(f) && !legacyRedirects.includes(f),
+);
 const insightFiles = (await fs.readdir('src/content/insights')).filter((file) =>
   file.endsWith('.md'),
 );
@@ -103,6 +110,27 @@ for (const file of htmlFiles) {
     } catch {
       failures.push(`${file}: missing ${ref}`);
     }
+  }
+}
+// Crawl and AI-discovery files, and the production-only promises.
+for (const file of ['robots.txt', 'sitemap.xml', 'llms.txt']) {
+  try {
+    await fs.access(path.join('dist', file));
+  } catch {
+    failures.push(`missing dist/${file}`);
+  }
+}
+if (process.env.PUBLIC_CONTENT_MODE === 'production') {
+  const site = (process.env.SITE_URL || '').replace(/\/$/, '');
+  if (files.some((f) => /a4f9c2e71b6d4830c5a8e2f94d7b136c/.test(f)))
+    failures.push('production: content editor was published');
+  for (const file of [...pages, 'dist/sitemap.xml', 'dist/llms.txt']) {
+    const text = await fs.readFile(file, 'utf8');
+    if (text.includes('noindex')) failures.push(`${file}: noindex`);
+    if (/127\.0\.0\.1|github\.io/.test(text))
+      failures.push(`${file}: preview host`);
+    if (site && /https?:\/\//.test(text) && !text.includes(site))
+      failures.push(`${file}: no ${site} URL`);
   }
 }
 assert.deepEqual(failures, []);

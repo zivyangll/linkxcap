@@ -11,6 +11,8 @@ import Article from '../../components/Article.astro';
 import Legal from '../../components/Legal.astro';
 import {
   languages,
+  pageUrl,
+  organizationId,
   companies,
   team,
   insightFilters,
@@ -132,6 +134,47 @@ const description = article
         lang,
         (person ? 'team' : kind) as Parameters<typeof pageDescription>[1],
       );
+// Structured data for what this page describes; the layout adds the shared
+// organisation, website and web page nodes.
+const pageId = `${new URL(pageUrl(lang, page), Astro.site).href}#webpage`;
+const organization = { '@id': organizationId(Astro.site) };
+const schema = article
+  ? [
+      {
+        '@type': 'Article',
+        headline: article.title,
+        description: article.summary,
+        datePublished: article.date,
+        inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        author: organization,
+        publisher: organization,
+        mainEntityOfPage: { '@id': pageId },
+      },
+    ]
+  : person
+    ? [
+        {
+          '@type': 'Person',
+          name: lang === 'zh' ? person.name : person.en,
+          alternateName: lang === 'zh' ? person.en : person.name,
+          jobTitle: person.role[lang],
+          worksFor: organization,
+          image: new URL(person.imageUrl, Astro.site).href,
+          mainEntityOfPage: { '@id': pageId },
+        },
+      ]
+    : company
+      ? [
+          {
+            '@type': 'Organization',
+            name: lang === 'zh' ? company.name : company.nameEn,
+            alternateName: lang === 'zh' ? company.nameEn : company.name,
+            description,
+            ...(company.website ? { url: company.website } : {}),
+            subjectOf: { '@id': pageId },
+          },
+        ]
+      : [];
 ---
 
 <SiteLayout
@@ -139,6 +182,8 @@ const description = article
   page={page}
   title={title}
   description={description}
+  schema={schema}
+  ogType={article ? 'article' : 'website'}
   bodyClass={[
     ['team', 'person', 'insights', 'article', 'fellowship'].includes(kind)
       ? 'alt-paper'

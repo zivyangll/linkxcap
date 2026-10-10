@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 127.0.0.1",
-    "build": "node --test scripts/css-budget.test.mjs && astro check && astro build && node scripts/modulepreload.mjs && node scripts/prune-assets.mjs && node scripts/verify-build.mjs",
+    "build": "node --test scripts/css-budget.test.mjs && astro check && astro build && node scripts/modulepreload.mjs && node scripts/prune-assets.mjs && node scripts/strip-internal.mjs && node scripts/verify-build.mjs",
+    "build:production": "SITE_URL=https://www.linkxcap.com SITE_BASE=/ PUBLIC_CONTENT_MODE=production npm run build",
     "preview": "astro preview --host 127.0.0.1",
     "test": "playwright test",
     "assets:download": "node scripts/download-assets.mjs",

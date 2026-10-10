@@ -81,7 +81,7 @@ npm test
 - 根地址默认进入中文，页内可切换相同页面的英文版。
 - 没有 SPA 回退；所有详情页都有实体 `.html`，直接访问和刷新可用。
 
-迁移至 `www.linkxcap.com` 时，把 `SITE_URL` 改为正式域名，`SITE_BASE` 改为 `/`，重建后上传 `dist/`。自定义域名和 DNS 变更需另行配置；本次预览未更改现有官网。
+正式站 `www.linkxcap.com` 与旧官网一样托管在阿里云 OSS：`npm run build:production` 构建（正式域名、根路径、去掉编辑器），再按 [OSS 部署与上线](docs/16-阿里云OSS部署与上线.md) 上传 `dist/`。SEO/GEO 实施状态见 [SEO 方案](docs/seo.md) 与 [GEO 方案](docs/geo.md)。
 
 ## 文档
 

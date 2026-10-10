@@ -1,0 +1,35 @@
+---
+import { languages, pageUrl, type Lang } from '../../lib/site';
+export function getStaticPaths() {
+  // Addresses from the previous www.linkxcap.com site that no longer have a
+  // page of their own. Each forwards to the page that now holds its content,
+  // so old links, bookmarks and search results keep working.
+  const legacy: Record<string, string> = {
+    contact: 'fellowship',
+    'portfolio-1': 'portfolio',
+    'team-elliot': 'team-elliott',
+  };
+  return languages.flatMap((lang) =>
+    Object.entries(legacy).map(([page, target]) => ({
+      params: { lang, legacy: page },
+      props: { target },
+    })),
+  );
+}
+const lang = Astro.params.lang as Lang;
+const target = pageUrl(lang, Astro.props.target);
+const absolute = new URL(target, Astro.site).href;
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'} data-legacy-redirect>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="canonical" href={absolute} />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <title>{absolute}</title>
+  </head>
+  <body>
+    <a href={target}>{absolute}</a>
+  </body>
+</html>
