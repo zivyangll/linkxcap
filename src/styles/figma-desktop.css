@@ -581,6 +581,30 @@
       align-items: center;
       column-gap: calc(20 * var(--u));
     }
+    /* Short windows: the navigation and the footer share one column, so
+       they never overlap. The footer stays on the bottom edge while there
+       is room, and the panel scrolls once its content is taller. */
+    .site-menu[open] {
+      display: flex;
+      flex-direction: column;
+      overscroll-behavior: contain;
+    }
+    .site-menu nav {
+      position: relative;
+      top: auto;
+      left: auto;
+      flex: none;
+      align-self: flex-start;
+      margin: calc(139 * var(--u)) 0 0 calc(69 * var(--u));
+    }
+    .menu-footer {
+      position: relative;
+      left: auto;
+      bottom: auto;
+      flex: none;
+      margin: auto 0 max(24px, calc(30 * var(--u))) calc(69 * var(--u));
+      padding-top: max(32px, calc(48 * var(--u)));
+    }
     .menu-contact {
       grid-column: 1 / -1;
       margin-bottom: max(16px, calc(30 * var(--u)));

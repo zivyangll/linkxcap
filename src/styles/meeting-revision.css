@@ -1391,9 +1391,17 @@
     display: none;
   }
 
+  /* With the menu trigger in place of the full navigation, the switch sits
+     beside it as on tablets, sized for its larger type. */
   .site-header .language-switch,
   .site-header.is-minimal .language-switch {
     display: flex;
+    left: auto;
+    right: calc(max(24px, calc(44 * var(--u))) + 48px + 25px);
+  }
+
+  .site-header .language-switch a:first-child {
+    width: auto;
   }
 
   .site-header .menu-toggle,

@@ -112,7 +112,9 @@ const menuSocials = [
         href={pageUrl(lang, item.page)}
         aria-current={active === item.page ? 'page' : undefined}
         data-h5-label={
-          lang === 'zh' && item.page === 'fellowship' ? '伙伴' : undefined
+          lang === 'zh' && item.page === 'fellowship'
+            ? '伙伴同行计划'
+            : undefined
         }
       >
         <i class="menu-current diamond" aria-hidden="true"></i>
@@ -121,7 +123,7 @@ const menuSocials = [
         {lang === 'zh' &&
           (item.zh !== item.en || item.page === 'fellowship') && (
             <small lang="zh">
-              {item.page === 'fellowship' ? '伙伴' : item.zh}
+              {item.page === 'fellowship' ? '伙伴同行计划' : item.zh}
             </small>
           )}
         <Arrow />
