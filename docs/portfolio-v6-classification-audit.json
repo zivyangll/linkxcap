@@ -1,6 +1,6 @@
 {
   "source": "docs/被投企业汇总_V6.csv",
-  "sourceSha256": "5eb68fa0e34d5ea885ddb58ed68fab0207338fae4fc202edea037a3f89a71ca5",
+  "sourceSha256": "c1837cb18d1578f017c1437a46744d2726b080bc21cca7ab06460df0456b44ef",
   "sourceCount": 55,
   "matchedCount": 55,
   "scope": "The CSV is the portfolio of record: add its missing companies, remove unlisted ones, and take names, detail copy, websites and tags from it.",

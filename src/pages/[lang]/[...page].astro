@@ -20,6 +20,7 @@ import {
   pageDescription,
   pageTitle,
   siteContent,
+  ui,
   type Lang,
   type Company,
   type InsightArticle,
@@ -124,30 +125,93 @@ const title =
       ? `${contentTitle}｜${siteContent.brandZh}`
       : `${contentTitle} — ${siteContent.brand}`
     : contentTitle;
+// A person's page is described by the first paragraph of their own bio.
+const personDescription = (person: (typeof team)[number]) =>
+  person.bio[lang].split(/\n\s*\n/)[0].trim() || person.summary[lang];
 const description = article
   ? article.summary
   : company
     ? lang === 'zh'
       ? company.detail
       : company.detailEn
-    : pageDescription(
-        lang,
-        (person ? 'team' : kind) as Parameters<typeof pageDescription>[1],
-      );
+    : person
+      ? personDescription(person)
+      : pageDescription(lang, kind as Parameters<typeof pageDescription>[1]);
 // Structured data for what this page describes; the layout adds the shared
 // organisation, website and web page nodes.
-const pageId = `${new URL(pageUrl(lang, page), Astro.site).href}#webpage`;
+const absolute = (target: string) =>
+  new URL(pageUrl(lang, target), Astro.site).href;
+const pageId = `${absolute(page)}#webpage`;
 const organization = { '@id': organizationId(Astro.site) };
+const name = (zh: string, en: string) => (lang === 'zh' ? zh : en);
+const itemList = (items: { name: string; page: string }[]) => ({
+  '@type': 'ItemList',
+  numberOfItems: items.length,
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    url: absolute(item.page),
+  })),
+});
+const listArticles =
+  kind === 'insights'
+    ? (await getCollection('insights'))
+        .map(({ data }) => data)
+        .filter((data) => data.lang === lang)
+        .sort((x, y) => y.date.localeCompare(x.date))
+    : [];
+const mainEntity =
+  kind === 'portfolio'
+    ? itemList(
+        companies.map((c) => ({
+          name: name(c.name, c.nameEn),
+          page: `portfolio/${c.slug}`,
+        })),
+      )
+    : kind === 'team'
+      ? itemList(
+          team.map((p) => ({
+            name: name(p.name, p.en),
+            page: `team-${p.slug}`,
+          })),
+        )
+      : kind === 'insights'
+        ? itemList(listArticles.map((a) => ({ name: a.title, page: a.route })))
+        : undefined;
+// Trail below the home page, as in the site navigation.
+const breadcrumbs = company
+  ? [
+      { name: '', page: 'portfolio' },
+      { name: contentTitle, page },
+    ]
+  : person
+    ? [
+        { name: '', page: 'team' },
+        { name: contentTitle, page },
+      ]
+    : article
+      ? [
+          { name: '', page: 'insights' },
+          { name: contentTitle, page },
+        ]
+      : [{ name: kind === 'legal' ? ui[lang].legal : '', page: kind }];
+const category = article
+  ? insightFilters.find(({ id }) => id === article.category)
+  : undefined;
 const schema = article
   ? [
       {
         '@type': 'Article',
+        '@id': `${absolute(page)}#article`,
         headline: article.title,
         description: article.summary,
         datePublished: article.date,
         inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+        ...(category ? { articleSection: category[lang] } : {}),
         author: organization,
         publisher: organization,
+        image: new URL(siteContent.ogImageUrl, Astro.site).href,
         mainEntityOfPage: { '@id': pageId },
       },
     ]
@@ -155,9 +219,11 @@ const schema = article
     ? [
         {
           '@type': 'Person',
-          name: lang === 'zh' ? person.name : person.en,
-          alternateName: lang === 'zh' ? person.en : person.name,
+          '@id': `${absolute(page)}#person`,
+          name: name(person.name, person.en),
+          alternateName: name(person.en, person.name),
           jobTitle: person.role[lang],
+          description,
           worksFor: organization,
           image: new URL(person.imageUrl, Astro.site).href,
           mainEntityOfPage: { '@id': pageId },
@@ -166,15 +232,24 @@ const schema = article
     : company
       ? [
           {
+            // A portfolio company, described on this page; no ownership or
+            // parent relation is claimed.
             '@type': 'Organization',
-            name: lang === 'zh' ? company.name : company.nameEn,
-            alternateName: lang === 'zh' ? company.nameEn : company.name,
+            '@id': `${absolute(page)}#company`,
+            name: name(company.name, company.nameEn),
+            alternateName: name(company.nameEn, company.name),
             description,
             ...(company.website ? { url: company.website } : {}),
+            logo: new URL(company.logoUrl, Astro.site).href,
             subjectOf: { '@id': pageId },
           },
         ]
       : [];
+const pageType = ['portfolio', 'team', 'insights'].includes(kind)
+  ? 'CollectionPage'
+  : person
+    ? 'ProfilePage'
+    : 'WebPage';
 ---
 
 <SiteLayout
@@ -183,6 +258,18 @@ const schema = article
   title={title}
   description={description}
   schema={schema}
+  pageType={pageType}
+  mainEntity={
+    mainEntity ||
+    (person
+      ? { '@id': `${absolute(page)}#person` }
+      : company
+        ? { '@id': `${absolute(page)}#company` }
+        : article
+          ? { '@id': `${absolute(page)}#article` }
+          : undefined)
+  }
+  breadcrumbs={breadcrumbs}
   ogType={article ? 'article' : 'website'}
   bodyClass={[
     ['team', 'person', 'insights', 'article', 'fellowship'].includes(kind)

@@ -3,6 +3,7 @@ type CompanyRecord = {
   id: string;
   slug: string;
   title: string;
+  alternateName: string;
   sector: string;
   description: string;
   english: string;
@@ -30,6 +31,11 @@ if (root) {
     continuation?.querySelectorAll<HTMLElement>('[data-arc-side="bottom"]') ??
       [],
   );
+  // Canonical URLs keep the site's own host, whichever host served the page.
+  const siteOrigin = new URL(
+    document.querySelector<HTMLLinkElement>('link[rel=canonical]')?.href ||
+      location.href,
+  ).origin;
   const records: CompanyRecord[] = JSON.parse(
     root.querySelector('[data-company-records]')!.textContent!,
   );
@@ -117,14 +123,14 @@ if (root) {
             a.dataset.language === 'en' ? company.enUrl : company.zhUrl),
       );
     document.querySelector<HTMLLinkElement>('link[rel=canonical]')!.href =
-      new URL(company.url, location.origin).href;
+      new URL(company.url, siteOrigin).href;
     document
       .querySelectorAll<HTMLLinkElement>('link[hreflang]')
       .forEach(
         (a) =>
           (a.href = new URL(
             a.hreflang === 'en' ? company.enUrl : company.zhUrl,
-            location.origin,
+            siteOrigin,
           ).href),
       );
     document.querySelector<HTMLMetaElement>(
@@ -132,8 +138,59 @@ if (root) {
     )!.content = document.title;
     document.querySelector<HTMLMetaElement>(
       'meta[property="og:url"]',
-    )!.content = location.href;
+    )!.content = new URL(company.url, siteOrigin).href;
+    syncMetadata(company);
   };
+  // Keep the description, share tags and JSON-LD on the company now shown, so
+  // the page reads the same as opening its own URL.
+  function syncMetadata(company: CompanyRecord) {
+    const href = new URL(company.url, siteOrigin).href;
+    const meta = (selector: string, content: string) => {
+      const tag = document.querySelector<HTMLMetaElement>(selector);
+      if (tag) tag.content = content;
+    };
+    meta('meta[name="description"]', company.description);
+    meta('meta[property="og:description"]', company.description);
+    meta('meta[name="twitter:title"]', document.title);
+    meta('meta[name="twitter:description"]', company.description);
+    const script = document.querySelector('script[type="application/ld+json"]');
+    if (!script?.textContent) return;
+    const data = JSON.parse(script.textContent) as {
+      '@graph': Record<string, unknown>[];
+    };
+    for (const node of data['@graph']) {
+      const id = String(node['@id'] || '');
+      if (id.endsWith('#webpage')) {
+        Object.assign(node, {
+          '@id': `${href}#webpage`,
+          url: href,
+          name: document.title,
+          description: company.description,
+          mainEntity: { '@id': `${href}#company` },
+          breadcrumb: { '@id': `${href}#breadcrumb` },
+        });
+      } else if (id.endsWith('#breadcrumb')) {
+        node['@id'] = `${href}#breadcrumb`;
+        const steps = node.itemListElement as Record<string, unknown>[];
+        Object.assign(steps[steps.length - 1], {
+          name: company.title,
+          item: href,
+        });
+      } else if (id.endsWith('#company')) {
+        Object.assign(node, {
+          '@id': `${href}#company`,
+          name: company.title,
+          alternateName: company.alternateName,
+          description: company.description,
+          logo: new URL(company.logo, siteOrigin).href,
+          subjectOf: { '@id': `${href}#webpage` },
+        });
+        if (company.website) node.url = company.website;
+        else delete node.url;
+      }
+    }
+    script.textContent = JSON.stringify(data).replace(/</g, '\\u003c');
+  }
   // Offset is measured from the real row centers. No absolute Figma y values
   // are mixed with scrollTop, so resizing and long names cannot shift selection.
   const centerRow = (row: HTMLAnchorElement) => {

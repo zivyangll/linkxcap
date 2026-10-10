@@ -7,8 +7,11 @@
 | 项目 | 状态 |
 | --- | --- |
 | robots | 已实施（4.2）：全部允许；`OAI-SearchBot`、`ChatGPT-User`、`Claude-SearchBot`、`Claude-User`、`PerplexityBot`、`Perplexity-User` 单列放行。训练类机器人（`GPTBot`、`ClaudeBot`、`Google-Extended`）沿用 `*` 组，即**允许**；如需禁止训练，在 `src/pages/robots.txt.ts` 增加对应分组 `Disallow: /` |
-| `llms.txt` | 已实施（3.4）：`https://www.linkxcap.com/llms.txt`，由站内数据生成 |
-| 实体与结构化数据 | 已实施：全站统一 `https://www.linkxcap.com/#organization`（星连资本 / LinkX Capital，法定主体、邮箱、官方社交账号）；文章、团队成员、公司详情各自标注 |
+| 原则 | **GEO 只复用页面已有的内容，不改动页面**：结构化数据、`llms.txt`、`llms-full.txt` 中的文字均取自网站现有文案和数据（页面名用导航原名、联系类型用菜单的“与我们对话 / Talk to us”）；2026-10-10 逐页比对，页面可见文字与改动前完全一致 |
+| `llms.txt` | 已实施（3.4）：`https://www.linkxcap.com/llms.txt`，开头为“关键事实”（品牌、运营主体、六个方向、公司数、团队、计划名称、联系、官方账号），其后为官方页面、方向、按方向列出的公司、团队、文章 |
+| `llms-full.txt` | 已实施：`https://www.linkxcap.com/llms-full.txt`，汇总每家公司（方向、官网、页面、中英文简介）、团队完整介绍、方向介绍、Fellowship 介绍、文章摘要，供 AI 不渲染动画页面也能准确回答 |
+| 实体与结构化数据 | 已实施：全站统一 `https://www.linkxcap.com/#organization`（星连资本 / LinkX Capital，法定主体、联系方式、页脚口号、六个关注方向、官方社交账号）；文章、团队成员、公司详情、列表页各自标注，详见 SEO 第 0 节 |
+| 可见问答 | 不做：按要求不改动页面内容 |
 | 静态正文 | 公司、团队、文章、方向均为静态 HTML，可直接读取 |
 | 待办 | 上线后在各平台按第 7 节实测并记录；CDN/WAF 若开启，按 4.3 核对不拦截合法抓取 |
 

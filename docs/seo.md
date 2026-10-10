@@ -8,8 +8,11 @@
 | --- | --- | --- |
 | 正式构建参数 | 已实施：`npm run build:production`（正式域名、根路径、production 模式） | `package.json` |
 | 预览/正式隔离 | 已实施：预览带 `noindex`，正式不带；正式构建删除内容编辑页及其脚本、数据 | `scripts/strip-internal.mjs` |
-| 结构化数据 | 已实施：每页 Organization + WebSite + WebPage；文章 Article、团队成员 Person、公司详情 Organization（不标投资关系） | `SiteLayout.astro`、`[lang]/[...page].astro` |
-| 分享标签 | 已实施：文章 `og:type=article`，其余 `website` | `SiteLayout.astro` |
+| 结构化数据 | 已实施：每页 Organization + WebSite + 页面节点；文章 Article（含栏目）、团队成员 ProfilePage + Person、公司详情 Organization（不标投资关系）；投资组合/团队/洞察为 CollectionPage + ItemList；除首页外均有 BreadcrumbList；首页主体为机构本身；146 页全部可解析、内部引用无断链 | `SiteLayout.astro`、`[lang]/[...page].astro` |
+| 页面描述 | 已实施：公司用详情、文章用摘要、团队成员用本人简介首段（原为团队页通用描述）、其余用文案交付版逐页描述 | `[lang]/[...page].astro` |
+| 分享标签 | 已实施：`og:site_name`、`og:locale:alternate`、分享图尺寸与替代文字、Twitter 标题/描述/图片；文章 `og:type=article`，其余 `website` | `SiteLayout.astro` |
+| 公司切换 | 已实施：在公司详情页切换公司时，同步 title、description、canonical、hreflang、OG、Twitter、JSON-LD 和面包屑，始终使用标准域名 | `src/scripts/company-browser.ts` |
+| 智谱官网 | CSV 与网站统一为 `https://www.zhipuai.cn/zh`；`npm run portfolio:check` 通过 | `docs/被投企业汇总_V6.csv` |
 | sitemap | 已实施：中英文互链 + `x-default`；文章使用发布日期作为 `lastmod`，其余页面不写构建时间 | `src/pages/sitemap.xml.ts` |
 | robots | 已实施：全部允许，并单独列出 AI 搜索/用户读取机器人；指向正式 sitemap | `src/pages/robots.txt.ts`，详见 GEO |
 | llms.txt | 已实施：由站内数据生成 | `src/pages/llms.txt.ts`，详见 GEO |
@@ -55,7 +58,7 @@ SEO 提供被搜索和被理解的基础。索引时间、排名、富媒体结�
 | `.github/workflows/pages.yml` | main 推送后发布 GitHub 预览 | 阿里云发布使用独立环境与流程，不覆盖预览规则 |
 | `scripts/verify-build.mjs` | 基础页面、链接和资源验证 | 补充本文的 SEO 针对性检查 |
 
-当前数据（2026-10-10）为 56 家公司（以 `docs/被投企业汇总_V6.csv` 为准）、6 名团队成员、5 篇双语洞察文章；共生成 **146 个中英文内容页面**：`2 × (6 + 56 + 6) + 10`（6 = 首页、投资组合、团队、洞察、Fellowship、法律声明；联系方式已并入 Fellowship）。根入口、404、旧地址跳转页、编辑器不计入。后续 sitemap 应以实际可索引清单生成，不把 190 写死；如果某个现有路由调整为重定向，也要从清单移除。
+当前数据（2026-10-10）为 55 家公司（以 V6 CSV 为准；紫荆芯界已确认删除）、6 名团队成员、6 篇双语洞察文章；共生成 **146 个中英文内容页面**：`2 × (6 + 55 + 6) + 12`（6 = 首页、投资组合、团队、洞察、Fellowship、法律声明；联系方式已并入 Fellowship）。根入口、404、旧地址跳转页、编辑器不计入。后续 sitemap 应以实际可索引清单生成，不把 190 写死；如果某个现有路由调整为重定向，也要从清单移除。
 
 本方案不改变已审核的投资年份、公司方向、团队介绍和业务事实。缺少可选字段时省略对应标记，不用当前年份或推测值补齐投资年份。
 

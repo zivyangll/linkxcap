@@ -7,6 +7,9 @@ import {
   preview,
   siteContent,
   socials,
+  sectors,
+  navigation,
+  navigationContent,
   organizationId as organizationIdFor,
   ui,
   type Lang,
@@ -27,6 +30,12 @@ interface Props {
   ogType?: 'website' | 'article';
   /** Error pages are not landing pages: no canonical, alternates or index. */
   notFound?: boolean;
+  /** schema.org type of the page itself (a list, a profile …). */
+  pageType?: 'WebPage' | 'CollectionPage' | 'ProfilePage';
+  /** The page's main entity, e.g. the ItemList of a list page. */
+  mainEntity?: Record<string, unknown>;
+  /** Trail below the home page, matching the visible navigation. */
+  breadcrumbs?: { name: string; page: string }[];
 }
 const {
   lang,
@@ -37,13 +46,27 @@ const {
   schema = [],
   ogType = 'website',
   notFound = false,
+  pageType = 'WebPage',
+  mainEntity,
+  breadcrumbs = [],
 } = Astro.props;
 const absolute = (path: string) => new URL(path, Astro.site).href;
 const canonical = absolute(pageUrl(lang, page));
 const home = absolute(url(''));
 const organizationId = organizationIdFor(Astro.site);
+const ogImage = absolute(siteContent.ogImageUrl);
+const homeName = lang === 'zh' ? siteContent.brandZh : siteContent.brand;
+const navName = (target: string) => {
+  const item = navigation.find((entry) => entry.page === target);
+  return item ? (lang === 'zh' ? item.zh : item.en) : target;
+};
+const trail = breadcrumbs.length
+  ? [{ name: homeName, page: 'index' }, ...breadcrumbs]
+  : [];
 // One organisation and website entity shared by every page; each page adds
-// its own WebPage plus whatever it describes. Only published facts are used.
+// its own WebPage plus whatever it describes. Only published facts are used:
+// names, the operating company, contact, official accounts and the six
+// investment directions shown on the site.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -55,8 +78,18 @@ const jsonLd = {
       legalName: siteContent.companyLegalName.zh,
       url: absolute(pageUrl(lang)),
       logo: absolute(url('apple-touch-icon.png')),
+      image: ogImage,
       email: siteContent.email,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        // The menu's own heading for the contact block.
+        contactType: navigationContent.menuContactTitle[lang],
+        email: siteContent.email,
+        availableLanguage: ['zh-CN', 'en'],
+      },
       description: siteContent.metaDescription[lang],
+      slogan: siteContent.footerTagline[lang],
+      knowsAbout: sectors.map((sector) => sector[lang]),
       sameAs: socials.map((social) => social.href),
     },
     {
@@ -67,17 +100,44 @@ const jsonLd = {
       inLanguage: ['zh-CN', 'en'],
       publisher: { '@id': organizationId },
     },
-    {
-      '@type': 'WebPage',
-      '@id': `${canonical}#webpage`,
-      url: canonical,
-      name: title,
-      description,
-      inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
-      isPartOf: { '@id': `${home}#website` },
-      about: { '@id': organizationId },
-    },
-    ...schema,
+    // A 404 is not a page about anything; it only carries the site entities.
+    ...(notFound
+      ? []
+      : [
+          {
+            '@type': pageType,
+            '@id': `${canonical}#webpage`,
+            url: canonical,
+            name: title,
+            description,
+            inLanguage: lang === 'zh' ? 'zh-CN' : 'en',
+            isPartOf: { '@id': `${home}#website` },
+            about: { '@id': organizationId },
+            primaryImageOfPage: ogImage,
+            // The home page is about the firm itself.
+            ...(mainEntity || page === 'index'
+              ? { mainEntity: mainEntity || { '@id': organizationId } }
+              : {}),
+            ...(trail.length
+              ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } }
+              : {}),
+          },
+          ...(trail.length
+            ? [
+                {
+                  '@type': 'BreadcrumbList',
+                  '@id': `${canonical}#breadcrumb`,
+                  itemListElement: trail.map((step, index) => ({
+                    '@type': 'ListItem',
+                    position: index + 1,
+                    name: step.name || navName(step.page),
+                    item: absolute(pageUrl(lang, step.page)),
+                  })),
+                },
+              ]
+            : []),
+          ...schema,
+        ]),
   ],
 };
 // Keep "</script>" in copy from closing the JSON-LD block.
@@ -114,13 +174,24 @@ const jsonLdText = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
         />
       </>
     )}
+    <meta property="og:site_name" content={homeName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content={ogType} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={absolute(siteContent.ogImageUrl)} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={homeName} />
     <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta
+      property="og:locale:alternate"
+      content={lang === 'zh' ? 'en_US' : 'zh_CN'}
+    />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
     <link rel="apple-touch-icon" href={url('apple-touch-icon.png')} />
     <FontFaces lang={lang} />

@@ -20,6 +20,7 @@ const records = companies.map((c) => ({
   id: c.id,
   slug: c.slug,
   title: pick(lang, c.name, c.nameEn),
+  alternateName: pick(lang, c.nameEn, c.name),
   sector: pick(
     lang,
     sectors.find((s) => s.id === c.sector)!.zh,

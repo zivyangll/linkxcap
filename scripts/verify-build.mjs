@@ -113,7 +113,7 @@ for (const file of htmlFiles) {
   }
 }
 // Crawl and AI-discovery files, and the production-only promises.
-for (const file of ['robots.txt', 'sitemap.xml', 'llms.txt']) {
+for (const file of ['robots.txt', 'sitemap.xml', 'llms.txt', 'llms-full.txt']) {
   try {
     await fs.access(path.join('dist', file));
   } catch {
@@ -124,7 +124,12 @@ if (process.env.PUBLIC_CONTENT_MODE === 'production') {
   const site = (process.env.SITE_URL || '').replace(/\/$/, '');
   if (files.some((f) => /a4f9c2e71b6d4830c5a8e2f94d7b136c/.test(f)))
     failures.push('production: content editor was published');
-  for (const file of [...pages, 'dist/sitemap.xml', 'dist/llms.txt']) {
+  for (const file of [
+    ...pages,
+    'dist/sitemap.xml',
+    'dist/llms.txt',
+    'dist/llms-full.txt',
+  ]) {
     const text = await fs.readFile(file, 'utf8');
     if (text.includes('noindex')) failures.push(`${file}: noindex`);
     if (/127\.0\.0\.1|github\.io/.test(text))

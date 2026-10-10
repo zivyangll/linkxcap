@@ -1,38 +1,29 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
-import {
-  companies,
-  pageUrl,
-  sectors,
-  siteContent,
-  team,
-  url,
-} from '../lib/site';
+import { companies, navigation, sectors, team, ui, url } from '../lib/site';
+import { llmsHeader, llmsLink } from '../lib/llms';
 // A short guide for AI tools (llmstxt.org): who LinkX Capital is and where
-// the official pages are. Every fact and link comes from the site's own
-// content, so it never drifts from the pages it points to.
+// the official pages are. The full text of every company, person and
+// article is in /llms-full.txt.
 export const GET: APIRoute = async ({ site }) => {
-  const link = (lang: 'zh' | 'en', page = 'index') =>
-    new URL(pageUrl(lang, page), site).href;
+  const link = llmsLink(site);
   const articles = (await getCollection('insights'))
     .map(({ data }) => data)
     .sort((a, b) => b.date.localeCompare(a.date));
   const lines = [
-    `# ${siteContent.brandZh} / ${siteContent.brand}`,
-    '',
-    `> ${siteContent.metaDescription.zh}`,
-    `> ${siteContent.metaDescription.en}`,
-    '',
-    `Operator: ${siteContent.companyLegalName.zh}. Contact: ${siteContent.email}.`,
-    '',
+    ...llmsHeader(site),
     '## Official pages / 官方页面',
     '',
-    `- [首页](${link('zh')}) · [Home](${link('en')})`,
-    `- [投资组合](${link('zh', 'portfolio')}) · [Portfolio](${link('en', 'portfolio')})`,
-    `- [团队](${link('zh', 'team')}) · [Team](${link('en', 'team')})`,
-    `- [洞察与动态](${link('zh', 'insights')}) · [Insights & News](${link('en', 'insights')})`,
-    `- [Fellowship](${link('zh', 'fellowship')}) · [Fellowship](${link('en', 'fellowship')})`,
-    `- [法律声明](${link('zh', 'legal')}) · [Legal notice](${link('en', 'legal')})`,
+    // Page names are the site's own navigation labels.
+    ...[
+      ...navigation
+        .filter((item) => item.page !== 'contact')
+        .map((item) => ({ page: item.page, zh: item.zh, en: item.en })),
+      { page: 'legal', zh: ui.zh.legal, en: ui.en.legal },
+    ].map(
+      (item) =>
+        `- [${item.zh}](${link('zh', item.page)}) · [${item.en}](${link('en', item.page)})`,
+    ),
     '',
     '## Investment focus / 投资方向',
     '',
@@ -63,7 +54,7 @@ export const GET: APIRoute = async ({ site }) => {
     '',
     ...team.map(
       (person) =>
-        `- [${person.name} / ${person.en}](${link('en', `team-${person.slug}`)}): ${person.role.en}`,
+        `- [${person.name} / ${person.en}](${link('en', `team-${person.slug}`)}): ${person.role.zh} / ${person.role.en}`,
     ),
     '',
     '## Insights / 洞察',
